@@ -1,28 +1,26 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { publishedCards } from '../../lib/content';
+import { publishedCards, publishedDecks } from '../../lib/content';
 ---
 <BaseLayout title="Korttiharjoitus">
-  <section class="practice wrap" id="flashcard-app" aria-labelledby="practice-title">
-    <div class="practice-top"><a href="/kortit">← Takaisin pakkoihin</a><p id="progress" aria-live="polite"></p></div>
+  <section class="practice wrap" id="flashcard-app" aria-labelledby="session-label">
+    <div class="practice-top"><a href="/kortit">Takaisin</a><strong id="session-label"></strong><p id="progress" aria-live="polite"></p></div>
     <div id="session-view">
-      <h1 class="sr-only" id="practice-title">Sanakorttiharjoitus</h1>
       <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
       <article class="flashcard" aria-live="polite">
         <p id="side-label"></p><div id="front-term" class="term"></div>
         <div id="answer-area" hidden><div class="divider"></div><p id="answer-label"></p><div id="back-term" class="term answer"></div><p id="grammar"></p></div>
       </article>
-      <div id="reveal-actions" class="action-row"><button class="primary" id="reveal">Näytä vastaus <kbd>Välilyönti</kbd></button></div>
-      <div id="grade-actions" class="action-row" hidden><button class="danger" id="missed">En osannut <kbd>2</kbd></button><button class="success" id="correct">Osasin <kbd>1</kbd></button></div>
-      <div id="next-actions" class="action-row" hidden><button class="primary" id="next">Seuraava <kbd>Enter</kbd></button></div>
-      <p class="keyboard-hint">Pikanäppäimet toimivat, kun et ole lomakekentässä.</p>
+      <div id="reveal-actions" class="action-row"><button class="primary" id="reveal" aria-keyshortcuts="Space" title="Pikanäppäin: välilyönti">Näytä vastaus</button></div>
+      <div id="grade-actions" class="action-row" hidden><button class="danger" id="missed" aria-keyshortcuts="2" title="Pikanäppäin: 2">En osannut</button><button class="success" id="correct" aria-keyshortcuts="1" title="Pikanäppäin: 1">Osasin</button></div>
+      <div id="next-actions" class="action-row" hidden><button class="primary" id="next" aria-keyshortcuts="Enter" title="Pikanäppäin: Enter">Seuraava</button></div>
     </div>
     <div id="summary-view" class="summary" hidden aria-live="polite">
-      <p class="eyebrow">Harjoitus valmis</p><h1>Hyvä työ.</h1><p id="summary-copy"></p>
-      <div class="summary-score"><strong id="summary-percent"></strong><span>oikein</span></div>
-      <div class="hero-actions"><button id="retry" class="primary">Harjoittele virheet uudelleen</button><a class="button secondary" href="/kortit">Takaisin pakkoihin</a></div>
+      <h1 id="summary-copy"></h1>
+      <div class="summary-actions"><button id="retry" class="primary">Harjoittele virheet uudelleen</button><a class="button secondary" href="/kortit">Takaisin pakkoihin</a></div>
     </div>
   </section>
   <script is:inline id="cards-data" type="application/json" set:html={JSON.stringify(publishedCards)}></script>
+  <script is:inline id="decks-data" type="application/json" set:html={JSON.stringify(publishedDecks)}></script>
   <script src="../../scripts/flashcard-app.ts"></script>
 </BaseLayout>

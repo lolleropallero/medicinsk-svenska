@@ -2,6 +2,7 @@
 import '../styles/global.css';
 interface Props { title: string; description?: string }
 const { title, description = 'Harjoittele lääketieteellistä ruotsia.' } = Astro.props;
+const path = Astro.url.pathname;
 ---
 <!doctype html>
 <html lang="fi">
@@ -17,11 +18,10 @@ const { title, description = 'Harjoittele lääketieteellistä ruotsia.' } = Ast
     <header class="site-header">
       <a class="brand" href="/">Medicinsk svenska</a>
       <nav aria-label="Päänavigaatio">
-        <a href="/kortit">Sanakortit</a>
-        <a href="/kuvailu">Kuvailutehtävät</a>
+        <a href="/kortit" aria-current={path.startsWith('/kortit') ? 'page' : undefined}>Sanakortit</a>
+        <a href="/kuvailu" aria-current={path.startsWith('/kuvailu') ? 'page' : undefined}>Kuvailutehtävät</a>
       </nav>
     </header>
     <main id="sisalto"><slot /></main>
-    <footer>Itsenäiseen opiskeluun · Edistyminen säilyy vain tällä laitteella</footer>
   </body>
 </html>

@@ -9,7 +9,7 @@ const session = byId('description-session'), summaryView = byId('description-sum
 
 const render = () => {
   const item = items[index]; if (!item) { finish(); return; }
-  byId('description-progress').textContent = `${index + 1} av ${items.length}`;
+  byId('description-progress').textContent = `${index + 1} / ${items.length}`;
   byId('description-progress-bar').style.width = `${index / items.length * 100}%`;
   byId('description-text').textContent = item.descriptionSv;
   byId<HTMLInputElement>('answer').value = '';
@@ -20,10 +20,9 @@ const resolve = (didMatch: boolean, revealed: boolean) => {
   if (resolved) return; resolved = true;
   const item = items[index]; if (!item) return;
   if (didMatch) correct++; else missed.push(item);
-  byId('result-label').textContent = didMatch ? 'Rätt!' : revealed ? 'Svaret visas.' : 'Inte än.';
+  byId('result-label').textContent = didMatch ? 'Oikein' : revealed ? 'Vastaus näytetty' : 'Ei aivan';
   byId('result-label').className = didMatch ? 'correct-text' : 'incorrect-text';
   byId('canonical-answer').textContent = `${item.article ? `${item.article} ` : ''}${item.answerSv}`;
-  byId('description-grammar').textContent = item.inflection ?? '';
   byId('answer-form').hidden = true; byId('description-feedback').hidden = false; byId<HTMLButtonElement>('description-next').focus();
 };
 byId<HTMLFormElement>('answer-form').addEventListener('submit', (event) => {
@@ -32,9 +31,8 @@ byId<HTMLFormElement>('answer-form').addEventListener('submit', (event) => {
 byId('show-answer').addEventListener('click', () => resolve(false, true));
 byId('description-next').addEventListener('click', () => { index++; render(); });
 function finish() {
-  session.hidden = true; summaryView.hidden = false; const percent = items.length ? Math.round(correct / items.length * 100) : 0;
-  byId('description-summary-copy').textContent = `Du svarade rätt på ${correct} av ${items.length} beskrivningar.`;
-  byId('description-summary-percent').textContent = `${percent} %`;
+  session.hidden = true; summaryView.hidden = false;
+  byId('description-summary-copy').textContent = `${correct} / ${items.length} oikein`;
   byId<HTMLButtonElement>('description-retry').hidden = missed.length === 0;
 }
 byId('description-retry').addEventListener('click', () => {

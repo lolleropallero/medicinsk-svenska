@@ -1,15 +1,17 @@
 import { addGrade, cardSides, luckySelection, retryMissed, shuffled, summary, type Grade } from '../lib/session';
-import type { Direction, Flashcard } from '../types/content';
+import type { Deck, Direction, Flashcard } from '../types/content';
 
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const source = byId<HTMLScriptElement>('cards-data').textContent ?? '[]';
 const allCards = JSON.parse(source) as Flashcard[];
+const allDecks = JSON.parse(byId<HTMLScriptElement>('decks-data').textContent ?? '[]') as Deck[];
 const params = new URLSearchParams(location.search);
 const direction: Direction = params.get('direction') === 'sv-fi' ? 'sv-fi' : 'fi-sv';
 const lucky = params.get('lucky') === '1';
 const deckId = params.get('deck');
 let cards = lucky ? luckySelection(allCards) : shuffled(allCards.filter((card) => card.deckId === deckId));
 let index = 0, grades: Grade[] = [], revealed = false, graded = false;
+byId('session-label').textContent = lucky ? 'Kokeilen onneani' : allDecks.find((deck) => deck.id === deckId)?.nameFi ?? 'Sanakortit';
 
 const sessionView = byId('session-view'), summaryView = byId('summary-view');
 const render = () => {
@@ -40,8 +42,7 @@ const next = () => { if (!graded) return; index++; revealed = false; graded = fa
 function finish() {
   sessionView.hidden = true; summaryView.hidden = false;
   const result = summary(grades);
-  byId('summary-copy').textContent = `Osasit ${result.correct} / ${result.total} korttia.`;
-  byId('summary-percent').textContent = `${result.percentage} %`;
+  byId('summary-copy').textContent = `${result.correct} / ${result.total} oikein`;
   byId<HTMLButtonElement>('retry').hidden = result.missed === 0;
   byId<HTMLButtonElement>('retry').focus();
 }

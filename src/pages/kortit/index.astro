@@ -4,25 +4,23 @@ import { publishedCards, publishedDecks } from '../../lib/content';
 const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCards.filter((c) => c.deckId === d.id).length]));
 ---
 <BaseLayout title="Sanakortit">
-  <section class="page-head wrap">
-    <p class="eyebrow">Sanakortit</p><h1>Valitse pakka</h1>
-    <p>Valitse ensin harjoittelusuunta. Voit vaihtaa sen ennen aloittamista.</p>
-  </section>
-  <section class="wrap study-setup" aria-labelledby="suunta">
+  <section class="page wrap study-setup" aria-labelledby="page-title">
+    <h1 id="page-title">Sanakortit</h1>
     <fieldset class="direction" id="direction-fieldset">
-      <legend id="suunta">Harjoittelusuunta</legend>
+      <legend class="sr-only">Harjoittelusuunta</legend>
       <label><input type="radio" name="direction" value="fi-sv" checked /> Suomi <span aria-hidden="true">→</span> ruotsi</label>
       <label><input type="radio" name="direction" value="sv-fi" /> Ruotsi <span aria-hidden="true">→</span> suomi</label>
     </fieldset>
     <a class="lucky" data-start data-lucky="true" href="/kortit/harjoitus?lucky=1&direction=fi-sv">
-      <span><strong>Kokeilen onneani</strong><small>50 satunnaista korttia kaikista pakoista</small></span><span aria-hidden="true">↗</span>
+      <strong>Kokeilen onneani</strong><span>50 korttia</span>
     </a>
-    <div class="deck-grid">
+    <div class="deck-list">
       {publishedDecks.map((deck) => (
-        <article class="deck-card">
-          <div><p>{counts[deck.id]} korttia</p><h2>{deck.nameFi}</h2><span>{deck.descriptionFi}</span></div>
-          <a class="button secondary" data-start data-deck={deck.id} href={`/kortit/harjoitus?deck=${deck.id}&direction=fi-sv`}>Aloita</a>
-        </article>
+        <div class="deck-row">
+          <h2>{deck.nameFi}</h2>
+          <span>{counts[deck.id]} korttia</span>
+          <a data-start data-deck={deck.id} href={`/kortit/harjoitus?deck=${deck.id}&direction=fi-sv`}>Aloita</a>
+        </div>
       ))}
     </div>
   </section>

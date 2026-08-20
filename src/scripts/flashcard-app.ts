@@ -1,64 +1,189 @@
-import { addGrade, cardSides, luckySelection, retryMissed, shuffled, summary, type Grade } from '../lib/session';
+import {
+  advanceSession,
+  cardSides,
+  createSession,
+  gradeCurrentCard,
+  isSessionComplete,
+  isStoredSession,
+  nextRetryAt,
+  parseRequestedAmount,
+  revealCurrentCard,
+  type FlashcardSession,
+  type SessionMode,
+} from '../lib/session';
 import type { Deck, Direction, Flashcard } from '../types/content';
 
+const STORAGE_KEY = 'medicinsk-svenska.flashcard-session.v1';
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-const source = byId<HTMLScriptElement>('cards-data').textContent ?? '[]';
-const allCards = JSON.parse(source) as Flashcard[];
+const allCards = JSON.parse(byId<HTMLScriptElement>('cards-data').textContent ?? '[]') as Flashcard[];
 const allDecks = JSON.parse(byId<HTMLScriptElement>('decks-data').textContent ?? '[]') as Deck[];
+const cardById = new Map(allCards.map((card) => [card.id, card]));
+const validCardIds = new Set(cardById.keys());
 const params = new URLSearchParams(location.search);
 const direction: Direction = params.get('direction') === 'sv-fi' ? 'sv-fi' : 'fi-sv';
-const lucky = params.get('lucky') === '1';
-const deckId = params.get('deck');
-let cards = lucky ? luckySelection(allCards) : shuffled(allCards.filter((card) => card.deckId === deckId));
-let index = 0, grades: Grade[] = [], revealed = false, graded = false;
-byId('session-label').textContent = lucky ? 'Kokeilen onneani' : allDecks.find((deck) => deck.id === deckId)?.nameFi ?? 'Sanakortit';
+const mode: SessionMode = params.get('mode') === 'lucky' ? 'lucky' : 'deck';
+const deckId = params.get('deck') ?? undefined;
+const requestedAmount = parseRequestedAmount(params.get('amount'));
 
-const sessionView = byId('session-view'), summaryView = byId('summary-view');
-const render = () => {
-  const card = cards[index];
-  if (!card) { finish(); return; }
-  const sides = cardSides(card, direction);
-  byId('progress').textContent = `${index + 1} / ${cards.length}`;
-  byId('progress-bar').style.width = `${index / cards.length * 100}%`;
-  byId('side-label').textContent = direction === 'fi-sv' ? 'Suomeksi' : 'Ruotsiksi';
-  byId('answer-label').textContent = direction === 'fi-sv' ? 'Ruotsiksi' : 'Suomeksi';
-  byId('front-term').textContent = sides.front;
-  byId('front-term').lang = sides.frontLang;
-  byId('back-term').textContent = sides.back;
-  byId('back-term').lang = sides.answerLang;
-  byId('grammar').textContent = direction === 'fi-sv' && card.inflection ? card.inflection : '';
-  byId('answer-area').hidden = !revealed;
-  byId('reveal-actions').hidden = revealed;
-  byId('grade-actions').hidden = !revealed || graded;
-  byId('next-actions').hidden = !graded;
-};
-const reveal = () => { if (!revealed) { revealed = true; render(); byId<HTMLButtonElement>('correct').focus(); } };
-const grade = (correct: boolean) => {
-  if (!revealed || graded) return;
-  const card = cards[index]; if (!card) return;
-  grades = addGrade(grades, card.id, correct); graded = true; render(); byId<HTMLButtonElement>('next').focus();
-};
-const next = () => { if (!graded) return; index++; revealed = false; graded = false; render(); byId<HTMLButtonElement>('reveal').focus(); };
-function finish() {
-  sessionView.hidden = true; summaryView.hidden = false;
-  const result = summary(grades);
-  byId('summary-copy').textContent = `${result.correct} / ${result.total} oikein`;
-  byId<HTMLButtonElement>('retry').hidden = result.missed === 0;
-  byId<HTMLButtonElement>('retry').focus();
+let sessionId = params.get('session');
+if (!sessionId) {
+  sessionId = crypto.randomUUID();
+  params.set('session', sessionId);
+  history.replaceState(null, '', `${location.pathname}?${params.toString()}`);
 }
-byId('reveal').addEventListener('click', reveal);
-byId('correct').addEventListener('click', () => grade(true));
-byId('missed').addEventListener('click', () => grade(false));
-byId('next').addEventListener('click', next);
-byId('retry').addEventListener('click', () => {
-  cards = shuffled(retryMissed(cards, grades)); grades = []; index = 0; revealed = false; graded = false;
-  summaryView.hidden = true; sessionView.hidden = false; render(); byId<HTMLButtonElement>('reveal').focus();
-});
+
+const sourceCards = mode === 'lucky' ? allCards : allCards.filter((card) => card.deckId === deckId);
+
+function readStoredSession(): FlashcardSession | null {
+  try {
+    const parsed: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
+    return isStoredSession(parsed, validCardIds) && parsed.sessionId === sessionId ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+let session =
+  readStoredSession() ??
+  createSession(sourceCards, {
+    sessionId,
+    mode,
+    ...(deckId ? { sourceDeckId: deckId } : {}),
+    direction,
+    requestedAmount,
+  });
+let gradingLocked = false;
+
+const sessionView = byId('session-view');
+const waitingView = byId('waiting-view');
+const summaryView = byId('summary-view');
+const flashcard = byId<HTMLButtonElement>('flashcard');
+const answerArea = byId('answer-area');
+const gradeActions = byId('grade-actions');
+const correctButton = byId<HTMLButtonElement>('correct');
+const missedButton = byId<HTMLButtonElement>('missed');
+
+byId('session-label').textContent =
+  session.mode === 'lucky'
+    ? 'Kokeilen onneani'
+    : allDecks.find((deck) => deck.id === session.sourceDeckId)?.nameFi ?? 'Sanakortit';
+
+function persist() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+  } catch {
+    // The session remains usable when storage is unavailable.
+  }
+}
+
+function formatDuration(milliseconds: number) {
+  const seconds = Math.max(0, Math.floor(milliseconds / 1000));
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainder = seconds % 60;
+  return hours > 0
+    ? `${hours}:${String(minutes).padStart(2, '0')}:${String(remainder).padStart(2, '0')}`
+    : `${minutes}:${String(remainder).padStart(2, '0')}`;
+}
+
+function updateClocks(now = Date.now()) {
+  byId<HTMLTimeElement>('elapsed-time').textContent = formatDuration(now - session.startedAt);
+  const dueAt = nextRetryAt(session);
+  if (dueAt !== null) byId('retry-countdown').textContent = formatDuration(Math.max(0, dueAt - now));
+}
+
+function render(options: { focusCard?: boolean } = {}) {
+  session = advanceSession(session, Date.now());
+  persist();
+
+  const total = session.selectedCardIds.length;
+  const mastered = session.masteredCardIds.length;
+  byId('progress').textContent = `${mastered} / ${total}`;
+  byId('progress-bar').style.width = total === 0 ? '0%' : `${(mastered / total) * 100}%`;
+  updateClocks();
+
+  if (isSessionComplete(session) || total === 0) {
+    sessionView.hidden = true;
+    waitingView.hidden = true;
+    summaryView.hidden = false;
+    byId('summary-copy').textContent = `${mastered} / ${total} osattu`;
+    byId('summary-details').textContent = `Aika ${formatDuration(Date.now() - session.startedAt)} · En osannut ${session.totalMissedCount} kertaa`;
+    summaryView.querySelector<HTMLAnchorElement>('a')?.focus();
+    return;
+  }
+
+  if (!session.currentCardId) {
+    sessionView.hidden = true;
+    summaryView.hidden = true;
+    waitingView.hidden = false;
+    updateClocks();
+    return;
+  }
+
+  const card = cardById.get(session.currentCardId);
+  if (!card) return;
+  const sides = cardSides(card, session.direction);
+  sessionView.hidden = false;
+  waitingView.hidden = true;
+  summaryView.hidden = true;
+  byId('front-term').textContent = sides.front;
+  byId('front-term').lang = session.direction === 'fi-sv' ? 'fi' : 'sv';
+  byId('back-term').textContent = sides.back;
+  byId('back-term').lang = session.direction === 'fi-sv' ? 'sv' : 'fi';
+  const grammar = [card.partOfSpeech, card.inflection].filter(Boolean).join(' · ');
+  byId('grammar').textContent = grammar;
+  byId('grammar').hidden = !grammar;
+  answerArea.hidden = !session.revealed;
+  gradeActions.hidden = !session.revealed;
+  flashcard.disabled = session.revealed;
+  flashcard.setAttribute('aria-label', session.revealed ? 'Vastaus näkyvissä' : 'Näytä vastaus');
+  if (options.focusCard) flashcard.focus();
+}
+
+function reveal() {
+  if (!session.currentCardId || session.revealed) return;
+  session = revealCurrentCard(session);
+  persist();
+  render();
+  correctButton.focus();
+}
+
+function grade(correct: boolean) {
+  if (gradingLocked || !session.revealed || !session.currentCardId) return;
+  gradingLocked = true;
+  correctButton.disabled = true;
+  missedButton.disabled = true;
+  session = gradeCurrentCard(session, correct, Date.now());
+  persist();
+  render({ focusCard: true });
+  correctButton.disabled = false;
+  missedButton.disabled = false;
+  gradingLocked = false;
+}
+
+flashcard.addEventListener('click', reveal);
+correctButton.addEventListener('click', () => grade(true));
+missedButton.addEventListener('click', () => grade(false));
 document.addEventListener('keydown', (event) => {
   if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
-  if (event.code === 'Space' && !revealed) { event.preventDefault(); reveal(); }
-  else if (event.key === '1') grade(true);
-  else if (event.key === '2') grade(false);
-  else if (event.key === 'Enter') next();
+  if (event.key === '1' && session.revealed) grade(true);
+  if (event.key === '2' && session.revealed) grade(false);
 });
-render();
+
+setInterval(() => {
+  const wasWaiting = !session.currentCardId && !isSessionComplete(session);
+  const advanced = advanceSession(session, Date.now());
+  if (advanced !== session) {
+    session = advanced;
+    persist();
+    render({ focusCard: wasWaiting });
+  } else {
+    updateClocks();
+  }
+}, 1000);
+
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) render({ focusCard: false });
+});
+
+render({ focusCard: true });

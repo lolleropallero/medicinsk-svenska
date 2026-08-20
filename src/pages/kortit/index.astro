@@ -11,29 +11,48 @@ const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCard
       <label><input type="radio" name="direction" value="fi-sv" checked /> Suomi <span aria-hidden="true">→</span> ruotsi</label>
       <label><input type="radio" name="direction" value="sv-fi" /> Ruotsi <span aria-hidden="true">→</span> suomi</label>
     </fieldset>
-    <a class="lucky" data-start data-lucky="true" href="/kortit/harjoitus?lucky=1&direction=fi-sv">
-      <strong>Kokeilen onneani</strong><span>50 korttia</span>
+    <fieldset class="amount-selector">
+      <legend>Korttien määrä</legend>
+      <div class="segments">
+        <label><input type="radio" name="amount" value="10" /><span>10</span></label>
+        <label><input type="radio" name="amount" value="25" checked /><span>25</span></label>
+        <label><input type="radio" name="amount" value="50" /><span>50</span></label>
+        <label><input type="radio" name="amount" value="all" /><span>Kaikki</span></label>
+      </div>
+    </fieldset>
+    <a class="lucky" data-start data-mode="lucky" href="/kortit/harjoitus?mode=lucky&direction=fi-sv&amount=25">
+      <strong>Kokeilen onneani</strong><span data-selected-count>25 korttia</span>
     </a>
     <div class="deck-list">
       {publishedDecks.map((deck) => (
         <div class="deck-row">
           <h2>{deck.nameFi}</h2>
           <span>{counts[deck.id]} korttia</span>
-          <a data-start data-deck={deck.id} href={`/kortit/harjoitus?deck=${deck.id}&direction=fi-sv`}>Aloita</a>
+          <a data-start data-mode="deck" data-deck={deck.id} href={`/kortit/harjoitus?mode=deck&deck=${deck.id}&direction=fi-sv&amount=25`}>Aloita</a>
         </div>
       ))}
     </div>
   </section>
   <script>
-    const radios = document.querySelectorAll<HTMLInputElement>('input[name="direction"]');
+    const radios = document.querySelectorAll<HTMLInputElement>('input[name="direction"], input[name="amount"]');
     const starts = document.querySelectorAll<HTMLAnchorElement>('[data-start]');
     const update = () => {
       const direction = document.querySelector<HTMLInputElement>('input[name="direction"]:checked')?.value ?? 'fi-sv';
+      const amount = document.querySelector<HTMLInputElement>('input[name="amount"]:checked')?.value ?? '25';
       starts.forEach((link) => {
-        const query = link.dataset.lucky ? `lucky=1&direction=${direction}` : `deck=${link.dataset.deck}&direction=${direction}`;
-        link.href = `/kortit/harjoitus?${query}`;
+        const query = new URLSearchParams({ mode: link.dataset.mode ?? 'deck', direction, amount });
+        if (link.dataset.deck) query.set('deck', link.dataset.deck);
+        link.href = `/kortit/harjoitus?${query.toString()}`;
       });
+      const luckyCount = document.querySelector<HTMLElement>('[data-selected-count]');
+      if (luckyCount) luckyCount.textContent = amount === 'all' ? 'Kaikki kortit' : `${amount} korttia`;
     };
     radios.forEach((radio) => radio.addEventListener('change', update));
+    starts.forEach((link) => link.addEventListener('click', () => {
+      const url = new URL(link.href);
+      url.searchParams.set('session', crypto.randomUUID());
+      link.href = url.toString();
+    }));
+    update();
   </script>
 </BaseLayout>

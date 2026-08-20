@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { publishedDescriptions } from '../lib/content';
+---
+<BaseLayout title="Kuvailutehtävät" description="Identifiera anatomiska strukturer och kroppsfunktioner på svenska.">
+  <section class="practice description-practice wrap" id="description-app" lang="sv" aria-labelledby="description-title">
+    <div class="practice-top"><a href="/">← Till startsidan</a><p id="description-progress" aria-live="polite"></p></div>
+    <div id="description-session">
+      <div class="progress-track" aria-hidden="true"><span id="description-progress-bar"></span></div>
+      <p class="eyebrow">Beskrivningsövning</p><h1 id="description-title">Vad beskrivs?</h1>
+      <article class="description-card"><p id="description-text"></p></article>
+      <form id="answer-form">
+        <label for="answer">Ditt svar</label>
+        <input id="answer" name="answer" autocomplete="off" autocapitalize="none" />
+        <div class="action-row"><button class="primary" type="submit">Kontrollera</button><button class="secondary" id="show-answer" type="button">Visa svaret</button></div>
+      </form>
+      <div id="description-feedback" class="feedback" hidden aria-live="polite" role="status">
+        <p id="result-label"></p><p>Rätt svar: <strong id="canonical-answer"></strong></p><p id="description-grammar"></p>
+        <button id="description-next" class="primary">Nästa</button>
+      </div>
+    </div>
+    <div id="description-summary" class="summary" hidden aria-live="polite">
+      <p class="eyebrow">Övningen är klar</p><h1>Bra arbetat.</h1><p id="description-summary-copy"></p>
+      <div class="summary-score"><strong id="description-summary-percent"></strong><span>rätt</span></div>
+      <div class="hero-actions"><button id="description-retry" class="primary">Öva misstagen igen</button><a class="button secondary" href="/">Till startsidan</a></div>
+    </div>
+  </section>
+  <script is:inline id="descriptions-data" type="application/json" set:html={JSON.stringify(publishedDescriptions)}></script>
+  <script src="../scripts/description-app.ts"></script>
+</BaseLayout>

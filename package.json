@@ -1,10 +1,29 @@
 {
+  "name": "medicinsk-svenska",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static medical Swedish practice for Finnish medical students",
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "validate:content": "tsx scripts/validate-content.ts",
-    "build": "npm run validate:content && astro build"
+    "validate:content": "node --experimental-strip-types scripts/validate-content.ts",
+    "check": "astro check",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "build": "node --experimental-strip-types scripts/validate-content.ts && astro build",
+    "preview": "astro preview"
   },
   "devDependencies": {
-    "wrangler": "^4"
+    "@astrojs/check": "^0.9.4",
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.54.2",
+    "@types/node": "^24.3.0",
+    "astro": "^5.13.3",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.32.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

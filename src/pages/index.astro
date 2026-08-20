@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { publishedCards, publishedDescriptions } from '../lib/content';
+---
+<BaseLayout title="Etusivu">
+  <section class="hero wrap">
+    <p class="eyebrow">Lääketieteen opiskelijoille</p>
+    <h1>Ruotsi osaksi<br /><span>kliinistä arkea.</span></h1>
+    <p class="lead">Harjoittele keskeistä lääketieteen sanastoa rauhallisesti ja tavoitteellisesti. Ei tunnuksia, ei häiriötekijöitä.</p>
+    <div class="hero-actions">
+      <a class="button primary" href="/kortit">Aloita sanakorteilla</a>
+      <a class="button secondary" href="/kuvailu">Harjoittele kuvailuja</a>
+    </div>
+  </section>
+  <section class="options wrap" aria-labelledby="harjoitukset">
+    <div><p class="eyebrow">Kaksi tapaa harjoitella</p><h2 id="harjoitukset">Valitse tämän päivän tavoite</h2></div>
+    <article class="feature-card"><span aria-hidden="true">01</span><h3>Sanakortit</h3><p>{publishedCards.length} lähteistä kuratoitua termiä viidessä pakassa. Harjoittele kumpaankin suuntaan.</p><a href="/kortit">Valitse pakka <span aria-hidden="true">→</span></a></article>
+    <article class="feature-card"><span aria-hidden="true">02</span><h3>Kuvailutehtävät</h3><p>{publishedDescriptions.length} ruotsinkielistä anatomian ja fysiologian kuvausta. Tunnista oikea termi.</p><a href="/kuvailu">Öppna övningen <span aria-hidden="true">→</span></a></article>
+  </section>
+</BaseLayout>

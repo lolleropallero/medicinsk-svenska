@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "dev": "astro dev",
+    "validate:content": "tsx scripts/validate-content.ts",
+    "build": "npm run validate:content && astro build"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}

@@ -86,10 +86,17 @@ function formatDuration(milliseconds: number) {
     : `${minutes}:${String(remainder).padStart(2, '0')}`;
 }
 
+function formatCountdown(milliseconds: number) {
+  const seconds = Math.max(0, Math.ceil(milliseconds / 1000));
+  const minutes = Math.floor(seconds / 60);
+  const remainder = seconds % 60;
+  return `${String(minutes).padStart(2, '0')}:${String(remainder).padStart(2, '0')}`;
+}
+
 function updateClocks(now = Date.now()) {
   byId<HTMLTimeElement>('elapsed-time').textContent = formatDuration(now - session.startedAt);
   const dueAt = nextRetryAt(session);
-  if (dueAt !== null) byId('retry-countdown').textContent = formatDuration(Math.max(0, dueAt - now));
+  if (dueAt !== null) byId('retry-countdown').textContent = formatCountdown(dueAt - now);
 }
 
 function render(options: { focusCard?: boolean } = {}) {
@@ -116,6 +123,8 @@ function render(options: { focusCard?: boolean } = {}) {
     sessionView.hidden = true;
     summaryView.hidden = true;
     waitingView.hidden = false;
+    const retryCount = session.pendingRetries.length;
+    byId('waiting-copy').textContent = `${retryCount} ${retryCount === 1 ? 'kortti' : 'korttia'} odottaa kertausta`;
     updateClocks();
     return;
   }

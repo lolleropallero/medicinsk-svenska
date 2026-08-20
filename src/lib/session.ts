@@ -213,18 +213,17 @@ export function isStoredSession(value: unknown, validCardIds: ReadonlySet<string
   if (!value || typeof value !== 'object') return false;
   const session = value as Partial<FlashcardSession>;
   const selected = session.selectedCardIds;
-  const allReferencedIds = [
-    ...(selected ?? []),
-    ...(session.unseenCardQueue ?? []),
-    ...(session.masteredCardIds ?? []),
-    ...(session.currentCardId ? [session.currentCardId] : []),
-    ...(session.pendingRetries ?? []).map((retry) => retry.cardId),
-  ];
+  const unseen = session.unseenCardQueue;
+  const mastered = session.masteredCardIds;
+  const pending = session.pendingRetries;
+  const attempts = session.attemptCountByCard;
+  const firstAttempts = session.firstAttemptCorrectByCard;
 
-  return (
+  if (!(
     session.schemaVersion === SESSION_SCHEMA_VERSION &&
     typeof session.sessionId === 'string' &&
     (session.mode === 'deck' || session.mode === 'lucky') &&
+    (session.mode === 'deck' ? typeof session.sourceDeckId === 'string' : session.sourceDeckId === undefined) &&
     (session.direction === 'sv-fi' || session.direction === 'fi-sv') &&
     (session.requestedAmount === 10 ||
       session.requestedAmount === 25 ||
@@ -232,21 +231,40 @@ export function isStoredSession(value: unknown, validCardIds: ReadonlySet<string
       session.requestedAmount === 'all') &&
     Array.isArray(selected) &&
     new Set(selected).size === selected.length &&
-    Array.isArray(session.unseenCardQueue) &&
-    Array.isArray(session.masteredCardIds) &&
-    Array.isArray(session.pendingRetries) &&
-    session.pendingRetries.every(
+    selected.every((id) => typeof id === 'string' && validCardIds.has(id)) &&
+    Array.isArray(unseen) &&
+    Array.isArray(mastered) &&
+    Array.isArray(pending) &&
+    (session.currentCardId === null || typeof session.currentCardId === 'string') &&
+    pending.every(
       (retry) =>
         retry &&
         typeof retry.cardId === 'string' &&
         typeof retry.dueAt === 'number' &&
         Number.isFinite(retry.dueAt),
     ) &&
-    allReferencedIds.every((id) => selected.includes(id) && validCardIds.has(id)) &&
-    typeof session.attemptCountByCard === 'object' &&
-    typeof session.firstAttemptCorrectByCard === 'object' &&
-    typeof session.totalMissedCount === 'number' &&
-    typeof session.startedAt === 'number' &&
+    attempts !== null && typeof attempts === 'object' &&
+    firstAttempts !== null && typeof firstAttempts === 'object' &&
+    typeof session.totalMissedCount === 'number' && Number.isInteger(session.totalMissedCount) && session.totalMissedCount >= 0 &&
+    typeof session.startedAt === 'number' && Number.isFinite(session.startedAt) &&
     typeof session.revealed === 'boolean'
+  )) return false;
+
+  const pendingIds = pending.map((retry) => retry.cardId);
+  const stateIds = [...unseen, ...mastered, ...pendingIds, ...(session.currentCardId ? [session.currentCardId] : [])];
+  const attemptEntries = Object.entries(attempts);
+  const firstAttemptEntries = Object.entries(firstAttempts);
+
+  return (
+    new Set(unseen).size === unseen.length &&
+    new Set(mastered).size === mastered.length &&
+    new Set(pendingIds).size === pendingIds.length &&
+    stateIds.length === selected.length &&
+    new Set(stateIds).size === selected.length &&
+    stateIds.every((id) => selected.includes(id)) &&
+    attemptEntries.every(([id, count]) => selected.includes(id) && Number.isInteger(count) && count > 0) &&
+    firstAttemptEntries.every(([id, correct]) => selected.includes(id) && typeof correct === 'boolean') &&
+    attemptEntries.length === firstAttemptEntries.length &&
+    attemptEntries.every(([id]) => Object.hasOwn(firstAttempts, id))
   );
 }

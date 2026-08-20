@@ -111,9 +111,9 @@ h2 { margin: 0; font-size: 1rem; }
 #grammar { margin: 12px 0 0; color: var(--muted); font-size: .88rem; }
 .action-row, .summary-actions { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
 .action-row button { min-width: 170px; min-height: 56px; }
-.waiting { padding-block: 80px; text-align: center; }
-.waiting h1 { margin-bottom: 18px; font-family: inherit; font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 650; letter-spacing: 0; }
-.waiting p { margin-bottom: 10px; }
+.waiting { padding-block: clamp(48px, 12vh, 80px); text-align: center; }
+.waiting p { margin-bottom: 8px; }
+.waiting p:first-child { font-size: clamp(1.25rem, 5vw, 1.6rem); font-weight: 650; }
 .waiting strong { font-variant-numeric: tabular-nums; }
 .summary { padding-block: 80px; text-align: center; }
 .summary h1 { font-family: inherit; font-size: clamp(2rem, 6vw, 3rem); font-weight: 650; letter-spacing: 0; }

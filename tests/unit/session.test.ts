@@ -106,4 +106,13 @@ describe('persisted session state', () => {
     expect(isStoredSession(JSON.parse(JSON.stringify(session)), new Set(['c1']))).toBe(true);
     expect(isStoredSession({ ...session, currentCardId: 'missing' }, new Set(['c1']))).toBe(false);
   });
+
+  it('rejects incompatible or internally inconsistent persisted state', () => {
+    const session = createSession([card(1), card(2)], options, 1_000, seededRandom(1));
+    const validIds = new Set(['c1', 'c2']);
+    expect(isStoredSession({ ...session, schemaVersion: 2 }, validIds)).toBe(false);
+    expect(isStoredSession({ ...session, unseenCardQueue: [session.currentCardId, ...session.unseenCardQueue] }, validIds)).toBe(false);
+    expect(isStoredSession({ ...session, pendingRetries: [{ cardId: session.unseenCardQueue[0], dueAt: Number.NaN }] }, validIds)).toBe(false);
+    expect(isStoredSession({ ...session, attemptCountByCard: { missing: 1 }, firstAttemptCorrectByCard: { missing: true } }, validIds)).toBe(false);
+  });
 });

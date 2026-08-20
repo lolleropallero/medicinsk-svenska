@@ -50,23 +50,30 @@ test('persists an exact five-minute retry, waits, then completes after mastery',
   expect(missedState.pendingRetries).toHaveLength(1);
   expect(missedState.pendingRetries[0].dueAt).toBeGreaterThanOrEqual(beforeMiss+5*60*1000);
   expect(missedState.pendingRetries[0].dueAt).toBeLessThanOrEqual(afterMiss+5*60*1000);
-  for(let i=0;i<9;i++){
+  for(let i=0;i<2;i++){
+    await page.getByRole('button',{name:'Näytä vastaus'}).click();
+    await page.getByRole('button',{name:'En osannut'}).click();
+  }
+  for(let i=0;i<7;i++){
     await page.getByRole('button',{name:'Näytä vastaus'}).click();
     await page.getByRole('button',{name:'Osasin'}).click();
   }
-  await expect(page.getByRole('heading',{name:'Kertaus odottaa'})).toBeVisible();
-  await expect(page.locator('#retry-countdown')).toHaveText(/4:5\d|5:00/);
+  await expect(page.locator('#waiting-copy')).toHaveText('3 korttia odottaa kertausta');
+  await expect(page.getByText(/Seuraava kertaus/)).toBeVisible();
+  await expect(page.locator('#retry-countdown')).toHaveText(/04:5\d|05:00/);
   await expect(page.getByRole('heading',{name:'Harjoitus valmis'})).toBeHidden();
   await page.evaluate(()=>{
     const key='medicinsk-svenska.flashcard-session.v1';
     const state=JSON.parse(localStorage.getItem(key)!);
-    state.pendingRetries[0].dueAt=Date.now()-1;
+    state.pendingRetries.forEach((retry:{dueAt:number})=>{retry.dueAt=Date.now()-1});
     localStorage.setItem(key,JSON.stringify(state));
   });
   await page.reload();
-  await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeVisible();
-  await page.getByRole('button',{name:'Näytä vastaus'}).click();
-  await page.getByRole('button',{name:'Osasin'}).click();
+  for(let i=0;i<3;i++){
+    await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeVisible();
+    await page.getByRole('button',{name:'Näytä vastaus'}).click();
+    await page.getByRole('button',{name:'Osasin'}).click();
+  }
   await expect(page.getByRole('heading',{name:'Harjoitus valmis'})).toBeVisible();
   await expect(page.locator('#summary-copy')).toHaveText('10 / 10 osattu');
 });

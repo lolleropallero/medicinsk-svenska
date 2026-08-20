@@ -6,7 +6,7 @@ A calm, static study application for Finnish medical students practising medical
 
 V1 is designed only for medical students. It contains five decks—Anatomy, Diseases and ailments, First aid, Medicines and medication, and Departments—and Swedish descriptions of anatomy and physiology. It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
 
-Progress lives only in the current browser session and is not tied to an account.
+Flashcard progress is stored only in the current browser. It is not tied to an account, synchronized between devices, or retained as long-term learning history.
 
 ## Requirements and commands
 
@@ -37,7 +37,13 @@ npm run preview
 - `scripts/validate-content.ts` – deployment-blocking content validation
 - `tests/` – Vitest unit tests and Playwright browser/accessibility tests
 
-The PDF-derived JSON is committed and is never parsed in the browser. Active sessions are reconstructed from static content and URL parameters, with no server state.
+The PDF-derived JSON is committed and is never parsed in the browser. There is no server state.
+
+### Flashcard session persistence
+
+Starting an exercise creates a unique session URL and stores one versioned active session in `localStorage`. The stored state includes the originally selected card IDs, queues, mastery and attempt state, the session start time, and absolute retry timestamps. Reloading or backgrounding therefore does not resample cards or reset a five-minute retry countdown.
+
+Stored state is accepted only when its schema version, card references, typed values, and mutually exclusive card states are valid against the current static content. Missing, malformed, incompatible, or unrelated stored state is discarded and a session is created from the URL parameters. This persistence is intentionally limited to the active flashcard exercise; it is not spaced-repetition history.
 
 ## Content workflow
 
@@ -63,7 +69,7 @@ Record every source correction, canonical alternative choice, duplicate, phrase 
 
 ## Tests and accessibility
 
-Vitest covers directions, sides, grading transitions, summaries, missed-card retries, answer normalisation and inflections, deterministic unique lucky selection, and malformed/duplicate content. Playwright covers the core routes, both directions, keyboard use, a completed/retried session, a 50-card lucky session, description outcomes, direct static routes, a 320 px viewport, and serious/critical axe violations.
+Vitest covers directions, deterministic unique session selection, typed grading transitions, exact delayed retries, completion rules, stored-session validation, answer normalisation and inflections, and malformed/duplicate content. Playwright covers the core routes, both directions, keyboard and tap use, refresh-stable sessions, the compact delayed-retry waiting state, all session sizes and lucky mode, mobile control sizing, description outcomes, direct static routes, 320 px overflow, visual QA, and serious/critical axe violations.
 
 ## Deployment
 

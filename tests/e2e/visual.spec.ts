@@ -18,6 +18,12 @@ test('capture required visual QA views', async ({ page }) => {
   await page.screenshot({ path: 'tmp/visual/decks-mobile.png', fullPage: true });
   await page.goto('/kortit/harjoitus?deck=avdelningar&direction=sv-fi');
   await page.screenshot({ path: 'tmp/visual/flashcard-mobile.png', fullPage: true });
+  await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=fi-sv&amount=10&session=visual-waiting');
+  for (let index = 0; index < 10; index += 1) {
+    await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+    await page.getByRole('button', { name: index < 3 ? 'En osannut' : 'Osasin' }).click();
+  }
+  await page.screenshot({ path: 'tmp/visual/waiting-mobile.png', fullPage: true });
   await page.goto('/kuvailu');
   await page.screenshot({ path: 'tmp/visual/description-mobile.png', fullPage: true });
 });

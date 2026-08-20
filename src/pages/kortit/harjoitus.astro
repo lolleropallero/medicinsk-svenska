@@ -18,10 +18,8 @@ import { publishedCards, publishedDecks } from '../../lib/content';
       <div id="grade-actions" class="action-row" hidden><button class="danger" id="missed" aria-keyshortcuts="2" title="Pikanäppäin: 2">En osannut</button><button class="success" id="correct" aria-keyshortcuts="1" title="Pikanäppäin: 1">Osasin</button></div>
     </div>
     <div id="waiting-view" class="waiting" hidden aria-live="polite">
-      <h1>Kertaus odottaa</h1>
-      <p>Olet käynyt kaikki uudet kortit läpi.</p>
-      <p>Seuraava kortti tulee <strong id="retry-countdown"></strong>.</p>
-      <p>Voit jättää sivun auki tai palata myöhemmin.</p>
+      <p id="waiting-copy"></p>
+      <p>Seuraava kertaus <strong id="retry-countdown"></strong></p>
     </div>
     <div id="summary-view" class="summary" hidden aria-live="polite">
       <h1>Harjoitus valmis</h1>

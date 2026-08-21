@@ -265,6 +265,7 @@ test('completion summary and Uusi kierros create fresh retained state',async({pa
   await page.addInitScript(()=>{let value=0;Math.random=()=>{value=(value+0.137)%1;return value;}});
   const start=new Date('2026-03-01T09:00:00.000Z');
   await page.clock.install({time:start});
+  await page.clock.pauseAt(start);
   await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=sv-fi&amount=10&session=summary-round');
   await page.getByRole('button',{name:'Näytä vastaus'}).click();
   await page.getByRole('button',{name:'En osannut'}).click();
@@ -282,6 +283,7 @@ test('completion summary and Uusi kierros create fresh retained state',async({pa
   await expect(page.locator('#summary-missed')).toHaveText('1');
   await expect(page.locator('#summary-time')).toHaveText('05:00');
   await expect(page.getByText(/osattu|prosent/i)).toHaveCount(0);
+  await page.clock.resume();
   expect((await new AxeBuilder({page}).analyze()).violations.filter(v=>['serious','critical'].includes(v.impact??''))).toEqual([]);
 
   const oldState=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));

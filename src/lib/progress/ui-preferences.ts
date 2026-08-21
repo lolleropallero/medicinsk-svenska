@@ -43,7 +43,7 @@ export function loadUiPreferences(storage: Pick<Storage, 'getItem'> = localStora
   return parseUiPreferences(storage.getItem(UI_PREFERENCES_KEY));
 }
 
-export function dismissDailyOverlay(
+export function markDailyOverlayHandled(
   storage: Pick<Storage, 'setItem'> = localStorage,
   date = new Date(),
 ): UiPreferencesV1 {
@@ -53,6 +53,13 @@ export function dismissDailyOverlay(
   };
   storage.setItem(UI_PREFERENCES_KEY, JSON.stringify(preferences));
   return preferences;
+}
+
+export function dismissDailyOverlay(
+  storage: Pick<Storage, 'setItem'> = localStorage,
+  date = new Date(),
+): UiPreferencesV1 {
+  return markDailyOverlayHandled(storage, date);
 }
 
 export function shouldAutoOpenDailyOverlay(input: DailyOverlayEligibility): boolean {

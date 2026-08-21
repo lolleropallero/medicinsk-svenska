@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   defaultUiPreferences,
   dismissDailyOverlay,
+  markDailyOverlayHandled,
   parseUiPreferences,
   shouldAutoOpenDailyOverlay,
   UI_PREFERENCES_KEY,
@@ -32,6 +33,14 @@ describe('daily overlay UI preferences', () => {
     dismissDailyOverlay(storage, new Date(2026, 7, 21, 9));
     expect(JSON.parse(storage.getItem(UI_PREFERENCES_KEY)!)).toEqual({ schemaVersion: 1, dailyOverlayDismissedDay: '2026-08-21' });
     expect(storage.getItem('medicinsk-svenska.progress.v1')).toBe('{"economy":"unchanged"}');
+  });
+
+  it('marks quest activation handled for today and permits automatic opening tomorrow', () => {
+    const storage = new MemoryStorage();
+    const preferences = markDailyOverlayHandled(storage, new Date(2026, 7, 21, 9));
+    expect(preferences).toEqual({ schemaVersion: 1, dailyOverlayDismissedDay: '2026-08-21' });
+    expect(eligible({ preferences })).toBe(false);
+    expect(eligible({ localDay: '2026-08-22', preferences })).toBe(true);
   });
 
   it('opens once on an eligible day and becomes eligible on the next local day', () => {

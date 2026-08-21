@@ -206,8 +206,9 @@ export function openCapsule(input:ProgressStateV1,id:string,now=Date.now(),roll=
   if(state.loot.sinceLegendary>=39)minimum='legendary';else if(state.loot.sinceEpic>=11&&rarityRank[minimum]<2)minimum='epic';else if(state.loot.sinceRare>=3&&rarityRank[minimum]<1)minimum='rare';
   if(rarityRank[rarity]<rarityRank[minimum])rarity=minimum;
   const category=roll();let reward:Reward;
-  if(category<.75){const available=EARNABLE_COSMETICS.filter(item=>!state.inventory.ownedCosmeticIds.includes(item.id)&&rarityRank[item.rarity]>=rarityRank[rarity]).sort((a,b)=>rarityRank[a.rarity]-rarityRank[b.rarity]);
-    reward=available.length?{type:'cosmetic',cosmeticId:available[Math.floor(roll()*available.length)]!.id}:{type:'credits',amount:[10,30,80,250][rarityRank[rarity]]!};}
+  if(category<.75){const unowned=EARNABLE_COSMETICS.filter(item=>!state.inventory.ownedCosmeticIds.includes(item.id));
+    const exact=unowned.filter(item=>item.rarity===rarity),higher=unowned.filter(item=>rarityRank[item.rarity]>rarityRank[rarity]).sort((a,b)=>rarityRank[a.rarity]-rarityRank[b.rarity]);
+    const available=exact.length?exact:higher;reward=available.length?{type:'cosmetic',cosmeticId:available[Math.floor(roll()*available.length)]!.id}:{type:'credits',amount:[10,30,80,250][rarityRank[rarity]]!};}
   else if(category<.9)reward={type:'credits',amount:[10,30,80,250][rarityRank[rarity]]!};
   else reward=roll()<.5?{type:'rerollToken',amount:1}:{type:'streakFreeze',amount:1};
   applyReward(state,reward,`open:${id}`,now);capsule.openedAt=now;capsule.rarity=rarity;capsule.reward=reward;

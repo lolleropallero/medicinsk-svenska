@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deckPayload, descriptionCategoryPayload, descriptionPayload, flashcardPayload } from '../../src/lib/content';
+import { deckPayload, descriptionCategoryPayload, descriptionPayload, flashcardPayload, phraseCategoryPayload, phrasePayload } from '../../src/lib/content';
 
 const keys = (value: object) => Object.keys(value).sort();
 
@@ -24,5 +24,12 @@ describe('explicit client payload projections', () => {
   it('allows only deck application fields', () => {
     expect(deckPayload).toHaveLength(7);
     expect(deckPayload.every((deck) => keys(deck).every((key) => ['id', 'nameFi'].includes(key)))).toBe(true);
+  });
+
+  it('allows only phrase application fields', () => {
+    expect(phrasePayload).toHaveLength(73);
+    expect(phrasePayload.every((item) => keys(item).every((key) => ['id', 'categoryId', 'fi', 'sv'].includes(key)))).toBe(true);
+    expect(phraseCategoryPayload).toHaveLength(3);
+    expect(phraseCategoryPayload.every((item) => keys(item).every((key) => ['id', 'nameFi'].includes(key)))).toBe(true);
   });
 });

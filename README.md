@@ -1,10 +1,10 @@
 # Medicinsk svenska
 
-A calm, static study application for Finnish medical students practising medical Swedish. It offers bidirectional flashcards and a Swedish-only anatomical description exercise. The learner-facing app has no backend, accounts, analytics, advertising, external runtime APIs, or cloud progress.
+A calm, static study application for Finnish medical students practising medical Swedish. It offers bidirectional flashcards, Finnish-to-Swedish clinical phrase recall, and a Swedish-only anatomical description exercise. The learner-facing app has no backend, accounts, analytics, advertising, external runtime APIs, or cloud progress.
 
 ## Scope
 
-V1 is designed only for medical students. It contains seven decks: Anatomia (130 cards), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (27), and Tutkimukset ja hoito (50). The 455 flashcards are accompanied by 51 Swedish descriptions of anatomy and physiology. It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
+V1 is designed only for medical students. It contains seven decks: Anatomia (130 cards), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (27), and Tutkimukset ja hoito (50). The 455 flashcards are accompanied by 73 clinical phrases in three categories and 51 Swedish descriptions of anatomy and physiology. It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
 
 Flashcard progress is stored only in the current browser. It is not tied to an account, synchronized between devices, or retained as long-term learning history.
 
@@ -28,7 +28,7 @@ npm run preview
 
 ## Architecture
 
-- `src/pages/` – static Astro routes (`/`, `/kortit`, `/kortit/harjoitus`, `/kuvailu`, `/kuvailu/harjoitus`)
+- `src/pages/` – static Astro routes (`/`, `/kortit`, `/kortit/harjoitus`, `/fraasit`, `/fraasit/harjoitus`, `/kuvailu`, `/kuvailu/harjoitus`)
 - `src/lib/` – framework-free, independently tested session and answer logic
 - `src/scripts/` – minimal browser TypeScript for active exercises
 - `src/styles/` – repository-owned responsive CSS; no runtime font or asset request
@@ -55,6 +55,12 @@ Answer matching is deterministic: it accepts the canonical Swedish answer, expli
 
 Description URLs validate mode, category, amount, round, and session identifier against local state and current category membership. Invalid initial configurations and unrestorable retry links fail closed. Randomness and time are injectable or controllable in tests.
 
+### Clinical phrase sessions
+
+`Vastaanottofraasit` provides Taustatiedot, Oireet ja vointi, and Hoito ja lääkitys categories plus all-phrase practice. Sessions select 10, 25, or all unique phrases. The Finnish cue is recalled actively in Swedish, revealed by tapping the complete card, and self-assessed with `En osannut` or `Osasin`; there is no automatic language scoring.
+
+The typed phrase session persists its exact shuffled selection, current item, reveal and mastery state, attempts, absolute start time, and absolute five-minute retry times under its own browser-storage key. The waiting countdown resumes automatically when a missed phrase is due. A new round retains category and amount while creating a new identifier, timestamp, selection, and empty learning state. Phrase URLs and restored category membership are validated independently of flashcards and descriptions. The shared duration formatter, shuffle seam, controlled clocks, and single retry-delay constant keep timing deterministic in tests.
+
 ## Content workflow
 
 ### Add a deck
@@ -75,9 +81,13 @@ Flashcards are curated for physician-relevant study. Every Finnish and Swedish s
 
 Add a Swedish object to `content/descriptions.json` and assign exactly one published `categoryId` from `content/description-categories.json`. The prompt and canonical answer must be Swedish. `acceptedInflections` may contain only grammatical forms of that same answer, never synonyms. Keep descriptions concise, natural, medically correct, and unambiguous. Category records contain only a stable ID, Finnish name, and publication status; keep every published category non-empty.
 
+### Add a clinical phrase
+
+Add one complete natural Finnish cue and one canonical Swedish phrase to `content/phrases.json`, assigned to a published category from `content/phrase-categories.json`. Full phrases are maintained separately from one-word flashcards. Do not add alternatives, placeholders, incomplete fragments, explanations, or duplicate normalized cues. Keep every phrase category non-empty and run content validation before committing.
+
 ## Tests and accessibility
 
-Vitest covers directions, duration formatting, deterministic unique session and new-round selection, summary statistics, typed transitions, URL matching, strict deck- and category-aware stored-session validation, answer normalisation, articles and inflections, and malformed content. Playwright uses controlled clocks and randomness for elapsed timing and stable selections, and covers full-row activation, focus transitions, refresh-stable sessions and drafts, description retries, new rounds, invalid URLs, all session sizes, mobile control sizing, responsive overflow, visual QA, and serious/critical axe violations.
+Vitest covers directions, duration formatting, deterministic unique session and new-round selection, delayed phrase recall, summary statistics, typed transitions, URL matching, strict deck- and category-aware stored-session validation, answer normalisation, articles and inflections, and malformed content. Playwright uses controlled clocks and randomness for elapsed timing and stable selections, and covers full-row activation, focus transitions, refresh-stable sessions and drafts, retries, new rounds, invalid URLs, all session sizes, mobile control sizing, responsive overflow, visual QA, and serious/critical axe violations.
 
 ## Deployment
 

@@ -19,6 +19,7 @@ const path = Astro.url.pathname;
       <a class="brand" href="/">Medicinsk svenska</a>
       <nav aria-label="Päänavigaatio">
         <a href="/kortit" aria-current={path.startsWith('/kortit') ? 'page' : undefined}>Sanakortit</a>
+        <a href="/fraasit" aria-current={path.startsWith('/fraasit') ? 'page' : undefined}>Fraasit</a>
         <a href="/kuvailu" aria-current={path.startsWith('/kuvailu') ? 'page' : undefined}>Kuvailutehtävät</a>
       </nav>
     </header>

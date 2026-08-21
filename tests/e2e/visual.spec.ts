@@ -11,6 +11,26 @@ async function seedSingleDescription(page: import('@playwright/test').Page, sess
   await page.reload();
 }
 
+async function seedPhraseView(
+  page: import('@playwright/test').Page,
+  sessionId: string,
+  state: 'unrevealed' | 'revealed' | 'waiting' | 'complete',
+) {
+  const phraseId = 'fraasi-oireet-vointi-gora-ont';
+  await page.goto(`/fraasit/harjoitus?mode=category&category=oireet-vointi&amount=10&session=${sessionId}`);
+  await page.evaluate(({ id, phraseId, state }) => localStorage.setItem('medicinsk-svenska.phrase-session.v1', JSON.stringify({
+    schemaVersion: 1, sessionId: id, mode: 'category', sourceCategoryId: 'oireet-vointi', requestedAmount: 10,
+    selectedPhraseIds: [phraseId], unseenPhraseQueue: [],
+    currentPhraseId: state === 'unrevealed' || state === 'revealed' ? phraseId : null,
+    revealed: state === 'revealed', masteredPhraseIds: state === 'complete' ? [phraseId] : [],
+    pendingRetries: state === 'waiting' ? [{ phraseId, dueAt: Date.now() + 300_000 }] : [],
+    attemptCountByPhrase: state === 'waiting' || state === 'complete' ? { [phraseId]: 1 } : {},
+    firstAttemptCorrectByPhrase: state === 'waiting' ? { [phraseId]: false } : state === 'complete' ? { [phraseId]: true } : {},
+    totalMissedCount: state === 'waiting' ? 1 : 0, startedAt: Date.now() - 65_000,
+  })), { id: sessionId, phraseId, state });
+  await page.reload();
+}
+
 test('capture required visual QA views', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
@@ -53,6 +73,16 @@ test('capture required visual QA views', async ({ page }) => {
   await page.screenshot({ path: 'tmp/visual/description-new-round-desktop.png', fullPage: true });
   await page.goto('/kuvailu/harjoitus?mode=category&category=missing&amount=10&session=visual-description-invalid');
   await page.screenshot({ path: 'tmp/visual/description-invalid-desktop.png', fullPage: true });
+  await page.goto('/fraasit');
+  await page.screenshot({ path: 'tmp/visual/phrases-setup-desktop.png', fullPage: true });
+  await seedPhraseView(page, 'visual-phrase-question', 'unrevealed');
+  await page.screenshot({ path: 'tmp/visual/phrase-question-desktop.png', fullPage: true });
+  await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await page.screenshot({ path: 'tmp/visual/phrase-revealed-desktop.png', fullPage: true });
+  await seedPhraseView(page, 'visual-phrase-summary', 'complete');
+  await page.screenshot({ path: 'tmp/visual/phrase-summary-desktop.png', fullPage: true });
+  await page.goto('/fraasit/harjoitus?mode=category&category=missing&amount=10&session=visual-phrase-invalid');
+  await page.screenshot({ path: 'tmp/visual/phrase-invalid-desktop.png', fullPage: true });
   await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=fi-sv&amount=10&session=visual-summary');
   for (let index = 0; index < 10; index += 1) {
     await page.getByRole('button', { name: 'Näytä vastaus' }).click();
@@ -74,6 +104,8 @@ test('capture required visual QA views', async ({ page }) => {
   await page.screenshot({ path: 'tmp/visual/description-feedback-mobile.png', fullPage: true });
   await page.goto('/kortit/harjoitus?mode=deck&deck=missing&direction=fi-sv&amount=10&session=visual-invalid-mobile');
   await page.screenshot({ path: 'tmp/visual/invalid-mobile.png', fullPage: true });
+  await seedPhraseView(page, 'visual-phrase-waiting', 'waiting');
+  await page.screenshot({ path: 'tmp/visual/phrase-waiting-mobile.png', fullPage: true });
 
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto('/');
@@ -90,8 +122,12 @@ test('capture required visual QA views', async ({ page }) => {
   await page.screenshot({ path: 'tmp/visual/waiting-mobile.png', fullPage: true });
   await page.goto('/kuvailu');
   await page.screenshot({ path: 'tmp/visual/description-mobile.png', fullPage: true });
+  await page.goto('/fraasit');
+  await page.screenshot({ path: 'tmp/visual/phrases-setup-mobile.png', fullPage: true });
 
   await page.setViewportSize({ width: 844, height: 390 });
   await seedSingleDescription(page, 'visual-description-landscape');
   await page.screenshot({ path: 'tmp/visual/description-landscape.png', fullPage: true });
+  await seedPhraseView(page, 'visual-phrase-landscape', 'revealed');
+  await page.screenshot({ path: 'tmp/visual/phrase-landscape.png', fullPage: true });
 });

@@ -80,6 +80,7 @@ h2 { margin: 0; font-size: 1rem; }
 .amount-selector { padding: 0; margin: 0 0 24px; border: 0; }
 .amount-selector legend { margin-bottom: 8px; font-size: .9rem; font-weight: 650; }
 .segments { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 430px; }
+.segments-three { grid-template-columns: repeat(3, 1fr); }
 .segments label { position: relative; cursor: pointer; }
 .segments input { position: absolute; opacity: 0; pointer-events: none; }
 .segments span { display: flex; min-height: 48px; align-items: center; justify-content: center; padding: 8px 12px; border: 1px solid var(--border); border-right: 0; background: var(--surface); pointer-events: none; }
@@ -113,6 +114,7 @@ h2 { margin: 0; font-size: 1rem; }
 .flashcard { display: flex; width: 100%; flex-direction: column; justify-content: center; min-height: 390px; padding: clamp(28px, 7vw, 56px); border: 1px solid var(--border); border-radius: 0; background: var(--surface); color: var(--text); text-align: center; cursor: pointer; }
 .flashcard:not(:disabled):hover { border-color: var(--accent); }
 .flashcard:disabled { cursor: default; opacity: 1; }
+.phrase-card .term { font-size: clamp(1.65rem, 5.5vw, 3.3rem); line-height: 1.25; }
 #answer-area { display: flex; flex-direction: column; align-items: center; }
 .term { max-width: 100%; font-family: Georgia, serif; font-size: clamp(2.4rem, 8vw, 4.6rem); line-height: 1.08; overflow-wrap: anywhere; hyphens: auto; }
 .term.answer { color: var(--accent-dark); font-size: clamp(2rem, 6vw, 3.6rem); }
@@ -146,8 +148,8 @@ h2 { margin: 0; font-size: 1rem; }
 .incorrect-text { color: var(--danger); font-weight: 700; }
 
 @media (max-width: 560px) {
-  .site-header { align-items: flex-start; gap: 12px; }
-  .site-header nav { flex-direction: column; align-items: flex-end; gap: 0; }
+  .site-header { align-items: flex-start; gap: 10px; }
+  .site-header nav { flex-wrap: wrap; justify-content: flex-end; gap: 0 12px; }
   .site-header nav a { padding: 3px 0; border: 0; }
   .site-header nav a[aria-current="page"] { text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 4px; }
   .home { min-height: calc(100vh - 78px); padding-block: 60px; }
@@ -167,6 +169,7 @@ h2 { margin: 0; font-size: 1rem; }
   .flashcard { min-height: 320px; }
   .term { font-size: clamp(1.35rem, 6.5vw, 1.8rem); }
   .term.answer { font-size: clamp(1.35rem, 6vw, 1.75rem); }
+  .phrase-card .term { font-size: clamp(1.25rem, 6vw, 1.7rem); }
   .action-row { position: sticky; bottom: 0; display: grid; grid-template-columns: 1fr 1fr; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); margin-top: 8px; background: var(--background); }
   .summary-actions { flex-direction: column; }
   .action-row button, .summary-actions > * { width: 100%; min-width: 0; }

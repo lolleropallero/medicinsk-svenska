@@ -42,6 +42,10 @@ test('selects session size and supports tap and keyboard grading in both directi
 
   await page.goto('/kortit'); await page.getByLabel('Ruotsi → suomi').check();
   await page.locator('.deck-row').filter({hasText:'Anatomia'}).click();
+  await expect.poll(()=>page.evaluate(()=>{
+    const stored=localStorage.getItem('medicinsk-svenska.flashcard-session.v1');
+    return stored?JSON.parse(stored).direction:null;
+  })).toBe('sv-fi');
   const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
   expect(state.direction).toBe('sv-fi');
   await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeFocused();

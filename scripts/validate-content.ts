@@ -12,6 +12,13 @@ const cardKeys = new Set(['id', 'deckId', 'fi', 'sv', 'article', 'partOfSpeech',
 const descriptionKeys = new Set([
   'id', 'categoryId', 'descriptionSv', 'answerSv', 'acceptedInflections', 'article', 'inflection', 'status',
 ]);
+const phraseCategoryKeys = new Set(['id', 'nameFi', 'status']);
+const phraseKeys = new Set(['id', 'categoryId', 'fi', 'sv', 'status']);
+const requiredPhraseCategories = new Map([
+  ['taustatiedot', 'Taustatiedot'],
+  ['oireet-vointi', 'Oireet ja vointi'],
+  ['hoito-laakitys', 'Hoito ja lääkitys'],
+]);
 const answerAlternativePattern = /[\/;\n]|\s+(?:eller|tai)\s+/iu;
 const requiredExpansionDecks = new Map([
   ['vastaanotto-anamneesi', 'Vastaanotto ja anamneesi'],
@@ -211,11 +218,97 @@ export function validateContent(
   return errors;
 }
 
+function normalizePhrase(value: string, locale: 'fi' | 'sv'): string {
+  return normalizeCanonical(value, locale).replace(/[\p{P}\p{S}]+/gu, ' ').replace(/\s+/gu, ' ').trim();
+}
+
+export function validatePhraseContent(categoriesInput: unknown[], phrasesInput: unknown[]): string[] {
+  const errors: string[] = [];
+  const check = (condition: unknown, message: string) => { if (!condition) errors.push(message); };
+  const categoryIds = new Set<string>();
+  const publishedCategoryIds = new Set<string>();
+  const categoryCounts = new Map<string, number>();
+
+  for (const raw of categoriesInput) {
+    if (!isRecord(raw)) { errors.push('phrase category must be an object'); continue; }
+    const id = text(raw.id);
+    const status = text(raw.status);
+    const extra = unknownKeys(raw, phraseCategoryKeys);
+    check(extra.length === 0, `unknown phrase category properties on ${id || '(missing ID)'}: ${extra.join(', ')}`);
+    check(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id), `invalid phrase category ID: ${id || '(missing ID)'}`);
+    check(!categoryIds.has(id), `duplicate phrase category ID: ${id}`);
+    if (id) categoryIds.add(id);
+    check(text(raw.nameFi).trim().length > 0, `phrase category missing name: ${id}`);
+    check(publicationStatuses.has(status), `invalid phrase category publication status: ${id}`);
+    if (status === 'published') publishedCategoryIds.add(id);
+  }
+
+  const ids = new Set<string>();
+  const finnish = new Set<string>();
+  const swedish = new Set<string>();
+  const pairs = new Set<string>();
+  let publishedCount = 0;
+  const invalidPattern = /[\/;\n\r]|\.{3}|…|\bX\b/iu;
+
+  for (const raw of phrasesInput) {
+    if (!isRecord(raw)) { errors.push('clinical phrase must be an object'); continue; }
+    const id = text(raw.id);
+    const categoryId = text(raw.categoryId);
+    const fi = text(raw.fi);
+    const sv = text(raw.sv);
+    const status = text(raw.status);
+    const extra = unknownKeys(raw, phraseKeys);
+    check(extra.length === 0, `unknown phrase properties on ${id || '(missing ID)'}: ${extra.join(', ')}`);
+    check(id.trim().length > 0, 'phrase missing ID');
+    check(/^fraasi-(?:taustatiedot|oireet-vointi|hoito-laakitys)-[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id), `invalid semantic phrase ID: ${id || '(missing ID)'}`);
+    check(id.startsWith(`fraasi-${categoryId}-`), `phrase ID does not match category on ${id}`);
+    check(!ids.has(id), `duplicate phrase ID: ${id}`);
+    if (id) ids.add(id);
+    check(categoryIds.has(categoryId), `unknown phrase category on ${id}: ${categoryId}`);
+    check(publicationStatuses.has(status), `invalid phrase publication status: ${id}`);
+    for (const [label, value] of [['Finnish', fi], ['Swedish', sv]] as const) {
+      check(value.length > 0, `empty ${label} phrase on ${id}`);
+      check(value === value.trim(), `leading or trailing whitespace in ${label} phrase on ${id}`);
+      check(!/\s{2,}/u.test(value), `repeated whitespace in ${label} phrase on ${id}`);
+      check(!invalidPattern.test(value), `alternative, placeholder, or fragment in ${label} phrase on ${id}`);
+      check(value.length <= 180, `${label} phrase is too long on ${id}`);
+    }
+    if (status === 'published') {
+      publishedCount += 1;
+      check(publishedCategoryIds.has(categoryId), `published phrase uses unpublished category on ${id}: ${categoryId}`);
+      categoryCounts.set(categoryId, (categoryCounts.get(categoryId) ?? 0) + 1);
+      const normalizedFi = normalizePhrase(fi, 'fi');
+      const normalizedSv = normalizePhrase(sv, 'sv');
+      const pair = `${normalizedFi}\0${normalizedSv}`;
+      check(!finnish.has(normalizedFi), `duplicate normalized Finnish phrase: ${fi}`);
+      check(!swedish.has(normalizedSv), `duplicate normalized Swedish phrase: ${sv}`);
+      check(!pairs.has(pair), `duplicate normalized phrase pair: ${id}`);
+      finnish.add(normalizedFi);
+      swedish.add(normalizedSv);
+      pairs.add(pair);
+    }
+  }
+
+  check(categoriesInput.length === 3, 'exactly three phrase categories must exist');
+  for (const [id, nameFi] of requiredPhraseCategories) {
+    const matches = categoriesInput.filter((raw) => isRecord(raw) && raw.id === id && raw.nameFi === nameFi && raw.status === 'published');
+    check(matches.length === 1, `required published phrase category missing or duplicated: ${id}`);
+    check((categoryCounts.get(id) ?? 0) > 0, `published phrase category is empty: ${id}`);
+  }
+  check(publishedCount >= 30, 'fewer than 30 published clinical phrases');
+  return errors;
+}
+
 const decks = read('decks.json');
 const cards = read('flashcards.json');
 const descriptions = read('descriptions.json');
 const descriptionCategories = read('description-categories.json');
-const errors = validateContent(decks, cards, descriptions, descriptionCategories);
+const phraseCategories = read('phrase-categories.json');
+const phrases = read('phrases.json');
+const errors = [
+  ...validateContent(decks, cards, descriptions, descriptionCategories),
+  ...validatePhraseContent(phraseCategories, phrases),
+];
 const publishedDecks = decks.filter((deck) => isRecord(deck) && deck.status === 'published');
 if (publishedDecks.length !== 7) {
   errors.push('exactly seven decks must be published');
@@ -243,6 +336,8 @@ if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));
   process.exit(1);
 }
+if (cards.length !== 455) errors.push('flashcards must remain exactly 455');
+if (descriptions.length !== 51) errors.push('descriptions must remain exactly 51');
 const expectedDescriptionCounts = [8, 7, 7, 8, 6, 7, 8];
 const actualDescriptionCounts = descriptionCategories
   .filter((category) => isRecord(category) && category.status === 'published')
@@ -260,4 +355,8 @@ if (
   console.error(`- description category counts must be ${expectedDescriptionCounts.join(', ')}`);
   process.exit(1);
 }
-console.log(`Content valid: ${decks.length} decks, ${cards.length} cards, ${descriptions.length} descriptions in ${descriptionCategories.length} categories.`);
+if (errors.length) {
+  console.error(errors.map((error) => `- ${error}`).join('\n'));
+  process.exit(1);
+}
+console.log(`Content valid: ${decks.length} decks, ${cards.length} cards, ${descriptions.length} descriptions, ${phrases.length} phrases.`);

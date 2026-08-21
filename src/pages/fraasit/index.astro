@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { phraseCategoryPayload, publishedPhrases } from '../../lib/content';
+const counts = Object.fromEntries(phraseCategoryPayload.map((category) => [
+  category.id, publishedPhrases.filter((phrase) => phrase.categoryId === category.id).length,
+]));
+---
+<BaseLayout title="Vastaanottofraasit">
+  <section class="page wrap phrase-setup" aria-labelledby="page-title">
+    <h1 id="page-title">Vastaanottofraasit</h1>
+    <fieldset class="amount-selector">
+      <legend>Fraasien määrä</legend>
+      <div class="segments segments-three">
+        <label><input type="radio" name="phrase-amount" value="10" checked /><span>10</span></label>
+        <label><input type="radio" name="phrase-amount" value="25" /><span>25</span></label>
+        <label><input type="radio" name="phrase-amount" value="all" /><span>Kaikki</span></label>
+      </div>
+    </fieldset>
+    <a class="all-topics" data-phrase-start data-mode="all" href="/fraasit/harjoitus?mode=all&amount=10">
+      <strong>Kaikki fraasit</strong><span>{publishedPhrases.length} fraasia</span>
+    </a>
+    <div class="category-list">
+      {phraseCategoryPayload.map((category) => (
+        <a class="category-row" data-phrase-start data-mode="category" data-category={category.id}
+          href={`/fraasit/harjoitus?mode=category&category=${category.id}&amount=10`}>
+          <h2>{category.nameFi}</h2>
+          <span class="category-count">{counts[category.id]} fraasia</span>
+          <span class="category-start">Aloita</span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <script src="../../scripts/phrase-setup.ts"></script>
+</BaseLayout>

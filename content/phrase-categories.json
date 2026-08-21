@@ -1,0 +1,5 @@
+[
+  { "id": "taustatiedot", "nameFi": "Taustatiedot", "status": "published" },
+  { "id": "oireet-vointi", "nameFi": "Oireet ja vointi", "status": "published" },
+  { "id": "hoito-laakitys", "nameFi": "Hoito ja lääkitys", "status": "published" }
+]

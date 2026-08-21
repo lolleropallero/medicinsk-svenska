@@ -63,6 +63,10 @@ test('all-topics sizes are unique and short categories use the complete pool', a
     await page.goto('/kuvailu');
     await page.getByRole('group', { name: 'Tehtävien määrä' }).locator('label').filter({ hasText: label }).click();
     await page.getByRole('link', { name: /Kaikki aiheet/ }).click();
+    await expect.poll(() => page.evaluate((key) => {
+      const value = localStorage.getItem(key);
+      return value ? JSON.parse(value).selectedExerciseIds.length : 0;
+    }, STORAGE_KEY)).toBe(expected);
     const ids = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).selectedExerciseIds as string[], STORAGE_KEY);
     expect(ids).toHaveLength(expected);
     expect(new Set(ids).size).toBe(expected);

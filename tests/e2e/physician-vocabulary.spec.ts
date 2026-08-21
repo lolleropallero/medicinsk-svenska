@@ -63,6 +63,10 @@ test('lucky mode includes the expanded global pool and new IDs persist across re
   await page.getByRole('group', { name: 'Korttien määrä' }).locator('label').filter({ hasText: 'Kaikki' }).click();
   await expect(page.getByRole('link', { name: /Kokeilen onneani/ })).toContainText('Kaikki kortit');
   await page.getByRole('link', { name: /Kokeilen onneani/ }).click();
+  await expect.poll(() => page.evaluate((key) => {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value).selectedCardIds.length : 0;
+  }, STORAGE_KEY)).toBe(455);
   const before = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
   expect(before.selectedCardIds).toHaveLength(455);
   expect(new Set(before.selectedCardIds).size).toBe(455);

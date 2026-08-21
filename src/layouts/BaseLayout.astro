@@ -11,6 +11,13 @@ const path = Astro.url.pathname;
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f5f2ec" />
+    <script is:inline>
+      try {
+        const value = JSON.parse(localStorage.getItem('medicinsk-svenska.progress.v1') || 'null');
+        if (value?.inventory?.equipped?.theme) document.documentElement.dataset.theme = value.inventory.equipped.theme;
+        if (typeof value?.settings?.calmMode === 'boolean') document.documentElement.dataset.calm = String(value.settings.calmMode);
+      } catch {}
+    </script>
     <title>{title} · Medicinsk svenska</title>
   </head>
   <body>
@@ -21,8 +28,11 @@ const path = Astro.url.pathname;
         <a href="/kortit" aria-current={path.startsWith('/kortit') ? 'page' : undefined}>Sanakortit</a>
         <a href="/fraasit" aria-current={path.startsWith('/fraasit') ? 'page' : undefined}>Fraasit</a>
         <a href="/kuvailu" aria-current={path.startsWith('/kuvailu') ? 'page' : undefined}>Kuvailutehtävät</a>
+        <a href="/edistyminen" aria-current={path.startsWith('/edistyminen') ? 'page' : undefined}>Edistyminen</a>
       </nav>
     </header>
     <main id="sisalto"><slot /></main>
+    <div id="reward-notifications" class="notifications" aria-live="polite"></div>
+    <script src="../scripts/progress-shell.ts"></script>
   </body>
 </html>

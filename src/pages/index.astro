@@ -2,12 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="Etusivu">
-  <section class="home wrap">
+  <section class="home wrap-wide">
     <h1>Harjoittele lääketieteellistä ruotsia</h1>
-    <div class="home-actions">
-      <a class="button primary" href="/kortit">Sanakortit</a>
-      <a class="button secondary" href="/fraasit">Fraasit</a>
-      <a class="button secondary" href="/kuvailu">Kuvailutehtävät</a>
+    <div class="home-layout">
+      <div class="home-actions">
+        <a class="button primary" href="/kortit">Sanakortit</a>
+        <a class="button secondary" href="/fraasit">Fraasit</a>
+        <a class="button secondary" href="/kuvailu">Kuvailutehtävät</a>
+      </div>
+      <aside id="today-panel" class="today-panel" aria-label="Tämän päivän edistyminen"></aside>
     </div>
   </section>
+  <script src="../scripts/progress-ui.ts"></script>
 </BaseLayout>

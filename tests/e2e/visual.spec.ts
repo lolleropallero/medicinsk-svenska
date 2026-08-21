@@ -35,6 +35,25 @@ test('capture required visual QA views', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
   await page.screenshot({ path: 'tmp/visual/landing-desktop.png', fullPage: true });
+  await page.goto('/edistyminen/');
+  await page.screenshot({ path: 'tmp/visual/progress-desktop.png', fullPage: true });
+  await page.goto('/palkinnot/');
+  await page.locator('.inventory-head').waitFor();
+  await page.evaluate(() => {
+    const key='medicinsk-svenska.progress.v1',state=JSON.parse(localStorage.getItem(key)!);
+    state.inventory.credits=420;state.inventory.capsules.push({id:'visual-capsule',kind:'golden',earnedAt:Date.now()});
+    localStorage.setItem(key,JSON.stringify(state));
+  });
+  await page.reload();
+  await page.screenshot({ path: 'tmp/visual/rewards-collection-shop-desktop.png', fullPage: true });
+  await page.getByRole('button',{name:/Kultainen palkintokapseli Avaa/}).click();
+  await page.screenshot({ path: 'tmp/visual/capsule-revealed-desktop.png', fullPage: true });
+  await page.getByRole('button',{name:'Sulje'}).click();
+  await page.goto('/kausi/');
+  await page.screenshot({ path: 'tmp/visual/season-league-desktop.png', fullPage: true });
+  await page.goto('/edistyminen/');
+  await page.locator('#calm-mode').check();
+  await page.screenshot({ path: 'tmp/visual/calm-mode-desktop.png', fullPage: true });
   await page.goto('/kortit');
   await page.screenshot({ path: 'tmp/visual/decks-desktop.png', fullPage: true });
   await openSpecificCard(page, { id: 'anatomi-024', deckId: 'anatomi' }, 'fi-sv');
@@ -110,6 +129,10 @@ test('capture required visual QA views', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto('/');
   await page.screenshot({ path: 'tmp/visual/landing-mobile.png', fullPage: true });
+  await page.goto('/edistyminen/');
+  await page.screenshot({ path: 'tmp/visual/progress-mobile-320.png', fullPage: true });
+  await page.goto('/kausi/');
+  await page.screenshot({ path: 'tmp/visual/season-mobile-320.png', fullPage: true });
   await page.goto('/kortit');
   await page.screenshot({ path: 'tmp/visual/decks-mobile.png', fullPage: true });
   await openSpecificCard(page, { id: 'sjukdomar-091', deckId: 'sjukdomar' }, 'sv-fi');

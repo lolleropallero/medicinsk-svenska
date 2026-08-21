@@ -16,6 +16,9 @@ import { buildSessionUrl, parseSessionRequest } from '../lib/session-url';
 import { formatDuration } from '../lib/time';
 import { partOfSpeechLabel } from '../lib/grammar';
 import type { DeckClient, FlashcardClient } from '../types/content';
+import { dispatchProgress } from '../lib/progress/storage';
+import { startActiveTime } from '../lib/progress/active-time';
+import { showSessionRewards } from '../lib/progress/session-summary';
 
 const STORAGE_KEY = 'medicinsk-svenska.flashcard-session.v1';
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -85,6 +88,9 @@ function startApp() {
   }
 
   let session = readStoredSession() ?? createSession(sourceCards, configuration);
+  const sourceId = session.mode === 'lucky' ? 'lucky' : session.sourceDeckId!;
+  dispatchProgress({ type:'session-started', eventId:`flashcards:${session.sessionId}:started`, sessionId:session.sessionId,
+    mode:'flashcards', sourceId, selectedCount:session.selectedCardIds.length, occurredAt:session.startedAt });
   let gradingLocked = false;
   let retryTimer: number | undefined;
 
@@ -149,6 +155,9 @@ function startApp() {
       waitingView.hidden = true;
       summaryView.hidden = false;
       const summary = summarizeSession(session);
+      dispatchProgress({ type:'session-completed', eventId:`flashcards:${session.sessionId}:completed`, sessionId:session.sessionId,
+        mode:'flashcards', sourceId, selectedCount:session.selectedCardIds.length, occurredAt:now });
+      showSessionRewards('flashcard-rewards',session.sessionId);
       byId('summary-first').textContent = `${summary.firstAttemptCorrect} / ${summary.selectedCount}`;
       byId('summary-missed').textContent = String(summary.totalMissedCount);
       const elapsedMilliseconds = now - session.startedAt;
@@ -208,10 +217,14 @@ function startApp() {
 
   function grade(correct: boolean) {
     if (gradingLocked || !session.revealed || !session.currentCardId) return;
+    const completedId = session.currentCardId;
+    const priorAttempts = session.attemptCountByCard[completedId] ?? 0;
     gradingLocked = true;
     correctButton.disabled = true;
     missedButton.disabled = true;
     session = gradeCurrentCard(session, correct, Date.now());
+    if (correct) dispatchProgress({type:'item-completed',eventId:`flashcards:${session.sessionId}:item:${completedId}`,sessionId:session.sessionId,
+      mode:'flashcards',itemId:completedId,sourceId,occurredAt:Date.now(),firstAttemptCorrect:priorAttempts===0,hadMisses:priorAttempts>0,resolution:'mastered'});
     persist();
     render({ focus: true });
     correctButton.disabled = false;
@@ -231,6 +244,8 @@ function startApp() {
     };
     history.replaceState(null, '', buildSessionUrl(configuration, location.pathname));
     persist();
+    dispatchProgress({ type:'session-started', eventId:`flashcards:${session.sessionId}:started`, sessionId:session.sessionId,
+      mode:'flashcards', sourceId:session.mode==='lucky'?'lucky':session.sourceDeckId!, selectedCount:session.selectedCardIds.length, occurredAt:session.startedAt });
     render({ focus: true });
   }
 
@@ -259,6 +274,8 @@ function startApp() {
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) render();
   });
+
+  startActiveTime({mode:'flashcards',sessionId:()=>session.sessionId,eligible:()=>Boolean(session.currentCardId&&!isSessionComplete(session)&&errorView.hidden)});
 
   render({ focus: true });
 }

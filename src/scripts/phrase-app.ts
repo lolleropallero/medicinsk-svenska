@@ -14,6 +14,9 @@ import {
 import { buildPhraseSessionUrl, parsePhraseRequest } from '../lib/phrase-url';
 import { formatDuration } from '../lib/time';
 import type { ClinicalPhraseClient, PhraseCategoryClient } from '../types/content';
+import { dispatchProgress } from '../lib/progress/storage';
+import { startActiveTime } from '../lib/progress/active-time';
+import { showSessionRewards } from '../lib/progress/session-summary';
 
 const STORAGE_KEY = 'medicinsk-svenska.phrase-session.v1';
 const byId = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -73,6 +76,8 @@ function startApp() {
   const stored = readStored();
   if (stored.kind === 'invalid') return showError();
   let session = stored.kind === 'valid' ? stored.session : createPhraseSession(pool, configuration);
+  const sourceId=session.mode==='all'?'all':session.sourceCategoryId!;
+  dispatchProgress({type:'session-started',eventId:`phrases:${session.sessionId}:started`,sessionId:session.sessionId,mode:'phrases',sourceId,selectedCount:session.selectedPhraseIds.length,occurredAt:session.startedAt});
   let grading = false;
   byId('phrase-session-label').textContent = session.mode === 'all'
     ? 'Kaikki fraasit' : categoryById.get(session.sourceCategoryId ?? '')?.nameFi ?? 'Vastaanottofraasit';
@@ -121,6 +126,8 @@ function startApp() {
       clearRetryTimer();
       sessionView.hidden = true; waitingView.hidden = true; summaryView.hidden = false;
       const summary = summarizePhraseSession(session);
+      dispatchProgress({type:'session-completed',eventId:`phrases:${session.sessionId}:completed`,sessionId:session.sessionId,mode:'phrases',sourceId,selectedCount:session.selectedPhraseIds.length,occurredAt:now});
+      showSessionRewards('phrase-rewards',session.sessionId);
       byId('phrase-summary-first').textContent = `${summary.firstAttemptCorrect} / ${summary.selectedCount}`;
       byId('phrase-summary-missed').textContent = String(summary.totalMissedCount);
       byId<HTMLTimeElement>('phrase-summary-time').textContent = formatDuration(now - session.startedAt);
@@ -154,8 +161,10 @@ function startApp() {
   }
   function grade(value: boolean) {
     if (grading || !session.revealed) return;
+    const completedId=session.currentPhraseId!;const priorAttempts=session.attemptCountByPhrase[completedId]??0;
     grading = true; missed.disabled = true; correct.disabled = true;
     session = gradePhrase(session, value, Date.now());
+    if(value)dispatchProgress({type:'item-completed',eventId:`phrases:${session.sessionId}:item:${completedId}`,sessionId:session.sessionId,mode:'phrases',itemId:completedId,sourceId,occurredAt:Date.now(),firstAttemptCorrect:priorAttempts===0,hadMisses:priorAttempts>0,resolution:'mastered'});
     persist(); render(true);
     missed.disabled = false; correct.disabled = false; grading = false;
   }
@@ -169,6 +178,7 @@ function startApp() {
     };
     history.replaceState(null, '', buildPhraseSessionUrl(configuration, location.pathname));
     persist(); render(true);
+    dispatchProgress({type:'session-started',eventId:`phrases:${session.sessionId}:started`,sessionId:session.sessionId,mode:'phrases',sourceId:session.mode==='all'?'all':session.sourceCategoryId!,selectedCount:session.selectedPhraseIds.length,occurredAt:session.startedAt});
   }
   card.addEventListener('click', reveal);
   missed.addEventListener('click', () => grade(false));
@@ -181,6 +191,7 @@ function startApp() {
     else updateClocks();
   }, 1000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
+  startActiveTime({mode:'phrases',sessionId:()=>session.sessionId,eligible:()=>Boolean(session.currentPhraseId&&!isPhraseSessionComplete(session)&&errorView.hidden)});
   render(true);
 }
 

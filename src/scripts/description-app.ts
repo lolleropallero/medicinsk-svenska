@@ -14,6 +14,9 @@ import {
 import { buildDescriptionSessionUrl, parseDescriptionRequest } from '../lib/description-url';
 import { formatDuration } from '../lib/time';
 import type { DescriptionCategoryClient, DescriptionExerciseClient } from '../types/content';
+import { dispatchProgress } from '../lib/progress/storage';
+import { startActiveTime } from '../lib/progress/active-time';
+import { showSessionRewards } from '../lib/progress/session-summary';
 
 const STORAGE_KEY = 'medicinsk-svenska.description-session.v1';
 const byId = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -95,6 +98,8 @@ function render() {
     sessionView.hidden = true;
     summaryView.hidden = false;
     const summary = summarizeDescriptionSession(session);
+    dispatchProgress({type:'session-completed',eventId:`descriptions:${session.sessionId}:completed`,sessionId:session.sessionId,mode:'descriptions',sourceId:session.sourceMode==='all'?'all':session.sourceCategoryId!,selectedCount:session.selectedExerciseIds.length,occurredAt:Date.now()});
+    showSessionRewards('description-rewards',session.sessionId);
     byId('description-summary-correct').textContent = `${summary.correct} / ${summary.total}`;
     byId('description-summary-errors').textContent = String(summary.errors);
     byId<HTMLButtonElement>('description-retry').hidden = summary.errors === 0;
@@ -130,7 +135,9 @@ function render() {
 
 function applyResolution(result: 'correct' | 'incorrect' | 'revealed') {
   if (!session || session.currentResolvedResult) return;
+  const itemId=session.selectedExerciseIds[session.currentIndex]!;
   session = resolveDescription(session, result);
+  dispatchProgress({type:'item-completed',eventId:`descriptions:${session.sessionId}:item:${itemId}`,sessionId:session.sessionId,mode:'descriptions',itemId,sourceId:session.sourceMode==='all'?'all':session.sourceCategoryId!,occurredAt:Date.now(),firstAttemptCorrect:result==='correct',hadMisses:result!=='correct',resolution:result});
   persist();
   render();
 }
@@ -164,6 +171,7 @@ byId('description-retry').addEventListener('click', () => {
   persist();
   history.replaceState(null, '', buildDescriptionSessionUrl(configurationOf(session)));
   startTimer();
+  dispatchProgress({type:'session-started',eventId:`descriptions:${session.sessionId}:started`,sessionId:session.sessionId,mode:'descriptions',sourceId:session.sourceMode==='all'?'all':session.sourceCategoryId!,selectedCount:session.selectedExerciseIds.length,occurredAt:session.startedAt});
   render();
 });
 
@@ -173,6 +181,7 @@ byId('description-new-round').addEventListener('click', () => {
   persist();
   history.replaceState(null, '', buildDescriptionSessionUrl(configurationOf(session)));
   startTimer();
+  dispatchProgress({type:'session-started',eventId:`descriptions:${session.sessionId}:started`,sessionId:session.sessionId,mode:'descriptions',sourceId:session.sourceMode==='all'?'all':session.sourceCategoryId!,selectedCount:session.selectedExerciseIds.length,occurredAt:session.startedAt});
   render();
 });
 
@@ -203,6 +212,8 @@ function restoreOrCreate() {
     persist();
   }
   startTimer();
+  dispatchProgress({type:'session-started',eventId:`descriptions:${session.sessionId}:started`,sessionId:session.sessionId,mode:'descriptions',sourceId:session.sourceMode==='all'?'all':session.sourceCategoryId!,selectedCount:session.selectedExerciseIds.length,occurredAt:session.startedAt});
+  startActiveTime({mode:'descriptions',sessionId:()=>session!.sessionId,eligible:()=>Boolean(session&&session.currentIndex<session.selectedExerciseIds.length&&!session.currentResolvedResult&&!errorView.hidden)});
   render();
 }
 

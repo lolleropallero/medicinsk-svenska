@@ -6,7 +6,7 @@ A calm, static study application for Finnish medical students practising medical
 
 V1 is designed only for medical students. It contains seven decks: Anatomia (130 cards), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (27), and Tutkimukset ja hoito (50). The 455 flashcards are accompanied by 73 clinical phrases in three categories and 51 Swedish descriptions of anatomy and physiology. It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
 
-Flashcard progress is stored only in the current browser. It is not tied to an account, synchronized between devices, or retained as long-term learning history.
+Exercise sessions and long-term progress are stored only in the current browser. They are not tied to an account or synchronized between devices.
 
 ## Requirements and commands
 
@@ -88,6 +88,28 @@ Add one complete natural Finnish cue and one canonical Swedish phrase to `conten
 ## Tests and accessibility
 
 Vitest covers directions, duration formatting, deterministic unique session and new-round selection, delayed phrase recall, summary statistics, typed transitions, URL matching, strict deck- and category-aware stored-session validation, answer normalisation, articles and inflections, and malformed content. Playwright uses controlled clocks and randomness for elapsed timing and stable selections, and covers full-row activation, focus transitions, refresh-stable sessions and drafts, retries, new rounds, invalid URLs, all session sizes, mobile control sizing, responsive overflow, visual QA, and serious/critical axe violations.
+
+## Local progress model
+
+Progress uses the versioned browser key `medicinsk-svenska.progress.v1`; active exercise sessions remain in their original separate keys. There is no account, backend, telemetry, payment, advertising, or real-money currency.
+
+All exercise modes emit semantic `session-started`, `item-completed`, `session-completed`, and `active-study` events into one reducer. Session/item event IDs prevent replay after reload, duplicate input, or cross-tab reconciliation. Storage retains at most 10,000 recent event IDs, about 400 daily summaries, 100 openings, 12 seasons, and 104 settled weeks while lifetime totals remain intact.
+
+The first completion of each unique item per local day gives 2 XP regardless of correctness. The level threshold is `10 × (level − 1) × level`; a level describes practice volume, not proficiency. Every new level gives 10 credits, every fifth gives a capsule, and every tenth substitutes a golden capsule.
+
+The daily goal is 5, 10, 20, or 30 unique items (default 10). Its first completion gives a standard capsule, 10 credits, and 20 season points. Streaks use goal-qualified local days. Up to two streak freezes are consumed automatically; one unprotected missed day can be rescued immediately the next day with 20 unique items, at most once per 30 days.
+
+The deterministic daily quests are: 10 unique items; either 10 flashcards, 5 phrases, or 5 descriptions; and either 5 active minutes, two modes, three mastered retries, or two sessions. Weekly quests are five study days, 100 unique items, and all three modes. One free daily reroll is followed by token rerolls.
+
+Active study time is separate from session wall time. It requires a visible unresolved exercise, interaction within 90 seconds, and ownership of a renewable local tab lease. Absolute timestamps are flushed in bounded intervals and on visibility/page exit.
+
+Credits can only be earned locally and used in the deterministic four-offer daily shop. The cosmetic catalog has four defaults and 36 earnable items: 16 common, 10 rare, 7 epic, and 3 legendary, across themes, card styles, progress frames, and titles. Cosmetics have no learning advantage.
+
+Published standard-capsule probabilities are Common 65%, Rare 25%, Epic 8%, and Legendary 2%. Golden guarantees at least Rare; Legendary guarantees Legendary. Pity guarantees Rare by opening 4, Epic by 12, and Legendary by 40. An unowned cosmetic of the rolled rarity or higher is selected before credit conversion. Capsule outcome and pity are persisted before reveal.
+
+The free season is a 28-day, 30-tier path using epoch 2026-08-17. The first 25 unique items per day, goals, and quests grant points. The personal Pronssi–Konsultti weekly league has no opponents and moves at most one tier per settlement. Comeback rules grant a 10-item 1.5× boost after 2–6 days, a golden capsule plus 20-item 2× boost after 7–29 days, or a persistent three-stage legendary-capsule chain after 30 days.
+
+Calm mode removes anticipation and urgency without changing rules. Export creates a versioned JSON envelope. Import validates schema, dates, inventory, capsules, pity, seasons, and cosmetic IDs before confirmed replacement. Reset restores progress defaults without deleting active exercise sessions. Time and random selection are isolated behind deterministic test seams.
 
 ## Deployment
 

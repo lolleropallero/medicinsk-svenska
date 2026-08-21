@@ -89,16 +89,17 @@ h2 { margin: 0; font-size: 1rem; }
 .lucky { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 58px; padding: 14px 18px; margin-bottom: 16px; border: 1px solid var(--accent); color: white; background: var(--accent); text-decoration: none; }
 .lucky span { color: #e3efeb; font-size: .9rem; }
 .deck-list { border-top: 1px solid var(--border); }
-.deck-row { display: grid; grid-template-columns: minmax(0, 1fr) 100px auto; gap: 18px; align-items: center; min-height: 66px; border-bottom: 1px solid var(--border); }
-.deck-row span { color: var(--muted); font-size: .9rem; }
-.deck-row a { padding: 10px 4px; color: var(--accent-dark); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
+.deck-row { display: grid; grid-template-columns: minmax(0, 1fr) 100px auto; gap: 18px; align-items: center; min-height: 66px; padding: 10px 8px; border-bottom: 1px solid var(--border); text-decoration: none; }
+.deck-row:hover { background: var(--surface); }
+.deck-count { color: var(--muted); font-size: .9rem; }
+.deck-start { color: var(--accent-dark); font-weight: 650; text-decoration: underline; text-underline-offset: 3px; }
 
 .practice { padding-block: 32px 64px; }
 .practice-top { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; min-height: 38px; margin-bottom: 14px; color: var(--muted); font-size: .9rem; }
 .practice-top a { justify-self: start; text-underline-offset: 3px; }
 .practice-top strong, .practice-top h1 { color: var(--text); font-family: inherit; font-size: .95rem; font-weight: 650; letter-spacing: 0; margin: 0; }
 .session-status { display: flex; justify-self: end; gap: 12px; align-items: center; }
-.session-status time { min-width: 3ch; font-variant-numeric: tabular-nums; }
+.session-status time { width: 8ch; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .progress-track { height: 3px; margin-bottom: 18px; background: var(--border); }
 .progress-track span { display: block; height: 100%; background: var(--accent); }
 .flashcard { display: flex; width: 100%; flex-direction: column; justify-content: center; min-height: 390px; padding: clamp(28px, 7vw, 56px); border: 1px solid var(--border); border-radius: 0; background: var(--surface); color: var(--text); text-align: center; cursor: pointer; }
@@ -112,11 +113,17 @@ h2 { margin: 0; font-size: 1rem; }
 .action-row, .summary-actions { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
 .action-row button { min-width: 170px; min-height: 56px; }
 .waiting { padding-block: clamp(48px, 12vh, 80px); text-align: center; }
-.waiting p { margin-bottom: 8px; }
-.waiting p:first-child { font-size: clamp(1.25rem, 5vw, 1.6rem); font-weight: 650; }
+.waiting h1 { margin-bottom: 8px; font-family: inherit; font-size: clamp(1.25rem, 5vw, 1.6rem); font-weight: 650; letter-spacing: 0; }
+.waiting p { margin-bottom: 18px; }
 .waiting strong { font-variant-numeric: tabular-nums; }
 .summary { padding-block: 80px; text-align: center; }
 .summary h1 { font-family: inherit; font-size: clamp(2rem, 6vw, 3rem); font-weight: 650; letter-spacing: 0; }
+.summary-stats { width: min(300px, 100%); margin: 0 auto; }
+.summary-stats div { display: flex; justify-content: space-between; gap: 24px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+.summary-stats dt { color: var(--muted); }
+.summary-stats dd { margin: 0; font-weight: 650; font-variant-numeric: tabular-nums; }
+.error-state { padding-block: clamp(56px, 14vh, 100px); text-align: center; }
+.error-state h1 { font-family: inherit; font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 650; letter-spacing: 0; }
 
 .description-card { min-height: 190px; display: flex; align-items: center; padding: clamp(24px, 5vw, 42px); border: 1px solid var(--border); background: var(--surface); }
 .description-card p { margin: 0; font-family: Georgia, serif; font-size: clamp(1.35rem, 4vw, 1.85rem); line-height: 1.4; }
@@ -140,7 +147,7 @@ h2 { margin: 0; font-size: 1rem; }
   .direction { flex-direction: column; }
   .deck-row { grid-template-columns: minmax(0, 1fr) auto; gap: 5px 12px; padding-block: 12px; }
   .deck-row h2 { grid-column: 1 / -1; }
-  .deck-row a { justify-self: end; }
+  .deck-start { justify-self: end; }
   .practice { padding-top: 20px; }
   .practice-top { grid-template-columns: 1fr auto; }
   .practice-top strong, .practice-top h1 { grid-row: 2; grid-column: 1 / -1; justify-self: start; }

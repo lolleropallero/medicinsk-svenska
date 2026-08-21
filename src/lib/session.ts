@@ -38,6 +38,18 @@ export interface CreateSessionOptions {
   requestedAmount: RequestedAmount;
 }
 
+export interface SessionValidationContext {
+  cardDeckById: ReadonlyMap<string, string>;
+  validDeckIds: ReadonlySet<string>;
+  expected: CreateSessionOptions;
+}
+
+export interface SessionSummary {
+  firstAttemptCorrect: number;
+  selectedCount: number;
+  totalMissedCount: number;
+}
+
 export function cardSides(card: FlashcardClient, direction: Direction) {
   if (direction === 'sv-fi') {
     return {
@@ -109,6 +121,47 @@ export function createSession(
     totalMissedCount: 0,
     startedAt: now,
     revealed: false,
+  };
+}
+
+export function createNewRoundSession(
+  cards: readonly FlashcardClient[],
+  previous: FlashcardSession,
+  sessionId: string,
+  now = Date.now(),
+  random: () => number = Math.random,
+): FlashcardSession {
+  let next = createSession(cards, {
+    sessionId,
+    mode: previous.mode,
+    ...(previous.mode === 'deck' && previous.sourceDeckId ? { sourceDeckId: previous.sourceDeckId } : {}),
+    direction: previous.direction,
+    requestedAmount: previous.requestedAmount,
+  }, now, random);
+
+  if (
+    next.selectedCardIds.length > 1 &&
+    next.selectedCardIds.every((id, index) => id === previous.selectedCardIds[index])
+  ) {
+    const [first, ...rest] = next.selectedCardIds;
+    const selectedCardIds = [...rest, first!];
+    next = {
+      ...next,
+      selectedCardIds,
+      currentCardId: selectedCardIds[0]!,
+      unseenCardQueue: selectedCardIds.slice(1),
+    };
+  }
+
+  return next;
+}
+
+export function summarizeSession(session: FlashcardSession): SessionSummary {
+  const selected = new Set(session.selectedCardIds);
+  return {
+    firstAttemptCorrect: [...selected].filter((id) => session.firstAttemptCorrectByCard[id] === true).length,
+    selectedCount: selected.size,
+    totalMissedCount: session.totalMissedCount,
   };
 }
 
@@ -209,7 +262,11 @@ export function parseRequestedAmount(value: string | null): RequestedAmount {
   return 25;
 }
 
-export function isStoredSession(value: unknown, validCardIds: ReadonlySet<string>): value is FlashcardSession {
+export function isReasonableSessionId(value: unknown): value is string {
+  return typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9._~-]{0,127}$/u.test(value);
+}
+
+export function isStoredSession(value: unknown, context: SessionValidationContext): value is FlashcardSession {
   if (!value || typeof value !== 'object') return false;
   const session = value as Partial<FlashcardSession>;
   const selected = session.selectedCardIds;
@@ -221,33 +278,43 @@ export function isStoredSession(value: unknown, validCardIds: ReadonlySet<string
 
   if (!(
     session.schemaVersion === SESSION_SCHEMA_VERSION &&
-    typeof session.sessionId === 'string' &&
+    isReasonableSessionId(session.sessionId) &&
     (session.mode === 'deck' || session.mode === 'lucky') &&
-    (session.mode === 'deck' ? typeof session.sourceDeckId === 'string' : session.sourceDeckId === undefined) &&
+    (session.mode === 'deck'
+      ? typeof session.sourceDeckId === 'string' && session.sourceDeckId.length > 0 && context.validDeckIds.has(session.sourceDeckId)
+      : session.sourceDeckId === undefined) &&
     (session.direction === 'sv-fi' || session.direction === 'fi-sv') &&
     (session.requestedAmount === 10 ||
       session.requestedAmount === 25 ||
       session.requestedAmount === 50 ||
       session.requestedAmount === 'all') &&
     Array.isArray(selected) &&
+    selected.length > 0 &&
     new Set(selected).size === selected.length &&
-    selected.every((id) => typeof id === 'string' && validCardIds.has(id)) &&
+    selected.every((id) => typeof id === 'string' && context.cardDeckById.has(id)) &&
     Array.isArray(unseen) &&
     Array.isArray(mastered) &&
     Array.isArray(pending) &&
-    (session.currentCardId === null || typeof session.currentCardId === 'string') &&
+    (session.currentCardId === null || (typeof session.currentCardId === 'string' && context.cardDeckById.has(session.currentCardId))) &&
     pending.every(
       (retry) =>
         retry &&
         typeof retry.cardId === 'string' &&
+        context.cardDeckById.has(retry.cardId) &&
         typeof retry.dueAt === 'number' &&
-        Number.isFinite(retry.dueAt),
+        Number.isFinite(retry.dueAt) && retry.dueAt >= 0,
     ) &&
-    attempts !== null && typeof attempts === 'object' &&
-    firstAttempts !== null && typeof firstAttempts === 'object' &&
+    attempts !== null && typeof attempts === 'object' && !Array.isArray(attempts) &&
+    firstAttempts !== null && typeof firstAttempts === 'object' && !Array.isArray(firstAttempts) &&
     typeof session.totalMissedCount === 'number' && Number.isInteger(session.totalMissedCount) && session.totalMissedCount >= 0 &&
-    typeof session.startedAt === 'number' && Number.isFinite(session.startedAt) &&
-    typeof session.revealed === 'boolean'
+    typeof session.startedAt === 'number' && Number.isFinite(session.startedAt) && session.startedAt >= 0 &&
+    typeof session.revealed === 'boolean' &&
+    (!session.revealed || session.currentCardId !== null) &&
+    session.sessionId === context.expected.sessionId &&
+    session.mode === context.expected.mode &&
+    session.direction === context.expected.direction &&
+    session.requestedAmount === context.expected.requestedAmount &&
+    session.sourceDeckId === context.expected.sourceDeckId
   )) return false;
 
   const pendingIds = pending.map((retry) => retry.cardId);
@@ -262,9 +329,13 @@ export function isStoredSession(value: unknown, validCardIds: ReadonlySet<string
     stateIds.length === selected.length &&
     new Set(stateIds).size === selected.length &&
     stateIds.every((id) => selected.includes(id)) &&
-    attemptEntries.every(([id, count]) => selected.includes(id) && Number.isInteger(count) && count > 0) &&
+    attemptEntries.every(([id, count]) => selected.includes(id) && Number.isInteger(count) && Number(count) >= 0) &&
     firstAttemptEntries.every(([id, correct]) => selected.includes(id) && typeof correct === 'boolean') &&
     attemptEntries.length === firstAttemptEntries.length &&
-    attemptEntries.every(([id]) => Object.hasOwn(firstAttempts, id))
+    attemptEntries.every(([id]) => Object.hasOwn(firstAttempts, id)) &&
+    (session.mode !== 'deck' || selected.every((id) => context.cardDeckById.get(id) === session.sourceDeckId)) &&
+    (mastered.length !== selected.length || (
+      session.currentCardId === null && unseen.length === 0 && pending.length === 0
+    ))
   );
 }

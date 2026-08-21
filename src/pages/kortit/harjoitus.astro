@@ -7,7 +7,7 @@ import { deckPayload, flashcardPayload } from '../../lib/content';
     <div class="practice-top">
       <a href="/kortit">Takaisin</a>
       <strong id="session-label"></strong>
-      <div class="session-status"><span id="progress" aria-live="polite"></span><time id="elapsed-time">0:00</time></div>
+      <div class="session-status"><span id="progress" aria-live="polite"></span><time id="elapsed-time" aria-label="Kulunut aika 00:00" datetime="PT0S">00:00</time></div>
     </div>
     <div id="session-view">
       <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
@@ -17,15 +17,26 @@ import { deckPayload, flashcardPayload } from '../../lib/content';
       </button>
       <div id="grade-actions" class="action-row" hidden><button class="danger" id="missed" aria-keyshortcuts="2" title="Pikanäppäin: 2">En osannut</button><button class="success" id="correct" aria-keyshortcuts="1" title="Pikanäppäin: 1">Osasin</button></div>
     </div>
-    <div id="waiting-view" class="waiting" hidden aria-live="polite">
-      <p id="waiting-copy"></p>
+    <div id="waiting-view" class="waiting" hidden>
+      <h1 id="waiting-copy" tabindex="-1"></h1>
       <p>Seuraava kertaus <strong id="retry-countdown"></strong></p>
+      <a href="/kortit">Takaisin pakkoihin</a>
     </div>
     <div id="summary-view" class="summary" hidden aria-live="polite">
-      <h1>Harjoitus valmis</h1>
-      <p id="summary-copy"></p>
-      <p id="summary-details"></p>
-      <div class="summary-actions"><a class="button primary" href="/kortit">Takaisin pakkoihin</a></div>
+      <h1 id="summary-title" tabindex="-1">Valmis</h1>
+      <dl class="summary-stats">
+        <div><dt>Ensimmäisellä</dt><dd id="summary-first"></dd></div>
+        <div><dt>Virheitä</dt><dd id="summary-missed"></dd></div>
+        <div><dt>Aika</dt><dd><time id="summary-time"></time></dd></div>
+      </dl>
+      <div class="summary-actions">
+        <button class="primary" id="new-round" type="button">Uusi kierros</button>
+        <a class="button secondary" href="/kortit">Takaisin pakkoihin</a>
+      </div>
+    </div>
+    <div id="error-view" class="error-state" hidden>
+      <h1 id="error-title" tabindex="-1">Pakkaa ei löytynyt</h1>
+      <a class="button secondary" href="/kortit">Takaisin pakkoihin</a>
     </div>
   </section>
   <script is:inline id="cards-data" type="application/json" set:html={JSON.stringify(flashcardPayload)}></script>

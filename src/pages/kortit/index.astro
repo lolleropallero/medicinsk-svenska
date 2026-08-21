@@ -25,34 +25,19 @@ const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCard
     </a>
     <div class="deck-list">
       {publishedDecks.map((deck) => (
-        <div class="deck-row">
+        <a
+          class="deck-row"
+          data-start
+          data-mode="deck"
+          data-deck={deck.id}
+          href={`/kortit/harjoitus?mode=deck&deck=${deck.id}&direction=fi-sv&amount=25`}
+        >
           <h2>{deck.nameFi}</h2>
-          <span>{counts[deck.id]} korttia</span>
-          <a data-start data-mode="deck" data-deck={deck.id} href={`/kortit/harjoitus?mode=deck&deck=${deck.id}&direction=fi-sv&amount=25`}>Aloita</a>
-        </div>
+          <span class="deck-count">{counts[deck.id]} korttia</span>
+          <span class="deck-start">Aloita</span>
+        </a>
       ))}
     </div>
   </section>
-  <script>
-    const radios = document.querySelectorAll<HTMLInputElement>('input[name="direction"], input[name="amount"]');
-    const starts = document.querySelectorAll<HTMLAnchorElement>('[data-start]');
-    const update = () => {
-      const direction = document.querySelector<HTMLInputElement>('input[name="direction"]:checked')?.value ?? 'fi-sv';
-      const amount = document.querySelector<HTMLInputElement>('input[name="amount"]:checked')?.value ?? '25';
-      starts.forEach((link) => {
-        const query = new URLSearchParams({ mode: link.dataset.mode ?? 'deck', direction, amount });
-        if (link.dataset.deck) query.set('deck', link.dataset.deck);
-        link.href = `/kortit/harjoitus?${query.toString()}`;
-      });
-      const luckyCount = document.querySelector<HTMLElement>('[data-selected-count]');
-      if (luckyCount) luckyCount.textContent = amount === 'all' ? 'Kaikki kortit' : `${amount} korttia`;
-    };
-    radios.forEach((radio) => radio.addEventListener('change', update));
-    starts.forEach((link) => link.addEventListener('click', () => {
-      const url = new URL(link.href);
-      url.searchParams.set('session', crypto.randomUUID());
-      link.href = url.toString();
-    }));
-    update();
-  </script>
+  <script src="../../scripts/deck-list.ts"></script>
 </BaseLayout>

@@ -41,9 +41,11 @@ Published content is filtered at build time and mapped to explicit client payloa
 
 ### Flashcard session persistence
 
-Starting an exercise creates a unique session URL and stores one versioned active session in `localStorage`. The stored state includes the originally selected card IDs, queues, mastery and attempt state, the session start time, and absolute retry timestamps. Reloading or backgrounding therefore does not resample cards or reset a five-minute retry countdown.
+Each compact deck row is one complete link, so its name, card count, empty space, and `Aloita` affordance all start the configured exercise. Starting an exercise creates a unique session URL and stores one versioned active session in `localStorage`. The stored state includes the originally selected card IDs, queues, mastery and attempt state, the session start time, and absolute retry timestamps. Reloading or backgrounding therefore does not resample cards, reset elapsed time, or reset a five-minute retry countdown. Durations use `MM:SS` below one hour and `H:MM:SS` thereafter.
 
-Stored state is accepted only when its schema version, card references, typed values, and mutually exclusive card states are valid against the current static content. Missing, malformed, incompatible, or unrelated stored state is discarded and a session is created from the URL parameters. This persistence is intentionally limited to the active flashcard exercise; it is not spaced-repetition history.
+Stored state is accepted only when its schema version, URL configuration, deck ownership, card references, typed values, counters, timestamps, and mutually exclusive card states are valid against the current static content. Missing stored state is recreated from a valid URL; malformed or incompatible URLs fail closed. This persistence is intentionally limited to the active flashcard exercise; it is not spaced-repetition history.
+
+Completion shows first-attempt successes, every `En osannut` action, and elapsed time. `Uusi kierros` retains mode, deck, direction, and requested amount while creating a new identifier, start time, sample, order, and empty progress state.
 
 ## Content workflow
 
@@ -65,7 +67,7 @@ Add a Swedish object to `content/descriptions.json`. The prompt and canonical an
 
 ## Tests and accessibility
 
-Vitest covers directions, deterministic unique session selection, typed grading transitions, exact delayed retries, completion rules, stored-session validation, answer normalisation and inflections, and malformed/duplicate content. Playwright covers the core routes, both directions, keyboard and tap use, refresh-stable sessions, the compact delayed-retry waiting state, all session sizes and lucky mode, mobile control sizing, description outcomes, direct static routes, 320 px overflow, visual QA, and serious/critical axe violations.
+Vitest covers directions, duration formatting, deterministic unique session and new-round selection, summary statistics, typed grading transitions, exact delayed retries, URL matching, strict deck-aware stored-session validation, answer normalisation and inflections, and malformed content. Playwright uses controlled clocks for elapsed and retry timing and covers full-row activation, focus transitions, both directions, refresh-stable sessions, waiting and completion states, new rounds, invalid URLs, all session sizes, mobile control sizing, responsive overflow, visual QA, and serious/critical axe violations.
 
 ## Deployment
 

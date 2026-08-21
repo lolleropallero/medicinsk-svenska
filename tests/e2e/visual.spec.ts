@@ -18,11 +18,23 @@ test('capture required visual QA views', async ({ page }) => {
   await page.screenshot({ path: 'tmp/visual/verb-forms-desktop.png', fullPage: true });
   await page.goto('/kuvailu');
   await page.screenshot({ path: 'tmp/visual/description-desktop.png', fullPage: true });
+  await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=fi-sv&amount=10&session=visual-summary');
+  for (let index = 0; index < 10; index += 1) {
+    await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+    await page.getByRole('button', { name: 'Osasin' }).click();
+  }
+  await page.screenshot({ path: 'tmp/visual/summary-desktop.png', fullPage: true });
+  await page.getByRole('button', { name: 'Uusi kierros' }).click();
+  await page.screenshot({ path: 'tmp/visual/new-round-desktop.png', fullPage: true });
+  await page.goto('/kortit/harjoitus?mode=deck&deck=missing&direction=fi-sv&amount=10&session=visual-invalid');
+  await page.screenshot({ path: 'tmp/visual/invalid-desktop.png', fullPage: true });
 
   await page.setViewportSize({ width: 390, height: 844 });
   await openSpecificCard(page, { id: 'mediciner-095', deckId: 'mediciner' }, 'fi-sv');
   await page.getByRole('button', { name: /Näytä vastaus/ }).click();
   await page.screenshot({ path: 'tmp/visual/adjective-mobile.png', fullPage: true });
+  await page.goto('/kortit/harjoitus?mode=deck&deck=missing&direction=fi-sv&amount=10&session=visual-invalid-mobile');
+  await page.screenshot({ path: 'tmp/visual/invalid-mobile.png', fullPage: true });
 
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto('/');

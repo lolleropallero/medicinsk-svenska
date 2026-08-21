@@ -129,7 +129,7 @@ test('lucky mode respects 10, 50, and Kaikki without duplicates',async({page})=>
   const all=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!).selectedCardIds as string[]);
   expect(new Set(all).size).toBe(all.length); expect(all).toHaveLength(available);
   await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=fi-sv&amount=50&session=small-pool');
-  await expect(page.locator('#progress')).toHaveText('0 / 13');
+  await expect(page.locator('#progress')).toHaveText('0 / 18');
 });
 test('description route is a setup page with seven compact category links',async({page})=>{
   await page.goto('/kuvailu');

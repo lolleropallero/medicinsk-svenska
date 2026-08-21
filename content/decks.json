@@ -23,5 +23,15 @@
     "id": "avdelningar",
     "nameFi": "Osastot",
     "status": "published"
+  },
+  {
+    "id": "vastaanotto-anamneesi",
+    "nameFi": "Vastaanotto ja anamneesi",
+    "status": "published"
+  },
+  {
+    "id": "tutkimukset-hoito",
+    "nameFi": "Tutkimukset ja hoito",
+    "status": "published"
   }
 ]

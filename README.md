@@ -4,7 +4,7 @@ A calm, static study application for Finnish medical students practising medical
 
 ## Scope
 
-V1 is designed only for medical students. It contains five decks—Anatomy, Diseases and ailments, First aid, Medicines and medication, and Departments—and Swedish descriptions of anatomy and physiology. It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
+V1 is designed only for medical students. It contains seven decks: Anatomia (130 cards), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (27), and Tutkimukset ja hoito (50). The 455 flashcards are accompanied by 51 Swedish descriptions of anatomy and physiology. It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
 
 Flashcard progress is stored only in the current browser. It is not tied to an account, synchronized between devices, or retained as long-term learning history.
 
@@ -68,6 +68,8 @@ Description URLs validate mode, category, amount, round, and session identifier 
 Add an object to `content/flashcards.json` with a unique ID, one Finnish lexical item, one canonical Swedish lexical item, a publication status, and one of the closed `partOfSpeech` values. Store `en` or `ett` in `article`, never in `sv`. Optional grammar belongs in `inflection`, not in the term.
 
 The canonical-term rule is strict: no slash-separated alternatives, synonym lists, multiple meanings, phrases, definitions, or examples. Hyphenated and closed compounds count as one lexical item. Omit an entry when its canonical mapping cannot be established confidently.
+
+Flashcards are curated for physician-relevant study. Every Finnish and Swedish side must be one lexical item, and uniqueness is global and bidirectional: a normalized term maps to exactly one term in the other language across all seven decks.
 
 ### Add a description
 

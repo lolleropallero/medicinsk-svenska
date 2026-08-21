@@ -11,13 +11,16 @@ const allowedParts = new Set<PartOfSpeech>(['noun', 'verb', 'adjective', 'adverb
 describe('audited learning content', () => {
   it('has the reconciled published card counts', () => {
     const counts = Object.fromEntries(
-      ['anatomi', 'sjukdomar', 'forsta-hjalpen', 'mediciner', 'avdelningar'].map((deckId) => [
+      ['anatomi', 'sjukdomar', 'forsta-hjalpen', 'mediciner', 'avdelningar', 'vastaanotto-anamneesi', 'tutkimukset-hoito'].map((deckId) => [
         deckId,
         cards.filter((card) => card.deckId === deckId && card.status === 'published').length,
       ]),
     );
-    expect(counts).toEqual({ anatomi: 130, sjukdomar: 125, 'forsta-hjalpen': 56, mediciner: 49, avdelningar: 13 });
-    expect(cards).toHaveLength(373);
+    expect(counts).toEqual({
+      anatomi: 130, sjukdomar: 125, 'forsta-hjalpen': 56, mediciner: 49, avdelningar: 18,
+      'vastaanotto-anamneesi': 27, 'tutkimukset-hoito': 50,
+    });
+    expect(cards).toHaveLength(455);
   });
 
   it('contains the corrected reproductive anatomy pair and rhythm pair exactly once', () => {
@@ -67,7 +70,7 @@ describe('audited learning content', () => {
 
   it('gives every published card a closed part of speech and counts retained forms', () => {
     expect(cards.every((card) => allowedParts.has(card.partOfSpeech))).toBe(true);
-    expect(cards.filter((card) => card.inflection).length).toBe(7);
+    expect(cards.filter((card) => card.inflection).length).toBe(22);
   });
 
   it('preserves all valid description exercises and grammatical accepted forms', () => {

@@ -13,6 +13,23 @@ const descriptionKeys = new Set([
   'id', 'categoryId', 'descriptionSv', 'answerSv', 'acceptedInflections', 'article', 'inflection', 'status',
 ]);
 const answerAlternativePattern = /[\/;\n]|\s+(?:eller|tai)\s+/iu;
+const requiredExpansionDecks = new Map([
+  ['vastaanotto-anamneesi', 'Vastaanotto ja anamneesi'],
+  ['tutkimukset-hoito', 'Tutkimukset ja hoito'],
+]);
+const allowedDeckIds = new Set([
+  'anatomi', 'sjukdomar', 'forsta-hjalpen', 'mediciner', 'avdelningar',
+  'vastaanotto-anamneesi', 'tutkimukset-hoito',
+]);
+const expansionPrefixes = new Map([
+  ['vastaanotto-anamneesi-', 'vastaanotto-anamneesi'],
+  ['tutkimukset-hoito-', 'tutkimukset-hoito'],
+  ['osastot-', 'avdelningar'],
+]);
+const excludedRoleTerms = new Set([
+  'sjukskötare', 'sjuksköterska', 'närvårdare', 'primärskötare', 'överskötare',
+  'avdelningsskötare', 'vårdare', 'socialarbetare', 'hemvårdare', 'barnskötare',
+]);
 
 const read = (name: string): unknown[] => JSON.parse(readFileSync(resolve('content', name), 'utf8')) as unknown[];
 const isRecord = (value: unknown): value is RecordValue => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
@@ -199,8 +216,28 @@ const cards = read('flashcards.json');
 const descriptions = read('descriptions.json');
 const descriptionCategories = read('description-categories.json');
 const errors = validateContent(decks, cards, descriptions, descriptionCategories);
-if (decks.filter((deck) => isRecord(deck) && deck.status === 'published').length !== 5) {
-  errors.push('exactly five decks must be published');
+const publishedDecks = decks.filter((deck) => isRecord(deck) && deck.status === 'published');
+if (publishedDecks.length !== 7) {
+  errors.push('exactly seven decks must be published');
+}
+if (decks.length !== allowedDeckIds.size || decks.some((deck) => !isRecord(deck) || !allowedDeckIds.has(text(deck.id)))) {
+  errors.push('only the seven approved flashcard decks may exist');
+}
+for (const [id, nameFi] of requiredExpansionDecks) {
+  const matches = publishedDecks.filter((deck) => isRecord(deck) && deck.id === id && deck.nameFi === nameFi);
+  if (matches.length !== 1) errors.push(`required published deck missing or duplicated: ${id}`);
+  if (!cards.some((card) => isRecord(card) && card.status === 'published' && card.deckId === id)) {
+    errors.push(`required published deck is empty: ${id}`);
+  }
+}
+for (const card of cards) {
+  if (!isRecord(card) || card.status !== 'published') continue;
+  const id = text(card.id);
+  const sv = normalizeCanonical(text(card.sv), 'sv');
+  for (const [prefix, deckId] of expansionPrefixes) {
+    if (id.startsWith(prefix) && card.deckId !== deckId) errors.push(`expanded card uses wrong target deck: ${id}`);
+  }
+  if (excludedRoleTerms.has(sv)) errors.push(`excluded role term is published: ${id}`);
 }
 if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));

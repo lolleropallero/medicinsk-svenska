@@ -31,6 +31,17 @@ async function seedPhraseView(
   await page.reload();
 }
 
+test('capture daily overlay and compact homepage states',async({page})=>{
+  await page.setViewportSize({width:320,height:568});await page.goto('/');await page.screenshot({path:'tmp/visual/home-overlay-320x568.png',fullPage:true});await page.getByRole('button',{name:'Stäng dagens uppdrag'}).click();
+  await page.setViewportSize({width:390,height:844});await page.screenshot({path:'tmp/visual/home-dismissed-390x844.png',fullPage:true});
+  await page.evaluate(()=>{const key='medicinsk-svenska.progress.v1',state=JSON.parse(localStorage.getItem(key)!);state.inventory.credits=240;state.inventory.capsules.push({id:'visual-home-box',kind:'golden',earnedAt:Date.now()});localStorage.setItem(key,JSON.stringify(state));});await page.reload();await page.screenshot({path:'tmp/visual/home-unopened-boxes-390x844.png',fullPage:true});
+  await page.evaluate(()=>{const progressKey='medicinsk-svenska.progress.v1',uiKey='medicinsk-svenska.ui.v1',state=JSON.parse(localStorage.getItem(progressKey)!);const date=new Date(),day=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;state.daily[day]={uniqueItemIds:Array.from({length:10},(_,i)=>`flashcards:visual-${i}`),completedItems:10,activeStudyMs:300000,xp:0,modes:['flashcards','phrases'],sessionsStarted:2,sessionsCompleted:2,retriesMastered:3,goalTarget:10,goalClaimed:true,qualified:true,freezeUsed:false,quests:[1,2,3].map(slot=>({id:`${day}:${slot}:0`,slot,kind:slot===1?'items':slot===2?'mode':'active',...(slot===2?{mode:'phrases'}:{}),target:slot===3?300000:slot===2?5:10,xp:slot===1?5:slot===2?10:15,credits:slot===1?10:slot===2?15:20,seasonPoints:slot===1?10:slot===2?15:20,rerollIndex:0,claimed:true})),freeRerollUsed:false,allQuestsClaimed:true,sessionDropEligible:0,sessionDropAwarded:false};localStorage.setItem(progressKey,JSON.stringify(state));localStorage.removeItem(uiKey);});await page.reload();await page.screenshot({path:'tmp/visual/home-completed-dailies-390x844.png',fullPage:true});
+  await page.evaluate(()=>{const key='medicinsk-svenska.progress.v1',state=JSON.parse(localStorage.getItem(key)!);state.settings.calmMode=true;const day=Object.keys(state.daily).sort().at(-1)!;state.daily[day].quests[0].claimed=false;state.daily[day].allQuestsClaimed=false;localStorage.setItem(key,JSON.stringify(state));localStorage.removeItem('medicinsk-svenska.ui.v1');});await page.reload();await page.screenshot({path:'tmp/visual/home-calm-390x844.png',fullPage:true});
+  await page.getByRole('button',{name:/Dagens uppdrag/}).click();await page.setViewportSize({width:844,height:390});await page.screenshot({path:'tmp/visual/home-overlay-phone-landscape.png',fullPage:true});await page.getByRole('button',{name:'Stäng dagens uppdrag'}).click();
+  await page.setViewportSize({width:768,height:900});await page.getByRole('button',{name:/Dagens uppdrag/}).click();await page.screenshot({path:'tmp/visual/home-overlay-768.png',fullPage:true});await page.getByRole('button',{name:'Stäng dagens uppdrag'}).click();
+  await page.setViewportSize({width:1440,height:900});await page.getByRole('button',{name:/Dagens uppdrag/}).click();await page.screenshot({path:'tmp/visual/home-overlay-1440x900.png',fullPage:true});
+});
+
 test('capture required visual QA views', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');

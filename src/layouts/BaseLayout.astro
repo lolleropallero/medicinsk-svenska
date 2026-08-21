@@ -22,7 +22,7 @@ const showHud=hudRoutes.some(route=>path===route||path===`${route}/`)&&!path.end
     </script>
     <title>{title} · Medicinsk svenska</title>
   </head>
-  <body>
+  <body class:list={{ 'home-route': path === '/' }}>
     <a class="skip-link" href="#sisalto">Siirry sisältöön</a>
     <header class="site-header">
       <a class="brand" href="/">Medicinsk svenska</a>

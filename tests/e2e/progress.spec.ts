@@ -5,11 +5,11 @@ import { openSpecificCard } from './helpers';
 const PROGRESS='medicinsk-svenska.progress.v1';
 const readProgress=(page:import('@playwright/test').Page)=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),PROGRESS);
 
-test('fresh home is daily-first with HUD, three bilingual quests, reward, and progress navigation',async({page})=>{
-  await page.goto('/');await expect(page.getByRole('heading',{name:'Dagens mål'})).toBeVisible();await expect(page.locator('.daily-goal-value')).toHaveText('0 / 10');await expect(page.getByText('Vanlig låda · 10 krediter · 20 säsongspoäng')).toBeVisible();
+test('fresh home is a compact launcher with HUD and an automatic daily overlay',async({page})=>{
+  await page.goto('/');await expect(page.getByRole('dialog',{name:'Dagens uppdrag'})).toBeVisible();await expect(page.getByRole('heading',{name:'Dagens mål'})).toBeVisible();await expect(page.locator('.overlay-goal')).toContainText('0 / 10');await expect(page.getByText('Vanlig låda · 10 krediter · 20 säsongspoäng')).toBeVisible();
   await expect(page.locator('#metagame-hud')).toContainText('Nivå');await expect(page.locator('#metagame-hud')).toContainText('Svit');await expect(page.locator('#metagame-hud')).toContainText('Krediter');await expect(page.locator('#metagame-hud')).toContainText('Lådor');
-  await expect(page.locator('.daily-quests .quest')).toHaveCount(3);await expect(page.getByText('Gör 10 olika uppgifter')).toBeVisible();await expect(page.getByText('Suorita 10 eri tehtävää')).toBeVisible();await expect(page.getByText('Slutför alla tre och få en gyllene låda')).toBeVisible();
-  expect(await page.evaluate(()=>{const daily=document.querySelector('.daily-quests'),actions=document.querySelector('.home-actions');return Boolean(daily&&actions&&(daily.compareDocumentPosition(actions)&Node.DOCUMENT_POSITION_FOLLOWING));})).toBe(true);
+  await expect(page.locator('.daily-overlay-quests .daily-quest-row')).toHaveCount(3);await expect(page.getByText('Gör 10 olika uppgifter')).toBeVisible();await expect(page.getByText('Suorita 10 eri tehtävää')).toBeVisible();await expect(page.getByText('Slutför alla tre och få en gyllene låda')).toBeVisible();
+  await page.getByRole('button',{name:'Stäng dagens uppdrag'}).click();await expect(page.getByRole('button',{name:/Dagens uppdrag 0 \/ 3/})).toBeVisible();await expect(page.locator('.home .quest,.home .daily-quest-row')).toHaveCount(0);
   await page.getByRole('link',{name:'Framsteg',exact:true}).click();await expect(page.getByRole('heading',{name:'Framsteg'})).toBeVisible();await expect(page.getByText('Nivå 1')).toBeVisible();
 });
 
@@ -54,7 +54,7 @@ test('legacy V1 display strings are ignored without changing progress or replayi
 
 test('reward surfacing links directly and active exercises omit the full HUD',async({page})=>{
   await page.goto('/');await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)!);state.inventory.capsules.push({id:'home-box',kind:'standard',earnedAt:Date.now()});state.seasons.points=100;state.settings.calmMode=true;localStorage.setItem(key,JSON.stringify(state));},PROGRESS);await page.reload();
-  await expect(page.getByRole('link',{name:'Öppna en överraskningslåda'})).toBeVisible();await expect(page.getByText('1 säsongsbelöning väntar')).toHaveCount(2);expect(await page.locator('.hud-boxes').evaluate(element=>getComputedStyle(element).animationName)).toBe('none');await page.getByRole('link',{name:'Öppna en överraskningslåda'}).click();expect(page.url()).toContain('/palkinnot/#unopened-boxes');
+  await expect(page.locator('.hud-boxes')).toContainText('1');await expect(page.locator('.hud-boxes')).toContainText('Öppna');await expect(page.getByText(/säsongsbelöning väntar/)).toHaveCount(0);expect(await page.locator('.hud-boxes').evaluate(element=>getComputedStyle(element).animationName)).toBe('none');await page.locator('.hud-boxes').click();expect(page.url()).toContain('/palkinnot/#unopened-boxes');
   await page.goto('/kortit/harjoitus?mode=deck&deck=anatomi&direction=fi-sv&amount=10&session=no-hud');await expect(page.locator('#metagame-hud')).toHaveCount(0);
 });
 

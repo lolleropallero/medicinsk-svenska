@@ -26,6 +26,7 @@ async function seedPhraseSession(page: Page, ids: string[], options: { sessionId
 
 test('landing, navigation, and setup expose three complete phrase-category links', async ({ page }) => {
   await page.goto('/');
+  await page.getByRole('button',{name:'Stäng dagens uppdrag'}).click();
   await expect(page.getByRole('link', { name: 'Fraasit' }).first()).toBeVisible();
   await page.getByRole('link', { name: 'Fraasit' }).first().click();
   await expect(page.getByRole('heading', { name: 'Vastaanottofraasit' })).toBeVisible();

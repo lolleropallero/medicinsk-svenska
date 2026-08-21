@@ -7,6 +7,7 @@ test('landing page and core routes are accessible',async({page})=>{
   const landingText=await page.locator('body').innerText();
   for(const removed of ['Ruotsi osaksi','Kaksi tapaa harjoitella','Valitse tämän päivän tavoite','Lääketieteen opiskelijoille','Itsenäiseen opiskeluun']) expect(landingText).not.toContain(removed);
   expect((await new AxeBuilder({page}).analyze()).violations.filter(v=>['serious','critical'].includes(v.impact??''))).toEqual([]);
+  await page.getByRole('button',{name:'Stäng dagens uppdrag'}).click();
   await page.getByRole('link',{name:'Sanakortit'}).first().click(); await expect(page.getByRole('heading',{name:'Sanakortit'})).toBeVisible();
   await expect(page.getByRole('heading',{name:'Valitse pakka'})).toHaveCount(0);
 });

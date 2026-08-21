@@ -1,9 +1,17 @@
 import { COSMETICS, EARNABLE_COSMETICS } from '../lib/progress/catalog';
 import { localDayKey, msUntilLocalMidnight, seasonInfo } from '../lib/progress/calendar';
-import { buyShopOffer, claimableSeasonCount, claimSeason, dailyShop, emptyDay, getQuestProgress, levelProgress, nextAction, openCapsule, rerollQuest, SEASON_REWARDS, setDailyGoal } from '../lib/progress/core';
-import { achievementCopy, boxCopy, leagueCopy, leagueResultCopy, nextActionCopy, plural, questCopy, rarityCopy, rewardCopy, weeklyQuestCopy } from '../lib/progress/copy';
+import { buyShopOffer, claimableSeasonCount, claimSeason, dailyShop, emptyDay, getQuestProgress, levelProgress, openCapsule, rerollQuest, SEASON_REWARDS, setDailyGoal } from '../lib/progress/core';
+import { achievementCopy, boxCopy, leagueCopy, leagueResultCopy, plural, questCopy, rarityCopy, rewardCopy, weeklyQuestCopy } from '../lib/progress/copy';
+import { resolveDailyQuestAction, type ResumableSession } from '../lib/progress/daily-quest-action';
 import { exportEnvelope, loadProgress, parseImport, PROGRESS_KEY, resetProgress, saveProgress } from '../lib/progress/storage';
-import type { CosmeticType, ProgressStateV1, Quest, Reward } from '../lib/progress/types';
+import { dismissDailyOverlay, loadUiPreferences, shouldAutoOpenDailyOverlay } from '../lib/progress/ui-preferences';
+import type { CosmeticType, ExerciseMode, ProgressStateV1, Quest, Reward } from '../lib/progress/types';
+import { buildSessionUrl } from '../lib/session-url';
+import { isSessionComplete, isStoredSession, type CreateSessionOptions, type FlashcardSession } from '../lib/session';
+import { buildPhraseSessionUrl } from '../lib/phrase-url';
+import { isPhraseSessionComplete, isStoredPhraseSession, type PhraseSession, type PhraseSessionConfiguration } from '../lib/phrase-session';
+import { buildDescriptionSessionUrl } from '../lib/description-url';
+import { isStoredDescriptionSession, type DescriptionSession, type DescriptionSessionConfiguration } from '../lib/description-session';
 
 const $=<T extends HTMLElement=HTMLElement>(id:string)=>document.getElementById(id) as T|null;
 const esc=(value:string)=>value.replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]!));
@@ -11,6 +19,24 @@ const formatMinutes=(ms:number)=>`${Math.floor(ms/60_000)} min`;
 const typeCopy:Record<CosmeticType,string>={theme:'Tema',cardStyle:'Kortstil',progressFrame:'Framstegsram',title:'Titel'};
 let state=loadProgress();
 let collectionFilter='all';
+let autoOpenChecked=false;
+const SESSION_KEYS:Record<ExerciseMode,string>={flashcards:'medicinsk-svenska.flashcard-session.v1',phrases:'medicinsk-svenska.phrase-session.v1',descriptions:'medicinsk-svenska.description-session.v1'};
+
+interface DailySessionCatalog {
+  cards: [string,string][]; decks:string[];
+  phrases:[string,string][]; phraseCategories:string[];
+  descriptions:[string,string][]; descriptionCategories:string[];
+}
+
+function dailySessionCatalog():DailySessionCatalog|null{const node=$<HTMLScriptElement>('daily-session-catalog');if(!node)return null;try{return JSON.parse(node.textContent??'null') as DailySessionCatalog;}catch{return null;}}
+function storedValue(key:string):unknown{try{return JSON.parse(localStorage.getItem(key)??'null');}catch{return null;}}
+function resumableSessions():Partial<Record<ExerciseMode,ResumableSession>>{const catalog=dailySessionCatalog();if(!catalog)return{};const sessions:Partial<Record<ExerciseMode,ResumableSession>>={};
+  const flash=storedValue(SESSION_KEYS.flashcards);if(flash&&typeof flash==='object'){const candidate=flash as FlashcardSession,expected:CreateSessionOptions={sessionId:candidate.sessionId,mode:candidate.mode,direction:candidate.direction,requestedAmount:candidate.requestedAmount,...(candidate.mode==='deck'&&candidate.sourceDeckId?{sourceDeckId:candidate.sourceDeckId}:{})};if(isStoredSession(flash,{cardDeckById:new Map(catalog.cards),validDeckIds:new Set(catalog.decks),expected})&&!isSessionComplete(candidate))sessions.flashcards={href:buildSessionUrl(expected),startedAt:candidate.startedAt};}
+  const phrase=storedValue(SESSION_KEYS.phrases);if(phrase&&typeof phrase==='object'){const candidate=phrase as PhraseSession,expected:PhraseSessionConfiguration={sessionId:candidate.sessionId,mode:candidate.mode,requestedAmount:candidate.requestedAmount,...(candidate.mode==='category'&&candidate.sourceCategoryId?{sourceCategoryId:candidate.sourceCategoryId}:{})};if(isStoredPhraseSession(phrase,{categoryByPhraseId:new Map(catalog.phrases),validCategoryIds:new Set(catalog.phraseCategories),expected})&&!isPhraseSessionComplete(candidate))sessions.phrases={href:buildPhraseSessionUrl(expected),startedAt:candidate.startedAt};}
+  const description=storedValue(SESSION_KEYS.descriptions);if(description&&typeof description==='object'){const candidate=description as DescriptionSession,expected:DescriptionSessionConfiguration={sessionId:candidate.sessionId,sourceMode:candidate.sourceMode,requestedAmount:candidate.requestedAmount,roundType:candidate.roundType,...(candidate.sourceMode==='category'&&candidate.sourceCategoryId?{sourceCategoryId:candidate.sourceCategoryId}:{})};if(isStoredDescriptionSession(description,{categoryByExerciseId:new Map(catalog.descriptions),validCategoryIds:new Set(catalog.descriptionCategories),expected})&&candidate.currentIndex<candidate.selectedExerciseIds.length)sessions.descriptions={href:buildDescriptionSessionUrl(expected),startedAt:candidate.startedAt};}
+  return sessions;
+}
+function freshSessionUrls():Record<ExerciseMode,string>{return{flashcards:buildSessionUrl({sessionId:crypto.randomUUID(),mode:'lucky',direction:'fi-sv',requestedAmount:10}),phrases:buildPhraseSessionUrl({sessionId:crypto.randomUUID(),mode:'all',requestedAmount:10}),descriptions:buildDescriptionSessionUrl({sessionId:crypto.randomUUID(),sourceMode:'all',requestedAmount:10,roundType:'initial'})};}
 function persist(next:ProgressStateV1){state=next;saveProgress(state);render();window.dispatchEvent(new CustomEvent('progress-updated'));}
 function progressBar(value:number,max:number,label:string){const percent=Math.min(100,max?value/max*100:0);return `<div class="meter" role="progressbar" aria-label="${esc(label)}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${value}"><span style="width:${percent}%"></span></div>`;}
 function today(){const key=localDayKey();return state.daily[key]??emptyDay(state,key);}
@@ -18,11 +44,13 @@ function questValue(quest:Quest,value:number){return quest.kind==='active'?`${Ma
 function questRows(day= today(),allowReroll=true){return day.quests.map(quest=>{const copy=questCopy(quest),value=getQuestProgress(day,quest),canReroll=allowReroll&&!quest.claimed&&(quest.slot!==1||!day.freeRerollUsed||state.inventory.rerollTokens>0);return `<article class="quest ${quest.claimed?'done':''}" data-quest-slot="${quest.slot}"><div class="quest-head"><div><strong lang="sv">${copy.sv}</strong><small lang="fi">${copy.fi}</small></div><span class="quest-progress" lang="sv">${quest.claimed?'Klart':questValue(quest,value)}</span></div>${progressBar(value,quest.target,`${copy.sv}: ${questValue(quest,value)}`)}<div class="quest-meta" lang="sv"><span>+${quest.xp} XP · +${quest.credits} krediter · +${quest.seasonPoints} säsongspoäng</span>${canReroll?`<button data-reroll="${quest.slot}" class="compact">Byt uppdrag</button>`:''}</div></article>`;}).join('');}
 function bindRerolls(root:HTMLElement){root.querySelectorAll<HTMLButtonElement>('[data-reroll]').forEach(button=>button.addEventListener('click',()=>{const next=rerollQuest(state,Number(button.dataset.reroll));if(next)persist(next);}));}
 
-function renderHome(){const root=$('home-daily');if(!root)return;const day=today(),done=day.uniqueItemIds.length>=state.settings.dailyGoal,remaining=Math.max(0,state.settings.dailyGoal-day.uniqueItemIds.length);
-  root.innerHTML=`<section class="daily-goal dashboard-card" lang="sv"><h2>Dagens mål</h2><strong class="daily-goal-value">${done?'Dagens mål klart':`${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`}</strong>${progressBar(day.uniqueItemIds.length,state.settings.dailyGoal,'Dagens mål')}${done?'':`<p>${remaining} uppgifter kvar</p>`}<div class="goal-reward"><span>Belöning:</span><strong>Vanlig låda · 10 krediter · 20 säsongspoäng</strong></div></section><section class="daily-quests dashboard-card"><h2 lang="sv">Dagens uppdrag</h2><div class="quest-list">${questRows(day)}</div><div class="all-quests-bonus"><strong lang="sv">Slutför alla tre och få en gyllene låda</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen yllätyslaatikon.</small></div></section>`;
-  bindRerolls(root);const action=nextAction(state),actionLink=$<HTMLAnchorElement>('home-next-action');if(actionLink){actionLink.textContent=nextActionCopy(action);actionLink.href=action.href;}
-  const claimable=claimableSeasonCount(state),alerts=$('home-reward-alerts');if(alerts)alerts.innerHTML=claimable?`<a class="reward-alert" lang="sv" href="/kausi/#reward-track">${claimable} ${claimable===1?'säsongsbelöning väntar':'säsongsbelöningar väntar'}</a>`:'';
-  const status=$('home-status');if(status)status.innerHTML=`<a href="/kausi/" lang="sv"><span>Säsong</span><strong>Steg ${Math.min(30,Math.floor(state.seasons.points/100))} av 30</strong></a><a href="/kausi/#league" lang="sv"><span>Veckoliga</span><strong>${leagueCopy[state.league.tier]} · ${state.league.weeklyXp} XP</strong></a>`;
+function overlayQuestRows(day= today()){return day.quests.map(quest=>{const copy=questCopy(quest),value=getQuestProgress(day,quest),valueCopy=questValue(quest,value),canReroll=!quest.claimed&&(quest.slot!==1||!day.freeRerollUsed||state.inventory.rerollTokens>0),body=`<span class="daily-quest-head"><span><strong lang="sv">${copy.sv}</strong><small lang="fi">${copy.fi}</small></span><b lang="sv">${quest.claimed?'Klart':valueCopy}</b></span>${progressBar(value,quest.target,`${copy.sv}: ${valueCopy}`)}<span class="daily-quest-reward" lang="sv">+${quest.xp} XP · +${quest.credits} krediter · +${quest.seasonPoints} säsongspoäng</span>`;return `<article class="daily-quest-row ${quest.claimed?'done':''}" data-quest-slot="${quest.slot}">${quest.claimed?`<div class="daily-quest-complete">${body}</div>`:`<button type="button" class="daily-quest-action" data-quest-action="${quest.slot}" data-focus-id="quest-${quest.slot}">${body}<span class="daily-quest-start" lang="sv">Starta</span></button>`}${canReroll?`<button type="button" data-reroll="${quest.slot}" data-focus-id="reroll-${quest.slot}" class="compact daily-reroll" lang="sv">Byt uppdrag</button>`:''}</article>`;}).join('');}
+function bindHomeActions(root:HTMLElement,day= today()){bindRerolls(root);root.querySelectorAll<HTMLButtonElement>('[data-quest-action]').forEach(button=>button.addEventListener('click',()=>{const quest=day.quests.find(item=>item.slot===Number(button.dataset.questAction));if(!quest)return;const action=resolveDailyQuestAction(quest,{...(state.lastUsedMode?{lastUsedMode:state.lastUsedMode}:{}),modesUsedToday:day.modes,sessions:resumableSessions(),freshUrls:freshSessionUrls()});if(!action)return;if(!action.resumesSession)localStorage.removeItem(SESSION_KEYS[action.mode]);location.assign(action.href);}));}
+function openDailyOverlay(){const dialog=$<HTMLDialogElement>('daily-overlay');if(!dialog||dialog.open||document.querySelector('dialog[open]'))return;dialog.showModal();const target=dialog.querySelector<HTMLElement>('[data-quest-action]')??$('daily-overlay-title');target?.focus({preventScroll:true});}
+function renderHome(){const launcher=$<HTMLButtonElement>('daily-launcher'),root=$('daily-overlay-content');if(!launcher||!root)return;const day=today(),goalComplete=day.uniqueItemIds.length>=state.settings.dailyGoal,questCount=day.quests.filter(quest=>quest.claimed).length,allComplete=questCount===day.quests.length,activeFocus=(document.activeElement as HTMLElement|null)?.dataset.focusId;
+  $('daily-launcher-quests')!.textContent=`Dagens uppdrag ${questCount} / ${day.quests.length}`;$('daily-launcher-goal')!.textContent=goalComplete?'Dagens mål klart':`Dagens mål ${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`;
+  root.innerHTML=`<section class="overlay-goal"><div><h3 lang="sv">Dagens mål</h3><strong lang="sv">${goalComplete?'Klart':`${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`}</strong></div>${progressBar(day.uniqueItemIds.length,state.settings.dailyGoal,'Dagens mål')}<small lang="sv">Vanlig låda · 10 krediter · 20 säsongspoäng</small></section><div class="daily-overlay-quests">${overlayQuestRows(day)}</div><footer class="daily-all-bonus"><strong lang="sv">${allComplete?'Alla tre uppdrag klara':'Slutför alla tre och få en gyllene låda'}</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen yllätyslaatikon.</small></footer>`;
+  bindHomeActions(root,day);if(activeFocus&&$('daily-overlay')?.hasAttribute('open'))(root.querySelector<HTMLElement>(`[data-focus-id="${activeFocus}"]`)??root.querySelector<HTMLElement>('[data-quest-action]')??$<HTMLButtonElement>('daily-overlay-close'))?.focus({preventScroll:true});
 }
 
 function renderProgress(){const root=$('progress-dashboard');if(!root)return;const day=today(),level=levelProgress(state.lifetime.xp),lastDays=Array.from({length:7},(_,i)=>{const date=new Date();date.setDate(date.getDate()-(6-i));const key=localDayKey(date);return{key,value:state.daily[key]??emptyDay(state,key)};}),claimable=claimableSeasonCount(state);
@@ -55,10 +83,17 @@ function renderSeason(){const root=$('season-dashboard');if(!root)return;const i
 }
 function render(){state=loadProgress();renderHome();renderProgress();renderSettings();renderRewards();renderSeason();}
 
+function checkDailyAutoOpen(){if(autoOpenChecked||!$('daily-launcher'))return;autoOpenChecked=true;queueMicrotask(()=>{const dialog=$<HTMLDialogElement>('daily-overlay'),day=today();if(!dialog)return;const otherModalOpen=[...document.querySelectorAll<HTMLDialogElement>('dialog[open]')].some(item=>item!==dialog);if(shouldAutoOpenDailyOverlay({pathname:location.pathname,localDay:localDayKey(),preferences:loadUiPreferences(),calmMode:state.settings.calmMode,dailyGoalComplete:day.uniqueItemIds.length>=state.settings.dailyGoal,dailyQuestsComplete:day.quests.every(quest=>quest.claimed),otherModalOpen}))openDailyOverlay();});}
+
 $<HTMLSelectElement>('daily-goal')?.addEventListener('change',event=>persist(setDailyGoal(state,Number((event.target as HTMLSelectElement).value) as 5|10|20|30)));
 $<HTMLInputElement>('calm-mode')?.addEventListener('change',event=>{const next=structuredClone(state);next.settings.calmMode=(event.target as HTMLInputElement).checked;persist(next);document.documentElement.dataset.calm=String(next.settings.calmMode);});
 $('export-progress')?.addEventListener('click',()=>{const blob=new Blob([JSON.stringify(exportEnvelope(state),null,2)],{type:'application/json'}),link=document.createElement('a');link.href=URL.createObjectURL(blob);link.download=`medicinsk-svenska-progress-${localDayKey()}.json`;link.click();URL.revokeObjectURL(link.href);});
 $<HTMLInputElement>('import-progress')?.addEventListener('change',async event=>{const file=(event.target as HTMLInputElement).files?.[0];if(!file)return;const parsed=parseImport(await file.text()),status=$('data-status');if(!parsed.ok){if(status)status.textContent=parsed.error;return;}if(confirm('Korvataanko nykyinen edistyminen tuoduilla tiedoilla?')){persist(parsed.state);if(status)status.textContent='Tiedot tuotu.';}});
 $('reset-progress')?.addEventListener('click',()=>{if(confirm('Nollataanko kaikki edistymis- ja palkintotiedot? Harjoitussessiot säilyvät.')){state=resetProgress();location.reload();}});
 $<HTMLDialogElement>('capsule-dialog')?.addEventListener('click',event=>{if((event.target as HTMLElement).hasAttribute('data-close'))(event.currentTarget as HTMLDialogElement).close();});
-window.addEventListener('storage',event=>{if(event.key===PROGRESS_KEY)render();});render();
+$<HTMLButtonElement>('daily-launcher')?.addEventListener('click',openDailyOverlay);
+$<HTMLButtonElement>('daily-overlay-close')?.addEventListener('click',()=> $<HTMLDialogElement>('daily-overlay')?.close());
+$<HTMLDialogElement>('daily-overlay')?.addEventListener('click',event=>{if(event.target===event.currentTarget)(event.currentTarget as HTMLDialogElement).close();});
+$<HTMLDialogElement>('daily-overlay')?.addEventListener('close',()=>{try{dismissDailyOverlay();}catch{}$<HTMLButtonElement>('daily-launcher')?.focus({preventScroll:true});});
+window.addEventListener('progress-updated',render);
+window.addEventListener('storage',event=>{if(event.key===PROGRESS_KEY)render();});render();checkDailyAutoOpen();

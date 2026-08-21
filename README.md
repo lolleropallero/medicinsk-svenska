@@ -28,7 +28,7 @@ npm run preview
 
 ## Architecture
 
-- `src/pages/` – static Astro routes (`/`, `/kortit`, `/kortit/harjoitus`, `/kuvailu`)
+- `src/pages/` – static Astro routes (`/`, `/kortit`, `/kortit/harjoitus`, `/kuvailu`, `/kuvailu/harjoitus`)
 - `src/lib/` – framework-free, independently tested session and answer logic
 - `src/scripts/` – minimal browser TypeScript for active exercises
 - `src/styles/` – repository-owned responsive CSS; no runtime font or asset request
@@ -47,6 +47,14 @@ Stored state is accepted only when its schema version, URL configuration, deck o
 
 Completion shows first-attempt successes, every `En osannut` action, and elapsed time. `Uusi kierros` retains mode, deck, direction, and requested amount while creating a new identifier, start time, sample, order, and empty progress state.
 
+### Description exercise sessions
+
+The description setup offers seven anatomical and physiological categories plus `Kaikki aiheet`, with 10, 25, 50, or all unique exercises. Each complete category row is one keyboard-accessible link. A typed, versioned description session stores its selected shuffled IDs, current position, draft, resolved feedback, results, selection configuration, round, and absolute start time in the browser. Refreshing or backgrounding preserves the question and the `MM:SS` or `H:MM:SS` elapsed timer.
+
+Answer matching is deterministic: it accepts the canonical Swedish answer, explicitly stored grammatical forms, and an optional correct indefinite article with the canonical lemma. It does not guess synonyms or approximate spellings. Completion reports correct answers, errors, and elapsed time. Missed and revealed items can start an immediate, separately persisted retry round; `Uusi kierros` instead resamples the retained category or all-topics configuration with a new identifier and timestamp.
+
+Description URLs validate mode, category, amount, round, and session identifier against local state and current category membership. Invalid initial configurations and unrestorable retry links fail closed. Randomness and time are injectable or controllable in tests.
+
 ## Content workflow
 
 ### Add a deck
@@ -63,11 +71,11 @@ The canonical-term rule is strict: no slash-separated alternatives, synonym list
 
 ### Add a description
 
-Add a Swedish object to `content/descriptions.json`. The prompt and canonical answer must be Swedish. `acceptedInflections` may contain only grammatical forms of that same answer, never synonyms. Keep descriptions concise, natural, medically correct, and unambiguous.
+Add a Swedish object to `content/descriptions.json` and assign exactly one published `categoryId` from `content/description-categories.json`. The prompt and canonical answer must be Swedish. `acceptedInflections` may contain only grammatical forms of that same answer, never synonyms. Keep descriptions concise, natural, medically correct, and unambiguous. Category records contain only a stable ID, Finnish name, and publication status; keep every published category non-empty.
 
 ## Tests and accessibility
 
-Vitest covers directions, duration formatting, deterministic unique session and new-round selection, summary statistics, typed grading transitions, exact delayed retries, URL matching, strict deck-aware stored-session validation, answer normalisation and inflections, and malformed content. Playwright uses controlled clocks for elapsed and retry timing and covers full-row activation, focus transitions, both directions, refresh-stable sessions, waiting and completion states, new rounds, invalid URLs, all session sizes, mobile control sizing, responsive overflow, visual QA, and serious/critical axe violations.
+Vitest covers directions, duration formatting, deterministic unique session and new-round selection, summary statistics, typed transitions, URL matching, strict deck- and category-aware stored-session validation, answer normalisation, articles and inflections, and malformed content. Playwright uses controlled clocks and randomness for elapsed timing and stable selections, and covers full-row activation, focus transitions, refresh-stable sessions and drafts, description retries, new rounds, invalid URLs, all session sizes, mobile control sizing, responsive overflow, visual QA, and serious/critical axe violations.
 
 ## Deployment
 

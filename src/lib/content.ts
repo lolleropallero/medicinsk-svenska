@@ -1,11 +1,14 @@
 import decksData from '../../content/decks.json';
 import cardsData from '../../content/flashcards.json';
 import descriptionsData from '../../content/descriptions.json';
+import descriptionCategoriesData from '../../content/description-categories.json';
 import type {
   Deck,
   DeckClient,
   DescriptionExercise,
   DescriptionExerciseClient,
+  DescriptionCategory,
+  DescriptionCategoryClient,
   Flashcard,
   FlashcardClient,
 } from '../types/content';
@@ -13,9 +16,16 @@ import type {
 export const decks = decksData as Deck[];
 export const cards = cardsData as Flashcard[];
 export const descriptions = descriptionsData as DescriptionExercise[];
+export const descriptionCategories = descriptionCategoriesData as DescriptionCategory[];
 export const publishedDecks = decks.filter((deck) => deck.status === 'published');
 export const publishedCards = cards.filter((card) => card.status === 'published');
 export const publishedDescriptions = descriptions.filter((item) => item.status === 'published');
+export const publishedDescriptionCategories = descriptionCategories.filter((item) => item.status === 'published');
+
+export const descriptionCategoryPayload: DescriptionCategoryClient[] = publishedDescriptionCategories.map((item) => ({
+  id: item.id,
+  nameFi: item.nameFi,
+}));
 
 export const deckPayload: DeckClient[] = publishedDecks.map((deck) => ({
   id: deck.id,
@@ -34,6 +44,7 @@ export const flashcardPayload: FlashcardClient[] = publishedCards.map((card) => 
 
 export const descriptionPayload: DescriptionExerciseClient[] = publishedDescriptions.map((item) => ({
   id: item.id,
+  categoryId: item.categoryId,
   descriptionSv: item.descriptionSv,
   answerSv: item.answerSv,
   ...(item.acceptedInflections ? { acceptedInflections: item.acceptedInflections } : {}),

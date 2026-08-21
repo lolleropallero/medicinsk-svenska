@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import cardsData from '../../content/flashcards.json';
 import descriptionsData from '../../content/descriptions.json';
+import categoriesData from '../../content/description-categories.json';
 import type { Flashcard, PartOfSpeech } from '../../src/types/content';
 
 const cards = cardsData as Flashcard[];
@@ -75,5 +76,13 @@ describe('audited learning content', () => {
     expect(descriptionsData.find((item) => item.id === 'beskrivning-027')?.acceptedInflections).toEqual(['lungorna']);
     expect(descriptionsData.find((item) => item.id === 'beskrivning-036')?.acceptedInflections).toEqual(['mjälten']);
     expect(descriptionsData.find((item) => item.id === 'beskrivning-038')?.acceptedInflections).toEqual(['levern']);
+  });
+
+  it('assigns every description to one of seven non-empty categories with exact counts', () => {
+    const publishedCategories = categoriesData.filter((category) => category.status === 'published');
+    const ids = publishedCategories.map((category) => category.id);
+    expect(new Set(ids).size).toBe(7);
+    expect(descriptionsData.every((item) => ids.includes(item.categoryId))).toBe(true);
+    expect(ids.map((id) => descriptionsData.filter((item) => item.categoryId === id).length)).toEqual([8, 7, 7, 8, 6, 7, 8]);
   });
 });

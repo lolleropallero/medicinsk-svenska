@@ -7,9 +7,10 @@ const publicationStatuses = new Set(['published', 'review', 'skipped']);
 const partOfSpeechValues = new Set(['noun', 'verb', 'adjective', 'adverb', 'other']);
 const articleValues = new Set(['en', 'ett']);
 const deckKeys = new Set(['id', 'nameFi', 'status']);
+const descriptionCategoryKeys = new Set(['id', 'nameFi', 'status']);
 const cardKeys = new Set(['id', 'deckId', 'fi', 'sv', 'article', 'partOfSpeech', 'inflection', 'status']);
 const descriptionKeys = new Set([
-  'id', 'descriptionSv', 'answerSv', 'acceptedInflections', 'article', 'inflection', 'status',
+  'id', 'categoryId', 'descriptionSv', 'answerSv', 'acceptedInflections', 'article', 'inflection', 'status',
 ]);
 const answerAlternativePattern = /[\/;\n]|\s+(?:eller|tai)\s+/iu;
 
@@ -41,7 +42,12 @@ function isGrammaticalForm(canonical: string, candidate: string): boolean {
   return form.length > base.length && form.startsWith(base);
 }
 
-export function validateContent(decksInput: unknown[], cardsInput: unknown[], descriptionsInput: unknown[]): string[] {
+export function validateContent(
+  decksInput: unknown[],
+  cardsInput: unknown[],
+  descriptionsInput: unknown[],
+  categoriesInput: unknown[],
+): string[] {
   const errors: string[] = [];
   const check = (condition: unknown, message: string) => { if (!condition) errors.push(message); };
 
@@ -56,6 +62,22 @@ export function validateContent(decksInput: unknown[], cardsInput: unknown[], de
     if (id) deckIds.add(id);
     check(text(raw.nameFi).trim().length > 0, `deck missing name: ${id}`);
     check(publicationStatuses.has(text(raw.status)), `invalid deck publication status: ${id}`);
+  }
+
+  const categoryIds = new Set<string>();
+  const publishedCategoryIds = new Set<string>();
+  for (const raw of categoriesInput) {
+    if (!isRecord(raw)) { errors.push('description category must be an object'); continue; }
+    const id = text(raw.id);
+    const status = text(raw.status);
+    const extra = unknownKeys(raw, descriptionCategoryKeys);
+    check(extra.length === 0, `unknown description category properties on ${id || '(missing ID)'}: ${extra.join(', ')}`);
+    check(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id), `invalid description category ID: ${id || '(missing ID)'}`);
+    check(!categoryIds.has(id), `duplicate description category ID: ${id}`);
+    if (id) categoryIds.add(id);
+    check(text(raw.nameFi).trim().length > 0, `description category missing name: ${id}`);
+    check(publicationStatuses.has(status), `invalid description category publication status: ${id}`);
+    if (status === 'published') publishedCategoryIds.add(id);
   }
 
   const cardIds = new Set<string>();
@@ -112,12 +134,14 @@ export function validateContent(decksInput: unknown[], cardsInput: unknown[], de
 
   const descriptionIds = new Set<string>();
   let publishedDescriptionCount = 0;
+  const publishedCountByCategory = new Map<string, number>();
   for (const raw of descriptionsInput) {
     if (!isRecord(raw)) { errors.push('description exercise must be an object'); continue; }
     const id = text(raw.id);
     const description = text(raw.descriptionSv);
     const answer = text(raw.answerSv);
     const status = text(raw.status);
+    const categoryId = text(raw.categoryId);
     const extra = unknownKeys(raw, descriptionKeys);
 
     check(extra.length === 0, `unknown description properties on ${id || '(missing ID)'}: ${extra.join(', ')}`);
@@ -128,7 +152,12 @@ export function validateContent(decksInput: unknown[], cardsInput: unknown[], de
     check(answer.trim().length > 0, `empty canonical answer on ${id}`);
     check(!answerAlternativePattern.test(answer), `multiple description answers on ${id}`);
     check(publicationStatuses.has(status), `invalid description publication status: ${id}`);
-    if (status === 'published') publishedDescriptionCount += 1;
+    check(categoryIds.has(categoryId), `unknown description category on ${id}: ${categoryId}`);
+    if (status === 'published') {
+      publishedDescriptionCount += 1;
+      check(publishedCategoryIds.has(categoryId), `published description uses unpublished category on ${id}: ${categoryId}`);
+      publishedCountByCategory.set(categoryId, (publishedCountByCategory.get(categoryId) ?? 0) + 1);
+    }
     if (raw.article !== undefined) check(articleValues.has(text(raw.article)), `invalid description article on ${id}`);
     if (raw.inflection !== undefined) check(hasValidInflection(raw.inflection), `malformed description inflection on ${id}`);
 
@@ -159,13 +188,17 @@ export function validateContent(decksInput: unknown[], cardsInput: unknown[], de
   }
 
   check(publishedDescriptionCount >= 40, 'fewer than 40 published description exercises');
+  for (const categoryId of publishedCategoryIds) {
+    check((publishedCountByCategory.get(categoryId) ?? 0) > 0, `published description category is empty: ${categoryId}`);
+  }
   return errors;
 }
 
 const decks = read('decks.json');
 const cards = read('flashcards.json');
 const descriptions = read('descriptions.json');
-const errors = validateContent(decks, cards, descriptions);
+const descriptionCategories = read('description-categories.json');
+const errors = validateContent(decks, cards, descriptions, descriptionCategories);
 if (decks.filter((deck) => isRecord(deck) && deck.status === 'published').length !== 5) {
   errors.push('exactly five decks must be published');
 }
@@ -173,4 +206,21 @@ if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));
   process.exit(1);
 }
-console.log(`Content valid: ${decks.length} decks, ${cards.length} cards, ${descriptions.length} descriptions.`);
+const expectedDescriptionCounts = [8, 7, 7, 8, 6, 7, 8];
+const actualDescriptionCounts = descriptionCategories
+  .filter((category) => isRecord(category) && category.status === 'published')
+  .map((category) => {
+    const categoryId = isRecord(category) ? category.id : undefined;
+    return descriptions.filter(
+      (item) => isRecord(item) && item.status === 'published' && item.categoryId === categoryId,
+    ).length;
+  });
+if (
+  descriptionCategories.length !== 7 ||
+  actualDescriptionCounts.length !== expectedDescriptionCounts.length ||
+  actualDescriptionCounts.some((count, index) => count !== expectedDescriptionCounts[index])
+) {
+  console.error(`- description category counts must be ${expectedDescriptionCounts.join(', ')}`);
+  process.exit(1);
+}
+console.log(`Content valid: ${decks.length} decks, ${cards.length} cards, ${descriptions.length} descriptions in ${descriptionCategories.length} categories.`);

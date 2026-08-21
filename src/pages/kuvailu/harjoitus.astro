@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { descriptionCategoryPayload, descriptionPayload } from '../../lib/content';
+---
+<BaseLayout title="Kuvailuharjoitus">
+  <section class="practice description-practice wrap" id="description-app" aria-labelledby="description-session-label">
+    <div class="practice-top">
+      <a href="/kuvailu">Takaisin</a>
+      <strong id="description-session-label"></strong>
+      <div class="session-status">
+        <span id="description-progress" aria-live="polite"></span>
+        <time id="description-elapsed" aria-label="Kulunut aika 00:00" datetime="PT0S">00:00</time>
+      </div>
+    </div>
+    <div id="description-session-view">
+      <div class="progress-track" aria-hidden="true"><span id="description-progress-bar"></span></div>
+      <article class="description-card"><p id="description-text" lang="sv"></p></article>
+      <form id="answer-form">
+        <label for="answer">Vastauksesi</label>
+        <input id="answer" name="answer" lang="sv" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="done" />
+        <div class="action-row">
+          <button class="primary" type="submit">Tarkista</button>
+          <button class="secondary" id="show-answer" type="button">Näytä vastaus</button>
+        </div>
+      </form>
+      <div id="description-feedback" class="feedback" hidden aria-live="polite" role="status">
+        <p id="result-label"></p>
+        <p>Oikea vastaus: <strong id="canonical-answer" lang="sv"></strong></p>
+        <button id="description-next" class="primary" type="button">Seuraava</button>
+      </div>
+    </div>
+    <div id="description-summary" class="summary" hidden>
+      <h1 id="description-summary-title" tabindex="-1">Valmis</h1>
+      <dl class="summary-stats">
+        <div><dt>Oikein</dt><dd id="description-summary-correct"></dd></div>
+        <div><dt>Virheitä</dt><dd id="description-summary-errors"></dd></div>
+        <div><dt>Aika</dt><dd><time id="description-summary-time"></time></dd></div>
+      </dl>
+      <div class="summary-actions">
+        <button id="description-retry" class="primary" type="button">Harjoittele virheet uudelleen</button>
+        <button id="description-new-round" class="secondary" type="button">Uusi kierros</button>
+        <a class="button secondary" href="/kuvailu">Takaisin kuvailutehtäviin</a>
+      </div>
+    </div>
+    <div id="description-error" class="error-state" hidden>
+      <h1 id="description-error-title" tabindex="-1">Harjoitusta ei löytynyt</h1>
+      <a class="button secondary" href="/kuvailu">Takaisin kuvailutehtäviin</a>
+    </div>
+  </section>
+  <script is:inline id="descriptions-data" type="application/json" set:html={JSON.stringify(descriptionPayload)}></script>
+  <script is:inline id="description-categories-data" type="application/json" set:html={JSON.stringify(descriptionCategoryPayload)}></script>
+  <script src="../../scripts/description-app.ts"></script>
+</BaseLayout>

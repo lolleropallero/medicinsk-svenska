@@ -1,19 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { normalizeCanonical, validateContent } from '../../scripts/validate-content';
-import type { Deck, DescriptionExercise, Flashcard } from '../../src/types/content';
+import type { Deck, DescriptionCategory, DescriptionExercise, Flashcard } from '../../src/types/content';
 
 const deck: Deck = { id: 'd', nameFi: 'D', status: 'published' };
 const card: Flashcard = {
   id: 'c', deckId: 'd', fi: 'maksa', sv: 'lever', partOfSpeech: 'noun', status: 'published',
 };
+const category: DescriptionCategory = { id: 'category', nameFi: 'Kategoria', status: 'published' };
 const descriptions = Array.from({ length: 40 }, (_, index): DescriptionExercise => ({
-  id: `q${index}`, descriptionSv: 'Vilket organ beskrivs?', answerSv: `svar${index}`, status: 'published',
+  id: `q${index}`, categoryId: 'category', descriptionSv: 'Vilket organ beskrivs?', answerSv: `svar${index}`, status: 'published',
 }));
 const errorsFor = (
   cards: unknown[] = [card],
   items: unknown[] = descriptions,
   decks: unknown[] = [deck],
-) => validateContent(decks, cards, items);
+  categories: unknown[] = [category],
+) => validateContent(decks, cards, items, categories);
 
 describe('strict content validation', () => {
   it('accepts a minimal well-formed set', () => expect(errorsFor()).toEqual([]));
@@ -22,6 +24,13 @@ describe('strict content validation', () => {
     expect(errorsFor([card], descriptions, [{ ...deck, extra: true }]).some((error) => error.includes('unknown deck properties'))).toBe(true);
     expect(errorsFor([{ ...card, extra: true }]).some((error) => error.includes('unknown flashcard properties'))).toBe(true);
     expect(errorsFor([card], [{ ...descriptions[0], extra: true }, ...descriptions.slice(1)]).some((error) => error.includes('unknown description properties'))).toBe(true);
+    expect(errorsFor([card], descriptions, [deck], [{ ...category, extra: true }]).some((error) => error.includes('unknown description category properties'))).toBe(true);
+  });
+
+  it('rejects unknown categories and published descriptions in unpublished categories', () => {
+    const unknown = [{ ...descriptions[0], categoryId: 'missing' }, ...descriptions.slice(1)];
+    expect(errorsFor([card], unknown).some((error) => error.includes('unknown description category'))).toBe(true);
+    expect(errorsFor([card], descriptions, [deck], [{ ...category, status: 'review' }]).some((error) => error.includes('unpublished category'))).toBe(true);
   });
 
   it('rejects duplicate IDs, canonical pairs, and bidirectional ambiguity', () => {

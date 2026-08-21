@@ -1,0 +1,9 @@
+[
+  { "id": "solut-kudokset-iho", "nameFi": "Solut, kudokset ja iho", "status": "published" },
+  { "id": "luusto-nivelet-lihakset", "nameFi": "Luusto, nivelet ja lihakset", "status": "published" },
+  { "id": "hermosto-aistit", "nameFi": "Hermosto ja aistit", "status": "published" },
+  { "id": "verenkierto-hengitys", "nameFi": "Verenkierto ja hengitys", "status": "published" },
+  { "id": "veri-imunestejarjestelma", "nameFi": "Veri ja imunestejärjestelmä", "status": "published" },
+  { "id": "ruoansulatus-virtsatiet", "nameFi": "Ruoansulatus ja virtsatiet", "status": "published" },
+  { "id": "lisaantyminen-hormonit", "nameFi": "Lisääntyminen ja hormonit", "status": "published" }
+]

@@ -131,24 +131,17 @@ test('lucky mode respects 10, 50, and Kaikki without duplicates',async({page})=>
   await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=fi-sv&amount=50&session=small-pool');
   await expect(page.locator('#progress')).toHaveText('0 / 13');
 });
-test('description accepts correct and incorrect answers and can reveal',async({page})=>{
-  await page.addInitScript(()=>{let calls=0;Math.random=()=>calls++<29?0:0.999});
-  await page.goto('/kuvailu'); const data=await page.locator('#descriptions-data').textContent(); const firstText=await page.locator('#description-text').textContent();
-  const items=JSON.parse(data!); const item=items.find((x:{descriptionSv:string})=>x.descriptionSv===firstText);
-  expect(item.id).toBe('beskrivning-023');
-  const interfaceText=await page.locator('body').innerText();
-  for(const removed of ['Till startsidan','Beskrivningsövning','Vad beskrivs?','Ditt svar','Kontrollera','Visa svaret','Rätt svar','Nästa','Bra arbetat','Öva misstagen igen']) expect(interfaceText).not.toContain(removed);
-  await expect(page.locator('#description-text')).toBeVisible(); await expect(page.locator('#description-text')).toHaveAttribute('lang','sv');
-  await expect(page.getByLabel('Vastauksesi')).toHaveAttribute('lang','sv');
-  await page.getByLabel('Vastauksesi').fill('HJÄRTAT.'); await page.getByRole('button',{name:'Tarkista'}).click(); await expect(page.getByText('Oikein',{exact:true})).toBeVisible();
-  await expect(page.locator('#canonical-answer')).toHaveText('ett hjärta'); await expect(page.locator('#canonical-answer')).toHaveAttribute('lang','sv');
-  await page.getByRole('button',{name:'Seuraava'}).click(); await page.getByLabel('Vastauksesi').fill('fel svar'); await page.getByRole('button',{name:'Tarkista'}).click(); await expect(page.getByText('Ei aivan')).toBeVisible();
-  await page.getByRole('button',{name:'Seuraava'}).click(); await page.getByRole('button',{name:'Näytä vastaus'}).click(); await expect(page.getByText('Vastaus näytetty')).toBeVisible();
+test('description route is a setup page with seven compact category links',async({page})=>{
+  await page.goto('/kuvailu');
+  await expect(page.getByRole('heading',{name:'Kuvailutehtävät'})).toBeVisible();
+  await expect(page.locator('#description-text')).toHaveCount(0);
+  await expect(page.locator('.category-row')).toHaveCount(7);
+  await expect(page.getByRole('group',{name:'Tehtävien määrä'}).getByLabel('10')).toBeChecked();
 });
 test('tablet and narrow mobile viewports have no overflow and direct routes load',async({page})=>{
   for(const {width,height} of [{width:320,height:568},{width:390,height:844},{width:768,height:700}]){
     await page.setViewportSize({width,height});
-    for(const route of ['/','/kortit/','/kortit/harjoitus?mode=deck&deck=avdelningar&direction=sv-fi&amount=10&session=mobile-test','/kuvailu/']){
+    for(const route of ['/','/kortit/','/kortit/harjoitus?mode=deck&deck=avdelningar&direction=sv-fi&amount=10&session=mobile-test','/kuvailu/','/kuvailu/harjoitus?mode=all&amount=10&session=description-mobile']){
       await page.goto(route); expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth),`${route} at ${width}px`).toBe(true);
     }
   }
@@ -205,10 +198,12 @@ test('rendered payloads contain only explicit client fields',async({page})=>{
   expect(cards.every((card:Record<string,unknown>)=>Object.keys(card).every(key=>cardKeys.has(key)))).toBe(true);
   expect(decks.every((deck:Record<string,unknown>)=>Object.keys(deck).every(key=>['id','nameFi'].includes(key)))).toBe(true);
   expect(await page.locator('html').innerText()).not.toContain('published');
-  await page.goto('/kuvailu');
+  await page.goto('/kuvailu/harjoitus?mode=all&amount=10&session=description-payload');
   const descriptions=JSON.parse((await page.locator('#descriptions-data').textContent())!);
-  const descriptionKeys=new Set(['id','descriptionSv','answerSv','acceptedInflections','article','inflection']);
+  const descriptionKeys=new Set(['id','categoryId','descriptionSv','answerSv','acceptedInflections','article','inflection']);
   expect(descriptions.every((item:Record<string,unknown>)=>Object.keys(item).every(key=>descriptionKeys.has(key)))).toBe(true);
+  const categories=JSON.parse((await page.locator('#description-categories-data').textContent())!);
+  expect(categories.every((item:Record<string,unknown>)=>Object.keys(item).every(key=>['id','nameFi'].includes(key)))).toBe(true);
 });
 
 test('removed card IDs in stored sessions fail safely',async({page})=>{

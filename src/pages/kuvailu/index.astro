@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { descriptionCategoryPayload, publishedDescriptions } from '../../lib/content';
+const counts = Object.fromEntries(descriptionCategoryPayload.map((category) => [
+  category.id,
+  publishedDescriptions.filter((item) => item.categoryId === category.id).length,
+]));
+---
+<BaseLayout title="Kuvailutehtävät">
+  <section class="page wrap description-setup" aria-labelledby="page-title">
+    <h1 id="page-title">Kuvailutehtävät</h1>
+    <fieldset class="amount-selector">
+      <legend>Tehtävien määrä</legend>
+      <div class="segments">
+        <label><input type="radio" name="description-amount" value="10" checked /><span>10</span></label>
+        <label><input type="radio" name="description-amount" value="25" /><span>25</span></label>
+        <label><input type="radio" name="description-amount" value="50" /><span>50</span></label>
+        <label><input type="radio" name="description-amount" value="all" /><span>Kaikki</span></label>
+      </div>
+    </fieldset>
+    <a class="all-topics" data-description-start data-mode="all" href="/kuvailu/harjoitus?mode=all&amount=10">
+      <strong>Kaikki aiheet</strong><span data-count={publishedDescriptions.length}>{publishedDescriptions.length} tehtävää</span>
+    </a>
+    <div class="category-list">
+      {descriptionCategoryPayload.map((category) => (
+        <a
+          class="category-row"
+          data-description-start
+          data-mode="category"
+          data-category={category.id}
+          href={`/kuvailu/harjoitus?mode=category&category=${category.id}&amount=10`}
+        >
+          <h2>{category.nameFi}</h2>
+          <span class="category-count" data-count={counts[category.id]}>{counts[category.id]} tehtävää</span>
+          <span class="category-start">Aloita</span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <script src="../../scripts/description-setup.ts"></script>
+</BaseLayout>

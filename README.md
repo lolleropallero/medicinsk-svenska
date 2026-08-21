@@ -32,12 +32,12 @@ npm run preview
 - `src/lib/` – framework-free, independently tested session and answer logic
 - `src/scripts/` – minimal browser TypeScript for active exercises
 - `src/styles/` – repository-owned responsive CSS; no runtime font or asset request
-- `src/types/content.ts` – explicit deck, card, description, and source types
-- `content/` – version-controlled curated JSON and human review notes
+- `src/types/content.ts` – explicit application content and client-payload types
+- `content/` – version-controlled curated learning data
 - `scripts/validate-content.ts` – deployment-blocking content validation
 - `tests/` – Vitest unit tests and Playwright browser/accessibility tests
 
-The PDF-derived JSON is committed and is never parsed in the browser. There is no server state.
+Published content is filtered at build time and mapped to explicit client payloads. Publication status and maintenance-only fields are never sent to the browser. There is no server state.
 
 ### Flashcard session persistence
 
@@ -55,17 +55,13 @@ Stored state is accepted only when its schema version, card references, typed va
 
 ### Add a flashcard
 
-Add an object to `content/flashcards.json` with a unique ID, one Finnish lexical item, one canonical Swedish lexical item, status, and source document/page/item. Store `en` or `ett` in `article`, never in `sv`. Optional grammar belongs in `partOfSpeech` and `inflection`, not in the term.
+Add an object to `content/flashcards.json` with a unique ID, one Finnish lexical item, one canonical Swedish lexical item, a publication status, and one of the closed `partOfSpeech` values. Store `en` or `ett` in `article`, never in `sv`. Optional grammar belongs in `inflection`, not in the term.
 
-The canonical-term rule is strict: no slash-separated alternatives, synonym lists, multiple meanings, phrases, definitions, or examples. Hyphenated and closed compounds count as one lexical item. If a row cannot be resolved directly from its PDF, omit it rather than guessing.
+The canonical-term rule is strict: no slash-separated alternatives, synonym lists, multiple meanings, phrases, definitions, or examples. Hyphenated and closed compounds count as one lexical item. Omit an entry when its canonical mapping cannot be established confidently.
 
 ### Add a description
 
-Add a Swedish object to `content/descriptions.json`. The prompt and canonical answer must be Swedish and have document, page, and section metadata. `acceptedInflections` may contain only grammatical forms of that same answer, never synonyms. Keep descriptions concise and source-grounded.
-
-### Corrections and review
-
-Record every source correction, canonical alternative choice, duplicate, phrase omission, and ambiguous row in `content/review-notes.md`. Maintenance notes are not displayed to learners. Re-run validation after every content edit.
+Add a Swedish object to `content/descriptions.json`. The prompt and canonical answer must be Swedish. `acceptedInflections` may contain only grammatical forms of that same answer, never synonyms. Keep descriptions concise, natural, medically correct, and unambiguous.
 
 ## Tests and accessibility
 

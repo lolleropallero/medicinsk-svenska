@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { publishedCards, publishedDecks } from '../../lib/content';
+import { deckPayload, flashcardPayload } from '../../lib/content';
 ---
 <BaseLayout title="Korttiharjoitus">
   <section class="practice wrap" id="flashcard-app" aria-labelledby="session-label">
@@ -28,7 +28,7 @@ import { publishedCards, publishedDecks } from '../../lib/content';
       <div class="summary-actions"><a class="button primary" href="/kortit">Takaisin pakkoihin</a></div>
     </div>
   </section>
-  <script is:inline id="cards-data" type="application/json" set:html={JSON.stringify(publishedCards)}></script>
-  <script is:inline id="decks-data" type="application/json" set:html={JSON.stringify(publishedDecks)}></script>
+  <script is:inline id="cards-data" type="application/json" set:html={JSON.stringify(flashcardPayload)}></script>
+  <script is:inline id="decks-data" type="application/json" set:html={JSON.stringify(deckPayload)}></script>
   <script src="../../scripts/flashcard-app.ts"></script>
 </BaseLayout>

@@ -2,36 +2,26 @@
   {
     "id": "anatomi",
     "nameFi": "Anatomia",
-    "descriptionFi": "Kehon rakenteet ja elimet.",
-    "sourceDocument": "Anatomi ru-su.pdf",
     "status": "published"
   },
   {
     "id": "sjukdomar",
     "nameFi": "Sairaudet ja vaivat",
-    "descriptionFi": "Sairauksia, oireita ja tavallisia vaivoja.",
-    "sourceDocument": "Sjukdomar och besvär ru-su.pdf",
     "status": "published"
   },
   {
     "id": "forsta-hjalpen",
     "nameFi": "Ensiapu",
-    "descriptionFi": "Ensiavun tilanteet, välineet ja oireet.",
-    "sourceDocument": "Första hjälpen ru-su.pdf",
     "status": "published"
   },
   {
     "id": "mediciner",
     "nameFi": "Lääkkeet ja lääkitys",
-    "descriptionFi": "Lääkemuodot, vaikutukset ja lääkityksen sanasto.",
-    "sourceDocument": "Mediciner, medicinering ru-su.pdf",
     "status": "published"
   },
   {
     "id": "avdelningar",
     "nameFi": "Osastot",
-    "descriptionFi": "Terveydenhuollon osastot ja vastaanotot.",
-    "sourceDocument": "Avdelningar ru-su.pdf",
     "status": "published"
   }
 ]

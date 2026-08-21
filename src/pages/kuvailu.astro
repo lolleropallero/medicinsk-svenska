@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { publishedDescriptions } from '../lib/content';
+import { descriptionPayload } from '../lib/content';
 ---
 <BaseLayout title="Kuvailutehtävät">
   <section class="practice description-practice wrap" id="description-app" aria-labelledby="description-title">
@@ -23,6 +23,6 @@ import { publishedDescriptions } from '../lib/content';
       <div class="summary-actions"><button id="description-retry" class="primary">Harjoittele virheet uudelleen</button><a class="button secondary" href="/">Takaisin</a></div>
     </div>
   </section>
-  <script is:inline id="descriptions-data" type="application/json" set:html={JSON.stringify(publishedDescriptions)}></script>
+  <script is:inline id="descriptions-data" type="application/json" set:html={JSON.stringify(descriptionPayload)}></script>
   <script src="../scripts/description-app.ts"></script>
 </BaseLayout>

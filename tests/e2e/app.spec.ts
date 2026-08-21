@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { openSpecificCard } from './helpers';
 
 test('landing page and core routes are accessible',async({page})=>{
   await page.goto('/'); await expect(page.getByRole('heading',{name:'Harjoittele lääketieteellistä ruotsia'})).toBeVisible();
@@ -81,26 +82,36 @@ test('lucky mode respects 10, 50, and Kaikki without duplicates',async({page})=>
   for(const [label,expected] of [['10',10],['50',50]] as const){
     await page.goto('/kortit'); await page.getByRole('group',{name:'Korttien määrä'}).locator('label').filter({hasText:label}).click();
     await page.getByRole('link',{name:/Kokeilen onneani/}).click();
+    await expect.poll(()=>page.evaluate(()=>{
+      const stored=localStorage.getItem('medicinsk-svenska.flashcard-session.v1');
+      return stored?JSON.parse(stored).selectedCardIds.length:0;
+    })).toBe(expected);
     const ids=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!).selectedCardIds as string[]);
     expect(ids).toHaveLength(expected); expect(new Set(ids).size).toBe(expected);
   }
   await page.goto('/kortit'); await page.getByRole('group',{name:'Korttien määrä'}).locator('label').filter({hasText:'Kaikki'}).click();
   await page.getByRole('link',{name:/Kokeilen onneani/}).click();
-  const all=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!).selectedCardIds as string[]);
   const available=await page.locator('#cards-data').evaluate(node=>JSON.parse(node.textContent??'[]').length);
+  await expect.poll(()=>page.evaluate(()=>{
+    const stored=localStorage.getItem('medicinsk-svenska.flashcard-session.v1');
+    return stored?JSON.parse(stored).selectedCardIds.length:0;
+  })).toBe(available);
+  const all=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!).selectedCardIds as string[]);
   expect(new Set(all).size).toBe(all.length); expect(all).toHaveLength(available);
   await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=fi-sv&amount=50&session=small-pool');
   await expect(page.locator('#progress')).toHaveText('0 / 13');
 });
 test('description accepts correct and incorrect answers and can reveal',async({page})=>{
+  await page.addInitScript(()=>{let calls=0;Math.random=()=>calls++<29?0:0.999});
   await page.goto('/kuvailu'); const data=await page.locator('#descriptions-data').textContent(); const firstText=await page.locator('#description-text').textContent();
   const items=JSON.parse(data!); const item=items.find((x:{descriptionSv:string})=>x.descriptionSv===firstText);
+  expect(item.id).toBe('beskrivning-023');
   const interfaceText=await page.locator('body').innerText();
   for(const removed of ['Till startsidan','Beskrivningsövning','Vad beskrivs?','Ditt svar','Kontrollera','Visa svaret','Rätt svar','Nästa','Bra arbetat','Öva misstagen igen']) expect(interfaceText).not.toContain(removed);
   await expect(page.locator('#description-text')).toBeVisible(); await expect(page.locator('#description-text')).toHaveAttribute('lang','sv');
   await expect(page.getByLabel('Vastauksesi')).toHaveAttribute('lang','sv');
-  await page.getByLabel('Vastauksesi').fill(item.answerSv.toUpperCase()+'.'); await page.getByRole('button',{name:'Tarkista'}).click(); await expect(page.getByText('Oikein',{exact:true})).toBeVisible();
-  await expect(page.locator('#canonical-answer')).toHaveText(item.answerSv); await expect(page.locator('#canonical-answer')).toHaveAttribute('lang','sv');
+  await page.getByLabel('Vastauksesi').fill('HJÄRTAT.'); await page.getByRole('button',{name:'Tarkista'}).click(); await expect(page.getByText('Oikein',{exact:true})).toBeVisible();
+  await expect(page.locator('#canonical-answer')).toHaveText('ett hjärta'); await expect(page.locator('#canonical-answer')).toHaveAttribute('lang','sv');
   await page.getByRole('button',{name:'Seuraava'}).click(); await page.getByLabel('Vastauksesi').fill('fel svar'); await page.getByRole('button',{name:'Tarkista'}).click(); await expect(page.getByText('Ei aivan')).toBeVisible();
   await page.getByRole('button',{name:'Seuraava'}).click(); await page.getByRole('button',{name:'Näytä vastaus'}).click(); await expect(page.getByText('Vastaus näytetty')).toBeVisible();
 });
@@ -123,5 +134,71 @@ test('mobile grading controls are thumb-sized and the timer is visible',async({p
     const box=await page.getByRole('button',{name}).boundingBox();
     expect(box?.height).toBeGreaterThanOrEqual(52);
   }
+  expect((await new AxeBuilder({page}).analyze()).violations.filter(v=>['serious','critical'].includes(v.impact??''))).toEqual([]);
+});
+
+test('corrected anatomy card works deterministically in both directions',async({page})=>{
+  const card={id:'anatomi-004',deckId:'anatomi'};
+  await openSpecificCard(page,card,'fi-sv');
+  await expect(page.locator('#front-term')).toHaveText('munanjohdin');
+  await page.getByRole('button',{name:'Näytä vastaus'}).click();
+  await expect(page.locator('#back-term')).toHaveText('en äggledare');
+  await openSpecificCard(page,card,'sv-fi');
+  await expect(page.locator('#front-term')).toHaveText('en äggledare');
+  await page.getByRole('button',{name:'Näytä vastaus'}).click();
+  await expect(page.locator('#back-term')).toHaveText('munanjohdin');
+});
+
+test('grammar is hidden before reveal and uses Finnish labels after reveal',async({page})=>{
+  await openSpecificCard(page,{id:'anatomi-024',deckId:'anatomi'},'fi-sv');
+  await expect(page.locator('#grammar')).toBeHidden();
+  await expect(page.getByText('fötter, fötterna',{exact:false})).toBeHidden();
+  await page.getByRole('button',{name:'Näytä vastaus'}).click();
+  await expect(page.locator('#back-term')).toHaveText('en fot');
+  await expect(page.locator('#grammar')).toHaveText('substantiivi · fötter, fötterna');
+  await expect(page.getByText('noun',{exact:true})).toHaveCount(0);
+
+  await page.setViewportSize({width:390,height:844});
+  await openSpecificCard(page,{id:'mediciner-095',deckId:'mediciner'},'fi-sv');
+  expect(await page.locator('#front-term').evaluate(element=>element.scrollWidth<=element.clientWidth)).toBe(true);
+  await page.getByRole('button',{name:'Näytä vastaus'}).click();
+  await expect(page.locator('#grammar')).toHaveText('adjektiivi');
+  await expect(page.locator('#grammar')).not.toContainText('·');
+  await expect(page.getByText('adjective',{exact:true})).toHaveCount(0);
+});
+
+test('rendered payloads contain only explicit client fields',async({page})=>{
+  await page.goto('/kortit/harjoitus?mode=deck&deck=anatomi&direction=fi-sv&amount=10&session=payload-test');
+  const cards=JSON.parse((await page.locator('#cards-data').textContent())!);
+  const decks=JSON.parse((await page.locator('#decks-data').textContent())!);
+  const cardKeys=new Set(['id','deckId','fi','sv','article','partOfSpeech','inflection']);
+  expect(cards.every((card:Record<string,unknown>)=>Object.keys(card).every(key=>cardKeys.has(key)))).toBe(true);
+  expect(decks.every((deck:Record<string,unknown>)=>Object.keys(deck).every(key=>['id','nameFi'].includes(key)))).toBe(true);
+  expect(await page.locator('html').innerText()).not.toContain('published');
+  await page.goto('/kuvailu');
+  const descriptions=JSON.parse((await page.locator('#descriptions-data').textContent())!);
+  const descriptionKeys=new Set(['id','descriptionSv','answerSv','acceptedInflections','article','inflection']);
+  expect(descriptions.every((item:Record<string,unknown>)=>Object.keys(item).every(key=>descriptionKeys.has(key)))).toBe(true);
+});
+
+test('removed card IDs in stored sessions fail safely',async({page})=>{
+  const sessionId='removed-card-test';
+  await page.goto(`/kortit/harjoitus?mode=deck&deck=sjukdomar&direction=fi-sv&amount=10&session=${sessionId}`);
+  await page.evaluate(({key,id,currentSessionId})=>{
+    localStorage.setItem(key,JSON.stringify({schemaVersion:1,sessionId:currentSessionId,mode:'deck',sourceDeckId:'sjukdomar',direction:'fi-sv',requestedAmount:10,selectedCardIds:[id],unseenCardQueue:[],currentCardId:id,masteredCardIds:[],pendingRetries:[],attemptCountByCard:{},firstAttemptCorrectByCard:{},totalMissedCount:0,startedAt:Date.now(),revealed:false}));
+  },{key:'medicinsk-svenska.flashcard-session.v1',id:'sjukdomar-117',currentSessionId:sessionId});
+  await page.reload();
+  await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeVisible();
+  const state=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
+  expect(state.selectedCardIds).not.toContain('sjukdomar-117');
+  expect(state.selectedCardIds).toHaveLength(10);
+});
+
+test('long medical compounds wrap at 320 by 568 without accessibility violations',async({page})=>{
+  await page.setViewportSize({width:320,height:568});
+  await openSpecificCard(page,{id:'sjukdomar-091',deckId:'sjukdomar'},'sv-fi');
+  await expect(page.locator('#front-term')).toHaveText('kolmonoxidförgiftning');
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);
+  expect(await page.locator('#front-term').evaluate(element=>element.scrollWidth<=element.clientWidth)).toBe(true);
   expect((await new AxeBuilder({page}).analyze()).violations.filter(v=>['serious','critical'].includes(v.impact??''))).toEqual([]);
 });

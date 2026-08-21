@@ -105,7 +105,7 @@ h2 { margin: 0; font-size: 1rem; }
 .flashcard:not(:disabled):hover { border-color: var(--accent); }
 .flashcard:disabled { cursor: default; opacity: 1; }
 #answer-area { display: flex; flex-direction: column; align-items: center; }
-.term { font-family: Georgia, serif; font-size: clamp(2.4rem, 8vw, 4.6rem); line-height: 1.08; overflow-wrap: break-word; hyphens: auto; }
+.term { max-width: 100%; font-family: Georgia, serif; font-size: clamp(2.4rem, 8vw, 4.6rem); line-height: 1.08; overflow-wrap: anywhere; hyphens: auto; }
 .term.answer { color: var(--accent-dark); font-size: clamp(2rem, 6vw, 3.6rem); }
 .divider { display: block; width: 42px; margin: 28px auto; border-top: 1px solid var(--border); }
 #grammar { margin: 12px 0 0; color: var(--muted); font-size: .88rem; }
@@ -146,8 +146,8 @@ h2 { margin: 0; font-size: 1rem; }
   .practice-top strong, .practice-top h1 { grid-row: 2; grid-column: 1 / -1; justify-self: start; }
   .session-status { justify-self: end; }
   .flashcard { min-height: 320px; }
-  .term { font-size: clamp(1.8rem, 10vw, 2.5rem); }
-  .term.answer { font-size: clamp(1.65rem, 9vw, 2.2rem); }
+  .term { font-size: clamp(1.35rem, 6.5vw, 1.8rem); }
+  .term.answer { font-size: clamp(1.35rem, 6vw, 1.75rem); }
   .action-row { position: sticky; bottom: 0; display: grid; grid-template-columns: 1fr 1fr; padding: 10px 0 calc(10px + env(safe-area-inset-bottom)); margin-top: 8px; background: var(--background); }
   .summary-actions { flex-direction: column; }
   .action-row button, .summary-actions > * { width: 100%; min-width: 0; }

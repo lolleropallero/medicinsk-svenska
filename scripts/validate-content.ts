@@ -1,57 +1,176 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import type { Deck, DescriptionExercise, Flashcard, PublicationStatus } from '../src/types/content';
 
-const read = <T>(name: string) => JSON.parse(readFileSync(resolve('content', name), 'utf8')) as T;
-const allowed = new Set<PublicationStatus>(['published', 'review', 'skipped']);
-const alternativePattern = /\s[\/;]\s|\n|\s+(?:eller|tai)\s+/i;
-const errors: string[] = [];
-const assert = (condition: unknown, message: string) => { if (!condition) errors.push(message); };
+type RecordValue = Record<string, unknown>;
 
-export function validateContent(decks: Deck[], cards: Flashcard[], descriptions: DescriptionExercise[]): string[] {
-  const found: string[] = [];
-  const check = (condition: unknown, message: string) => { if (!condition) found.push(message); };
-  const deckIds = new Set<string>();
-  for (const deck of decks) {
-    check(Boolean(deck.id), 'deck missing ID');
-    check(!deckIds.has(deck.id), `duplicate deck ID: ${deck.id}`);
-    deckIds.add(deck.id);
-    check(allowed.has(deck.status), `invalid deck publication status: ${deck.id}`);
-    check(Boolean(deck.nameFi && deck.descriptionFi && deck.sourceDocument), `incomplete deck: ${deck.id}`);
-  }
-  const ids = new Set<string>(), pairs = new Set<string>();
-  for (const card of cards) {
-    check(Boolean(card.id), 'flashcard missing ID');
-    check(!ids.has(card.id), `duplicate flashcard ID: ${card.id}`); ids.add(card.id);
-    check(deckIds.has(card.deckId), `unknown deck ID on ${card.id}: ${card.deckId}`);
-    check(Boolean(card.fi.trim() && card.sv.trim()), `empty term on ${card.id}`);
-    check(!alternativePattern.test(card.fi) && !alternativePattern.test(card.sv), `multiple alternatives on ${card.id}`);
-    check(!card.fi.includes('/') && !card.sv.includes('/'), `slash-separated term on ${card.id}`);
-    check(!card.fi.includes('\n') && !card.sv.includes('\n'), `newline in term on ${card.id}`);
-    check(!/\s/.test(card.fi.trim()) && !/\s/.test(card.sv.trim()), `term is not one lexical item on ${card.id}`);
-    check(allowed.has(card.status), `invalid card publication status: ${card.id}`);
-    const pair = `${card.fi.toLocaleLowerCase('fi')}\0${card.sv.toLocaleLowerCase('sv')}`;
-    check(!pairs.has(pair), `duplicate canonical pair: ${card.id}`); pairs.add(pair);
-    check(Boolean(card.source?.document && card.source.page > 0), `missing source metadata: ${card.id}`);
-  }
-  const descriptionIds = new Set<string>();
-  for (const item of descriptions) {
-    check(Boolean(item.id), 'description missing ID');
-    check(!descriptionIds.has(item.id), `duplicate description ID: ${item.id}`); descriptionIds.add(item.id);
-    check(Boolean(item.answerSv?.trim()), `missing description answer: ${item.id}`);
-    check(Boolean(item.descriptionSv?.trim()), `missing Swedish description: ${item.id}`);
-    check(!alternativePattern.test(item.answerSv), `multiple description answers: ${item.id}`);
-    check(allowed.has(item.status), `invalid description publication status: ${item.id}`);
-    check(Boolean(item.source?.document && item.source.page > 0 && item.source.section), `description missing source metadata: ${item.id}`);
-  }
-  check(descriptions.filter((item) => item.status === 'published').length >= 40, 'fewer than 40 published description exercises');
-  const publishedIds = cards.filter((c) => c.status === 'published').map((c) => c.id);
-  check(new Set(publishedIds).size === publishedIds.length, 'lucky-session pool contains duplicate identities');
-  return found;
+const publicationStatuses = new Set(['published', 'review', 'skipped']);
+const partOfSpeechValues = new Set(['noun', 'verb', 'adjective', 'adverb', 'other']);
+const articleValues = new Set(['en', 'ett']);
+const deckKeys = new Set(['id', 'nameFi', 'status']);
+const cardKeys = new Set(['id', 'deckId', 'fi', 'sv', 'article', 'partOfSpeech', 'inflection', 'status']);
+const descriptionKeys = new Set([
+  'id', 'descriptionSv', 'answerSv', 'acceptedInflections', 'article', 'inflection', 'status',
+]);
+const answerAlternativePattern = /[\/;\n]|\s+(?:eller|tai)\s+/iu;
+
+const read = (name: string): unknown[] => JSON.parse(readFileSync(resolve('content', name), 'utf8')) as unknown[];
+const isRecord = (value: unknown): value is RecordValue => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+const text = (value: unknown): string => typeof value === 'string' ? value : '';
+
+export function normalizeCanonical(value: string, locale: 'fi' | 'sv'): string {
+  return value.normalize('NFKC').trim().replace(/\s+/gu, ' ').toLocaleLowerCase(locale);
 }
 
-const decks = read<Deck[]>('decks.json'), cards = read<Flashcard[]>('flashcards.json'), descriptions = read<DescriptionExercise[]>('descriptions.json');
-errors.push(...validateContent(decks, cards, descriptions));
-assert(decks.filter((d) => d.status === 'published').length === 5, 'exactly five decks must be published');
-if (errors.length) { console.error(errors.map((e) => `- ${e}`).join('\n')); process.exit(1); }
+function hasValidInflection(value: unknown): boolean {
+  return (
+    typeof value === 'string' &&
+    value === value.trim() &&
+    value.length > 0 &&
+    value.length <= 160 &&
+    !/[\/\n\r]/u.test(value)
+  );
+}
+
+function unknownKeys(value: RecordValue, allowed: ReadonlySet<string>): string[] {
+  return Object.keys(value).filter((key) => !allowed.has(key));
+}
+
+function isGrammaticalForm(canonical: string, candidate: string): boolean {
+  const base = normalizeCanonical(canonical, 'sv');
+  const form = normalizeCanonical(candidate, 'sv');
+  return form.length > base.length && form.startsWith(base);
+}
+
+export function validateContent(decksInput: unknown[], cardsInput: unknown[], descriptionsInput: unknown[]): string[] {
+  const errors: string[] = [];
+  const check = (condition: unknown, message: string) => { if (!condition) errors.push(message); };
+
+  const deckIds = new Set<string>();
+  for (const raw of decksInput) {
+    if (!isRecord(raw)) { errors.push('deck must be an object'); continue; }
+    const id = text(raw.id);
+    const extra = unknownKeys(raw, deckKeys);
+    check(extra.length === 0, `unknown deck properties on ${id || '(missing ID)'}: ${extra.join(', ')}`);
+    check(id.trim().length > 0, 'deck missing ID');
+    check(!deckIds.has(id), `duplicate deck ID: ${id}`);
+    if (id) deckIds.add(id);
+    check(text(raw.nameFi).trim().length > 0, `deck missing name: ${id}`);
+    check(publicationStatuses.has(text(raw.status)), `invalid deck publication status: ${id}`);
+  }
+
+  const cardIds = new Set<string>();
+  const pairs = new Set<string>();
+  const finnishMappings = new Map<string, string>();
+  const swedishMappings = new Map<string, string>();
+  const publishedFinnish = new Set<string>();
+  const publishedSwedish = new Set<string>();
+
+  for (const raw of cardsInput) {
+    if (!isRecord(raw)) { errors.push('flashcard must be an object'); continue; }
+    const id = text(raw.id);
+    const deckId = text(raw.deckId);
+    const fi = text(raw.fi);
+    const sv = text(raw.sv);
+    const status = text(raw.status);
+    const partOfSpeech = text(raw.partOfSpeech);
+    const extra = unknownKeys(raw, cardKeys);
+
+    check(extra.length === 0, `unknown flashcard properties on ${id || '(missing ID)'}: ${extra.join(', ')}`);
+    check(id.trim().length > 0, 'flashcard missing ID');
+    check(!cardIds.has(id), `duplicate flashcard ID: ${id}`);
+    if (id) cardIds.add(id);
+    check(deckIds.has(deckId), `unknown deck ID on ${id}: ${deckId}`);
+    check(fi.trim().length > 0 && sv.trim().length > 0, `empty term on ${id}`);
+    check(!fi.includes('\n') && !fi.includes('\r') && !sv.includes('\n') && !sv.includes('\r'), `newline in term on ${id}`);
+    check(!fi.includes('/') && !sv.includes('/'), `slash-separated term on ${id}`);
+    check(!/\s/u.test(fi.trim()) && !/\s/u.test(sv.trim()), `term is not one lexical item on ${id}`);
+    check(!/^(?:en|ett)\s+/iu.test(sv.trim()), `article embedded in Swedish term on ${id}`);
+    check(publicationStatuses.has(status), `invalid card publication status: ${id}`);
+    check(partOfSpeechValues.has(partOfSpeech), `missing or invalid part of speech on ${id}`);
+    if (raw.article !== undefined) {
+      check(articleValues.has(text(raw.article)), `invalid article on ${id}`);
+      check(partOfSpeech === 'noun', `article on non-noun card ${id}`);
+    }
+    if (raw.inflection !== undefined) check(hasValidInflection(raw.inflection), `malformed inflection on ${id}`);
+
+    if (status === 'published' && fi.trim() && sv.trim()) {
+      const normalizedFi = normalizeCanonical(fi, 'fi');
+      const normalizedSv = normalizeCanonical(sv, 'sv');
+      const pair = `${normalizedFi}\0${normalizedSv}`;
+      check(!pairs.has(pair), `duplicate canonical pair: ${id}`);
+      pairs.add(pair);
+      const priorSv = finnishMappings.get(normalizedFi);
+      check(priorSv === undefined || priorSv === normalizedSv, `Finnish term maps to multiple Swedish terms: ${fi}`);
+      finnishMappings.set(normalizedFi, normalizedSv);
+      const priorFi = swedishMappings.get(normalizedSv);
+      check(priorFi === undefined || priorFi === normalizedFi, `Swedish term maps to multiple Finnish terms: ${sv}`);
+      swedishMappings.set(normalizedSv, normalizedFi);
+      publishedFinnish.add(normalizedFi);
+      publishedSwedish.add(normalizedSv);
+    }
+  }
+
+  const descriptionIds = new Set<string>();
+  let publishedDescriptionCount = 0;
+  for (const raw of descriptionsInput) {
+    if (!isRecord(raw)) { errors.push('description exercise must be an object'); continue; }
+    const id = text(raw.id);
+    const description = text(raw.descriptionSv);
+    const answer = text(raw.answerSv);
+    const status = text(raw.status);
+    const extra = unknownKeys(raw, descriptionKeys);
+
+    check(extra.length === 0, `unknown description properties on ${id || '(missing ID)'}: ${extra.join(', ')}`);
+    check(id.trim().length > 0, 'description missing ID');
+    check(!descriptionIds.has(id), `duplicate description ID: ${id}`);
+    if (id) descriptionIds.add(id);
+    check(description.trim().length > 0, `empty description on ${id}`);
+    check(answer.trim().length > 0, `empty canonical answer on ${id}`);
+    check(!answerAlternativePattern.test(answer), `multiple description answers on ${id}`);
+    check(publicationStatuses.has(status), `invalid description publication status: ${id}`);
+    if (status === 'published') publishedDescriptionCount += 1;
+    if (raw.article !== undefined) check(articleValues.has(text(raw.article)), `invalid description article on ${id}`);
+    if (raw.inflection !== undefined) check(hasValidInflection(raw.inflection), `malformed description inflection on ${id}`);
+
+    const normalizedAnswer = normalizeCanonical(answer, 'sv');
+    check(
+      !publishedFinnish.has(normalizedAnswer) || publishedSwedish.has(normalizedAnswer),
+      `Finnish canonical answer on ${id}`,
+    );
+
+    if (raw.acceptedInflections !== undefined) {
+      check(Array.isArray(raw.acceptedInflections), `accepted inflections must be an array on ${id}`);
+      if (Array.isArray(raw.acceptedInflections)) {
+        const accepted = raw.acceptedInflections;
+        const normalized = accepted.map((form) => normalizeCanonical(text(form), 'sv'));
+        check(accepted.every((form) => typeof form === 'string' && form.trim().length > 0), `malformed accepted inflection on ${id}`);
+        check(new Set(normalized).size === normalized.length, `duplicate accepted inflection on ${id}`);
+        check(!normalized.includes(normalizedAnswer), `canonical answer repeated in accepted inflections on ${id}`);
+        check(
+          accepted.every((form) => typeof form === 'string' && isGrammaticalForm(answer, form)),
+          `accepted answer is not a grammatical form on ${id}`,
+        );
+        check(
+          normalized.every((form) => !publishedFinnish.has(form) || publishedSwedish.has(form)),
+          `Finnish accepted answer on ${id}`,
+        );
+      }
+    }
+  }
+
+  check(publishedDescriptionCount >= 40, 'fewer than 40 published description exercises');
+  return errors;
+}
+
+const decks = read('decks.json');
+const cards = read('flashcards.json');
+const descriptions = read('descriptions.json');
+const errors = validateContent(decks, cards, descriptions);
+if (decks.filter((deck) => isRecord(deck) && deck.status === 'published').length !== 5) {
+  errors.push('exactly five decks must be published');
+}
+if (errors.length) {
+  console.error(errors.map((error) => `- ${error}`).join('\n'));
+  process.exit(1);
+}
 console.log(`Content valid: ${decks.length} decks, ${cards.length} cards, ${descriptions.length} descriptions.`);

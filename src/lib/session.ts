@@ -1,4 +1,4 @@
-import type { Direction, Flashcard } from '../types/content';
+import type { Direction, FlashcardClient } from '../types/content';
 
 export const RETRY_DELAY_MS = 5 * 60 * 1000;
 export const SESSION_SCHEMA_VERSION = 1 as const;
@@ -38,7 +38,7 @@ export interface CreateSessionOptions {
   requestedAmount: RequestedAmount;
 }
 
-export function cardSides(card: Flashcard, direction: Direction) {
+export function cardSides(card: FlashcardClient, direction: Direction) {
   if (direction === 'sv-fi') {
     return {
       front: `${card.article ? `${card.article} ` : ''}${card.sv}`,
@@ -72,19 +72,19 @@ export function shuffled<T>(items: readonly T[], random: () => number = Math.ran
 }
 
 export function selectSessionCards(
-  cards: readonly Flashcard[],
+  cards: readonly FlashcardClient[],
   requestedAmount: RequestedAmount,
   random: () => number = Math.random,
-): Flashcard[] {
-  const uniquePublishedCards = Array.from(
-    new Map(cards.filter((card) => card.status === 'published').map((card) => [card.id, card])).values(),
+): FlashcardClient[] {
+  const uniqueCards = Array.from(
+    new Map(cards.map((card) => [card.id, card])).values(),
   );
-  const randomized = shuffled(uniquePublishedCards, random);
+  const randomized = shuffled(uniqueCards, random);
   return requestedAmount === 'all' ? randomized : randomized.slice(0, requestedAmount);
 }
 
 export function createSession(
-  cards: readonly Flashcard[],
+  cards: readonly FlashcardClient[],
   options: CreateSessionOptions,
   now = Date.now(),
   random: () => number = Math.random,

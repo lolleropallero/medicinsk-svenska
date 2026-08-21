@@ -11,16 +11,15 @@ import {
   seededRandom,
   selectSessionCards,
 } from '../../src/lib/session';
-import type { Flashcard } from '../../src/types/content';
+import type { FlashcardClient } from '../../src/types/content';
 
-const card = (n: number): Flashcard => ({
+const card = (n: number): FlashcardClient => ({
   id: `c${n}`,
   deckId: 'd',
   fi: `fi${n}`,
   sv: `sv${n}`,
   article: 'en',
-  status: 'published',
-  source: { document: 'x.pdf', page: 1 },
+  partOfSpeech: 'noun',
 });
 const options = { sessionId: 'session-1', mode: 'deck' as const, sourceDeckId: 'd', direction: 'fi-sv' as const, requestedAmount: 10 as const };
 
@@ -49,10 +48,9 @@ describe('flashcard selection', () => {
     );
   });
 
-  it('deduplicates identities and excludes unpublished cards', () => {
+  it('deduplicates identities in an already published client pool', () => {
     const duplicate = card(1);
-    const review = { ...card(2), status: 'review' as const };
-    expect(selectSessionCards([duplicate, duplicate, review], 10, seededRandom(1)).map((item) => item.id)).toEqual(['c1']);
+    expect(selectSessionCards([duplicate, duplicate], 10, seededRandom(1)).map((item) => item.id)).toEqual(['c1']);
   });
 });
 

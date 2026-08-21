@@ -1,10 +1,10 @@
 import { isAcceptedAnswer } from '../lib/descriptions';
 import { shuffled } from '../lib/session';
-import type { DescriptionExercise } from '../types/content';
+import type { DescriptionExerciseClient } from '../types/content';
 
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-const all = JSON.parse(byId<HTMLScriptElement>('descriptions-data').textContent ?? '[]') as DescriptionExercise[];
-let items = shuffled(all), missed: DescriptionExercise[] = [], correct = 0, index = 0, resolved = false;
+const all = JSON.parse(byId<HTMLScriptElement>('descriptions-data').textContent ?? '[]') as DescriptionExerciseClient[];
+let items = shuffled(all), missed: DescriptionExerciseClient[] = [], correct = 0, index = 0, resolved = false;
 const session = byId('description-session'), summaryView = byId('description-summary');
 
 const render = () => {

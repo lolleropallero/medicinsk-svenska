@@ -1,4 +1,5 @@
 import { test } from '@playwright/test';
+import { openSpecificCard } from './helpers';
 
 test('capture required visual QA views', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -6,18 +7,30 @@ test('capture required visual QA views', async ({ page }) => {
   await page.screenshot({ path: 'tmp/visual/landing-desktop.png', fullPage: true });
   await page.goto('/kortit');
   await page.screenshot({ path: 'tmp/visual/decks-desktop.png', fullPage: true });
-  await page.goto('/kortit/harjoitus?deck=anatomi&direction=fi-sv');
+  await openSpecificCard(page, { id: 'anatomi-024', deckId: 'anatomi' }, 'fi-sv');
   await page.getByRole('button', { name: /Näytä vastaus/ }).click();
-  await page.screenshot({ path: 'tmp/visual/flashcard-desktop.png', fullPage: true });
+  await page.screenshot({ path: 'tmp/visual/noun-irregular-desktop.png', fullPage: true });
+  await openSpecificCard(page, { id: 'anatomi-004', deckId: 'anatomi' }, 'sv-fi');
+  await page.getByRole('button', { name: /Näytä vastaus/ }).click();
+  await page.screenshot({ path: 'tmp/visual/swedish-finnish-desktop.png', fullPage: true });
+  await openSpecificCard(page, { id: 'mediciner-096', deckId: 'mediciner' }, 'fi-sv');
+  await page.getByRole('button', { name: /Näytä vastaus/ }).click();
+  await page.screenshot({ path: 'tmp/visual/verb-forms-desktop.png', fullPage: true });
   await page.goto('/kuvailu');
   await page.screenshot({ path: 'tmp/visual/description-desktop.png', fullPage: true });
-  await page.setViewportSize({ width: 320, height: 760 });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openSpecificCard(page, { id: 'mediciner-095', deckId: 'mediciner' }, 'fi-sv');
+  await page.getByRole('button', { name: /Näytä vastaus/ }).click();
+  await page.screenshot({ path: 'tmp/visual/adjective-mobile.png', fullPage: true });
+
+  await page.setViewportSize({ width: 320, height: 568 });
   await page.goto('/');
   await page.screenshot({ path: 'tmp/visual/landing-mobile.png', fullPage: true });
   await page.goto('/kortit');
   await page.screenshot({ path: 'tmp/visual/decks-mobile.png', fullPage: true });
-  await page.goto('/kortit/harjoitus?deck=avdelningar&direction=sv-fi');
-  await page.screenshot({ path: 'tmp/visual/flashcard-mobile.png', fullPage: true });
+  await openSpecificCard(page, { id: 'sjukdomar-091', deckId: 'sjukdomar' }, 'sv-fi');
+  await page.screenshot({ path: 'tmp/visual/long-compound-mobile.png', fullPage: true });
   await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=fi-sv&amount=10&session=visual-waiting');
   for (let index = 0; index < 10; index += 1) {
     await page.getByRole('button', { name: 'Näytä vastaus' }).click();

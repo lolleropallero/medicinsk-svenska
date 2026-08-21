@@ -4,4290 +4,1782 @@
     "deckId": "anatomi",
     "fi": "poskiontelot",
     "sv": "bihålor",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "1"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-002",
     "deckId": "anatomi",
     "fi": "veri",
     "sv": "blod",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "2"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-003",
     "deckId": "anatomi",
     "fi": "häpyhuulet",
     "sv": "blygdläppar",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "3"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-004",
     "deckId": "anatomi",
-    "fi": "monatorvi",
+    "fi": "munanjohdin",
     "sv": "äggledare",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "4"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-005",
     "deckId": "anatomi",
     "fi": "munasarja",
     "sv": "äggstock",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "5"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-006",
     "deckId": "anatomi",
     "fi": "peräaukko",
     "sv": "analöppning",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "6"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-007",
     "deckId": "anatomi",
     "fi": "peräsuoli",
     "sv": "ändtarm",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "7"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-008",
     "deckId": "anatomi",
     "fi": "käsivarsi",
     "sv": "arm",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "8"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-009",
     "deckId": "anatomi",
     "fi": "kyynärpää",
     "sv": "armbåge",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "9"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-010",
     "deckId": "anatomi",
     "fi": "kainalo",
     "sv": "armhåla",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "10"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-011",
     "deckId": "anatomi",
     "fi": "valtimo",
     "sv": "artär",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "11"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-012",
     "deckId": "anatomi",
     "fi": "olkapää",
     "sv": "axel",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "12"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-013",
     "deckId": "anatomi",
     "fi": "lisäkives",
     "sv": "bitestikel",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "13"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-014",
     "deckId": "anatomi",
     "fi": "umpisuoli",
     "sv": "blindtarm",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "14"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-016",
     "deckId": "anatomi",
     "fi": "verisolu",
     "sv": "blodkropp",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "16"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-017",
     "deckId": "anatomi",
     "fi": "rintakehä",
     "sv": "bröstkorg",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "17"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-018",
     "deckId": "anatomi",
     "fi": "nänni",
     "sv": "bröstvårta",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "18"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-019",
     "deckId": "anatomi",
     "fi": "maha",
     "sv": "buk",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "19"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-020",
     "deckId": "anatomi",
     "fi": "haima",
     "sv": "bukspottkörtel",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "20"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-021",
     "deckId": "anatomi",
     "fi": "välilevy",
     "sv": "disk",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "21"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-022",
     "deckId": "anatomi",
     "fi": "raaja",
     "sv": "extremitet",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "22"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-023",
     "deckId": "anatomi",
     "fi": "esinahka",
     "sv": "förhud",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "23"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "anatomi-024",
+    "deckId": "anatomi",
+    "fi": "jalkaterä",
+    "sv": "fot",
+    "article": "en",
+    "partOfSpeech": "noun",
+    "inflection": "fötter, fötterna",
+    "status": "published"
   },
   {
     "id": "anatomi-025",
     "deckId": "anatomi",
     "fi": "jalkapohja",
     "sv": "fotsula",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "25"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-026",
     "deckId": "anatomi",
     "fi": "sappi",
     "sv": "galla",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "26"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-027",
     "deckId": "anatomi",
     "fi": "kitalaki",
     "sv": "gom",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "27"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-028",
     "deckId": "anatomi",
     "fi": "leuka",
     "sv": "haka",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "28"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-029",
     "deckId": "anatomi",
     "fi": "kantapää",
     "sv": "häl",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "29"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-031",
     "deckId": "anatomi",
     "fi": "kämmen",
     "sv": "handflata",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "31"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-032",
     "deckId": "anatomi",
     "fi": "ranne",
     "sv": "handled",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "32"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "anatomi-033",
+    "deckId": "anatomi",
+    "fi": "käsi",
+    "sv": "hand",
+    "article": "en",
+    "partOfSpeech": "noun",
+    "inflection": "händer, händerna",
+    "status": "published"
   },
   {
     "id": "anatomi-034",
     "deckId": "anatomi",
     "fi": "aivot",
     "sv": "hjärna",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "34"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-035",
     "deckId": "anatomi",
     "fi": "päälaki",
     "sv": "hjässa",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "35"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-036",
     "deckId": "anatomi",
     "fi": "lonkka",
     "sv": "höft",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "36"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-037",
     "deckId": "anatomi",
     "fi": "sarveiskalvo",
     "sv": "hornhinna",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "37"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-038",
     "deckId": "anatomi",
     "fi": "poski",
     "sv": "kind",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "38"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-039",
     "deckId": "anatomi",
     "fi": "polvilumpio",
     "sv": "knäskål",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "39"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-040",
     "deckId": "anatomi",
     "fi": "nikama",
     "sv": "kota",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "40"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-041",
     "deckId": "anatomi",
     "fi": "sepelvaltimo",
     "sv": "kransartär",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "41"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-042",
     "deckId": "anatomi",
     "fi": "huuli",
     "sv": "läpp",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "42"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-043",
     "deckId": "anatomi",
     "fi": "nivel",
     "sv": "led",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "43"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-044",
     "deckId": "anatomi",
     "fi": "maksa",
     "sv": "lever",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "44"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-045",
     "deckId": "anatomi",
     "fi": "kohtu",
     "sv": "livmoder",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "45"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-046",
     "deckId": "anatomi",
     "fi": "henkitorvi",
     "sv": "luftstrupe",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "46"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-047",
     "deckId": "anatomi",
     "fi": "keuhko",
     "sv": "lunga",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "47"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-048",
     "deckId": "anatomi",
     "fi": "imusolmuke",
     "sv": "lymfknut",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "48"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-049",
     "deckId": "anatomi",
     "fi": "vatsa",
     "sv": "mage",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "49"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-050",
     "deckId": "anatomi",
     "fi": "mahalaukku",
     "sv": "magsäck",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "50"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-051",
     "deckId": "anatomi",
     "fi": "ruokatorvi",
     "sv": "matstrupe",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "51"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-052",
     "deckId": "anatomi",
     "fi": "nivelkierukka",
     "sv": "menisk",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "52"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-053",
     "deckId": "anatomi",
     "fi": "vyötärö",
     "sv": "midja",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "53"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-054",
     "deckId": "anatomi",
     "fi": "perna",
     "sv": "mjälte",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "54"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-055",
     "deckId": "anatomi",
     "fi": "suu",
     "sv": "mun",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "55"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-056",
     "deckId": "anatomi",
     "fi": "lihas",
     "sv": "muskel",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "56"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-057",
     "deckId": "anatomi",
     "fi": "niska",
     "sv": "nacke",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "57"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-058",
     "deckId": "anatomi",
     "fi": "kynsi",
     "sv": "nagel",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "58"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-059",
     "deckId": "anatomi",
     "fi": "nenä",
     "sv": "näsa",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "59"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-060",
     "deckId": "anatomi",
     "fi": "sierain",
     "sv": "näsborre",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "60"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-061",
     "deckId": "anatomi",
     "fi": "verkkokalvo",
     "sv": "näthinna",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "61"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-062",
     "deckId": "anatomi",
     "fi": "napa",
     "sv": "navel",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "62"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-063",
     "deckId": "anatomi",
     "fi": "hermo",
     "sv": "nerv",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "63"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-064",
     "deckId": "anatomi",
     "fi": "munuainen",
     "sv": "njure",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "64"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-065",
     "deckId": "anatomi",
     "fi": "silmäripset",
     "sv": "ögonfrans",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "65"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-066",
     "deckId": "anatomi",
     "fi": "otsa",
     "sv": "panna",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "66"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-067",
     "deckId": "anatomi",
     "fi": "siitin",
     "sv": "penis",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "67"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-068",
     "deckId": "anatomi",
     "fi": "eturauhanen",
     "sv": "prostata",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "68"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-069",
     "deckId": "anatomi",
     "fi": "kivespussi",
     "sv": "pung",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "69"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "anatomi-070",
-    "deckId": "anatomi",
-    "fi": "takamus",
-    "sv": "rumpa",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "70"
-    },
-    "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-071",
     "deckId": "anatomi",
     "fi": "selkä",
     "sv": "rygg",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "71"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-072",
     "deckId": "anatomi",
     "fi": "selkäydin",
     "sv": "ryggmärg",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "72"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-073",
     "deckId": "anatomi",
     "fi": "selkäranka",
     "sv": "ryggrad",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "73"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-074",
     "deckId": "anatomi",
     "fi": "jänne",
     "sv": "sena",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 1,
-      "item": "74"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-075",
     "deckId": "anatomi",
     "fi": "sidekalvo",
     "sv": "senhinna",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "75"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-076",
     "deckId": "anatomi",
     "fi": "kylki",
     "sv": "sida",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "76"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-077",
     "deckId": "anatomi",
     "fi": "kallo",
     "sv": "skalle",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "77"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-078",
     "deckId": "anatomi",
     "fi": "hartiat",
     "sv": "skuldra",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "78"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-079",
     "deckId": "anatomi",
     "fi": "limakalvo",
     "sv": "slemhinna",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "79"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-080",
     "deckId": "anatomi",
     "fi": "emätin",
     "sv": "slida",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "80"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-082",
     "deckId": "anatomi",
     "fi": "varvas",
     "sv": "tå",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "82"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "anatomi-083",
+    "deckId": "anatomi",
+    "fi": "hammas",
+    "sv": "tand",
+    "article": "en",
+    "partOfSpeech": "noun",
+    "inflection": "tänder, tänderna",
+    "status": "published"
   },
   {
     "id": "anatomi-084",
     "deckId": "anatomi",
     "fi": "kives",
     "sv": "testikel",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "84"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-085",
     "deckId": "anatomi",
     "fi": "ohimo",
     "sv": "tinning",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "85"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-086",
     "deckId": "anatomi",
     "fi": "paksusuoli",
     "sv": "tjocktarm",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "86"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-087",
     "deckId": "anatomi",
     "fi": "tärykalvo",
     "sv": "trumhinna",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "87"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-088",
     "deckId": "anatomi",
     "fi": "peukalo",
     "sv": "tumme",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "88"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-089",
     "deckId": "anatomi",
     "fi": "kieli",
     "sv": "tunga",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "89"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-090",
     "deckId": "anatomi",
     "fi": "ohutsuoli",
     "sv": "tunntarm",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "90"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-091",
     "deckId": "anatomi",
     "fi": "virtsarakko",
     "sv": "urinblåsa",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "91"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-092",
     "deckId": "anatomi",
     "fi": "pohje",
     "sv": "vad",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "92"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-093",
     "deckId": "anatomi",
     "fi": "laskimo",
     "sv": "ven",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "93"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-094",
     "deckId": "anatomi",
     "fi": "nilkka",
     "sv": "vrist",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "94"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-095",
     "deckId": "anatomi",
     "fi": "sormi",
     "sv": "finger",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "95"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published",
+    "inflection": "fingret, fingrar, fingrarna"
   },
   {
     "id": "anatomi-096",
     "deckId": "anatomi",
     "fi": "kyynärtaive",
     "sv": "armveck",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "96"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-097",
     "deckId": "anatomi",
     "fi": "lantio",
     "sv": "bäcken",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "97"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-098",
     "deckId": "anatomi",
     "fi": "takaraivo",
     "sv": "bakhuvud",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "98"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-099",
     "deckId": "anatomi",
     "fi": "luu",
     "sv": "ben",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "99"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "anatomi-101",
-    "deckId": "anatomi",
-    "fi": "sääri",
-    "sv": "ben",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "101"
-    },
-    "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-102",
     "deckId": "anatomi",
     "fi": "lisäke",
     "sv": "bihang",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "102"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-103",
     "deckId": "anatomi",
     "fi": "verisuoni",
     "sv": "blodkärl",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "103"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "anatomi-104",
-    "deckId": "anatomi",
-    "fi": "rintakehä",
-    "sv": "bröst",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "104"
-    },
-    "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-105",
     "deckId": "anatomi",
     "fi": "sydän",
     "sv": "hjärta",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "105"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-106",
     "deckId": "anatomi",
     "fi": "pää",
     "sv": "huvud",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "106"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-107",
     "deckId": "anatomi",
     "fi": "polvi",
     "sv": "knä",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "107"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-108",
     "deckId": "anatomi",
     "fi": "polvitaive",
     "sv": "knäveck",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "108"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-109",
     "deckId": "anatomi",
     "fi": "sukupuolielin",
     "sv": "könsorgan",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "109"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-110",
     "deckId": "anatomi",
     "fi": "keskisormi",
     "sv": "långfinger",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "110"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-111",
     "deckId": "anatomi",
     "fi": "reisi",
     "sv": "lår",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "111"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-112",
     "deckId": "anatomi",
     "fi": "nivelside",
     "sv": "ledband",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "112"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-113",
     "deckId": "anatomi",
     "fi": "pikkusormi",
     "sv": "lillfinger",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "113"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-114",
     "deckId": "anatomi",
     "fi": "keuhkoputki",
     "sv": "luftrör",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "114"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-115",
     "deckId": "anatomi",
     "fi": "pallea",
     "sv": "mellangärde",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "115"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-116",
     "deckId": "anatomi",
     "fi": "välikorva",
     "sv": "mellanöra",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "116"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-117",
     "deckId": "anatomi",
     "fi": "solisluu",
     "sv": "nyckelben",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "117"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-118",
     "deckId": "anatomi",
     "fi": "silmä",
     "sv": "öga",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "118"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published",
+    "inflection": "ögat, ögon, ögonen"
   },
   {
     "id": "anatomi-119",
     "deckId": "anatomi",
     "fi": "kulmakarva",
     "sv": "ögonbryn",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "119"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-120",
     "deckId": "anatomi",
     "fi": "silmäluomi",
     "sv": "ögonlock",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "120"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-121",
     "deckId": "anatomi",
     "fi": "korva",
     "sv": "öra",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "121"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published",
+    "inflection": "örat, öron, öronen"
   },
   {
     "id": "anatomi-122",
     "deckId": "anatomi",
     "fi": "etusormi",
     "sv": "pekfinger",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "122"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-123",
     "deckId": "anatomi",
     "fi": "kylkiluu",
     "sv": "revben",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "123"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-124",
     "deckId": "anatomi",
     "fi": "nimetön",
     "sv": "ringfinger",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "124"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-125",
     "deckId": "anatomi",
     "fi": "takamus",
     "sv": "säte",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "125"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-126",
     "deckId": "anatomi",
     "fi": "luuranko",
     "sv": "skelett",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "126"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-127",
     "deckId": "anatomi",
     "fi": "sääriluu",
     "sv": "skenben",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "127"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-128",
     "deckId": "anatomi",
     "fi": "lapaluu",
     "sv": "skulderblad",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "128"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-129",
     "deckId": "anatomi",
     "fi": "kurkunpää",
     "sv": "struphuvud",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "129"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-130",
     "deckId": "anatomi",
     "fi": "nielu",
     "sv": "svalg",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "130"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-131",
     "deckId": "anatomi",
     "fi": "kitarisat",
     "sv": "gomtonsiller",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "131"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-132",
     "deckId": "anatomi",
     "fi": "hiukset",
     "sv": "hår",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "132"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-133",
     "deckId": "anatomi",
     "fi": "iho",
     "sv": "hud",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "133"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-134",
     "deckId": "anatomi",
     "fi": "väliliha",
     "sv": "mellangård",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "134"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-135",
     "deckId": "anatomi",
     "fi": "sylkirauhaset",
     "sv": "spottkörtlar",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "135"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-136",
     "deckId": "anatomi",
     "fi": "ien",
     "sv": "tandkött",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "136"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "anatomi-137",
     "deckId": "anatomi",
     "fi": "nielurisat",
     "sv": "tonsiller",
-    "status": "published",
-    "source": {
-      "document": "Anatomi ru-su.pdf",
-      "page": 2,
-      "item": "137"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-001",
-    "deckId": "sjukdomar",
-    "fi": "suonikohjut",
-    "sv": "åderbrock",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "1"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-003",
-    "deckId": "sjukdomar",
-    "fi": "allergia",
-    "sv": "allergi",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "3"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-004",
-    "deckId": "sjukdomar",
-    "fi": "hengästyneisyys",
-    "sv": "andfåddhet",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "4"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-005",
-    "deckId": "sjukdomar",
-    "fi": "hengenahdistus",
-    "sv": "andnöd",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "5"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-006",
-    "deckId": "sjukdomar",
-    "fi": "anemia",
-    "sv": "anemi",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "6"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-007",
-    "deckId": "sjukdomar",
-    "fi": "angiina",
-    "sv": "angina",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "7"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-008",
-    "deckId": "sjukdomar",
-    "fi": "ruokahaluttomuus",
-    "sv": "aptitlöshet",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "8"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-009",
-    "deckId": "sjukdomar",
-    "fi": "astma",
-    "sv": "astma",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "9"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-010",
-    "deckId": "sjukdomar",
-    "fi": "vyöruusu",
-    "sv": "bältros",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "10"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-011",
-    "deckId": "sjukdomar",
-    "fi": "rasitusvamma",
-    "sv": "belastningsskada",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "11"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-012",
-    "deckId": "sjukdomar",
-    "fi": "luunmurtuma",
-    "sv": "benbrott",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "12"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-013",
-    "deckId": "sjukdomar",
-    "fi": "säärihaava",
-    "sv": "bensår",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "13"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-014",
-    "deckId": "sjukdomar",
-    "fi": "luunhaurastuminen",
-    "sv": "benskörhet",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "14"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-015",
-    "deckId": "sjukdomar",
-    "fi": "vaiva",
-    "sv": "besvär",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "15"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-016",
-    "deckId": "sjukdomar",
-    "fi": "purema",
-    "sv": "bett",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "16"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-017",
-    "deckId": "sjukdomar",
-    "fi": "poskiontelotulehdus",
-    "sv": "bihåleinflammation",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "17"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-018",
-    "deckId": "sjukdomar",
-    "fi": "sivuääni",
-    "sv": "biljud",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "18"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-019",
-    "deckId": "sjukdomar",
-    "fi": "mustelma",
-    "sv": "blåmärke",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "19"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-022",
-    "deckId": "sjukdomar",
-    "fi": "umpilisäkkeentulehdus",
-    "sv": "blindtarmsinflammation",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "22"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-023",
-    "deckId": "sjukdomar",
-    "fi": "verenvuototauti",
-    "sv": "blödarsjuka",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "23"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-024",
-    "deckId": "sjukdomar",
-    "fi": "verenmyrkytys",
-    "sv": "blodförgiftning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "24"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-025",
-    "deckId": "sjukdomar",
-    "fi": "verenvuoto",
-    "sv": "blödning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "25"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-026",
-    "deckId": "sjukdomar",
-    "fi": "veritulppa",
-    "sv": "blodpropp",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "26"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-027",
-    "deckId": "sjukdomar",
-    "fi": "verenpainetauti",
-    "sv": "blodtryckssjukdom",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "27"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-028",
-    "deckId": "sjukdomar",
-    "fi": "verenpurkauma",
-    "sv": "blodutgjutning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "28"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-029",
-    "deckId": "sjukdomar",
-    "fi": "vaippaihottuma",
-    "sv": "blöjeksem",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "29"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-030",
-    "deckId": "sjukdomar",
-    "fi": "taiveihottuma",
-    "sv": "böjveckseksem",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "30"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-031",
-    "deckId": "sjukdomar",
-    "fi": "palovammat",
-    "sv": "brännskador",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "31"
-    }
-  },
-  {
-    "id": "sjukdomar-032",
-    "deckId": "sjukdomar",
-    "fi": "puutostauti",
-    "sv": "bristsjukdom",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "32"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-033",
-    "deckId": "sjukdomar",
-    "fi": "keuhkoputkentulehdus",
-    "sv": "bronkit",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "33"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-034",
-    "deckId": "sjukdomar",
-    "fi": "syöpä",
-    "sv": "cancer",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "34"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-035",
-    "deckId": "sjukdomar",
-    "fi": "verenkiertohäiriö",
-    "sv": "cirkulationsstörning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "35"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-036",
-    "deckId": "sjukdomar",
-    "fi": "vapina",
-    "sv": "darrning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "36"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-037",
-    "deckId": "sjukdomar",
-    "fi": "dementia",
-    "sv": "demens",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "37"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-039",
-    "deckId": "sjukdomar",
-    "fi": "diabetes",
-    "sv": "diabetes",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "39"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-040",
-    "deckId": "sjukdomar",
-    "fi": "diabeetikko",
-    "sv": "diabetiker",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "40"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-041",
-    "deckId": "sjukdomar",
-    "fi": "ripuli",
-    "sv": "diarré",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "41"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-042",
-    "deckId": "sjukdomar",
-    "fi": "kurkkumätä",
-    "sv": "difteri",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "42"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-043",
-    "deckId": "sjukdomar",
-    "fi": "puutuminen",
-    "sv": "domning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "43"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-044",
-    "deckId": "sjukdomar",
-    "fi": "epilepsia",
-    "sv": "epilepsi",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "44"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-047",
-    "deckId": "sjukdomar",
-    "fi": "puutiaisenpurema",
-    "sv": "fästingbett",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "47"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-048",
-    "deckId": "sjukdomar",
-    "fi": "kuume",
-    "sv": "feber",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "48"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-049",
-    "deckId": "sjukdomar",
-    "fi": "vuoto",
-    "sv": "flytning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "49"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-050",
-    "deckId": "sjukdomar",
-    "fi": "myrkytys",
-    "sv": "förgiftning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "50"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-051",
-    "deckId": "sjukdomar",
-    "fi": "vilustuminen",
-    "sv": "förkylning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "51"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-052",
-    "deckId": "sjukdomar",
-    "fi": "halvaus",
-    "sv": "förlamning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "52"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-053",
-    "deckId": "sjukdomar",
-    "fi": "ummetus",
-    "sv": "förstoppning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "53"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-054",
-    "deckId": "sjukdomar",
-    "fi": "venähdys",
-    "sv": "försträckning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "54"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-057",
-    "deckId": "sjukdomar",
-    "fi": "ahtauma",
-    "sv": "förträngning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "57"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-058",
-    "deckId": "sjukdomar",
-    "fi": "sappikivet",
-    "sv": "gallstenar",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "58"
-    }
-  },
-  {
-    "id": "sjukdomar-059",
-    "deckId": "sjukdomar",
-    "fi": "ilmavaivat",
-    "sv": "gasbesvär",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "59"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-060",
-    "deckId": "sjukdomar",
-    "fi": "kihti",
-    "sv": "gikt",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "60"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-062",
-    "deckId": "sjukdomar",
-    "fi": "keltatauti",
-    "sv": "gulsot",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "62"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-063",
-    "deckId": "sjukdomar",
-    "fi": "närästys",
-    "sv": "halsbränna",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "63"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-064",
-    "deckId": "sjukdomar",
-    "fi": "kurkkukipu",
-    "sv": "halsont",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "64"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-065",
-    "deckId": "sjukdomar",
-    "fi": "peräpukamat",
-    "sv": "hemorrojder",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "65"
-    }
-  },
-  {
-    "id": "sjukdomar-066",
-    "deckId": "sjukdomar",
-    "fi": "aivoverenvuoto",
-    "sv": "hjärnblödning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "66"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-067",
-    "deckId": "sjukdomar",
-    "fi": "aivokuolema",
-    "sv": "hjärndöd",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "67"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-068",
-    "deckId": "sjukdomar",
-    "fi": "aivokalvontulehdus",
-    "sv": "hjärnhinneinflammation",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "68"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-069",
-    "deckId": "sjukdomar",
-    "fi": "aivokuume",
-    "sv": "hjärninflammation",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "69"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-070",
-    "deckId": "sjukdomar",
-    "fi": "aivotärähdys",
-    "sv": "hjärnskakning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 1,
-      "item": "70"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-071",
-    "deckId": "sjukdomar",
-    "fi": "sydänkohtaus",
-    "sv": "hjärtattack",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "71"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-072",
-    "deckId": "sjukdomar",
-    "fi": "sydämenlaajentuma",
-    "sv": "hjärtförstoring",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "72"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-073",
-    "deckId": "sjukdomar",
-    "fi": "sydäninfarkti",
-    "sv": "hjärtinfarkt",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "73"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-074",
-    "deckId": "sjukdomar",
-    "fi": "sydämentykytys",
-    "sv": "hjärtklappning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "74"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-075",
-    "deckId": "sjukdomar",
-    "fi": "sydänsairaus",
-    "sv": "hjärtsjukdom",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "75"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-076",
-    "deckId": "sjukdomar",
-    "fi": "sydänpysähdys",
-    "sv": "hjärtstillestånd",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "76"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-077",
-    "deckId": "sjukdomar",
-    "fi": "heinänuha",
-    "sv": "hösnuva",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "77"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-078",
-    "deckId": "sjukdomar",
-    "fi": "yskä",
-    "sv": "hosta",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "78"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-079",
-    "deckId": "sjukdomar",
-    "fi": "pahoinvointi",
-    "sv": "illamående",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "79"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-080",
-    "deckId": "sjukdomar",
-    "fi": "infektio",
-    "sv": "infektion",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "80"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-081",
-    "deckId": "sjukdomar",
-    "fi": "tulehdus",
-    "sv": "inflammation",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "81"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-082",
-    "deckId": "sjukdomar",
-    "fi": "flunssa",
-    "sv": "influensa",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "82"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-083",
-    "deckId": "sjukdomar",
-    "fi": "hyönteisenpurema",
-    "sv": "insektbett",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "83"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-084",
-    "deckId": "sjukdomar",
-    "fi": "kuolio",
-    "sv": "kallbrand",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "84"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-085",
-    "deckId": "sjukdomar",
-    "fi": "tuntohäiriö",
-    "sv": "känselstörning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "85"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-086",
-    "deckId": "sjukdomar",
-    "fi": "hinkuyskä",
-    "sv": "kikhosta",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "86"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-087",
-    "deckId": "sjukdomar",
-    "fi": "läppävika",
-    "sv": "klaffel",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "87"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-089",
-    "deckId": "sjukdomar",
-    "fi": "paleltumisvammat",
-    "sv": "köldskador",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "89"
-    }
-  },
-  {
-    "id": "sjukdomar-090",
-    "deckId": "sjukdomar",
-    "fi": "koliikki",
-    "sv": "kolik",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "90"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-091",
-    "deckId": "sjukdomar",
-    "fi": "häkämyrkytys",
-    "sv": "kolosförgiftning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "91"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-092",
-    "deckId": "sjukdomar",
-    "fi": "sepelvaltimotauti",
-    "sv": "koronarsjukdom",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "92"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-093",
-    "deckId": "sjukdomar",
-    "fi": "rauhaskuume",
-    "sv": "körtelfeber",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "93"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-094",
-    "deckId": "sjukdomar",
-    "fi": "oksentelu",
-    "sv": "kräkning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "94"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-096",
-    "deckId": "sjukdomar",
-    "fi": "nivelkuluma",
-    "sv": "ledförslitning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "96"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-097",
-    "deckId": "sjukdomar",
-    "fi": "nivelreuma",
-    "sv": "ledgångsreumatism",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "97"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-099",
-    "deckId": "sjukdomar",
-    "fi": "täit",
-    "sv": "löss",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "99"
-    }
-  },
-  {
-    "id": "sjukdomar-100",
-    "deckId": "sjukdomar",
-    "fi": "keuhkokuume",
-    "sv": "lunginflammation",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "100"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-101",
-    "deckId": "sjukdomar",
-    "fi": "keuhkolaajentuma",
-    "sv": "lungutvidgning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "101"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-102",
-    "deckId": "sjukdomar",
-    "fi": "vatsakipu",
-    "sv": "magont",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "102"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-104",
-    "deckId": "sjukdomar",
-    "fi": "tuhkarokko",
-    "sv": "mässling",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "104"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-105",
-    "deckId": "sjukdomar",
-    "fi": "ruuansulatushäiriö",
-    "sv": "matsmältningsrubbning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "105"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-106",
-    "deckId": "sjukdomar",
-    "fi": "migreeni",
-    "sv": "migrän",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "106"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-107",
-    "deckId": "sjukdomar",
-    "fi": "muistinmenetys",
-    "sv": "minnesförlust",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "107"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-108",
-    "deckId": "sjukdomar",
-    "fi": "hyttysenpurema",
-    "sv": "myggbett",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "108"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-109",
-    "deckId": "sjukdomar",
-    "fi": "nenäverenvuoto",
-    "sv": "näsblod",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "109"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-111",
-    "deckId": "sjukdomar",
-    "fi": "silmätulehdus",
-    "sv": "ögoninflammation",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "111"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-112",
-    "deckId": "sjukdomar",
-    "fi": "käärmeenpurema",
-    "sv": "ormbett",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "112"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-113",
-    "deckId": "sjukdomar",
-    "fi": "korvatulehdus",
-    "sv": "öroninflammation",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "113"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-115",
-    "deckId": "sjukdomar",
-    "fi": "sikotauti",
-    "sv": "påssjuka",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "115"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-117",
-    "deckId": "sjukdomar",
-    "fi": "rytmihäiriö",
-    "sv": "rytmstörnig",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "117"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-118",
-    "deckId": "sjukdomar",
-    "fi": "rytmihäiriö",
-    "sv": "rytmstörning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "118"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-119",
-    "deckId": "sjukdomar",
-    "fi": "vuoteenkastelu",
-    "sv": "sängvätning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "119"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-120",
-    "deckId": "sjukdomar",
-    "fi": "tulirokko",
-    "sv": "scharlakansfeber",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "120"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-121",
-    "deckId": "sjukdomar",
-    "fi": "suonenveto",
-    "sv": "sendrag",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "121"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-122",
-    "deckId": "sjukdomar",
-    "fi": "sairaus",
-    "sv": "sjukdom",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "122"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-123",
-    "deckId": "sjukdomar",
-    "fi": "kipu",
-    "sv": "smärta",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "123"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-124",
-    "deckId": "sjukdomar",
-    "fi": "sokeritauti",
-    "sv": "sockersjuka",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "124"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-125",
-    "deckId": "sjukdomar",
-    "fi": "unettomuus",
-    "sv": "sömnlöshet",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "125"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-126",
-    "deckId": "sjukdomar",
-    "fi": "uniongelmat",
-    "sv": "sömnproblem",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "126"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-127",
-    "deckId": "sjukdomar",
-    "fi": "kihomato",
-    "sv": "springmask",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "127"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-128",
-    "deckId": "sjukdomar",
-    "fi": "kaihi",
-    "sv": "starr",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "128"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-129",
-    "deckId": "sjukdomar",
-    "fi": "jäykkäkouristus",
-    "sv": "stelkramp",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "129"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-130",
-    "deckId": "sjukdomar",
-    "fi": "nielemisvaikeus",
-    "sv": "sväljningsbesvär",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "130"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-131",
-    "deckId": "sjukdomar",
-    "fi": "kirvely",
-    "sv": "sveda",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "131"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-132",
-    "deckId": "sjukdomar",
-    "fi": "huimaus",
-    "sv": "svindel",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "132"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-133",
-    "deckId": "sjukdomar",
-    "fi": "turvotus",
-    "sv": "svullnad",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "133"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-134",
-    "deckId": "sjukdomar",
-    "fi": "oireyhtymä",
-    "sv": "syndrom",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "134"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-135",
-    "deckId": "sjukdomar",
-    "fi": "hammasvammat",
-    "sv": "tandskador",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "135"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-136",
-    "deckId": "sjukdomar",
-    "fi": "vauvarokko",
-    "sv": "tredagarsfeber",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "136"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-137",
-    "deckId": "sjukdomar",
-    "fi": "painehaava",
-    "sv": "trycksår",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "137"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-138",
-    "deckId": "sjukdomar",
-    "fi": "virtsanpidätyskyvyttömyys",
-    "sv": "urininkontinens",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "138"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-139",
-    "deckId": "sjukdomar",
-    "fi": "virtsatulehdus",
-    "sv": "urinvägsinfektion",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "139"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-143",
-    "deckId": "sjukdomar",
-    "fi": "syylä",
-    "sv": "vårta",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 2,
-      "item": "143"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "sjukdomar-144",
-    "deckId": "sjukdomar",
-    "fi": "vesirokko",
-    "sv": "vattkoppor",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 3,
-      "item": "144"
-    }
-  },
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
   {
-    "id": "sjukdomar-145",
-    "deckId": "sjukdomar",
-    "fi": "valkovuoto",
-    "sv": "vitflytning",
-    "status": "published",
-    "source": {
-      "document": "Sjukdomar och besvär ru-su.pdf",
-      "page": 3,
-      "item": "145"
-    },
-    "partOfSpeech": "noun"
+    "id": "avdelningar-001",
+    "deckId": "avdelningar",
+    "fi": "lastenneuvola",
+    "sv": "barnarådgivningsbyrå",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-002",
+    "deckId": "avdelningar",
+    "fi": "vuodeosasto",
+    "sv": "bäddavdelning",
+    "article": "en",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-003",
+    "deckId": "avdelningar",
+    "fi": "äitiysneuvola",
+    "sv": "mödrarådgivning",
+    "article": "en",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-004",
+    "deckId": "avdelningar",
+    "fi": "toimenpidehuone",
+    "sv": "behandlingsrum",
+    "article": "ett",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-005",
+    "deckId": "avdelningar",
+    "fi": "synnytysosasto",
+    "sv": "förlossningsavdelning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-007",
+    "deckId": "avdelningar",
+    "fi": "terveyskeskus",
+    "sv": "hälsocentral",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-009",
+    "deckId": "avdelningar",
+    "fi": "tehohoito-osasto",
+    "sv": "intensivvårdsavdelning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-010",
+    "deckId": "avdelningar",
+    "fi": "päivystyspoliklinikka",
+    "sv": "jourpoliklinik",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-012",
+    "deckId": "avdelningar",
+    "fi": "tarkkailuosasto",
+    "sv": "observationsavdelning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-013",
+    "deckId": "avdelningar",
+    "fi": "leikkausosasto",
+    "sv": "operationsavdelning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-014",
+    "deckId": "avdelningar",
+    "fi": "avohoito",
+    "sv": "öppenvård",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-015",
+    "deckId": "avdelningar",
+    "fi": "heräämö",
+    "sv": "uppvakningsrum",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "avdelningar-016",
+    "deckId": "avdelningar",
+    "fi": "rokotusvastaanotto",
+    "sv": "vaccinationsmottagning",
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-002",
     "deckId": "forsta-hjalpen",
     "fi": "hengittää",
     "sv": "andas",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "2"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-003",
     "deckId": "forsta-hjalpen",
     "fi": "elvytys",
     "sv": "återupplivning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "3"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-004",
     "deckId": "forsta-hjalpen",
     "fi": "jäähdytys",
     "sv": "avkylning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "4"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-005",
     "deckId": "forsta-hjalpen",
     "fi": "kalpeus",
     "sv": "blekhet",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "5"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-006",
     "deckId": "forsta-hjalpen",
     "fi": "vertavuotava",
     "sv": "blödande",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "6"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-007",
     "deckId": "forsta-hjalpen",
     "fi": "polttaa",
     "sv": "bränna",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "7"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-008",
     "deckId": "forsta-hjalpen",
     "fi": "verenkierto",
     "sv": "cirkulation",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "8"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-009",
     "deckId": "forsta-hjalpen",
     "fi": "rakko",
     "sv": "blåsa",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "9"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-010",
     "deckId": "forsta-hjalpen",
     "fi": "tulipalo",
     "sv": "brand",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "10"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-011",
     "deckId": "forsta-hjalpen",
     "fi": "palovamma",
     "sv": "brännskada",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "11"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-012",
     "deckId": "forsta-hjalpen",
     "fi": "pyöräilykypärä",
     "sv": "cykelhjälm",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "12"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-013",
     "deckId": "forsta-hjalpen",
     "fi": "pelastusliivi",
     "sv": "flytväst",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "13"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-015",
     "deckId": "forsta-hjalpen",
     "fi": "murtuma",
     "sv": "fraktur",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "15"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-016",
     "deckId": "forsta-hjalpen",
     "fi": "sideharso",
     "sv": "gasbinda",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "16"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-018",
     "deckId": "forsta-hjalpen",
     "fi": "sydänpainanta",
-    "sv": "enhjärtkompression",
+    "sv": "hjärtkompression",
     "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "18"
-    }
+    "article": "en",
+    "partOfSpeech": "noun"
   },
   {
     "id": "forsta-hjalpen-019",
     "deckId": "forsta-hjalpen",
     "fi": "ideaaliside",
     "sv": "idealbinda",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "19"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-020",
     "deckId": "forsta-hjalpen",
     "fi": "puhallus",
     "sv": "inblåsning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "20"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-021",
     "deckId": "forsta-hjalpen",
     "fi": "kompressi",
     "sv": "kompress",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "21"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "forsta-hjalpen-022",
-    "deckId": "forsta-hjalpen",
-    "fi": "oksennus",
-    "sv": "kräkning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "22"
-    },
-    "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-023",
     "deckId": "forsta-hjalpen",
     "fi": "kouristus",
     "sv": "kramp",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "23"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-024",
     "deckId": "forsta-hjalpen",
     "fi": "tukehtuminen",
     "sv": "kvävning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "24"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-025",
     "deckId": "forsta-hjalpen",
     "fi": "paikallispuudutus",
     "sv": "lokalbedövning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "25"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-026",
     "deckId": "forsta-hjalpen",
     "fi": "kolmioliina",
     "sv": "mitella",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "26"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-027",
     "deckId": "forsta-hjalpen",
     "fi": "niskatuki",
     "sv": "nackkrage",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "27"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-028",
     "deckId": "forsta-hjalpen",
     "fi": "silmävamma",
     "sv": "ögonskada",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "28"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-029",
     "deckId": "forsta-hjalpen",
     "fi": "onnettomuus",
     "sv": "olycka",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "29"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-030",
     "deckId": "forsta-hjalpen",
     "fi": "vamma",
     "sv": "skada",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "30"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "forsta-hjalpen-031",
-    "deckId": "forsta-hjalpen",
-    "fi": "tuska",
-    "sv": "smärta",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "31"
-    },
-    "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-032",
     "deckId": "forsta-hjalpen",
     "fi": "pistely",
     "sv": "stickning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "32"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-033",
     "deckId": "forsta-hjalpen",
     "fi": "hengitysvaikeus",
     "sv": "andningsbesvär",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "33"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-034",
     "deckId": "forsta-hjalpen",
     "fi": "side",
     "sv": "bandage",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "34"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-036",
     "deckId": "forsta-hjalpen",
     "fi": "putoaminen",
     "sv": "fall",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "36"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-040",
     "deckId": "forsta-hjalpen",
     "fi": "haava",
     "sv": "sår",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "40"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-041",
     "deckId": "forsta-hjalpen",
     "fi": "naarmu",
     "sv": "skrubbsår",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "41"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-042",
     "deckId": "forsta-hjalpen",
     "fi": "isku",
     "sv": "slag",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "42"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-043",
     "deckId": "forsta-hjalpen",
     "fi": "pisto",
     "sv": "stick",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "43"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-045",
     "deckId": "forsta-hjalpen",
     "fi": "olotila",
     "sv": "tillstånd",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "45"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-046",
     "deckId": "forsta-hjalpen",
     "fi": "lämpöhalvaus",
     "sv": "värmeslag",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "46"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-047",
     "deckId": "forsta-hjalpen",
     "fi": "paleltuma",
     "sv": "förfrysning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "47"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-048",
     "deckId": "forsta-hjalpen",
     "fi": "sekavuus",
     "sv": "förvirring",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "48"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-050",
     "deckId": "forsta-hjalpen",
     "fi": "myrkyllinen",
     "sv": "giftig",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "50"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-051",
     "deckId": "forsta-hjalpen",
     "fi": "kipsi",
     "sv": "gips",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "51"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-052",
     "deckId": "forsta-hjalpen",
     "fi": "ihonväri",
     "sv": "hudfärg",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "52"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-054",
     "deckId": "forsta-hjalpen",
     "fi": "kylmähiki",
     "sv": "kallsvettning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "54"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-056",
     "deckId": "forsta-hjalpen",
     "fi": "oksentaa",
     "sv": "kräkas",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "56"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-057",
     "deckId": "forsta-hjalpen",
     "fi": "lievittää",
     "sv": "lindra",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "57"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-058",
     "deckId": "forsta-hjalpen",
     "fi": "hengenvaarallinen",
     "sv": "livshotande",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "58"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-059",
     "deckId": "forsta-hjalpen",
     "fi": "tajuttomuus",
     "sv": "medvetslöshet",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "59"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "forsta-hjalpen-061",
-    "deckId": "forsta-hjalpen",
-    "fi": "nenäverenvuoto",
-    "sv": "näsblödning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "61"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-062",
     "deckId": "forsta-hjalpen",
     "fi": "aristava",
     "sv": "ömmande",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "62"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-064",
     "deckId": "forsta-hjalpen",
     "fi": "rauhattomuus",
     "sv": "oro",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "64"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-065",
     "deckId": "forsta-hjalpen",
     "fi": "punoitus",
     "sv": "rodnad",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "65"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-067",
     "deckId": "forsta-hjalpen",
     "fi": "huuhtelu",
     "sv": "sköljning",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "67"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-068",
     "deckId": "forsta-hjalpen",
     "fi": "lumisokeus",
     "sv": "snöblindhet",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "68"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-069",
     "deckId": "forsta-hjalpen",
     "fi": "uneliaisuus",
     "sv": "sömnighet",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "69"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-070",
     "deckId": "forsta-hjalpen",
     "fi": "lastoittaa",
     "sv": "spjäla",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "70"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-071",
     "deckId": "forsta-hjalpen",
     "fi": "huuhdella",
     "sv": "spola",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "71"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-072",
     "deckId": "forsta-hjalpen",
     "fi": "hikinen",
     "sv": "svettig",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 1,
-      "item": "72"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "forsta-hjalpen-074",
     "deckId": "forsta-hjalpen",
     "fi": "jano",
     "sv": "törst",
-    "status": "published",
-    "source": {
-      "document": "Första hjälpen ru-su.pdf",
-      "page": 2,
-      "item": "74"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-005",
     "deckId": "mediciner",
     "fi": "huumaava",
     "sv": "berusande",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "5"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "mediciner-009",
     "deckId": "mediciner",
     "fi": "desinfioiva",
     "sv": "desinficerande",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "9"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "mediciner-010",
     "deckId": "mediciner",
     "fi": "annostella",
     "sv": "dosera",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "10"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "mediciner-011",
     "deckId": "mediciner",
     "fi": "annostus",
     "sv": "dosering",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "11"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-012",
@@ -4295,821 +1787,1385 @@
     "fi": "tipoittain",
     "sv": "droppvis",
     "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "12"
-    }
+    "partOfSpeech": "adverb"
   },
   {
     "id": "mediciner-013",
     "deckId": "mediciner",
     "fi": "käyttöohje",
     "sv": "bruksanvisning",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "13"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-014",
     "deckId": "mediciner",
     "fi": "poretabletti",
     "sv": "brustablett",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "14"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-015",
     "deckId": "mediciner",
     "fi": "desinfiointineste",
     "sv": "desinfektionsvätska",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "15"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-016",
     "deckId": "mediciner",
     "fi": "annos",
     "sv": "dos",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "16"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-018",
     "deckId": "mediciner",
     "fi": "rae",
     "sv": "dragé",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "18"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-019",
     "deckId": "mediciner",
     "fi": "tippa",
     "sv": "droppe",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "19"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-021",
     "deckId": "mediciner",
     "fi": "yskänlääke",
     "sv": "hostmedicin",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "21"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-022",
     "deckId": "mediciner",
     "fi": "kapseli",
     "sv": "kapsel",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "22"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "mediciner-023",
-    "deckId": "mediciner",
-    "fi": "puriste",
-    "sv": "komprett",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "23"
-    },
-    "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-026",
     "deckId": "mediciner",
     "fi": "liuos",
     "sv": "lösning",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "26"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-027",
     "deckId": "mediciner",
     "fi": "ruokalusikka",
     "sv": "matsked",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "27"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-028",
     "deckId": "mediciner",
     "fi": "mittalasi",
     "sv": "måttbägare",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "28"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-029",
     "deckId": "mediciner",
     "fi": "lääke",
     "sv": "medicin",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "29"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-031",
     "deckId": "mediciner",
     "fi": "kerrostabletti",
     "sv": "skikttablett",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "31"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-032",
     "deckId": "mediciner",
     "fi": "tabletti",
     "sv": "tablett",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "32"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-033",
     "deckId": "mediciner",
     "fi": "teelusikka",
     "sv": "tesked",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "33"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-034",
     "deckId": "mediciner",
     "fi": "särkylääke",
     "sv": "värkmedicin",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "34"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-035",
     "deckId": "mediciner",
     "fi": "neste",
     "sv": "vätska",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "35"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-036",
     "deckId": "mediciner",
     "fi": "vaikutus",
     "sv": "verkan",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "36"
-    },
     "article": "en",
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "mediciner-037",
-    "deckId": "mediciner",
-    "fi": "ulostuslääke",
-    "sv": "avföringsmedel",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "37"
-    },
-    "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-038",
     "deckId": "mediciner",
     "fi": "ehkäisypilleri",
     "sv": "e-piller",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "38"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-039",
     "deckId": "mediciner",
     "fi": "uute",
     "sv": "extrakt",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "39"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "mediciner-040",
-    "deckId": "mediciner",
-    "fi": "ulostuslääke",
-    "sv": "laxativ",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "40"
-    },
-    "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-041",
     "deckId": "mediciner",
     "fi": "ulostuslääke",
     "sv": "laxermedel",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "41"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-042",
     "deckId": "mediciner",
     "fi": "pilleri",
     "sv": "piller",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "42"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-043",
     "deckId": "mediciner",
     "fi": "valmiste",
     "sv": "preparat",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "43"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-044",
     "deckId": "mediciner",
     "fi": "pulveri",
     "sv": "pulver",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "44"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-045",
     "deckId": "mediciner",
     "fi": "resepti",
     "sv": "recept",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "45"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-048",
     "deckId": "mediciner",
     "fi": "peräpuikko",
     "sv": "stolpiller",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "48"
-    },
     "article": "ett",
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-052",
     "deckId": "mediciner",
     "fi": "nestemäinen",
     "sv": "flytande",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "52"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "mediciner-057",
     "deckId": "mediciner",
     "fi": "aiheuttaa",
     "sv": "orsaka",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "57"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "mediciner-058",
     "deckId": "mediciner",
     "fi": "huonontaa",
     "sv": "försämra",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "58"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "mediciner-060",
     "deckId": "mediciner",
     "fi": "vahvistaa",
     "sv": "förstärka",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "60"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "mediciner-061",
     "deckId": "mediciner",
     "fi": "heikentää",
     "sv": "försvaga",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 1,
-      "item": "61"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "mediciner-068",
     "deckId": "mediciner",
     "fi": "ärsyttää",
     "sv": "irritera",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "68"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "mediciner-071",
     "deckId": "mediciner",
     "fi": "lyhytaikainen",
     "sv": "kortvarig",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "71"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "mediciner-072",
     "deckId": "mediciner",
     "fi": "pitkäaikainen",
     "sv": "långvarig",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "72"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "mediciner-076",
     "deckId": "mediciner",
     "fi": "rauhoittava",
     "sv": "lugnande",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "76"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "mediciner-079",
     "deckId": "mediciner",
     "fi": "vähentää",
     "sv": "minska",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "79"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "status": "published"
   },
   {
     "id": "mediciner-087",
     "deckId": "mediciner",
-    "fi": "ravistetaan",
-    "sv": "omskakas",
+    "fi": "ravistaa",
+    "sv": "omskaka",
     "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "87"
-    }
+    "partOfSpeech": "verb"
   },
   {
     "id": "mediciner-088",
     "deckId": "mediciner",
     "fi": "sively",
     "sv": "påstrykning",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "88"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "noun",
+    "status": "published"
   },
   {
     "id": "mediciner-092",
     "deckId": "mediciner",
     "fi": "hellävarainen",
     "sv": "skonsam",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "92"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "mediciner-095",
     "deckId": "mediciner",
     "fi": "nopeavaikutteinen",
     "sv": "snabbverkande",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "95"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "mediciner-096",
     "deckId": "mediciner",
     "fi": "sirotella",
     "sv": "strö",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "96"
-    },
-    "partOfSpeech": "verb"
+    "partOfSpeech": "verb",
+    "inflection": "strör, strödde, strött",
+    "status": "published"
   },
   {
     "id": "mediciner-103",
     "deckId": "mediciner",
     "fi": "piristävä",
     "sv": "uppfriskande",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "103"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "mediciner-107",
     "deckId": "mediciner",
     "fi": "vedetön",
     "sv": "vattenfri",
-    "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "107"
-    },
-    "partOfSpeech": "noun"
+    "partOfSpeech": "adjective",
+    "status": "published"
   },
   {
     "id": "mediciner-108",
     "deckId": "mediciner",
     "fi": "vesiliukoinen",
     "sv": "vattenlöslig",
+    "partOfSpeech": "adjective",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-001",
+    "deckId": "sjukdomar",
+    "fi": "suonikohjut",
+    "sv": "åderbråck",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-003",
+    "deckId": "sjukdomar",
+    "fi": "allergia",
+    "sv": "allergi",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-004",
+    "deckId": "sjukdomar",
+    "fi": "hengästyneisyys",
+    "sv": "andfåddhet",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-005",
+    "deckId": "sjukdomar",
+    "fi": "hengenahdistus",
+    "sv": "andnöd",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-006",
+    "deckId": "sjukdomar",
+    "fi": "anemia",
+    "sv": "anemi",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-007",
+    "deckId": "sjukdomar",
+    "fi": "angiina",
+    "sv": "angina",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-008",
+    "deckId": "sjukdomar",
+    "fi": "ruokahaluttomuus",
+    "sv": "aptitlöshet",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-009",
+    "deckId": "sjukdomar",
+    "fi": "astma",
+    "sv": "astma",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-010",
+    "deckId": "sjukdomar",
+    "fi": "vyöruusu",
+    "sv": "bältros",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-011",
+    "deckId": "sjukdomar",
+    "fi": "rasitusvamma",
+    "sv": "belastningsskada",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-012",
+    "deckId": "sjukdomar",
+    "fi": "luunmurtuma",
+    "sv": "benbrott",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-013",
+    "deckId": "sjukdomar",
+    "fi": "säärihaava",
+    "sv": "bensår",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-014",
+    "deckId": "sjukdomar",
+    "fi": "luunhaurastuminen",
+    "sv": "benskörhet",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-015",
+    "deckId": "sjukdomar",
+    "fi": "vaiva",
+    "sv": "besvär",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-016",
+    "deckId": "sjukdomar",
+    "fi": "purema",
+    "sv": "bett",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-017",
+    "deckId": "sjukdomar",
+    "fi": "poskiontelotulehdus",
+    "sv": "bihåleinflammation",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-018",
+    "deckId": "sjukdomar",
+    "fi": "sivuääni",
+    "sv": "biljud",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-019",
+    "deckId": "sjukdomar",
+    "fi": "mustelma",
+    "sv": "blåmärke",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-022",
+    "deckId": "sjukdomar",
+    "fi": "umpilisäkkeentulehdus",
+    "sv": "blindtarmsinflammation",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-023",
+    "deckId": "sjukdomar",
+    "fi": "verenvuototauti",
+    "sv": "blödarsjuka",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-024",
+    "deckId": "sjukdomar",
+    "fi": "verenmyrkytys",
+    "sv": "blodförgiftning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-025",
+    "deckId": "sjukdomar",
+    "fi": "verenvuoto",
+    "sv": "blödning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-026",
+    "deckId": "sjukdomar",
+    "fi": "veritulppa",
+    "sv": "blodpropp",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-027",
+    "deckId": "sjukdomar",
+    "fi": "verenpainetauti",
+    "sv": "blodtryckssjukdom",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-028",
+    "deckId": "sjukdomar",
+    "fi": "verenpurkauma",
+    "sv": "blodutgjutning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-029",
+    "deckId": "sjukdomar",
+    "fi": "vaippaihottuma",
+    "sv": "blöjeksem",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-030",
+    "deckId": "sjukdomar",
+    "fi": "taiveihottuma",
+    "sv": "böjveckseksem",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-031",
+    "deckId": "sjukdomar",
+    "fi": "palovammat",
+    "sv": "brännskador",
     "status": "published",
-    "source": {
-      "document": "Mediciner, medicinering ru-su.pdf",
-      "page": 2,
-      "item": "108"
-    },
     "partOfSpeech": "noun"
   },
   {
-    "id": "avdelningar-001",
-    "deckId": "avdelningar",
-    "fi": "lastenneuvola",
-    "sv": "barnarådgivningsbyrå",
+    "id": "sjukdomar-032",
+    "deckId": "sjukdomar",
+    "fi": "puutostauti",
+    "sv": "bristsjukdom",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-033",
+    "deckId": "sjukdomar",
+    "fi": "keuhkoputkentulehdus",
+    "sv": "bronkit",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-034",
+    "deckId": "sjukdomar",
+    "fi": "syöpä",
+    "sv": "cancer",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-035",
+    "deckId": "sjukdomar",
+    "fi": "verenkiertohäiriö",
+    "sv": "cirkulationsstörning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-036",
+    "deckId": "sjukdomar",
+    "fi": "vapina",
+    "sv": "darrning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-037",
+    "deckId": "sjukdomar",
+    "fi": "dementia",
+    "sv": "demens",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-039",
+    "deckId": "sjukdomar",
+    "fi": "diabetes",
+    "sv": "diabetes",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-040",
+    "deckId": "sjukdomar",
+    "fi": "diabeetikko",
+    "sv": "diabetiker",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-041",
+    "deckId": "sjukdomar",
+    "fi": "ripuli",
+    "sv": "diarré",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-042",
+    "deckId": "sjukdomar",
+    "fi": "kurkkumätä",
+    "sv": "difteri",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-043",
+    "deckId": "sjukdomar",
+    "fi": "puutuminen",
+    "sv": "domning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-044",
+    "deckId": "sjukdomar",
+    "fi": "epilepsia",
+    "sv": "epilepsi",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-047",
+    "deckId": "sjukdomar",
+    "fi": "puutiaisenpurema",
+    "sv": "fästingbett",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-048",
+    "deckId": "sjukdomar",
+    "fi": "kuume",
+    "sv": "feber",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-049",
+    "deckId": "sjukdomar",
+    "fi": "vuoto",
+    "sv": "flytning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-050",
+    "deckId": "sjukdomar",
+    "fi": "myrkytys",
+    "sv": "förgiftning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-051",
+    "deckId": "sjukdomar",
+    "fi": "vilustuminen",
+    "sv": "förkylning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-052",
+    "deckId": "sjukdomar",
+    "fi": "halvaus",
+    "sv": "förlamning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-053",
+    "deckId": "sjukdomar",
+    "fi": "ummetus",
+    "sv": "förstoppning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-054",
+    "deckId": "sjukdomar",
+    "fi": "venähdys",
+    "sv": "försträckning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-057",
+    "deckId": "sjukdomar",
+    "fi": "ahtauma",
+    "sv": "förträngning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-058",
+    "deckId": "sjukdomar",
+    "fi": "sappikivet",
+    "sv": "gallstenar",
     "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "1"
-    },
     "partOfSpeech": "noun"
   },
   {
-    "id": "avdelningar-002",
-    "deckId": "avdelningar",
-    "fi": "vuodeosasto",
-    "sv": "bäddavdelning",
+    "id": "sjukdomar-059",
+    "deckId": "sjukdomar",
+    "fi": "ilmavaivat",
+    "sv": "gasbesvär",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-060",
+    "deckId": "sjukdomar",
+    "fi": "kihti",
+    "sv": "gikt",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-062",
+    "deckId": "sjukdomar",
+    "fi": "keltatauti",
+    "sv": "gulsot",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-063",
+    "deckId": "sjukdomar",
+    "fi": "närästys",
+    "sv": "halsbränna",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-064",
+    "deckId": "sjukdomar",
+    "fi": "kurkkukipu",
+    "sv": "halsont",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-065",
+    "deckId": "sjukdomar",
+    "fi": "peräpukamat",
+    "sv": "hemorrojder",
     "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "2"
-    },
-    "article": "en",
     "partOfSpeech": "noun"
   },
   {
-    "id": "avdelningar-003",
-    "deckId": "avdelningar",
-    "fi": "äitiysneuvola",
-    "sv": "mödrarådgivning",
+    "id": "sjukdomar-066",
+    "deckId": "sjukdomar",
+    "fi": "aivoverenvuoto",
+    "sv": "hjärnblödning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-067",
+    "deckId": "sjukdomar",
+    "fi": "aivokuolema",
+    "sv": "hjärndöd",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-068",
+    "deckId": "sjukdomar",
+    "fi": "aivokalvontulehdus",
+    "sv": "hjärnhinneinflammation",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-069",
+    "deckId": "sjukdomar",
+    "fi": "aivokuume",
+    "sv": "hjärninflammation",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-070",
+    "deckId": "sjukdomar",
+    "fi": "aivotärähdys",
+    "sv": "hjärnskakning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-071",
+    "deckId": "sjukdomar",
+    "fi": "sydänkohtaus",
+    "sv": "hjärtattack",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-072",
+    "deckId": "sjukdomar",
+    "fi": "sydämenlaajentuma",
+    "sv": "hjärtförstoring",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-073",
+    "deckId": "sjukdomar",
+    "fi": "sydäninfarkti",
+    "sv": "hjärtinfarkt",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-074",
+    "deckId": "sjukdomar",
+    "fi": "sydämentykytys",
+    "sv": "hjärtklappning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-075",
+    "deckId": "sjukdomar",
+    "fi": "sydänsairaus",
+    "sv": "hjärtsjukdom",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-076",
+    "deckId": "sjukdomar",
+    "fi": "sydänpysähdys",
+    "sv": "hjärtstillestånd",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-077",
+    "deckId": "sjukdomar",
+    "fi": "heinänuha",
+    "sv": "hösnuva",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-078",
+    "deckId": "sjukdomar",
+    "fi": "yskä",
+    "sv": "hosta",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-079",
+    "deckId": "sjukdomar",
+    "fi": "pahoinvointi",
+    "sv": "illamående",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-080",
+    "deckId": "sjukdomar",
+    "fi": "infektio",
+    "sv": "infektion",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-081",
+    "deckId": "sjukdomar",
+    "fi": "tulehdus",
+    "sv": "inflammation",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-082",
+    "deckId": "sjukdomar",
+    "fi": "flunssa",
+    "sv": "influensa",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-083",
+    "deckId": "sjukdomar",
+    "fi": "hyönteisenpurema",
+    "sv": "insektbett",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-084",
+    "deckId": "sjukdomar",
+    "fi": "kuolio",
+    "sv": "kallbrand",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-085",
+    "deckId": "sjukdomar",
+    "fi": "tuntohäiriö",
+    "sv": "känselstörning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-086",
+    "deckId": "sjukdomar",
+    "fi": "hinkuyskä",
+    "sv": "kikhosta",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-087",
+    "deckId": "sjukdomar",
+    "fi": "läppävika",
+    "sv": "klaffel",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-089",
+    "deckId": "sjukdomar",
+    "fi": "paleltumisvammat",
+    "sv": "köldskador",
     "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "3"
-    },
-    "article": "en",
     "partOfSpeech": "noun"
   },
   {
-    "id": "avdelningar-004",
-    "deckId": "avdelningar",
-    "fi": "toimenpidehuone",
-    "sv": "behandlingsrum",
+    "id": "sjukdomar-090",
+    "deckId": "sjukdomar",
+    "fi": "koliikki",
+    "sv": "kolik",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-091",
+    "deckId": "sjukdomar",
+    "fi": "häkämyrkytys",
+    "sv": "kolmonoxidförgiftning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-092",
+    "deckId": "sjukdomar",
+    "fi": "sepelvaltimotauti",
+    "sv": "koronarsjukdom",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-093",
+    "deckId": "sjukdomar",
+    "fi": "rauhaskuume",
+    "sv": "körtelfeber",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-094",
+    "deckId": "sjukdomar",
+    "fi": "oksentelu",
+    "sv": "kräkning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-096",
+    "deckId": "sjukdomar",
+    "fi": "nivelkuluma",
+    "sv": "ledförslitning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-097",
+    "deckId": "sjukdomar",
+    "fi": "nivelreuma",
+    "sv": "ledgångsreumatism",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-099",
+    "deckId": "sjukdomar",
+    "fi": "täit",
+    "sv": "löss",
     "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "4"
-    },
-    "article": "ett",
     "partOfSpeech": "noun"
   },
   {
-    "id": "avdelningar-005",
-    "deckId": "avdelningar",
-    "fi": "synnytysosasto",
-    "sv": "förlossningsavdelning",
+    "id": "sjukdomar-100",
+    "deckId": "sjukdomar",
+    "fi": "keuhkokuume",
+    "sv": "lunginflammation",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-101",
+    "deckId": "sjukdomar",
+    "fi": "keuhkolaajentuma",
+    "sv": "lungutvidgning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-102",
+    "deckId": "sjukdomar",
+    "fi": "vatsakipu",
+    "sv": "magont",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-104",
+    "deckId": "sjukdomar",
+    "fi": "tuhkarokko",
+    "sv": "mässling",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-105",
+    "deckId": "sjukdomar",
+    "fi": "ruuansulatushäiriö",
+    "sv": "matsmältningsrubbning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-106",
+    "deckId": "sjukdomar",
+    "fi": "migreeni",
+    "sv": "migrän",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-107",
+    "deckId": "sjukdomar",
+    "fi": "muistinmenetys",
+    "sv": "minnesförlust",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-108",
+    "deckId": "sjukdomar",
+    "fi": "hyttysenpurema",
+    "sv": "myggbett",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-109",
+    "deckId": "sjukdomar",
+    "fi": "nenäverenvuoto",
+    "sv": "näsblod",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-111",
+    "deckId": "sjukdomar",
+    "fi": "silmätulehdus",
+    "sv": "ögoninflammation",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-112",
+    "deckId": "sjukdomar",
+    "fi": "käärmeenpurema",
+    "sv": "ormbett",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-113",
+    "deckId": "sjukdomar",
+    "fi": "korvatulehdus",
+    "sv": "öroninflammation",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-115",
+    "deckId": "sjukdomar",
+    "fi": "sikotauti",
+    "sv": "påssjuka",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-118",
+    "deckId": "sjukdomar",
+    "fi": "rytmihäiriö",
+    "sv": "rytmstörning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-119",
+    "deckId": "sjukdomar",
+    "fi": "vuoteenkastelu",
+    "sv": "sängvätning",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-120",
+    "deckId": "sjukdomar",
+    "fi": "tulirokko",
+    "sv": "scharlakansfeber",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-121",
+    "deckId": "sjukdomar",
+    "fi": "suonenveto",
+    "sv": "sendrag",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-122",
+    "deckId": "sjukdomar",
+    "fi": "sairaus",
+    "sv": "sjukdom",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-123",
+    "deckId": "sjukdomar",
+    "fi": "kipu",
+    "sv": "smärta",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-124",
+    "deckId": "sjukdomar",
+    "fi": "sokeritauti",
+    "sv": "sockersjuka",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-125",
+    "deckId": "sjukdomar",
+    "fi": "unettomuus",
+    "sv": "sömnlöshet",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-126",
+    "deckId": "sjukdomar",
+    "fi": "uniongelmat",
+    "sv": "sömnproblem",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-127",
+    "deckId": "sjukdomar",
+    "fi": "kihomato",
+    "sv": "springmask",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-128",
+    "deckId": "sjukdomar",
+    "fi": "kaihi",
+    "sv": "starr",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-129",
+    "deckId": "sjukdomar",
+    "fi": "jäykkäkouristus",
+    "sv": "stelkramp",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-130",
+    "deckId": "sjukdomar",
+    "fi": "nielemisvaikeus",
+    "sv": "sväljningsbesvär",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-131",
+    "deckId": "sjukdomar",
+    "fi": "kirvely",
+    "sv": "sveda",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-132",
+    "deckId": "sjukdomar",
+    "fi": "huimaus",
+    "sv": "svindel",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-133",
+    "deckId": "sjukdomar",
+    "fi": "turvotus",
+    "sv": "svullnad",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-134",
+    "deckId": "sjukdomar",
+    "fi": "oireyhtymä",
+    "sv": "syndrom",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-135",
+    "deckId": "sjukdomar",
+    "fi": "hammasvammat",
+    "sv": "tandskador",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-136",
+    "deckId": "sjukdomar",
+    "fi": "vauvarokko",
+    "sv": "tredagarsfeber",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-137",
+    "deckId": "sjukdomar",
+    "fi": "painehaava",
+    "sv": "trycksår",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-138",
+    "deckId": "sjukdomar",
+    "fi": "virtsanpidätyskyvyttömyys",
+    "sv": "urininkontinens",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-139",
+    "deckId": "sjukdomar",
+    "fi": "virtsatulehdus",
+    "sv": "urinvägsinfektion",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-143",
+    "deckId": "sjukdomar",
+    "fi": "syylä",
+    "sv": "vårta",
+    "partOfSpeech": "noun",
+    "status": "published"
+  },
+  {
+    "id": "sjukdomar-144",
+    "deckId": "sjukdomar",
+    "fi": "vesirokko",
+    "sv": "vattkoppor",
     "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "5"
-    },
     "partOfSpeech": "noun"
   },
   {
-    "id": "avdelningar-007",
-    "deckId": "avdelningar",
-    "fi": "terveyskeskus",
-    "sv": "hälsocentral",
-    "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "7"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "avdelningar-009",
-    "deckId": "avdelningar",
-    "fi": "tehohoito-osasto",
-    "sv": "intensivvårdsavdelning",
-    "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "9"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "avdelningar-010",
-    "deckId": "avdelningar",
-    "fi": "päivystyspoliklinikka",
-    "sv": "jourpoliklinik",
-    "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "10"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "avdelningar-012",
-    "deckId": "avdelningar",
-    "fi": "tarkkailuosasto",
-    "sv": "observationsavdelning",
-    "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "12"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "avdelningar-013",
-    "deckId": "avdelningar",
-    "fi": "leikkausosasto",
-    "sv": "operationsavdelning",
-    "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "13"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "avdelningar-014",
-    "deckId": "avdelningar",
-    "fi": "avohoito",
-    "sv": "öppenvård",
-    "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "14"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "avdelningar-015",
-    "deckId": "avdelningar",
-    "fi": "heräämö",
-    "sv": "uppvakningsrum",
-    "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "15"
-    },
-    "partOfSpeech": "noun"
-  },
-  {
-    "id": "avdelningar-016",
-    "deckId": "avdelningar",
-    "fi": "rokotusvastaanotto",
-    "sv": "vaccinationsmottagning",
-    "status": "published",
-    "source": {
-      "document": "Avdelningar ru-su.pdf",
-      "page": 1,
-      "item": "16"
-    },
-    "partOfSpeech": "noun"
+    "id": "sjukdomar-145",
+    "deckId": "sjukdomar",
+    "fi": "valkovuoto",
+    "sv": "vitflytning",
+    "partOfSpeech": "noun",
+    "status": "published"
   }
 ]

@@ -11,12 +11,13 @@ import {
   type FlashcardSession,
   type SessionMode,
 } from '../lib/session';
-import type { Deck, Direction, Flashcard } from '../types/content';
+import { partOfSpeechLabel } from '../lib/grammar';
+import type { DeckClient, Direction, FlashcardClient } from '../types/content';
 
 const STORAGE_KEY = 'medicinsk-svenska.flashcard-session.v1';
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
-const allCards = JSON.parse(byId<HTMLScriptElement>('cards-data').textContent ?? '[]') as Flashcard[];
-const allDecks = JSON.parse(byId<HTMLScriptElement>('decks-data').textContent ?? '[]') as Deck[];
+const allCards = JSON.parse(byId<HTMLScriptElement>('cards-data').textContent ?? '[]') as FlashcardClient[];
+const allDecks = JSON.parse(byId<HTMLScriptElement>('decks-data').textContent ?? '[]') as DeckClient[];
 const cardById = new Map(allCards.map((card) => [card.id, card]));
 const validCardIds = new Set(cardById.keys());
 const params = new URLSearchParams(location.search);
@@ -139,7 +140,7 @@ function render(options: { focusCard?: boolean } = {}) {
   byId('front-term').lang = session.direction === 'fi-sv' ? 'fi' : 'sv';
   byId('back-term').textContent = sides.back;
   byId('back-term').lang = session.direction === 'fi-sv' ? 'sv' : 'fi';
-  const grammar = [card.partOfSpeech, card.inflection].filter(Boolean).join(' · ');
+  const grammar = [partOfSpeechLabel(card.partOfSpeech), card.inflection].filter(Boolean).join(' · ');
   byId('grammar').textContent = grammar;
   byId('grammar').hidden = !grammar;
   answerArea.hidden = !session.revealed;

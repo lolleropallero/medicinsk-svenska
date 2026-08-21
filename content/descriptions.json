@@ -3,561 +3,321 @@
     "id": "beskrivning-001",
     "descriptionSv": "Cellens geléaktiga inre innehåller mest vatten och lösta ämnen. Vad kallas det?",
     "answerSv": "cytoplasma",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 1,
-      "section": "celler"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-002",
     "descriptionSv": "Denna tunna hinna omger cytoplasman. Vad är det?",
     "answerSv": "cellmembran",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 1,
-      "section": "celler"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-003",
     "descriptionSv": "Den finns i cytoplasman och innehåller cellens arvsmassa. Vad är det?",
     "answerSv": "cellkärna",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 1,
-      "section": "celler"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-004",
     "descriptionSv": "Dessa små delar i cytoplasman sköter bland annat cellens andning och ämnesomsättning. Vad kallas de?",
     "answerSv": "organeller",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 1,
-      "section": "celler"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-005",
     "descriptionSv": "Den täcker kroppens inre och yttre ytor och fungerar som skydd. Vilken vävnadstyp är det?",
     "answerSv": "epitelvävnad",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 2,
-      "section": "vävnader"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-006",
     "descriptionSv": "Ben, brosk, fett och blod hör till denna vävnadstyp. Vilken?",
     "answerSv": "stödjevävnad",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 2,
-      "section": "vävnader"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-007",
     "descriptionSv": "Den består av celler som kan dra ihop sig. Vilken vävnadstyp är det?",
     "answerSv": "muskelvävnad",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 2,
-      "section": "vävnader"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-008",
     "descriptionSv": "Detta är kroppens största organ och har tre lager. Vad är det?",
     "answerSv": "hud",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 2,
-      "section": "hud"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-009",
     "descriptionSv": "Det fungerar som kroppens stomme och skyddar inälvorna. Vad är det?",
     "answerSv": "skelett",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 4,
-      "section": "skelett"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-010",
     "descriptionSv": "Den finns bland annat i bröstbenet och där bildas blodkroppar. Vad är det?",
     "answerSv": "benmärg",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 4,
-      "section": "skelett"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-011",
     "descriptionSv": "Den går inne i ryggraden och leder information till och från hjärnan. Vad är det?",
     "answerSv": "ryggmärg",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 4,
-      "section": "skelett"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-012",
     "descriptionSv": "Här möts två eller flera benändar, som kan röra sig mot varandra. Vad är det?",
     "answerSv": "led",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 4,
-      "section": "leder"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-013",
     "descriptionSv": "Denna ledtyp kan röra sig åt alla håll och finns i axeln och höften. Vad kallas den?",
     "answerSv": "kulled",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 4,
-      "section": "leder"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-014",
     "descriptionSv": "Denna viljestyrda och snabba muskulatur bygger upp de stora musklerna i armar och ben. Vilken?",
     "answerSv": "skelettmuskulatur",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 5,
-      "section": "muskler"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-015",
     "descriptionSv": "Den finns i blodkärlens väggar, luftrören och mag-tarmkanalen och kan inte styras av viljan. Vilken muskulatur?",
     "answerSv": "glatt muskulatur",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 5,
-      "section": "muskler"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-016",
     "descriptionSv": "Det består av hjärnan, ryggmärgen och nerverna. Vad är det?",
     "answerSv": "nervsystem",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 6,
-      "section": "nervsystem"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-017",
     "descriptionSv": "Den är mest utvecklad av hjärnans delar och innehåller centra för bland annat känsel, syn, tal och minne. Vad är det?",
     "answerSv": "storhjärna",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 6,
-      "section": "nervsystem"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-018",
     "descriptionSv": "Denna del av hjärnan styr rörelser och balans. Vad är det?",
     "answerSv": "lillhjärna",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 6,
-      "section": "nervsystem"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-019",
     "descriptionSv": "Här finns områden som reglerar andning och blodcirkulation. Vilken del av hjärnan?",
     "answerSv": "hjärnstam",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 6,
-      "section": "nervsystem"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-020",
     "descriptionSv": "Flera nervtrådar löper tillsammans i en bindvävsskida. Vad bildar de?",
     "answerSv": "nerv",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 6,
-      "section": "nervsystem"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-021",
     "descriptionSv": "Cellerna här reagerar på ljus och färg och omvandlar ljuset till nervimpulser. Vilken del av ögat?",
     "answerSv": "näthinna",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 6,
-      "section": "sinnen"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-022",
     "descriptionSv": "Celler här registrerar både hörsel- och balansintryck. Vilken del av örat?",
     "answerSv": "inneröra",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 7,
-      "section": "sinnen"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-023",
     "descriptionSv": "Det ligger mellan lungorna, har två förmak och två kamrar och pumpar blod. Vad är det?",
     "answerSv": "hjärta",
     "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 7,
-      "section": "cirkulation"
-    }
+    "acceptedInflections": [
+      "hjärtat"
+    ],
+    "article": "ett"
   },
   {
     "id": "beskrivning-024",
     "descriptionSv": "Dessa blodkärl leder blod från hjärtat ut i kroppen. Vad kallas de?",
     "answerSv": "artärer",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 8,
-      "section": "cirkulation"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-025",
     "descriptionSv": "Dessa blodkärl leder blod från vävnaderna tillbaka till hjärtat. Vad kallas de?",
     "answerSv": "vener",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 8,
-      "section": "cirkulation"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-026",
     "descriptionSv": "Dessa är de minsta blodkärlen och förenar artärer med vener. Vad kallas de?",
     "answerSv": "kapillärer",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 8,
-      "section": "cirkulation"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-027",
     "descriptionSv": "Här tas syrgas upp i blodet och koldioxid avges. Vilka organ är det?",
     "answerSv": "lungor",
     "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 8,
-      "section": "andning"
-    }
+    "acceptedInflections": [
+      "lungorna"
+    ]
   },
   {
     "id": "beskrivning-028",
     "descriptionSv": "Dessa små strukturer i lungorna för över syrgas till blodet. Vad kallas de?",
     "answerSv": "lungblåsor",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 8,
-      "section": "andning"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-029",
     "descriptionSv": "Den värmer, befuktar och renar inandningsluften och innehåller luktsinnesceller. Vad är det?",
     "answerSv": "näshåla",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 8,
-      "section": "andning"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-030",
     "descriptionSv": "Den hindrar föda från att hamna i luftstrupen och gör det möjligt att bilda ljud. Vad är det?",
     "answerSv": "struphuvud",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 8,
-      "section": "andning"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-031",
     "descriptionSv": "Den flytande delen av blodet omger blodkropparna. Vad kallas den?",
     "answerSv": "blodplasma",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 9,
-      "section": "blod"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-032",
     "descriptionSv": "Dessa blodkroppar innehåller hemoglobin och transporterar syre. Vilka är de?",
     "answerSv": "röda blodkroppar",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 10,
-      "section": "blod"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-033",
     "descriptionSv": "Dessa blodkroppar skyddar kroppen mot infektioner och kan bilda antikroppar. Vilka är de?",
     "answerSv": "vita blodkroppar",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 10,
-      "section": "immunförsvar"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-034",
     "descriptionSv": "Dessa kan klumpa ihop sig och hjälpa till att stoppa en blödning. Vad kallas de?",
     "answerSv": "blodplättar",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 10,
-      "section": "blod"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-035",
     "descriptionSv": "Denna vätska sugs upp av särskilda kärl i vävnaderna och återförs senare till blodet. Vad är det?",
     "answerSv": "lymfa",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 10,
-      "section": "immunförsvar"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-036",
     "descriptionSv": "Detta organ ligger till vänster i buken, filtrerar blod och bryter ner gamla röda blodkroppar. Vad är det?",
     "answerSv": "mjälte",
     "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 10,
-      "section": "immunförsvar"
-    }
+    "acceptedInflections": [
+      "mjälten"
+    ],
+    "article": "en"
   },
   {
     "id": "beskrivning-037",
     "descriptionSv": "Detta rör leder födan från svalget till magsäcken. Vad är det?",
     "answerSv": "matstrupe",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 11,
-      "section": "matsmältning"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-038",
     "descriptionSv": "Detta organ bildar sekret som hjälper till att bryta ned födan och ligger i övre delen av buken. Vad är det?",
     "answerSv": "lever",
     "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 11,
-      "section": "matsmältning"
-    }
+    "acceptedInflections": [
+      "levern"
+    ],
+    "article": "en"
   },
   {
     "id": "beskrivning-039",
     "descriptionSv": "Denna körtel hör till mag-tarmkanalen och bildar vätska som hjälper till att bryta ned födan. Vad är det?",
     "answerSv": "bukspottkörtel",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 11,
-      "section": "matsmältning"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-040",
     "descriptionSv": "Dessa organ filtrerar blodet, reglerar vätska och salter och bildar urin. Vilka är de?",
     "answerSv": "njurar",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 11,
-      "section": "urinvägar"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-041",
     "descriptionSv": "Dessa leder urinen från njurarna till urinblåsan. Vad kallas de?",
     "answerSv": "urinledare",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 11,
-      "section": "urinvägar"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-042",
     "descriptionSv": "Här lagras urinen tillfälligt innan den töms. Vad är det?",
     "answerSv": "urinblåsa",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 11,
-      "section": "urinvägar"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-043",
     "descriptionSv": "Genom detta rör lämnar urinen kroppen. Vad är det?",
     "answerSv": "urinrör",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 12,
-      "section": "urinvägar"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-044",
     "descriptionSv": "Här bildas sädescellerna. Vilka organ är det?",
     "answerSv": "testiklar",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 12,
-      "section": "fortplantning"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-045",
     "descriptionSv": "Här mognar sädescellerna efter att de har bildats. Vad är det?",
     "answerSv": "bitestiklar",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 12,
-      "section": "fortplantning"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-046",
     "descriptionSv": "Dessa organ avger mogna ägg och ligger långt ner i buken. Vilka är de?",
     "answerSv": "äggstockar",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 12,
-      "section": "fortplantning"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-047",
     "descriptionSv": "Här sker befruktningen vanligen och ägget förs vidare mot livmodern. Vad är det?",
     "answerSv": "äggledare",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 12,
-      "section": "fortplantning"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-048",
     "descriptionSv": "Det befruktade ägget bäddas in i detta organs slemhinna och utvecklas där. Vad är det?",
     "answerSv": "livmoder",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 13,
-      "section": "fortplantning"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-049",
     "descriptionSv": "Denna körtel är ett endokrint organ och dess hormon påverkar ämnesomsättningen och kroppstemperaturen. Vad är det?",
     "answerSv": "sköldkörtel",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 13,
-      "section": "hormoner"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-050",
     "descriptionSv": "Dessa signalämnen bildas i endokrina organ och transporteras med blodet. Vad kallas de?",
     "answerSv": "hormoner",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 13,
-      "section": "hormoner"
-    }
+    "status": "published"
   },
   {
     "id": "beskrivning-051",
     "descriptionSv": "Det finns i hjärnan, fungerar som en termostat och reglerar kroppens inre temperatur. Vad är det?",
     "answerSv": "temperaturcentrum",
-    "status": "published",
-    "source": {
-      "document": "Människoroppen - en översikt.pdf",
-      "page": 13,
-      "section": "temperatur"
-    }
+    "status": "published"
   }
 ]

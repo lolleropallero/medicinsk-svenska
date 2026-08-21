@@ -100,7 +100,7 @@ function startApp() {
 
   function persist() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(session)); // NOSONAR: validated same-origin session state, never interpreted as markup.
     } catch {
       // The session remains usable when storage is unavailable.
     }

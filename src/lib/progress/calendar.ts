@@ -23,14 +23,14 @@ export function daysBetween(from: string, to: string): number | null {
   return Math.round((bu - au) / 86_400_000);
 }
 export function localWeekKey(value: Date | number = new Date()): string {
-  const date = value instanceof Date ? new Date(value) : new Date(value);
+  const date = new Date(value);
   if (!Number.isFinite(date.getTime())) throw new RangeError('Invalid date');
   const weekday = (date.getDay() + 6) % 7;
   date.setDate(date.getDate() - weekday);
   return localDayKey(date);
 }
 export function localMidnight(value: Date | number = new Date()): number {
-  const date = value instanceof Date ? new Date(value) : new Date(value);
+  const date = new Date(value);
   date.setHours(0, 0, 0, 0); return date.getTime();
 }
 export function msUntilLocalMidnight(now = Date.now()): number {

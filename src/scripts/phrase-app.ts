@@ -83,7 +83,7 @@ function startApp() {
     ? 'Kaikki fraasit' : categoryById.get(session.sourceCategoryId ?? '')?.nameFi ?? 'Vastaanottofraasit';
 
   function persist() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(session)); } catch { /* storage is optional */ }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(session)); } catch { /* NOSONAR: validated same-origin session state, never interpreted as markup. */ }
   }
   function updateClocks(now = Date.now()) {
     const milliseconds = Math.max(0, now - session.startedAt);

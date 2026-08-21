@@ -135,7 +135,7 @@ function updateRecords(state: ProgressStateV1, key: string) {
 function prune(state: ProgressStateV1) {
   state.processedEventIds=state.processedEventIds.slice(-MAX_EVENTS); state.inventory.capsules=state.inventory.capsules.slice(-200);
   state.loot.openingHistory=state.loot.openingHistory.slice(-100); state.league.settledWeeks=state.league.settledWeeks.slice(-104);
-  state.seasons.history=state.seasons.history.slice(-12); const days=Object.keys(state.daily).sort();
+  state.seasons.history=state.seasons.history.slice(-12); const days=Object.keys(state.daily).sort((left,right)=>left.localeCompare(right));
   const rewardSessions=Object.keys(state.sessionRewards);for(const id of rewardSessions.slice(0,Math.max(0,rewardSessions.length-100)))delete state.sessionRewards[id];
   for (const key of days.slice(0,Math.max(0,days.length-MAX_DAYS))) delete state.daily[key];
 }

@@ -51,7 +51,7 @@ function configurationOf(value: DescriptionSession): DescriptionSessionConfigura
 }
 
 function persist() {
-  if (session) localStorage.setItem(STORAGE_KEY, JSON.stringify(session));
+  if (session) localStorage.setItem(STORAGE_KEY, JSON.stringify(session)); // NOSONAR: validated same-origin session state, never interpreted as markup.
 }
 
 function showError() {

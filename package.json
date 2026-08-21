@@ -10,7 +10,7 @@
     "check": "astro check",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "build": "node --experimental-strip-types scripts/validate-content.ts && astro build",
+    "build": "node --experimental-strip-types scripts/validate-content.ts && astro build && node --experimental-strip-types scripts/audit-built-copy.ts",
     "preview": "astro preview"
   },
   "devDependencies": {

@@ -1,6 +1,8 @@
 import { ACHIEVEMENTS, DEFAULT_COSMETICS, EARNABLE_COSMETICS } from './catalog';
 import { addLocalDays, daysBetween, localDayKey, localWeekKey, seasonInfo } from './calendar';
-import type { Capsule, CapsuleKind, DailyProgress, EventResult, ExerciseMode, ProgressEvent, ProgressStateV1, Quest, Rarity, Reward } from './types';
+import type { Capsule, CapsuleKind, DailyProgress, EventResult, ExerciseMode, ProgressEvent, ProgressStateV1, Quest, Rarity, Reward, SessionReward } from './types';
+import type { NextAction } from './copy';
+import { modeRoutes } from './copy';
 
 export const PROGRESS_KEY = 'medicinsk-svenska.progress.v1';
 export const MAX_EVENTS = 10_000;
@@ -20,20 +22,16 @@ export function levelProgress(xp: number) {
   return { level, currentThreshold:current, nextThreshold:next, within:xp-current, remaining:next-xp, percent:(xp-current)/(next-current)*100 };
 }
 
-const sourceLabel = (mode: ExerciseMode) => mode === 'flashcards' ? 'sanakorttia' : mode === 'phrases' ? 'fraasia' : 'kuvailutehtävää';
 export function generateDailyQuests(installationId: string, day: string, rerolls: number[] = [0,0,0]): Quest[] {
   const slot2Modes: [ExerciseMode,number][] = [['flashcards',10],['phrases',5],['descriptions',5]];
-  const slot3: Pick<Quest,'kind'|'label'|'target'>[] = [
-    {kind:'active',label:'Opiskele aktiivisesti 5 minuuttia',target:300_000},
-    {kind:'variety',label:'Käytä kahta harjoitustapaa',target:2},
-    {kind:'retries',label:'Hallitse 3 kertausta',target:3},
-    {kind:'sessions',label:'Suorita 2 harjoituskierrosta',target:2},
+  const slot3: Pick<Quest,'kind'|'target'>[] = [
+    {kind:'active',target:300_000}, {kind:'variety',target:2}, {kind:'retries',target:3}, {kind:'sessions',target:2},
   ];
   const mode = slot2Modes[hashSeed(`${installationId}:${day}:2:${rerolls[1]}`) % slot2Modes.length]!;
   const behaviour = slot3[hashSeed(`${installationId}:${day}:3:${rerolls[2]}`) % slot3.length]!;
   return [
-    {id:`${day}:1:${rerolls[0]}`,slot:1,kind:'items',label:'Harjoittele 10 eri kohdetta',target:10,xp:5,credits:10,seasonPoints:10,rerollIndex:rerolls[0]!,claimed:false},
-    {id:`${day}:2:${rerolls[1]}`,slot:2,kind:'mode',mode:mode[0],label:`Harjoittele ${mode[1]} ${sourceLabel(mode[0])}`,target:mode[1],xp:10,credits:15,seasonPoints:15,rerollIndex:rerolls[1]!,claimed:false},
+    {id:`${day}:1:${rerolls[0]}`,slot:1,kind:'items',target:10,xp:5,credits:10,seasonPoints:10,rerollIndex:rerolls[0]!,claimed:false},
+    {id:`${day}:2:${rerolls[1]}`,slot:2,kind:'mode',mode:mode[0],target:mode[1],xp:10,credits:15,seasonPoints:15,rerollIndex:rerolls[1]!,claimed:false},
     {id:`${day}:3:${rerolls[2]}`,slot:3,...behaviour,xp:15,credits:20,seasonPoints:20,rerollIndex:rerolls[2]!,claimed:false},
   ];
 }
@@ -66,14 +64,16 @@ function applyReward(state: ProgressStateV1, reward: Reward, id: string, now: nu
   if (reward.type === 'capsule') addCapsule(state,reward.kind,`${id}:capsule`,now);
   if (reward.type === 'cosmetic' && !state.inventory.ownedCosmeticIds.includes(reward.cosmeticId)) state.inventory.ownedCosmeticIds.push(reward.cosmeticId);
 }
-function grantXp(state: ProgressStateV1, day: DailyProgress, amount: number, now: number, id: string, earned: string[]) {
-  if (amount <= 0) return; state.lifetime.xp += amount; day.xp += amount; state.league.weeklyXp += amount; earned.push(`+${amount} XP`);
+function addSessionReward(earned:SessionReward[],reward:SessionReward){if(!earned.some(item=>JSON.stringify(item)===JSON.stringify(reward)))earned.push(reward);}
+function mergeSessionRewards(current:SessionReward[],earned:SessionReward[]):SessionReward[]{const merged=structuredClone(current);for(const reward of earned){if('amount'in reward){const existing=merged.find(item=>item.kind===reward.kind&&'amount'in item) as Extract<SessionReward,{amount:number}>|undefined;if(existing)existing.amount+=reward.amount;else merged.push(reward);}else if(!merged.some(item=>item.kind===reward.kind))merged.push(reward);}return merged;}
+function grantXp(state: ProgressStateV1, day: DailyProgress, amount: number, now: number, id: string, earned: SessionReward[]) {
+  if (amount <= 0) return; state.lifetime.xp += amount; day.xp += amount; state.league.weeklyXp += amount; addSessionReward(earned,{kind:'xp',amount});
   const level = levelFromXp(state.lifetime.xp);
   for (let reached=state.highestRewardedLevel+1; reached<=level; reached++) {
     state.inventory.credits += 10;
     if (reached%10===0) addCapsule(state,'golden',`${id}:level:${reached}`,now);
     else if (reached%5===0) addCapsule(state,'standard',`${id}:level:${reached}`,now);
-    state.notifications.push({id:`level:${reached}`,message:`Taso ${reached} saavutettu`});
+    state.notifications.push({id:`level:${reached}`,kind:'level',level:reached});
   }
   state.highestRewardedLevel=Math.max(state.highestRewardedLevel,level);
 }
@@ -86,13 +86,13 @@ function questProgress(day: DailyProgress, quest: Quest): number {
   return day.sessionsCompleted;
 }
 export function getQuestProgress(day: DailyProgress, quest: Quest) { return Math.min(quest.target,questProgress(day,quest)); }
-function settleQuests(state: ProgressStateV1, day: DailyProgress, now: number, earned: string[]) {
+function settleQuests(state: ProgressStateV1, day: DailyProgress, now: number, earned: SessionReward[]) {
   for (const quest of day.quests) if (!quest.claimed && questProgress(day,quest)>=quest.target) {
     quest.claimed=true; state.inventory.credits+=quest.credits; state.seasons.points+=quest.seasonPoints;
-    grantXp(state,day,quest.xp,now,quest.id,earned); state.notifications.push({id:`quest:${quest.id}`,message:'Päivätehtävä valmis'});
+    grantXp(state,day,quest.xp,now,quest.id,earned);addSessionReward(earned,{kind:'credits',amount:quest.credits});addSessionReward(earned,{kind:'season-points',amount:quest.seasonPoints});addSessionReward(earned,{kind:'daily-quest'});state.notifications.push({id:`quest:${quest.id}`,kind:'daily-quest'});
   }
   if (!day.allQuestsClaimed && day.quests.every((quest)=>quest.claimed)) {
-    day.allQuestsClaimed=true; state.seasons.points+=25; addCapsule(state,'golden',`daily-all:${localDayKey(now)}`,now); earned.push('Kultainen palkintokapseli');
+    day.allQuestsClaimed=true; state.seasons.points+=25; addCapsule(state,'golden',`daily-all:${localDayKey(now)}`,now);addSessionReward(earned,{kind:'season-points',amount:25});addSessionReward(earned,{kind:'golden-box'});state.notifications.push({id:`daily-all:${localDayKey(now)}`,kind:'golden-box'});
   }
 }
 function streakMilestone(state: ProgressStateV1, streak: number, now: number) {
@@ -101,17 +101,17 @@ function streakMilestone(state: ProgressStateV1, streak: number, now: number) {
     100:[{type:'capsule',kind:'legendary'}],365:[{type:'capsule',kind:'legendary'},{type:'cosmetic',cosmeticId:'season-legendary'}]};
   rewards[streak]?.forEach((reward,index)=>applyReward(state,reward,`streak:${streak}:${index}`,now));
 }
-function qualifyGoal(state: ProgressStateV1, day: DailyProgress, key: string, now: number, earned: string[]) {
+function qualifyGoal(state: ProgressStateV1, day: DailyProgress, key: string, now: number, earned: SessionReward[]) {
   if (day.goalClaimed || day.uniqueItemIds.length < state.settings.dailyGoal) return;
   day.goalClaimed=true; day.qualified=true; day.goalTarget=state.settings.dailyGoal; state.inventory.credits+=10; state.seasons.points+=20;
-  addCapsule(state,'standard',`daily-goal:${key}`,now); earned.push('+10 krediittiä','Palkintokapseli');
+  addCapsule(state,'standard',`daily-goal:${key}`,now);addSessionReward(earned,{kind:'credits',amount:10});addSessionReward(earned,{kind:'season-points',amount:20});addSessionReward(earned,{kind:'daily-goal'});addSessionReward(earned,{kind:'standard-box'});
   state.streak.current=state.streak.current>0?state.streak.current+1:1; state.streak.longest=Math.max(state.streak.longest,state.streak.current);
   state.streak.lastQualifiedDay=key; state.records.longestStreak=state.streak.longest; streakMilestone(state,state.streak.current,now);
-  state.notifications.push({id:`goal:${key}`,message:'Päivätavoite täynnä'});
+  state.notifications.push({id:`goal:${key}`,kind:'daily-goal'});
 }
-function settleWeeklyQuests(state:ProgressStateV1,day:DailyProgress,key:string,now:number,earned:string[]){const week=localWeekKey(now),keys=Object.keys(state.daily).filter(date=>date>=week&&date<=key),studyDays=keys.filter(date=>state.daily[date]!.uniqueItemIds.length>0).length,items=keys.reduce((sum,date)=>sum+state.daily[date]!.uniqueItemIds.length,0),modes=new Set(keys.flatMap(date=>state.daily[date]!.modes)).size;
+function settleWeeklyQuests(state:ProgressStateV1,day:DailyProgress,key:string,now:number,earned:SessionReward[]){const week=localWeekKey(now),keys=Object.keys(state.daily).filter(date=>date>=week&&date<=key),studyDays=keys.filter(date=>state.daily[date]!.uniqueItemIds.length>0).length,items=keys.reduce((sum,date)=>sum+state.daily[date]!.uniqueItemIds.length,0),modes=new Set(keys.flatMap(date=>state.daily[date]!.modes)).size;
   const tasks:[string,boolean][]=[['days',studyDays>=5],['items',items>=100],['modes',modes>=3]];
-  for(const [id,complete] of tasks){const eventId=`weekly:${week}:${id}`;if(complete&&!state.processedEventIds.includes(eventId)){state.processedEventIds.push(eventId);state.inventory.credits+=30;state.seasons.points+=30;grantXp(state,day,25,now,eventId,earned);state.notifications.push({id:eventId,message:'Viikkotehtävä valmis'});}}
+  for(const [id,complete] of tasks){const eventId=`weekly:${week}:${id}`;if(complete&&!state.processedEventIds.includes(eventId)){state.processedEventIds.push(eventId);state.inventory.credits+=30;state.seasons.points+=30;grantXp(state,day,25,now,eventId,earned);addSessionReward(earned,{kind:'credits',amount:30});addSessionReward(earned,{kind:'season-points',amount:30});state.notifications.push({id:eventId,kind:'weekly-quest'});}}
   if(tasks.every(([,complete])=>complete)){const id=`weekly:${week}:all`;if(!state.processedEventIds.includes(id)){state.processedEventIds.push(id);state.seasons.points+=60;addCapsule(state,'golden',`${id}:capsule`,now);}}
 }
 function achievements(state: ProgressStateV1, now: number) {
@@ -123,7 +123,7 @@ function achievements(state: ProgressStateV1, now: number) {
   };
   for (const achievement of state.achievements) if (!achievement.unlockedAt && checks[achievement.id]) {
     achievement.unlockedAt=now; applyReward(state,achievement.reward,`achievement:${achievement.id}`,now);
-    state.notifications.push({id:`achievement:${achievement.id}`,message:`Saavutus avattu: ${achievement.name}`});
+    state.notifications.push({id:`achievement:${achievement.id}`,kind:'achievement'});
   }
 }
 function updateRecords(state: ProgressStateV1, key: string) {
@@ -141,14 +141,14 @@ function prune(state: ProgressStateV1) {
 }
 export function reduceProgress(input: ProgressStateV1, event: ProgressEvent): EventResult {
   if (input.processedEventIds.includes(event.eventId)) return {state:input,applied:false,earned:[]};
-  const state=structuredClone(input); const earned:string[]=[]; const key=localDayKey(event.occurredAt); const day=state.daily[key]??emptyDay(state,key);
+  const state=structuredClone(input); const earned:SessionReward[]=[]; const key=localDayKey(event.occurredAt); const day=state.daily[key]??emptyDay(state,key);
   state.daily[key]=day; state.processedEventIds.push(event.eventId); state.updatedAt=Math.max(state.updatedAt,event.occurredAt); state.lastUsedMode=event.mode;
   if(event.type==='session-started'){day.sessionsStarted++;state.lifetime.sessionsStarted++;}
   if(event.type==='active-study'){const duration=Math.max(0,Math.min(30_000,event.durationMs));day.activeStudyMs+=duration;state.lifetime.activeStudyMs+=duration;}
   if(event.type==='session-completed'){
     day.sessionsCompleted++;state.lifetime.sessionsCompleted++;
     if(event.selectedCount>=10&&!day.sessionDropAwarded){day.sessionDropEligible++;const drops=seededUnit(`${state.installationId}:${key}:${day.sessionDropEligible}`)<.2||day.sessionDropEligible===3;
-      if(drops){day.sessionDropAwarded=true;addCapsule(state,'standard',`session-drop:${key}`,event.occurredAt);earned.push('Palkintokapseli');}}
+      if(drops){day.sessionDropAwarded=true;addCapsule(state,'standard',`session-drop:${key}`,event.occurredAt);addSessionReward(earned,{kind:'standard-box'});}}
   }
   if(event.type==='item-completed'){
     state.lifetime.completedItems++;day.completedItems++;if(event.hadMisses){state.lifetime.retriesMastered++;day.retriesMastered++;}
@@ -170,7 +170,7 @@ export function reduceProgress(input: ProgressStateV1, event: ProgressEvent): Ev
   qualifyGoal(state,day,key,event.occurredAt,earned);settleQuests(state,day,event.occurredAt,earned);settleWeeklyQuests(state,day,key,event.occurredAt,earned);
   if(state.streak.rescue?.day===key){state.streak.rescue.progress=day.uniqueItemIds.length;if(day.uniqueItemIds.length>=20){state.streak.current=state.streak.rescue.previousStreak+1;state.streak.longest=Math.max(state.streak.longest,state.streak.current);state.streak.lastRescueDay=key;delete state.streak.rescue;}}
   achievements(state,event.occurredAt);updateRecords(state,key);
-  if(earned.length){state.sessionRewards[event.sessionId]=[...new Set([...(state.sessionRewards[event.sessionId]??[]),...earned])];}
+  if(earned.length)state.sessionRewards[event.sessionId]=mergeSessionRewards(state.sessionRewards[event.sessionId]??[],earned);
   prune(state);
   return {state,applied:true,earned};
 }
@@ -188,14 +188,14 @@ export function reconcileProgress(input:ProgressStateV1,now=Date.now()):Progress
   if(unprotected.length===1&&unprotected[0]===addLocalDays(today,-1)){const cooldown=state.streak.lastRescueDay?daysBetween(state.streak.lastRescueDay,today):null;if(cooldown===null||cooldown>=30)state.streak.rescue={day:today,previousStreak,progress:0};}
   else if(state.streak.rescue?.day!==today)delete state.streak.rescue;
   if(today>last&&state.streak.lastReconciledDay!==today){state.streak.lastReconciledDay=today;changed=true;}
-  const currentWeek=localWeekKey(now);if(currentWeek>state.league.weekKey&&!state.league.settledWeeks.includes(state.league.weekKey)){const old=state.league.tier,index=leagueTiers.indexOf(old),xp=state.league.weeklyXp;let next=index,result='Säilyit sarjassa';if(xp>=promoteAt[index]!&&index<leagueTiers.length-1){next=index+1;result=`Nousit sarjaan ${leagueTiers[next]}`;addCapsule(state,next===1?'standard':'golden',`league:${state.league.weekKey}`,now);}else if(xp<demoteBelow[index]!&&index>0){next=index-1;result=`Putosit sarjaan ${leagueTiers[next]}`;}else if(old==='Konsultti')addCapsule(state,'golden',`league:${state.league.weekKey}:retain`,now);else state.inventory.credits+=10*(index+1);state.league.tier=leagueTiers[next]!;state.league.previousResult=result;state.league.settledWeeks.push(state.league.weekKey);state.league.weekKey=currentWeek;state.league.weeklyXp=0;changed=true;}
+  const currentWeek=localWeekKey(now);if(currentWeek>state.league.weekKey&&!state.league.settledWeeks.includes(state.league.weekKey)){const old=state.league.tier,index=leagueTiers.indexOf(old),xp=state.league.weeklyXp;let next=index,kind:'retained'|'promoted'|'demoted'='retained';if(xp>=promoteAt[index]!&&index<leagueTiers.length-1){next=index+1;kind='promoted';addCapsule(state,next===1?'standard':'golden',`league:${state.league.weekKey}`,now);}else if(xp<demoteBelow[index]!&&index>0){next=index-1;kind='demoted';}else if(old==='Konsultti')addCapsule(state,'golden',`league:${state.league.weekKey}:retain`,now);else state.inventory.credits+=10*(index+1);state.league.tier=leagueTiers[next]!;state.league.result={kind,tier:leagueTiers[next]!};delete state.league.previousResult;state.notifications.push({id:`league:${state.league.weekKey}:result`,kind:'league',result:state.league.result});state.league.settledWeeks.push(state.league.weekKey);state.league.weekKey=currentWeek;state.league.weeklyXp=0;changed=true;}
   const currentSeason=seasonInfo(now);if(currentSeason.index>state.seasons.index){for(let tier=1;tier<=Math.min(30,Math.floor(state.seasons.points/100));tier++)if(!state.seasons.claimedTiers.includes(tier)){SEASON_REWARDS[tier]!.forEach((reward,index)=>applyReward(state,reward,`season:${state.seasons.id}:${tier}:${index}`,now));state.seasons.claimedTiers.push(tier);}state.seasons.history.push({id:state.seasons.id,points:state.seasons.points,claimedTiers:[...state.seasons.claimedTiers]});state.seasons.history=state.seasons.history.slice(-12);state.seasons={id:currentSeason.id,index:currentSeason.index,points:0,claimedTiers:[],history:state.seasons.history};changed=true;}
   if(changed){state.updatedAt=Math.max(state.updatedAt,now);prune(state);}return state;}
 export function rerollQuest(input:ProgressStateV1,slot:number,now=Date.now()):ProgressStateV1|null {
   const state=structuredClone(input),key=localDayKey(now),day=state.daily[key]??emptyDay(state,key),current=day.quests.find(q=>q.slot===slot);
   if(!current||current.claimed)return null;if(day.freeRerollUsed){if(state.inventory.rerollTokens<1)return null;state.inventory.rerollTokens--;}else day.freeRerollUsed=true;
   const indices=day.quests.map(q=>q.rerollIndex);indices[slot-1]=(indices[slot-1]??0)+1;let generated=generateDailyQuests(state.installationId,key,indices);
-  let attempts=0;while(generated.some((q,i)=>i===slot-1&&day.quests.some(old=>old.slot!==slot&&old.label===q.label))&&attempts++<10){indices[slot-1]=(indices[slot-1]??0)+1;generated=generateDailyQuests(state.installationId,key,indices);}
+  let attempts=0;while(generated.some((q,i)=>i===slot-1&&day.quests.some(old=>old.slot!==slot&&old.kind===q.kind&&old.mode===q.mode))&&attempts++<10){indices[slot-1]=(indices[slot-1]??0)+1;generated=generateDailyQuests(state.installationId,key,indices);}
   day.quests[slot-1]=generated[slot-1]!;state.daily[key]=day;settleQuests(state,day,now,[]);return state;
 }
 
@@ -216,13 +216,13 @@ export function openCapsule(input:ProgressStateV1,id:string,now=Date.now(),roll=
   state.loot.openingHistory.push(id);state.loot.openingHistory=state.loot.openingHistory.slice(-100);return {state,capsule};
 }
 
-export interface ShopOffer {id:string;type:'cosmetic'|'utility'|'capsule';itemId:string;label:string;price:number;originalPrice:number;discounted:boolean;purchased:boolean}
+export interface ShopOffer {id:string;type:'cosmetic'|'utility'|'capsule';itemId:string;price:number;originalPrice:number;discounted:boolean;purchased:boolean}
 export function dailyShop(state:ProgressStateV1,now=Date.now()):ShopOffer[]{const key=localDayKey(now),seed=`${state.installationId}:${key}`,discount=hashSeed(`${seed}:discount`)%4;
   const available=EARNABLE_COSMETICS.filter(c=>!state.inventory.ownedCosmeticIds.includes(c.id));const price:Record<Rarity,number>={common:40,rare:100,epic:250,legendary:600};
   const cosmetics=[0,1].map(slot=>{const planPrefix=`shop-plan:${key}:${slot}:`,purchasePrefix=`shop:${key}:${slot}:`;const prior=(state.processedEventIds.find(id=>id.startsWith(planPrefix))?.slice(planPrefix.length)??state.processedEventIds.find(id=>id.startsWith(purchasePrefix))?.slice(purchasePrefix.length));return EARNABLE_COSMETICS.find(item=>item.id===prior)??available[hashSeed(`${seed}:${slot}`)%Math.max(1,available.length)];}).filter(Boolean);
-  const raw=[...cosmetics.map(c=>({type:'cosmetic' as const,itemId:c!.id,label:c!.name,originalPrice:price[c!.rarity]})),
-    state.inventory.streakFreezes<2?{type:'utility' as const,itemId:'streakFreeze',label:'Putkisuoja',originalPrice:150}:{type:'utility' as const,itemId:'rerollToken',label:'Uudelleenarvontatunnus',originalPrice:75},
-    hashSeed(`${seed}:capsule`)%2?{type:'capsule' as const,itemId:'standard',label:'Tavallinen palkintokapseli',originalPrice:60}:{type:'capsule' as const,itemId:'golden',label:'Kultainen palkintokapseli',originalPrice:180}];
+  const raw=[...cosmetics.map(c=>({type:'cosmetic' as const,itemId:c!.id,originalPrice:price[c!.rarity]})),
+    state.inventory.streakFreezes<2?{type:'utility' as const,itemId:'streakFreeze',originalPrice:150}:{type:'utility' as const,itemId:'rerollToken',originalPrice:75},
+    hashSeed(`${seed}:capsule`)%2?{type:'capsule' as const,itemId:'standard',originalPrice:60}:{type:'capsule' as const,itemId:'golden',originalPrice:180}];
   return raw.map((offer,index)=>{const id=`shop:${key}:${index}:${offer.itemId}`;return{...offer,id,price:index===discount?Math.ceil(offer.originalPrice*.8):offer.originalPrice,discounted:index===discount,purchased:state.processedEventIds.includes(id)}});}
 export function buyShopOffer(input:ProgressStateV1,offerId:string,now=Date.now()):ProgressStateV1|null{const state=structuredClone(input),offer=dailyShop(state,now).find(item=>item.id===offerId);if(!offer||offer.purchased||state.inventory.credits<offer.price)return null;
   const key=localDayKey(now);dailyShop(state,now).forEach((item,index)=>{const plan=`shop-plan:${key}:${index}:${item.itemId}`;if(!state.processedEventIds.includes(plan))state.processedEventIds.push(plan);});
@@ -231,8 +231,9 @@ export function buyShopOffer(input:ProgressStateV1,offerId:string,now=Date.now()
 export const SEASON_REWARDS:Record<number,Reward[]>={1:[{type:'credits',amount:20}],2:[{type:'capsule',kind:'standard'}],3:[{type:'credits',amount:25}],4:[{type:'rerollToken',amount:1}],5:[{type:'cosmetic',cosmeticId:'season-rare'}],6:[{type:'credits',amount:30}],7:[{type:'capsule',kind:'standard'}],8:[{type:'streakFreeze',amount:1}],9:[{type:'credits',amount:40}],10:[{type:'capsule',kind:'golden'}],11:[{type:'credits',amount:40}],12:[{type:'capsule',kind:'standard'}],13:[{type:'rerollToken',amount:1}],14:[{type:'credits',amount:50}],15:[{type:'cosmetic',cosmeticId:'season-epic-1'}],16:[{type:'credits',amount:50}],17:[{type:'capsule',kind:'standard'}],18:[{type:'streakFreeze',amount:1}],19:[{type:'credits',amount:60}],20:[{type:'capsule',kind:'golden'}],21:[{type:'credits',amount:60}],22:[{type:'capsule',kind:'standard'}],23:[{type:'rerollToken',amount:1}],24:[{type:'credits',amount:75}],25:[{type:'cosmetic',cosmeticId:'season-epic-2'}],26:[{type:'credits',amount:75}],27:[{type:'capsule',kind:'golden'}],28:[{type:'streakFreeze',amount:1}],29:[{type:'credits',amount:100}],30:[{type:'cosmetic',cosmeticId:'season-legendary'},{type:'capsule',kind:'legendary'}]};
 export function claimSeason(input:ProgressStateV1,tier:number,now=Date.now()):ProgressStateV1|null{if(!Number.isInteger(tier)||tier<1||tier>30||input.seasons.points<tier*100||input.seasons.claimedTiers.includes(tier))return null;const state=structuredClone(input);SEASON_REWARDS[tier]!.forEach((reward,index)=>applyReward(state,reward,`season:${state.seasons.id}:${tier}:${index}`,now));state.seasons.claimedTiers.push(tier);return state;}
 
-export function nextAction(state:ProgressStateV1,now=Date.now()):{label:string;href:string}{const day=state.daily[localDayKey(now)]??emptyDay(state,localDayKey(now));if(state.inventory.capsules.some(c=>!c.openedAt))return{label:'Avaa palkintokapseli',href:'/palkinnot/'};
-  const tier=Math.floor(state.seasons.points/100);if(Array.from({length:tier},(_,i)=>i+1).some(t=>!state.seasons.claimedTiers.includes(t)))return{label:'Lunasta kausipalkinto',href:'/kausi/'};
-  if(day.uniqueItemIds.length<state.settings.dailyGoal)return{label:`${state.settings.dailyGoal-day.uniqueItemIds.length} tehtävää päivän kapseliin`,href:'/kortit/'};
-  const quest=day.quests.filter(q=>!q.claimed).sort((a,b)=>(a.target-questProgress(day,a))-(b.target-questProgress(day,b)))[0];if(quest)return{label:quest.label,href:'/edistyminen/'};
-  const routes:Record<ExerciseMode,string>={flashcards:'/kortit/',phrases:'/fraasit/',descriptions:'/kuvailu/'};return{label:state.lastUsedMode?`Jatka ${state.lastUsedMode==='flashcards'?'sanakorteilla':state.lastUsedMode==='phrases'?'fraaseilla':'kuvailutehtävillä'}`:'Aloita sanakorteilla',href:routes[state.lastUsedMode??'flashcards']};}
+export function claimableSeasonCount(state:ProgressStateV1){const tier=Math.min(30,Math.floor(state.seasons.points/100));return Array.from({length:tier},(_,i)=>i+1).filter(value=>!state.seasons.claimedTiers.includes(value)).length;}
+export function nextAction(state:ProgressStateV1,now=Date.now()):NextAction{const day=state.daily[localDayKey(now)]??emptyDay(state,localDayKey(now)),boxes=state.inventory.capsules.filter(c=>!c.openedAt).length;if(boxes)return{kind:'open-box',count:boxes,href:'/palkinnot/#unopened-boxes'};
+  const claimable=claimableSeasonCount(state);if(claimable)return{kind:'claim-season',count:claimable,href:'/kausi/#reward-track'};
+  if(day.uniqueItemIds.length<state.settings.dailyGoal)return{kind:'daily-goal',remaining:state.settings.dailyGoal-day.uniqueItemIds.length,href:'/kortit/'};
+  const quest=day.quests.filter(q=>!q.claimed).sort((a,b)=>(a.target-questProgress(day,a))-(b.target-questProgress(day,b)))[0];if(quest){const mode=quest.mode??(quest.kind==='variety'?'flashcards':state.lastUsedMode??'flashcards');return{kind:'daily-quest',quest,remaining:Math.max(0,quest.target-questProgress(day,quest)),href:modeRoutes[mode]};}
+  const mode=state.lastUsedMode??'flashcards';return{kind:'continue',mode,href:modeRoutes[mode]};}

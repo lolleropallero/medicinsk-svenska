@@ -220,6 +220,6 @@ test('description exercise is accessible and has no horizontal overflow or unrea
     }
   }
   expect((await new AxeBuilder({ page }).analyze()).violations.filter((violation) => ['serious', 'critical'].includes(violation.impact ?? ''))).toEqual([]);
-  const swedish = await page.locator('[lang="sv"]').evaluateAll((elements) => elements.map((element) => element.id));
+  const swedish = await page.locator('[lang="sv"]').evaluateAll((elements) => elements.map((element) => element.id).filter(Boolean));
   expect(new Set(swedish)).toEqual(new Set(['description-text', 'answer', 'canonical-answer']));
 });

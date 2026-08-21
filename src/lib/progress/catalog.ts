@@ -1,10 +1,10 @@
 import type { Achievement, Cosmetic, CosmeticType, Rarity, Reward } from './types';
 
 const defs: Record<CosmeticType, [string, string][]> = {
-  theme: [['Päivystys','Selkeä vaalea teema'],['Leikkaussali','Viileä sinivihreä teema'],['Arkisto','Lämmin paperisävy'],['Yövuoro','Tumma korkeakontrastinen teema'],['Laboratorio','Raikas sininen teema'],['Kuntoutus','Rauhallinen vihreä teema'],['Klinikka','Hillitty harmaa teema'],['Konsultaatio','Syvä laivastonsininen teema'],['Anatomia','Pehmeä punaruskea teema'],['Seuranta','Neutraali seurantateema']],
-  cardStyle: [['Peruskortti','Selkeä peruskortti'],['Resepti','Hieno viivapohja'],['Lomake','Jäsennelty korttipinta'],['Muistio','Pehmeä paperipinta'],['Näyte','Ohut kaksoisreuna'],['Kansio','Vahva yläreuna'],['Tarkistus','Kulmikas korttipinta'],['Kertomus','Väljä typografia'],['Kuvantaminen','Tumma kehys'],['Lähete','Rauhallinen lomaketyyli']],
-  progressFrame: [['Peruskehys','Selkeä peruskehys'],['Pulssi','Rytmikäs viivakehys'],['Ristikko','Hillitty ruudutus'],['Mittari','Kaksoisviivakehys'],['Seuranta','Katkoviivakehys'],['Kierto','Pyöristetty kehys'],['Kudos','Pehmeä varjostus'],['Spektri','Korostettu kehys'],['Synteesi','Kolminkertainen kehys'],['Käyrä','Tarkka mittauskehys']],
-  title: [['Opiskelija','Oletusarvoinen arvonimi'],['Harjoittelija','Säännöllinen harjoittelija'],['Kertaaja','Kertauksen taitaja'],['Sanaston kerääjä','Sanaston kartuttaja'],['Fraasien tuntija','Fraasien harjoittelija'],['Kuvailija','Kuvailun harjoittelija'],['Päivystäjä','Aktiivinen opiskelija'],['Klinikan kulkija','Pitkäjänteinen opiskelija'],['Konsultoija','Kokenut harjoittelija'],['Kokonaisuuden rakentaja','Monipuolinen harjoittelija']],
+  theme: [['Akuten','Ett tydligt ljust tema.'],['Operationssalen','Ett svalt blågrönt tema.'],['Arkivet','Varma toner av papper.'],['Nattjour','Ett mörkt tema med hög kontrast.'],['Laboratoriet','Ett friskt blått tema.'],['Rehabilitering','Ett lugnt grönt tema.'],['Kliniken','Ett återhållet grått tema.'],['Konsultation','Ett djupt marinblått tema.'],['Anatomi','Mjuka rödbruna toner.'],['Uppföljning','Ett neutralt tema för uppföljning.']],
+  cardStyle: [['Grundkort','Ett tydligt kort utan dekoration.'],['Recept','Diskreta skrivlinjer.'],['Formulär','En strukturerad kortyta.'],['Anteckning','En mjuk pappersyta.'],['Prov','En tunn dubbel ram.'],['Journal','En markerad överkant.'],['Kontroll','En stram kantig yta.'],['Berättelse','Luftig typografi.'],['Bilddiagnostik','En mörk ram.'],['Remiss','En lugn formulärstil.']],
+  progressFrame: [['Basram','En tydlig enkel ram.'],['Puls','En rytmisk linjeram.'],['Rutnät','Ett diskret rutmönster.'],['Mätare','En dubbel linjeram.'],['Uppföljning','En streckad ram.'],['Rotation','En mjukt rundad ram.'],['Vävnad','En mjuk skuggning.'],['Spektrum','En markerad ram.'],['Syntes','En tredubbel ram.'],['Kurva','En exakt mätram.']],
+  title: [['Student','Standardtitel.'],['Praktikant','För regelbunden träning.'],['Repetitör','För säker repetition.'],['Ordsamlare','För ett växande ordförråd.'],['Fraskännare','För flitig frasträning.'],['Beskrivare','För säker beskrivning.'],['Jourhavande','För aktivt studium.'],['Kliniker','För uthållig träning.'],['Konsult','För en erfaren övare.'],['Helhetsbyggare','För mångsidig träning.']],
 };
 const rarities: Rarity[] = [
   ...Array(16).fill('common'), ...Array(10).fill('rare'), ...Array(7).fill('epic'), ...Array(3).fill('legendary'),
@@ -16,10 +16,10 @@ const baseCosmetics: Cosmetic[] = types.flatMap((type, typeIndex) => defs[type].
   type, name, description, rarity: index === 0 ? 'common' : rarities[typeIndex * 9 + index - 1]!,
 })));
 export const COSMETICS: Cosmetic[] = [...baseCosmetics,
-  { id:'season-rare',type:'title',rarity:'rare',name:'Kauden tarkkailija',description:'Kausipolun arvonimi',seasonExclusive:true },
-  { id:'season-epic-1',type:'progressFrame',rarity:'epic',name:'Kausikehys',description:'Kausipolun kehys',seasonExclusive:true },
-  { id:'season-epic-2',type:'cardStyle',rarity:'epic',name:'Kausikortti',description:'Kausipolun kortti',seasonExclusive:true },
-  { id:'season-legendary',type:'theme',rarity:'legendary',name:'Ylilääkärinkierto',description:'Kausipolun päätösteema',seasonExclusive:true },
+  { id:'season-rare',type:'title',rarity:'rare',name:'Rotationsobservatör',description:'En titel från säsongens kliniska rotation.',seasonExclusive:true },
+  { id:'season-epic-1',type:'progressFrame',rarity:'epic',name:'Rotationsram',description:'En exklusiv ram från den kliniska rotationen.',seasonExclusive:true },
+  { id:'season-epic-2',type:'cardStyle',rarity:'epic',name:'Kliniskt kort',description:'En exklusiv kortstil från den kliniska rotationen.',seasonExclusive:true },
+  { id:'season-legendary',type:'theme',rarity:'legendary',name:'Överläkarjour',description:'Säsongens exklusiva avslutningstema.',seasonExclusive:true },
 ];
 export const EARNABLE_COSMETICS = COSMETICS.filter((item) => !Object.values(DEFAULT_COSMETICS).includes(item.id) && !item.seasonExclusive);
 const reward = (type: Reward['type'], value: number | string): Reward => type === 'credits'
@@ -41,4 +41,4 @@ const achievementDefs: [string,string,string,Reward][] = [
   ['active-60','Keskittynyt tunti','Opiskele aktiivisesti tunti',reward('capsule','standard')],
 ];
 export const ACHIEVEMENTS: Achievement[] = achievementDefs.map(([id,name,description,reward]) => ({id,name,description,reward}));
-export const RARITY_LABEL: Record<Rarity,string> = { common:'Tavallinen',rare:'Harvinainen',epic:'Eeppinen',legendary:'Legendaarinen' };
+export const RARITY_LABEL: Record<Rarity,string> = { common:'Vanlig',rare:'Sällsynt',epic:'Episk',legendary:'Legendarisk' };

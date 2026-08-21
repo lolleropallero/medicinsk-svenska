@@ -3,7 +3,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { openSpecificCard } from './helpers';
 
 test('landing page and core routes are accessible',async({page})=>{
-  await page.goto('/'); await expect(page.getByRole('heading',{name:'Harjoittele lääketieteellistä ruotsia'})).toBeVisible();
+  await page.goto('/'); await expect(page.getByRole('heading',{name:'Dagens mål'})).toBeVisible();
   const landingText=await page.locator('body').innerText();
   for(const removed of ['Ruotsi osaksi','Kaksi tapaa harjoitella','Valitse tämän päivän tavoite','Lääketieteen opiskelijoille','Itsenäiseen opiskeluun']) expect(landingText).not.toContain(removed);
   expect((await new AxeBuilder({page}).analyze()).violations.filter(v=>['serious','critical'].includes(v.impact??''))).toEqual([]);

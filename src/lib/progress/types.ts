@@ -39,7 +39,7 @@ export type Reward =
 
 export type QuestKind = 'items' | 'mode' | 'active' | 'variety' | 'retries' | 'sessions';
 export interface Quest {
-  id: string; slot: number; kind: QuestKind; label: string; target: number; mode?: ExerciseMode;
+  id: string; slot: number; kind: QuestKind; label?: string; target: number; mode?: ExerciseMode;
   xp: number; credits: number; seasonPoints: number; rerollIndex: number; claimed: boolean;
 }
 export interface DailyProgress {
@@ -55,7 +55,13 @@ export interface SeasonState {
   history: { id: string; points: number; claimedTiers: number[] }[];
 }
 export type LeagueTier = 'Pronssi' | 'Hopea' | 'Kulta' | 'Platina' | 'Timantti' | 'Konsultti';
-export interface LeagueState { tier: LeagueTier; weekKey: string; weeklyXp: number; settledWeeks: string[]; previousResult?: string }
+export type LeagueResult = { kind:'retained'|'promoted'|'demoted'; tier:LeagueTier };
+export interface LeagueState { tier: LeagueTier; weekKey: string; weeklyXp: number; settledWeeks: string[]; previousResult?: string; result?: LeagueResult }
+export type ProgressNotification = { id:string; kind:'level'; level:number }
+  | { id:string; kind:'daily-goal'|'daily-quest'|'weekly-quest'|'achievement'|'golden-box'|'season-step'|'welcome-back' }
+  | { id:string; kind:'league'; result:LeagueResult };
+export type SessionReward = { kind:'xp'|'credits'|'season-points'; amount:number }
+  | { kind:'daily-quest'|'daily-goal'|'golden-box'|'standard-box' };
 
 export interface ProgressStateV1 {
   schemaVersion: 1; installationId: string; createdAt: number; updatedAt: number;
@@ -76,9 +82,9 @@ export interface ProgressStateV1 {
     chain?: { startDay: string; uniqueItems: string[]; modes: ExerciseMode[] } };
   highestRewardedLevel: number;
   processedEventIds: string[];
-  notifications: { id: string; message: string }[];
-  sessionRewards: Record<string, string[]>;
+  notifications: ProgressNotification[];
+  sessionRewards: Record<string, SessionReward[]>;
   lastUsedMode?: ExerciseMode;
 }
 
-export interface EventResult { state: ProgressStateV1; applied: boolean; earned: string[] }
+export interface EventResult { state: ProgressStateV1; applied: boolean; earned: SessionReward[] }

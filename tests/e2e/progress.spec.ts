@@ -5,9 +5,12 @@ import { openSpecificCard } from './helpers';
 const PROGRESS='medicinsk-svenska.progress.v1';
 const readProgress=(page:import('@playwright/test').Page)=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),PROGRESS);
 
-test('fresh home shows a zeroed compact Tänään panel and progress navigation',async({page})=>{
-  await page.goto('/');await expect(page.getByRole('heading',{name:'Tänään'})).toBeVisible();await expect(page.getByText('0 / 10 tehtävää')).toBeVisible();
-  await page.getByRole('link',{name:'Edistyminen',exact:true}).click();await expect(page.getByRole('heading',{name:'Edistyminen'})).toBeVisible();await expect(page.getByText('Taso 1')).toBeVisible();
+test('fresh home is daily-first with HUD, three bilingual quests, reward, and progress navigation',async({page})=>{
+  await page.goto('/');await expect(page.getByRole('heading',{name:'Dagens mål'})).toBeVisible();await expect(page.locator('.daily-goal-value')).toHaveText('0 / 10');await expect(page.getByText('Vanlig låda · 10 krediter · 20 säsongspoäng')).toBeVisible();
+  await expect(page.locator('#metagame-hud')).toContainText('Nivå');await expect(page.locator('#metagame-hud')).toContainText('Svit');await expect(page.locator('#metagame-hud')).toContainText('Krediter');await expect(page.locator('#metagame-hud')).toContainText('Lådor');
+  await expect(page.locator('.daily-quests .quest')).toHaveCount(3);await expect(page.getByText('Gör 10 olika uppgifter')).toBeVisible();await expect(page.getByText('Suorita 10 eri tehtävää')).toBeVisible();await expect(page.getByText('Slutför alla tre och få en gyllene låda')).toBeVisible();
+  expect(await page.evaluate(()=>{const daily=document.querySelector('.daily-quests'),actions=document.querySelector('.home-actions');return Boolean(daily&&actions&&(daily.compareDocumentPosition(actions)&Node.DOCUMENT_POSITION_FOLLOWING));})).toBe(true);
+  await page.getByRole('link',{name:'Framsteg',exact:true}).click();await expect(page.getByRole('heading',{name:'Framsteg'})).toBeVisible();await expect(page.getByText('Nivå 1')).toBeVisible();
 });
 
 test('one mastered flashcard records idempotent progress and XP',async({page})=>{
@@ -31,8 +34,8 @@ test('daily goal is awarded once and appears on progress page',async({page})=>{
 
 test('capsule opens once, shows rarity text, and collection equipment is operable',async({page})=>{
   await page.goto('/palkinnot/');await expect(page.locator('.inventory-head')).toBeVisible();await expect.poll(()=>page.evaluate(key=>localStorage.getItem(key)!==null,PROGRESS)).toBe(true);await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)!);state.inventory.capsules.push({id:'browser-capsule',kind:'golden',earnedAt:Date.now()});localStorage.setItem(key,JSON.stringify(state));},PROGRESS);await page.reload();
-  await page.getByRole('button',{name:/Kultainen palkintokapseli Avaa/}).click();await expect(page.getByRole('dialog')).toBeVisible();await expect(page.locator('#capsule-rarity')).toHaveText(/Harvinainen|Eeppinen|Legendaarinen/);await page.getByRole('button',{name:'Sulje'}).click();
-  const progress=await readProgress(page);expect(progress.inventory.capsules.find((c:{id:string})=>c.id==='browser-capsule').openedAt).toBeTruthy();await page.reload();await expect(page.getByRole('button',{name:/Kultainen palkintokapseli Avaa/})).toHaveCount(0);
+  await page.getByRole('button',{name:/Gyllene låda Öppna/}).click();await expect(page.getByRole('dialog')).toBeVisible();await expect(page.locator('#capsule-rarity')).toHaveText(/Sällsynt|Episk|Legendarisk/);await page.getByRole('button',{name:'Stäng'}).click();
+  const progress=await readProgress(page);expect(progress.inventory.capsules.find((c:{id:string})=>c.id==='browser-capsule').openedAt).toBeTruthy();await page.reload();await expect(page.getByRole('button',{name:/Gyllene låda Öppna/})).toHaveCount(0);
 });
 
 test('shop is stable and a purchase deducts credits only once',async({page})=>{
@@ -41,7 +44,18 @@ test('shop is stable and a purchase deducts credits only once',async({page})=>{
 });
 
 test('season and league pages expose a free personal path without fake players',async({page})=>{
-  await page.goto('/kausi/');await expect(page.locator('.tier')).toHaveCount(30);await expect(page.getByText('Pronssi')).toBeVisible();await expect(page.getByText('Ei vastustajia eikä keinotekoisia sijoituksia.')).toBeVisible();await expect(page.getByText(/premium|osta|pelaaja/i)).toHaveCount(0);
+  await page.goto('/kausi/');await expect(page.locator('.tier')).toHaveCount(30);await expect(page.getByText('Brons',{exact:true})).toBeVisible();await expect(page.getByText('Ingen påhittad topplista och inga falska motståndare.')).toBeVisible();await expect(page.getByText(/premium|osta|pelaaja/i)).toHaveCount(0);
+});
+
+test('legacy V1 display strings are ignored without changing progress or replaying rewards',async({page})=>{
+  await page.goto('/');const before=await readProgress(page);await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)!);state.lifetime.xp=340;state.inventory.credits=120;state.inventory.capsules.push({id:'legacy-box',kind:'standard',earnedAt:1});state.daily['2026-08-21']={uniqueItemIds:[],completedItems:0,activeStudyMs:0,xp:0,modes:[],sessionsStarted:0,sessionsCompleted:0,retriesMastered:0,goalTarget:10,goalClaimed:false,qualified:false,freezeUsed:false,quests:[{id:'2026-08-21:1:0',slot:1,kind:'items',label:'stale quest',target:10,xp:5,credits:10,seasonPoints:10,rerollIndex:0,claimed:true}],freeRerollUsed:false,allQuestsClaimed:false,sessionDropEligible:0,sessionDropAwarded:false};state.notifications=[{id:'old',message:'stale message'}];state.league.previousResult='stale result';state.sessionRewards={legacy:['+20 XP','stale reward']};localStorage.setItem(key,JSON.stringify(state));},PROGRESS);await page.reload();
+  const after=await readProgress(page);expect(after.lifetime.xp).toBe(340);expect(after.inventory.credits).toBe(120);expect(after.inventory.capsules.filter((item:{id:string})=>item.id==='legacy-box')).toHaveLength(1);expect(after.processedEventIds).toEqual(before.processedEventIds);await expect(page.getByText('stale quest')).toHaveCount(0);await expect(page.getByText('stale message')).toHaveCount(0);await expect(page.getByText('stale result')).toHaveCount(0);
+});
+
+test('reward surfacing links directly and active exercises omit the full HUD',async({page})=>{
+  await page.goto('/');await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)!);state.inventory.capsules.push({id:'home-box',kind:'standard',earnedAt:Date.now()});state.seasons.points=100;state.settings.calmMode=true;localStorage.setItem(key,JSON.stringify(state));},PROGRESS);await page.reload();
+  await expect(page.getByRole('link',{name:'Öppna en överraskningslåda'})).toBeVisible();await expect(page.getByText('1 säsongsbelöning väntar')).toHaveCount(2);expect(await page.locator('.hud-boxes').evaluate(element=>getComputedStyle(element).animationName)).toBe('none');await page.getByRole('link',{name:'Öppna en överraskningslåda'}).click();expect(page.url()).toContain('/palkinnot/#unopened-boxes');
+  await page.goto('/kortit/harjoitus?mode=deck&deck=anatomi&direction=fi-sv&amount=10&session=no-hud');await expect(page.locator('#metagame-hud')).toHaveCount(0);
 });
 
 test('export and reset leave active exercise session storage separate',async({page})=>{

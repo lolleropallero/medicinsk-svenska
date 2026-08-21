@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Palkinnot">
-  <div class="page wrap-wide"><div class="page-heading"><div><p class="eyebrow">Kokoelma ja paikallinen talous</p><h1>Palkinnot</h1></div><div class="section-links"><a href="/edistyminen/">Edistyminen</a><a href="/kausi/">Kausi</a></div></div><label class="filter-label">Näytä kokoelmasta<select id="collection-filter"><option value="all">Kaikki</option><option value="theme">Teemat</option><option value="cardStyle">Korttityylit</option><option value="progressFrame">Edistyskehykset</option><option value="title">Arvonimet</option></select></label><div id="rewards-dashboard" class="dashboard-grid"></div></div>
-  <dialog id="capsule-dialog" class="capsule-dialog" aria-labelledby="capsule-title"><div class="reveal-mark" aria-hidden="true"></div><p id="capsule-rarity" class="eyebrow"></p><h2 id="capsule-title">Palkintosi</h2><strong id="capsule-reward"></strong><button class="primary" data-close>Sulje</button></dialog>
+<BaseLayout title="Belöningar">
+  <div class="page wrap-wide"><div class="page-heading"><h1 lang="sv">Belöningar</h1><div class="section-links" lang="sv"><a href="/edistyminen/">Framsteg</a><a href="/kausi/">Säsong</a></div></div><div id="rewards-dashboard" class="dashboard-grid"></div></div>
+  <dialog id="capsule-dialog" class="capsule-dialog" aria-labelledby="capsule-title" lang="sv"><div class="reveal-mark" aria-hidden="true"></div><p id="capsule-rarity" class="eyebrow"></p><h2 id="capsule-title">Din belöning</h2><strong id="capsule-reward"></strong><button class="primary" data-close>Stäng</button></dialog>
   <script src="../../scripts/progress-ui.ts"></script>
 </BaseLayout>

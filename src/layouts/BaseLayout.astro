@@ -3,6 +3,8 @@ import '../styles/global.css';
 interface Props { title: string; description?: string }
 const { title, description = 'Harjoittele lääketieteellistä ruotsia.' } = Astro.props;
 const path = Astro.url.pathname;
+const hudRoutes=['/','/kortit','/fraasit','/kuvailu','/edistyminen','/palkinnot','/kausi'];
+const showHud=hudRoutes.some(route=>path===route||path===`${route}/`)&&!path.endsWith('/harjoitus');
 ---
 <!doctype html>
 <html lang="fi">
@@ -28,9 +30,10 @@ const path = Astro.url.pathname;
         <a href="/kortit" aria-current={path.startsWith('/kortit') ? 'page' : undefined}>Sanakortit</a>
         <a href="/fraasit" aria-current={path.startsWith('/fraasit') ? 'page' : undefined}>Fraasit</a>
         <a href="/kuvailu" aria-current={path.startsWith('/kuvailu') ? 'page' : undefined}>Kuvailutehtävät</a>
-        <a href="/edistyminen" aria-current={path.startsWith('/edistyminen') ? 'page' : undefined}>Edistyminen</a>
+        <a href="/edistyminen" lang="sv" aria-current={path.startsWith('/edistyminen') ? 'page' : undefined}>Framsteg</a>
       </nav>
     </header>
+    {showHud&&<aside id="metagame-hud" class="metagame-hud" aria-label="Spelstatus" lang="sv"></aside>}
     <main id="sisalto"><slot /></main>
     <div id="reward-notifications" class="notifications" aria-live="polite"></div>
     <script src="../scripts/progress-shell.ts"></script>

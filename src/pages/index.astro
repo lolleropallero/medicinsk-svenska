@@ -3,14 +3,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="Etusivu">
   <section class="home wrap-wide">
-    <h1>Harjoittele lääketieteellistä ruotsia</h1>
+    <h1 class="sr-only">Medicinsk svenska</h1>
     <div class="home-layout">
-      <div class="home-actions">
-        <a class="button primary" href="/kortit">Sanakortit</a>
-        <a class="button secondary" href="/fraasit">Fraasit</a>
-        <a class="button secondary" href="/kuvailu">Kuvailutehtävät</a>
+      <div id="home-daily" class="home-daily" aria-live="polite"></div>
+      <div class="home-secondary">
+        <div id="home-reward-alerts"></div>
+        <a id="home-next-action" class="button primary next-action" lang="sv"></a>
+        <div class="home-actions" aria-label="Harjoitustavat">
+          <a class="button primary" href="/kortit">Sanakortit</a>
+          <a class="button secondary" href="/fraasit">Fraasit</a>
+          <a class="button secondary" href="/kuvailu">Kuvailutehtävät</a>
+        </div>
+        <div id="home-status" class="home-status"></div>
       </div>
-      <aside id="today-panel" class="today-panel" aria-label="Tämän päivän edistyminen"></aside>
     </div>
   </section>
   <script src="../scripts/progress-ui.ts"></script>

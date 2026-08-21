@@ -46,9 +46,9 @@ test('capture required visual QA views', async ({ page }) => {
   });
   await page.reload();
   await page.screenshot({ path: 'tmp/visual/rewards-collection-shop-desktop.png', fullPage: true });
-  await page.getByRole('button',{name:/Kultainen palkintokapseli Avaa/}).click();
+  await page.getByRole('button',{name:/Gyllene låda Öppna/}).click();
   await page.screenshot({ path: 'tmp/visual/capsule-revealed-desktop.png', fullPage: true });
-  await page.getByRole('button',{name:'Sulje'}).click();
+  await page.getByRole('button',{name:'Stäng'}).click();
   await page.goto('/kausi/');
   await page.screenshot({ path: 'tmp/visual/season-league-desktop.png', fullPage: true });
   await page.goto('/edistyminen/');

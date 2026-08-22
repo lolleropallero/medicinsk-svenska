@@ -218,6 +218,8 @@ html[data-calm="false"] .hud-boxes.has-boxes{animation:hud-pulse 2.5s ease-in-ou
 @media (max-width:360px){.quest-head{gap:6px}.quest-head strong{font-size:.9rem}.quest-head small,.quest-meta span{font-size:.7rem}.quest-progress{font-size:.75rem}}
 
 .daily-quest-row{padding-block:8px}.daily-quest-action{padding:7px 78px 7px 7px;border-left:3px solid var(--accent);background:#1d604f08}.daily-quest-reward{padding-right:0;font-size:.72rem}.daily-quest-start{right:7px;bottom:12px;padding:4px 9px;border-radius:3px;background:var(--accent);color:#fff;font-size:.76rem}.daily-reroll{margin-top:3px}.daily-all-bonus{padding-block:12px}
+.collection-counts{display:flex;flex-wrap:wrap;gap:4px 16px;margin:-10px 0 14px;color:var(--muted);font-size:.8rem}.collection-counts strong{color:var(--text)}
+.daily-overlay-close{width:44px;height:44px;flex:none}
 
 @media (max-width:560px){
   body:not(.home-route) .site-header{padding-block:8px;gap:6px}

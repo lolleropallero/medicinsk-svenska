@@ -3,6 +3,7 @@ import { LEAGUE_PROMOTION_XP, LEAGUE_RETENTION_XP, LEAGUE_TIERS } from './core';
 import type { Cosmetic, DailyProgress, LeagueTier, ProgressStateV1, Quest } from './types';
 
 export const WEEKLY_QUEST_REWARDS = { xp:25, credits:30, seasonPoints:30 } as const;
+export type LeagueProgressPhase = 'retention'|'promotion'|'promotion-secured'|'retention-secured';
 
 export function canRerollQuest(quest:Quest,day:DailyProgress,rerollTokens:number){
   return !quest.claimed&&(!day.freeRerollUsed||rerollTokens>0);
@@ -15,9 +16,13 @@ export function weeklyQuestProgress(state:ProgressStateV1,now=Date.now()){
 }
 
 export function leagueProgress(tier:LeagueTier,weeklyXp:number){
-  const index=LEAGUE_TIERS.indexOf(tier),canPromote=index<LEAGUE_TIERS.length-1;
-  const target=canPromote?LEAGUE_PROMOTION_XP[index]!:LEAGUE_RETENTION_XP[index]!;
-  return {target,remaining:Math.max(0,target-weeklyXp),canPromote,nextTier:canPromote?LEAGUE_TIERS[index+1]:undefined};
+  const index=LEAGUE_TIERS.indexOf(tier),nextTier=LEAGUE_TIERS[index+1],retentionTarget=LEAGUE_RETENTION_XP[index]!,promotionTarget=LEAGUE_PROMOTION_XP[index]!;
+  let phase:LeagueProgressPhase,target:number;
+  if(!nextTier){target=retentionTarget;phase=weeklyXp>=target?'retention-secured':'retention';}
+  else if(index===0){target=promotionTarget;phase=weeklyXp>=target?'promotion-secured':'promotion';}
+  else if(weeklyXp<retentionTarget){target=retentionTarget;phase='retention';}
+  else{target=promotionTarget;phase=weeklyXp>=target?'promotion-secured':'promotion';}
+  return {phase,target,remaining:Math.max(0,target-weeklyXp),nextTier};
 }
 
 export function compactSeasonTiers(points:number,claimedTiers:number[],upcomingCount=3){
@@ -28,8 +33,7 @@ export function compactSeasonTiers(points:number,claimedTiers:number[],upcomingC
 }
 
 export function compactCollection(cosmetics:Cosmetic[],ownedIds:string[],showAll=false,filter='owned'){
-  const available=cosmetics.filter(item=>!item.seasonExclusive);
-  if(showAll||filter==='all')return available;
-  if(filter==='owned')return available.filter(item=>ownedIds.includes(item.id));
-  return available.filter(item=>item.type===filter);
+  if(showAll||filter==='all')return cosmetics;
+  if(filter==='owned')return cosmetics.filter(item=>ownedIds.includes(item.id));
+  return cosmetics.filter(item=>item.type===filter);
 }

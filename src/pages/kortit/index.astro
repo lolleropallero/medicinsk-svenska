@@ -6,10 +6,12 @@ const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCard
 <BaseLayout title="Sanakortit">
   <section class="page wrap study-setup" aria-labelledby="page-title">
     <h1 id="page-title">Sanakortit</h1>
-    <fieldset class="direction" id="direction-fieldset">
+    <fieldset class="direction direction-selector" id="direction-fieldset">
       <legend class="sr-only">Harjoittelusuunta</legend>
-      <label><input type="radio" name="direction" value="fi-sv" checked /> Suomi <span aria-hidden="true">→</span> ruotsi</label>
-      <label><input type="radio" name="direction" value="sv-fi" /> Ruotsi <span aria-hidden="true">→</span> suomi</label>
+      <div class="segments segments-two">
+        <label><input type="radio" name="direction" value="fi-sv" checked /><span>Suomi → ruotsi</span></label>
+        <label><input type="radio" name="direction" value="sv-fi" /><span>Ruotsi → suomi</span></label>
+      </div>
     </fieldset>
     <fieldset class="amount-selector">
       <legend>Korttien määrä</legend>

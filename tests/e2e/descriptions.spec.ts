@@ -223,3 +223,9 @@ test('description exercise is accessible and has no horizontal overflow or unrea
   const swedish = await page.locator('[lang="sv"]').evaluateAll((elements) => elements.map((element) => element.id).filter(Boolean));
   expect(new Set(swedish)).toEqual(new Set(['description-text', 'answer', 'canonical-answer']));
 });
+
+test('portrait focus and normal scrolling keep the description input and actions usable',async({page})=>{
+  await page.setViewportSize({width:390,height:844});await page.goto('/kuvailu/harjoitus?mode=all&amount=10&session=portrait-focus');const input=page.getByLabel('Vastauksesi');await expect(input).toBeFocused();await input.fill('keskeneräinen');
+  await page.setViewportSize({width:390,height:500});await input.evaluate(element=>element.scrollIntoView({block:'center'}));const inputBox=await input.boundingBox(),checkBox=await page.getByRole('button',{name:'Tarkista'}).boundingBox();expect(inputBox&&inputBox.y>=0&&inputBox.y+inputBox.height<=500).toBe(true);expect(checkBox&&checkBox.y>=0&&checkBox.y+checkBox.height<=500).toBe(true);expect(await page.locator('.description-practice .action-row').evaluate(element=>getComputedStyle(element).position)).toBe('static');
+  await page.getByRole('button',{name:'Näytä vastaus'}).scrollIntoViewIfNeeded();await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeInViewport();await page.reload();await expect(input).toBeFocused();await expect(input).toHaveValue('keskeneräinen');await input.press('Enter');await expect(page.locator('#description-feedback')).toBeVisible();
+});

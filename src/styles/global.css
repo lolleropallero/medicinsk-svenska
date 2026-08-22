@@ -67,6 +67,7 @@ h2 { margin: 0; font-size: 1rem; }
 .primary { color: white; background: var(--accent); }
 .primary:hover { background: var(--accent-dark); }
 .secondary { background: var(--surface); }
+.tertiary { min-height: 40px; padding: 5px 8px; border-color: transparent; text-decoration: underline; text-underline-offset: 3px; }
 .danger { color: var(--danger); border-color: #cda7a2; background: var(--surface); }
 .success { color: white; border-color: var(--accent); background: var(--accent); }
 
@@ -79,12 +80,15 @@ h2 { margin: 0; font-size: 1rem; }
 .page { padding-block: 54px 70px; }
 .page h1 { margin-bottom: 28px; }
 .direction { display: flex; gap: 8px; padding: 0; margin: 0 0 20px; border: 0; }
-.direction label { display: flex; align-items: center; gap: 7px; min-height: 46px; padding: 8px 14px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; }
-.direction input { width: 18px; height: 18px; accent-color: var(--accent); }
+.direction:not(.direction-selector) label { display: flex; align-items: center; gap: 7px; min-height: 46px; padding: 8px 14px; border: 1px solid var(--border); background: var(--surface); cursor: pointer; }
+.direction:not(.direction-selector) input { width: 18px; height: 18px; accent-color: var(--accent); }
 .amount-selector { padding: 0; margin: 0 0 24px; border: 0; }
 .amount-selector legend { margin-bottom: 8px; font-size: .9rem; font-weight: 650; }
 .segments { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 430px; }
 .segments-three { grid-template-columns: repeat(3, 1fr); }
+.segments-two { grid-template-columns: repeat(2, 1fr); }
+.direction-selector { display:block; max-width:430px; }
+.direction-selector .segments input { pointer-events:auto; }
 .segments label { position: relative; cursor: pointer; }
 .segments input { position: absolute; opacity: 0; pointer-events: none; }
 .segments span { display: flex; min-height: 48px; align-items: center; justify-content: center; padding: 8px 12px; border: 1px solid var(--border); border-right: 0; background: var(--surface); pointer-events: none; }
@@ -144,7 +148,7 @@ h2 { margin: 0; font-size: 1rem; }
 .description-card p { margin: 0; font-family: Georgia, serif; font-size: clamp(1.35rem, 4vw, 1.85rem); line-height: 1.4; }
 .description-practice form { margin-top: 22px; }
 .description-practice label { display: block; margin-bottom: 7px; font-weight: 650; }
-.description-practice input { width: 100%; min-height: 52px; padding: 10px 12px; border: 1px solid #9da9a5; border-radius: 0; background: var(--surface); color: var(--text); font-size: 1.1rem; }
+.description-practice input { width: 100%; min-height: 52px; padding: 10px 12px; border: 1px solid #9da9a5; border-radius: 0; background: var(--surface); color: var(--text); font-size: 1.1rem; scroll-margin-block: 96px; }
 .description-practice .action-row { justify-content: flex-start; margin-top: 12px; }
 .description-practice .action-row button, .description-practice .feedback button { min-height: 56px; }
 .feedback { margin-top: 20px; padding: 20px; border-left: 3px solid var(--accent); background: var(--surface); }
@@ -156,6 +160,7 @@ h2 { margin: 0; font-size: 1rem; }
 
 .achievement{opacity:1}
 .tier>*{min-width:0;overflow-wrap:anywhere}
+.collection-controls{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:18px}.collection-controls .filter-label{flex:1;margin:0}.collection-controls button{flex:none}.weekly-quest-list{display:grid;gap:10px}.weekly-quest{padding:11px;border:1px solid var(--border)}.weekly-quest.done{border-left:4px solid var(--accent)}.weekly-quest-head{display:flex;justify-content:space-between;gap:10px}.weekly-quest-head>span{display:flex;min-width:0;flex-direction:column}.weekly-quest-head small{color:var(--muted);font-size:.78rem}.weekly-quest-head b{flex:none;font-size:.82rem}.weekly-quest .meter{margin:8px 0}.weekly-rewards{color:var(--muted);font-size:.76rem}.season-summary,.league-summary{min-width:0}.season-summary h2,.league-summary h2{margin-bottom:8px}.summary-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 16px}.summary-line span{color:var(--muted);font-size:.82rem}.season-summary .meter,.league-summary .meter{margin-bottom:0}.season-tabs{display:none;grid-column:1/-1;grid-template-columns:1fr 1fr}.season-tabs button{min-width:0;border-color:var(--border);background:var(--surface)}.season-tabs button+button{border-left:0}.season-tabs button[aria-selected="true"]{border-color:var(--accent);background:var(--accent);color:white}.season-detail{min-width:0}.tier.current{outline:2px solid var(--accent);outline-offset:-2px}.show-all-tiers{width:100%;margin-top:14px}.league-stats{display:grid;gap:8px;margin:16px 0}.league-stats div{display:flex;justify-content:space-between;gap:16px;padding-bottom:7px;border-bottom:1px solid var(--border)}.league-stats dd{margin:0;font-weight:700;text-align:right}.league-result{padding:10px;border-left:3px solid var(--accent);background:var(--background)}
 .session-rewards{width:min(360px,100%);margin:22px auto 0;padding:14px;border:1px solid var(--border);text-align:left}.session-rewards h2{margin-bottom:8px}.session-rewards ul{margin:0;padding-left:20px}.notification{display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--accent);background:var(--surface);box-shadow:0 4px 20px #10201d22}.notification button{min-height:36px;padding:5px 10px}html[data-calm="false"] .notification{animation:notice-in .2s ease-out}@keyframes notice-in{from{transform:translateY(8px);opacity:0}}
 html[data-theme="theme-1"]{--background:#edf5f5;--surface:#fbffff;--accent:#1b5c67;--accent-dark:#123f47;--text:#142a2d;--muted:#526a6d;--border:#c7d9da}
 html[data-theme="theme-2"]{--background:#f4efe5;--surface:#fffdf8;--accent:#69563a;--accent-dark:#463822;--text:#2d2921;--muted:#716a5e;--border:#ddd2bf}
@@ -211,3 +216,28 @@ html[data-calm="false"] .hud-boxes.has-boxes{animation:hud-pulse 2.5s ease-in-ou
 @media (max-width:600px),(max-height:500px) and (max-width:900px){.daily-overlay{inset:auto 0 0;width:100%;max-width:none;max-height:88dvh;margin:0;border-width:1px 0 0;border-radius:16px 16px 0 0}.daily-sheet{max-height:88dvh}.daily-overlay-head{padding:12px 14px}.daily-overlay-content{padding-inline:14px}}
 @media (max-width:560px){.home-route .site-header{min-height:52px;align-items:center;flex-wrap:nowrap}.home-route .site-header nav{display:none}.metagame-hud{padding:6px 10px}.hud-grid{grid-template-columns:1fr 1fr}.hud-grid>a{padding:3px 8px;border-left:1px solid var(--border)}.hud-grid>a:nth-child(odd){border-left:0}.hud-grid>a:nth-child(n+3){border-top:1px solid var(--border)}.home{padding-block:10px 32px}.home-actions{gap:8px}.home-actions .button{min-height:54px}.quest{padding:9px}.quest-meta{align-items:flex-start;flex-direction:column}.quest-meta .compact{align-self:flex-end}}
 @media (max-width:360px){.quest-head{gap:6px}.quest-head strong{font-size:.9rem}.quest-head small,.quest-meta span{font-size:.7rem}.quest-progress{font-size:.75rem}}
+
+.daily-quest-row{padding-block:8px}.daily-quest-action{padding:7px 78px 7px 7px;border-left:3px solid var(--accent);background:#1d604f08}.daily-quest-reward{padding-right:0;font-size:.72rem}.daily-quest-start{right:7px;bottom:12px;padding:4px 9px;border-radius:3px;background:var(--accent);color:#fff;font-size:.76rem}.daily-reroll{margin-top:3px}.daily-all-bonus{padding-block:12px}
+
+@media (max-width:560px){
+  body:not(.home-route) .site-header{padding-block:8px;gap:6px}
+  body:not(.home-route) .site-header nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 8px}
+  body:not(.home-route) .site-header nav a{display:flex;min-height:42px;align-items:center;padding:4px 0;font-size:.8rem;line-height:1.2}
+  .dashboard-grid{gap:12px}
+  .page-heading{gap:10px;margin-bottom:18px}
+  .page{padding-top:28px}
+  .study-setup.page{padding-top:20px}
+  .study-setup h1{margin-bottom:14px;font-size:2rem}
+  .study-setup .direction-selector{margin-bottom:12px}
+  .study-setup .direction-selector .segments span,.study-setup .amount-selector .segments span{min-height:44px;padding:6px 5px;font-size:.84rem}
+  .study-setup .amount-selector{margin-bottom:12px}
+  .study-setup .amount-selector legend{margin-bottom:5px}
+  .study-setup .lucky{min-height:52px;padding:10px 12px;margin-bottom:10px}
+  .description-practice .action-row{position:static}
+  .season-tabs{display:grid}
+  .season-summary,.league-summary{padding-block:14px}
+  .season-summary .meter,.league-summary .meter{margin-top:7px}
+  .season-detail{grid-column:1/-1}
+  .collection-controls{align-items:stretch;flex-direction:column}
+  #unopened-boxes h3{margin-top:10px}
+}

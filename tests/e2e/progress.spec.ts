@@ -38,13 +38,30 @@ test('capsule opens once, shows rarity text, and collection equipment is operabl
   const progress=await readProgress(page);expect(progress.inventory.capsules.find((c:{id:string})=>c.id==='browser-capsule').openedAt).toBeTruthy();await page.reload();await expect(page.getByRole('button',{name:/Gyllene låda Öppna/})).toHaveCount(0);
 });
 
+test('rewards information architecture keeps the shop near the top and collection compact',async({page})=>{
+  await page.setViewportSize({width:320,height:568});await page.goto('/palkinnot/');await expect(page.locator('.inventory-head')).toBeVisible();
+  const shop=page.getByRole('heading',{name:'Dagens butik'}),collection=page.getByRole('heading',{name:/Samling/});await expect(shop).toBeVisible();await expect(collection).toBeVisible();
+  expect(await page.evaluate(()=>{const shop=document.querySelector('#daily-shop'),collection=document.querySelector('#collection');return Boolean(shop&&collection&&(shop.compareDocumentPosition(collection)&Node.DOCUMENT_POSITION_FOLLOWING));})).toBe(true);
+  expect((await shop.boundingBox())!.y).toBeLessThan(568*1.5);await expect(page.getByRole('heading',{name:'Utseende'})).toBeVisible();await expect(page.getByRole('heading',{name:'Utrustning'})).toHaveCount(0);await expect(page.getByRole('button',{name:/Lös in för \d+ krediter/}).first()).toBeVisible();
+  await page.setViewportSize({width:390,height:844});expect((await shop.boundingBox())!.y).toBeLessThan(844);await expect(page.locator('#collection .collectible')).toHaveCount(4);await page.getByRole('button',{name:'Visa alla'}).click();await expect(page.locator('#collection .collectible')).toHaveCount(40);await expect(page.locator('#collection-filter')).toHaveValue('all');
+});
+
 test('shop is stable and a purchase deducts credits only once',async({page})=>{
   await page.goto('/palkinnot/');await expect(page.locator('.inventory-head')).toBeVisible();await expect.poll(()=>page.evaluate(key=>localStorage.getItem(key)!==null,PROGRESS)).toBe(true);await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)!);state.inventory.credits=1000;localStorage.setItem(key,JSON.stringify(state));},PROGRESS);await page.reload();
   const labels=await page.locator('.offer strong').allTextContents(),button=page.locator('.offer button').first();const before=(await readProgress(page)).inventory.credits;await button.click();const after=(await readProgress(page)).inventory.credits;expect(after).toBeLessThan(before);await page.reload();expect(await page.locator('.offer strong').allTextContents()).toEqual(labels);await expect(page.locator('.offer button').first()).toBeDisabled();
 });
 
-test('season and league pages expose a free personal path without fake players',async({page})=>{
-  await page.goto('/kausi/');await expect(page.locator('.tier')).toHaveCount(30);await expect(page.getByText('Brons',{exact:true})).toBeVisible();await expect(page.getByText('Ingen påhittad topplista och inga falska motståndare.')).toBeVisible();await expect(page.getByText(/premium|osta|pelaaja/i)).toHaveCount(0);
+test('season and league use compact portrait navigation with complete personal detail',async({page})=>{
+  await page.setViewportSize({width:320,height:568});await page.goto('/kausi/');await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)!);state.seasons.points=450;state.seasons.claimedTiers=[1,2,4];state.league.tier='Hopea';state.league.weeklyXp=200;state.league.result={kind:'promoted',tier:'Hopea'};localStorage.setItem(key,JSON.stringify(state));},PROGRESS);await page.reload();
+  await expect(page.locator('.season-summary')).toContainText('Steg 4 av 30');await expect(page.locator('.league-summary')).toContainText('Silver');await expect(page.locator('.league-summary')).toContainText('50 XP kvar');
+  const rewardsTab=page.getByRole('tab',{name:'Belöningsspår'}),leagueTab=page.getByRole('tab',{name:'Veckoliga'});await expect(rewardsTab).toHaveAttribute('aria-selected','true');await expect(page.locator('#reward-track')).toBeVisible();await expect(page.locator('#league')).toBeHidden();await expect(page.locator('.tier')).toHaveCount(5);expect(await page.locator('.tier').evaluateAll(nodes=>nodes.map(node=>node.getAttribute('data-tier')))).toEqual(['3','4','5','6','7']);
+  await leagueTab.click();await expect(leagueTab).toHaveAttribute('aria-selected','true');await expect(page.locator('#reward-track')).toBeHidden();await expect(page.locator('#league')).toBeVisible();await expect(page.locator('#league')).toContainText('Veckans XP200 XP');await expect(page.locator('#league')).toContainText('Befordran till Guld: 250 XP');await expect(page.locator('#league')).toContainText('50 XP');await expect(page.locator('#league [role="progressbar"]')).toHaveAttribute('aria-valuenow','200');await expect(page.locator('#league')).toContainText('Förra resultatet: Du steg till Silver');await expect(page.getByText('Ingen påhittad topplista och inga falska motståndare.')).toBeVisible();
+  await rewardsTab.click();await page.getByRole('button',{name:'Visa alla 30 steg'}).click();await expect(page.locator('.tier')).toHaveCount(30);await expect(page.getByText(/premium|osta|pelaaja/i)).toHaveCount(0);
+});
+
+test('weekly quests show bilingual live progress, accessible bars, and compact rewards',async({page})=>{
+  await page.goto('/edistyminen/');await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)!);const date=new Date(),today=`${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;state.daily[today]={uniqueItemIds:Array.from({length:40},(_,item)=>`flashcards:weekly-${item}`),completedItems:40,activeStudyMs:0,xp:0,modes:['flashcards','phrases','descriptions'],sessionsStarted:0,sessionsCompleted:0,retriesMastered:0,goalTarget:10,goalClaimed:false,qualified:false,freezeUsed:false,quests:[],freeRerollUsed:false,allQuestsClaimed:false,sessionDropEligible:0,sessionDropAwarded:false};localStorage.setItem(key,JSON.stringify(state));},PROGRESS);await page.reload();
+  const quests=page.locator('.weekly-quest');await expect(quests).toHaveCount(3);await expect(quests.nth(0)).toContainText('Studera under 5 dagar');await expect(quests.nth(0)).toContainText('Opiskele viitenä päivänä');await expect(quests.nth(0)).toContainText('1 / 5');await expect(quests.nth(1)).toContainText('40 / 100');await expect(quests.nth(2)).toContainText('Klart');for(let index=0;index<3;index++){await expect(quests.nth(index).locator('[role="progressbar"]')).toHaveAttribute('aria-valuenow',index===0?'1':index===1?'40':'3');await expect(quests.nth(index)).toContainText('+25 XP · +30 krediter · +30 säsongspoäng');}
 });
 
 test('legacy V1 display strings are ignored without changing progress or replaying rewards',async({page})=>{
@@ -64,6 +81,6 @@ test('export and reset leave active exercise session storage separate',async({pa
   page.on('dialog',dialog=>dialog.accept());await page.getByRole('button',{name:'Nollaa edistyminen'}).click();await expect.poll(()=>page.evaluate(()=>localStorage.getItem('medicinsk-svenska.flashcard-session.v1'))).toBe(session);
 });
 
-test('new routes have no serious accessibility violations or horizontal overflow at 320px',async({page})=>{
-  await page.setViewportSize({width:320,height:568});for(const route of ['/','/edistyminen/','/palkinnot/','/kausi/']){await page.goto(route);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth),route).toBe(true);expect((await new AxeBuilder({page}).analyze()).violations.filter(v=>['serious','critical'].includes(v.impact??'')),route).toEqual([]);}
+test('new routes have no serious accessibility violations or portrait overflow',async({page})=>{
+  for(const viewport of [{width:320,height:568},{width:390,height:844}]){await page.setViewportSize(viewport);for(const route of ['/','/edistyminen/','/palkinnot/','/kausi/']){await page.goto(route);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth),`${route} at ${viewport.width}`).toBe(true);expect((await new AxeBuilder({page}).analyze()).violations.filter(v=>['serious','critical'].includes(v.impact??'')),route).toEqual([]);}}
 });

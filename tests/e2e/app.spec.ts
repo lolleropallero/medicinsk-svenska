@@ -143,6 +143,13 @@ test('description route is a setup page with seven compact category links',async
   await expect(page.locator('.category-row')).toHaveCount(7);
   await expect(page.getByRole('group',{name:'Tehtävien määrä'}).getByLabel('10')).toBeChecked();
 });
+test('portrait flashcard setup uses a compact semantic direction segment and touch-sized navigation',async({page})=>{
+  await page.setViewportSize({width:320,height:568});await page.goto('/kortit/');
+  const direction=page.getByRole('group',{name:'Harjoittelusuunta'}),finnish=direction.getByRole('radio',{name:'Suomi → ruotsi'}),swedish=direction.getByRole('radio',{name:'Ruotsi → suomi'});await expect(finnish).toBeChecked();await swedish.check();await expect(swedish).toBeChecked();await expect(finnish).not.toBeChecked();await expect(page.getByRole('group',{name:'Korttien määrä'})).toBeVisible();await expect(page.getByRole('link',{name:/Kokeilen onneani/})).toHaveAttribute('href',/direction=sv-fi/);
+  const firstDeck=await page.locator('.deck-row').first().boundingBox();expect(firstDeck&&firstDeck.y).toBeLessThanOrEqual(568);
+  for(const link of await page.locator('.site-header nav a').all()){const box=await link.boundingBox();expect(box?.height).toBeGreaterThanOrEqual(40);expect(box?.height).toBeLessThanOrEqual(44);}
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);
+});
 test('tablet and narrow mobile viewports have no overflow and direct routes load',async({page})=>{
   for(const {width,height} of [{width:320,height:568},{width:390,height:844},{width:768,height:700}]){
     await page.setViewportSize({width,height});

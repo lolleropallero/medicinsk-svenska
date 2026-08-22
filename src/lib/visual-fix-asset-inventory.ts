@@ -1,7 +1,5 @@
 export const visualFixAssetPaths = {
   rewards: {
-    hud: 'rewards/box-hud.svg',
-    standard: 'rewards/box-standard.svg',
     golden: 'rewards/box-golden.svg',
     legendary: 'rewards/box-legendary.svg',
   },

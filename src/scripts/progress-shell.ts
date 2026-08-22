@@ -7,7 +7,7 @@ import {
   iconSvg,
   leagueBadge,
 } from "../lib/visuals";
-import { visualFixAssets } from "../lib/visual-fix-assets";
+import { rewardBoxImage, type RewardBoxKind } from "../lib/reward-box-assets";
 import { levelProgress } from "../lib/progress/core";
 
 function apply() {
@@ -45,8 +45,9 @@ function apply() {
 }
 const image = (src: string, className = "") =>
   `<img${className ? ` class="${className}"` : ""} src="${src}" alt="" aria-hidden="true" decoding="async">`;
-const compactBox = (kind: "standard" | "golden" | "legendary" = "standard") => {
-  return `<span class="compact-reward-box compact-box-${kind}" aria-hidden="true">${image(visualFixAssets.rewards.hud, "compact-box-image")}</span>`;
+const compactBox = (kind: RewardBoxKind = "standard") => {
+  const asset = rewardBoxImage(kind, "small");
+  return `<span class="compact-reward-box compact-box-${kind}" aria-hidden="true"><img class="compact-box-image" src="${asset.src}" width="${asset.width}" height="${asset.height}" alt="" aria-hidden="true" decoding="async"></span>`;
 };
 function notificationVisual(
   next: ReturnType<typeof loadProgress>["notifications"][number],

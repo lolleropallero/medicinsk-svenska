@@ -45,17 +45,17 @@ describe('Nordic Asset Pack V1', () => {
     expect(achievement).toMatch(/unlocked\s*\?\s*["']Upplåst["']\s*:\s*["']Låst["']/);
   });
 
-  it('maps exactly 15 V4 assets with exact 4 / 7 / 4 category counts', () => {
-    expect(flattenVisualFixAssetPaths()).toHaveLength(15);
-    expect(Object.keys(visualFixAssetPaths.rewards)).toHaveLength(4);
+  it('maps exactly 13 retained V4 assets with exact 2 / 7 / 4 category counts', () => {
+    expect(flattenVisualFixAssetPaths()).toHaveLength(13);
+    expect(Object.keys(visualFixAssetPaths.rewards)).toHaveLength(2);
     expect(Object.keys(visualFixAssetPaths.descriptionCategories)).toHaveLength(7);
     expect(Object.keys(visualFixAssetPaths.backgrounds)).toHaveLength(4);
-    expect(Object.values(visualFixAssets).flatMap((category) => Object.values(category))).toHaveLength(15);
+    expect(Object.values(visualFixAssets).flatMap((category) => Object.values(category))).toHaveLength(13);
   });
 
   it('maps all reward boxes, description categories, and backgrounds exactly', () => {
     expect(visualFixAssetPaths.rewards).toEqual({
-      hud: 'rewards/box-hud.svg', standard: 'rewards/box-standard.svg', golden: 'rewards/box-golden.svg', legendary: 'rewards/box-legendary.svg',
+      golden: 'rewards/box-golden.svg', legendary: 'rewards/box-legendary.svg',
     });
     expect(visualFixAssetPaths.descriptionCategories).toEqual({
       'solut-kudokset-iho': 'category-icons/cells.svg',
@@ -87,6 +87,6 @@ describe('Nordic Asset Pack V1', () => {
     expect(shell).toContain('hud-stat__value');
     expect(shell).toContain('>Lådor</span>');
     expect(`${shell}${rewardUi}${compact}`).not.toMatch(/box-seal|box-cross|compact-box-surface/);
-    expect(compact).toContain('visualFixAssets.rewards.hud');
+    expect(compact).toContain("rewardBoxImage(kind, 'small')");
   });
 });

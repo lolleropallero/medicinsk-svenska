@@ -1,5 +1,5 @@
 import { mappedAsset, nordicAssets } from "./nordic-assets";
-import { visualFixAssets } from "./visual-fix-assets";
+import { rewardBoxAsset } from "./reward-box-assets";
 
 export const ICON_PATHS = {
   home: '<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10M9 20v-6h6v6"/>',
@@ -125,17 +125,17 @@ export const REWARD_BOX_VARIANTS = {
   standard: {
     label: "Vanlig låda",
     className: "standard",
-    asset: visualFixAssets.rewards.standard,
+    asset: rewardBoxAsset("standard", "normal"),
   },
   golden: {
     label: "Gyllene låda",
     className: "golden",
-    asset: visualFixAssets.rewards.golden,
+    asset: rewardBoxAsset("golden", "normal"),
   },
   legendary: {
     label: "Legendarisk låda",
     className: "legendary",
-    asset: visualFixAssets.rewards.legendary,
+    asset: rewardBoxAsset("legendary", "normal"),
   },
 } as const;
 

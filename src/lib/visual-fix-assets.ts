@@ -1,5 +1,3 @@
-import boxHudUrl from '../assets/visual-fix-v4/rewards/box-hud.svg?url';
-import boxStandardUrl from '../assets/visual-fix-v4/rewards/box-standard.svg?url';
 import boxGoldenUrl from '../assets/visual-fix-v4/rewards/box-golden.svg?url';
 import boxLegendaryUrl from '../assets/visual-fix-v4/rewards/box-legendary.svg?url';
 import cellsUrl from '../assets/visual-fix-v4/category-icons/cells.svg?url';
@@ -16,8 +14,6 @@ import studyLightUrl from '../assets/visual-fix-v4/backgrounds/study-light.webp?
 
 export const visualFixAssets = {
   rewards: {
-    hud: boxHudUrl,
-    standard: boxStandardUrl,
     golden: boxGoldenUrl,
     legendary: boxLegendaryUrl,
   },
@@ -38,5 +34,4 @@ export const visualFixAssets = {
   },
 } as const;
 
-export type RewardBoxKind = Exclude<keyof typeof visualFixAssets.rewards, 'hud'>;
 export type BackgroundKind = keyof typeof visualFixAssets.backgrounds;

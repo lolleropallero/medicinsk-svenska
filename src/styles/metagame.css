@@ -67,8 +67,8 @@
 }
 .overlay-goal {
   display: grid;
-  grid-template-columns: 76px 1fr;
-  gap: 10px;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 12px;
   align-items: center;
   padding: 10px 13px;
   margin-bottom: 10px;
@@ -81,6 +81,7 @@
   align-items: center;
   justify-content: space-between;
 }
+.goal-copy { min-width: 0; }
 .overlay-goal h3 {
   margin: 0;
   font-size: 1rem;
@@ -97,7 +98,13 @@
   font-size: 0.72rem;
 }
 .goal-box {
-  width: 72px;
+  display: grid;
+  width: 78px;
+  place-items: center;
+}
+.goal-box .reward-box-visual {
+  width: 76px;
+  max-width: 100%;
 }
 .daily-overlay-quests,
 .quest-list,
@@ -224,9 +231,10 @@
 }
 .daily-all-bonus,
 .all-quests-bonus {
-  display: flex;
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   padding: 10px 12px;
   border: 1px solid #e4b500;
   border-radius: var(--radius);
@@ -240,6 +248,16 @@
   display: flex;
   flex-direction: column;
 }
+.daily-all-bonus-box {
+  display: grid;
+  width: 88px;
+  place-items: center;
+}
+.daily-all-bonus-box .reward-box-visual {
+  width: 88px;
+  max-width: 100%;
+}
+.daily-all-bonus-copy { min-width: 0; }
 .daily-all-bonus small,
 .all-quests-bonus small {
   color: var(--muted);

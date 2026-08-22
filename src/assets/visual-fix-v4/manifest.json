@@ -2,8 +2,6 @@
   "version": 4,
   "purpose": "Targeted replacement of the exact weak visuals shown in user screenshots.",
   "rewards": [
-    "box-hud.svg",
-    "box-standard.svg",
     "box-golden.svg",
     "box-legendary.svg"
   ],

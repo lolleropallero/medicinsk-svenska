@@ -428,20 +428,21 @@
     font-size: 0.55rem;
   }
   .overlay-goal {
-    grid-template-columns: 104px 1fr;
+    grid-template-columns: 78px minmax(0, 1fr);
     padding: 8px;
   }
   .goal-box {
-    width: 104px;
+    width: 78px;
   }
   .goal-box .reward-box-visual {
-    width: 104px;
+    width: 76px;
   }
   .daily-all-bonus {
+    grid-template-columns: 88px minmax(0, 1fr);
     padding: 7px;
   }
   .daily-all-bonus .reward-box-visual {
-    width: 104px;
+    width: 88px;
     height: auto;
   }
   .notifications {

@@ -87,7 +87,11 @@ import {
   rarityVariant,
   rewardBoxVariant,
 } from "../lib/visuals";
-import { visualFixAssets } from "../lib/visual-fix-assets";
+import {
+  normalizeRewardBoxKind,
+  rewardBoxImage,
+  type RewardBoxSize,
+} from "../lib/reward-box-assets";
 import { nordicAssets } from "../lib/nordic-assets";
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
@@ -133,13 +137,15 @@ const decorativeImage = (
   `<img${className ? ` class="${className}"` : ""} src="${src}" width="${width}" height="${height}" alt="" aria-hidden="true"${lazy ? ' loading="lazy"' : ""} decoding="async">`;
 const compactRewardBoxVisual = (kind: string, label?: string) => {
   const variant = rewardBoxVariant(kind);
-  return `<span class="compact-reward-box reward-box-visual box-${variant.className} box-small"${label ? ` role="img" aria-label="${esc(label)}"` : ' aria-hidden="true"'}>${decorativeImage(visualFixAssets.rewards.hud, 96, 76, "compact-box-image")}</span>`;
+  const asset = rewardBoxImage(normalizeRewardBoxKind(kind), "small");
+  return `<span class="compact-reward-box reward-box-visual box-${variant.className} box-small"${label ? ` role="img" aria-label="${esc(label)}"` : ' aria-hidden="true"'}>${decorativeImage(asset.src, asset.width, asset.height, "compact-box-image")}</span>`;
 };
-const rewardBoxVisual = (kind: string, size = "normal") => {
+const rewardBoxVisual = (kind: string, size: RewardBoxSize = "normal") => {
   const variant = rewardBoxVariant(kind);
+  const asset = rewardBoxImage(normalizeRewardBoxKind(kind), size);
   return size === "small"
     ? compactRewardBoxVisual(kind, variant.label)
-    : `<span class="reward-box-visual box-${variant.className} box-${size}" role="img" aria-label="${variant.label}">${decorativeImage(variant.asset, 360, 300)}</span>`;
+    : `<span class="reward-box-visual box-${variant.className} box-${size}" role="img" aria-label="${variant.label}">${decorativeImage(asset.src, asset.width, asset.height)}</span>`;
 };
 const achievementVisual = (id: string, _name: string, unlocked: boolean) => {
   const asset = achievementBadge(id);
@@ -428,7 +434,7 @@ function renderHome() {
   $("daily-launcher-goal")!.textContent = goalComplete
     ? "Dagens mål klart"
     : `Dagens mål ${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`;
-  root.innerHTML = `<section class="overlay-goal"><span class="goal-box">${rewardBoxVisual("standard")}</span><div class="goal-copy"><div><h3 lang="sv">Dagens mål</h3><strong lang="sv">${goalComplete ? `${iconSvg("check")} Klart` : `${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`}</strong></div>${progressBar(day.uniqueItemIds.length, state.settings.dailyGoal, "Dagens mål")}<small lang="sv">Vanlig låda · 10 krediter · 20 säsongspoäng</small></div></section><div class="daily-overlay-quests">${overlayQuestRows(day)}</div><footer class="daily-all-bonus"><span>${rewardBoxVisual("golden")}</span><span><strong lang="sv">${allComplete ? "Alla tre uppdrag klara" : "Slutför alla tre och få en gyllene låda"}</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen yllätyslaatikon.</small></span></footer>`;
+  root.innerHTML = `<section class="overlay-goal"><span class="goal-box">${rewardBoxVisual("standard")}</span><div class="goal-copy"><div><h3 lang="sv">Dagens mål</h3><strong lang="sv">${goalComplete ? `${iconSvg("check")} Klart` : `${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`}</strong></div>${progressBar(day.uniqueItemIds.length, state.settings.dailyGoal, "Dagens mål")}<small lang="sv">Vanlig låda · 10 krediter · 20 säsongspoäng</small></div></section><div class="daily-overlay-quests">${overlayQuestRows(day)}</div><footer class="daily-all-bonus"><span class="daily-all-bonus-box">${rewardBoxVisual("golden")}</span><span class="daily-all-bonus-copy"><strong lang="sv">${allComplete ? "Alla tre uppdrag klara" : "Slutför alla tre och få en gyllene låda"}</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen yllätyslaatikon.</small></span></footer>`;
   bindHomeActions(root, day);
   if (activeFocus && $("daily-overlay")?.hasAttribute("open"))
     (
@@ -504,7 +510,7 @@ function renderRewards() {
       state.inventory.ownedCosmeticIds.includes(item.id),
     ).length;
   root.innerHTML = `<section class="dashboard-card inventory-head full-width" lang="sv"><div>${iconSvg("credits")}<span>Krediter</span><strong>${state.inventory.credits}</strong></div><div>${iconSvg("streak")}<span>Svitfrysningar</span><strong>${state.inventory.streakFreezes} / 2</strong></div><div>${iconSvg("retry")}<span>Uppdragsbyten</span><strong>${state.inventory.rerollTokens}</strong></div></section>
-  <section id="unopened-boxes" class="dashboard-card full-width box-vault" lang="sv"><div class="section-title"><div><span class="eyebrow">Belöningsvalv</span><h2>${compactRewardBoxVisual("standard")} Överraskningslådor</h2></div><span>${unopened.length} oöppnade</span></div>${unopened.length ? `<div class="capsule-list">${unopened.map((item) => `<button class="capsule box-${item.kind}" data-open="${item.id}" aria-label="${boxCopy[item.kind]} Öppna">${rewardBoxVisual(item.kind)}<span><strong>${boxCopy[item.kind]}</strong><small>Raritet visas alltid efter öppning</small><b>Öppna ${iconSvg("arrow")}</b></span></button>`).join("")}</div>` : '<div class="empty-vault">' + rewardBoxVisual("standard") + "<p>Inga oöppnade lådor.</p></div>"}<details><summary>Chanser och garanti</summary><p>Vanlig 65 % · Sällsynt 25 % · Episk 8 % · Legendarisk 2 %</p><p>Sällsynt eller bättre senast om ${plural(4 - state.loot.sinceRare, "låda", "lådor")}<br>Episk eller bättre senast om ${plural(12 - state.loot.sinceEpic, "låda", "lådor")}<br>Legendarisk senast om ${plural(40 - state.loot.sinceLegendary, "låda", "lådor")}</p></details></section>
+  <section id="unopened-boxes" class="dashboard-card full-width box-vault" lang="sv"><div class="section-title"><div><span class="eyebrow">Belöningsvalv</span><h2>${compactRewardBoxVisual("standard")} Överraskningslådor</h2></div><span>${unopened.length} oöppnade</span></div>${unopened.length ? `<div class="capsule-list">${unopened.map((item) => `<button class="capsule box-${item.kind}" data-open="${item.id}" aria-label="${boxCopy[item.kind]} Öppna">${rewardBoxVisual(item.kind, "large")}<span><strong>${boxCopy[item.kind]}</strong><small>Raritet visas alltid efter öppning</small><b>Öppna ${iconSvg("arrow")}</b></span></button>`).join("")}</div>` : '<div class="empty-vault">' + rewardBoxVisual("standard") + "<p>Inga oöppnade lådor.</p></div>"}<details><summary>Chanser och garanti</summary><p>Vanlig 65 % · Sällsynt 25 % · Episk 8 % · Legendarisk 2 %</p><p>Sällsynt eller bättre senast om ${plural(4 - state.loot.sinceRare, "låda", "lådor")}<br>Episk eller bättre senast om ${plural(12 - state.loot.sinceEpic, "låda", "lådor")}<br>Legendarisk senast om ${plural(40 - state.loot.sinceLegendary, "låda", "lådor")}</p></details></section>
   <section id="daily-shop" class="dashboard-card full-width shop-card" lang="sv"><header class="shop-head"><span>${iconSvg("shop", 32)}</span><div><span class="eyebrow">Uppdateras dagligen</span><h2>Dagens butik</h2></div><strong>${iconSvg("credits")} ${state.inventory.credits}</strong></header><div class="shop-grid">${dailyShop(
     state,
   )

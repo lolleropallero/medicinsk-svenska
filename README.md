@@ -34,9 +34,11 @@ npm run preview
 - `src/scripts/` – minimal browser TypeScript for active exercises
 - `src/styles/` – repository-owned responsive CSS; no external font or asset request
 - `src/assets/nordic-v1/` – 34 retained brand, rarity, achievement, league, and deck SVGs
-- `src/assets/visual-fix-v4/` – 15 Visual Fix V4 reward, category, and background assets
+- `src/assets/visual-fix-v4/` – 13 retained Visual Fix V4 reward, category, and background assets
+- `src/assets/standard-box-v5/` – three transparent Standard Box V5 PNG variants
 - `src/lib/nordic-asset-inventory.ts` and `src/lib/nordic-assets.ts` – exact typed inventory and Vite-managed local asset URLs
-- `src/lib/visual-fix-asset-inventory.ts` and `src/lib/visual-fix-assets.ts` – exact V4 paths and static Vite URL imports
+- `src/lib/visual-fix-asset-inventory.ts` and `src/lib/visual-fix-assets.ts` – exact retained V4 paths and static Vite URL imports
+- `src/lib/standard-box-v5-asset-inventory.ts` and `src/lib/reward-box-assets.ts` – exact V5 paths and kind/size-aware reward resolution
 - `src/types/content.ts` – explicit application content and client-payload types
 - `content/` – version-controlled curated learning data
 - `scripts/validate-content.ts` – deployment-blocking content validation
@@ -46,13 +48,13 @@ Published content is filtered at build time and mapped to explicit client payloa
 
 ### Nordic Asset Pack V1
 
-`src/assets/nordic-v1/` retains 34 production SVGs: five brand assets, four rarity frames, twelve achievement badges, six league shields, and seven deck icons. `src/assets/visual-fix-v4/` adds exactly fifteen production assets: four reward SVGs, seven anatomical category SVGs, and four local WebP backgrounds. Package previews and source archives are excluded. The typed inventories expose Vite-managed hashed same-origin URLs, and `npm run audit:assets` verifies counts, mapping completeness, WebP policy, and SVG safety. The audit is part of `npm run build`.
+`src/assets/nordic-v1/` retains 34 production SVGs: five brand assets, four rarity frames, twelve achievement badges, six league shields, and seven deck icons. `src/assets/visual-fix-v4/` retains thirteen production assets: two genuine golden/legendary reward SVGs, seven anatomical category SVGs, and four local WebP backgrounds. `src/assets/standard-box-v5/` contains exactly three transparent standard-box PNGs for HUD, card, and hero use. Package previews, reference sheets, and source archives are excluded. The typed inventories expose Vite-managed hashed same-origin URLs, and `npm run audit:assets` verifies counts, mapping completeness, PNG alpha channels, WebP policy, and SVG safety. The audit is part of `npm run build`.
 
 The supplied brand mark is used in the application header and favicon. Finnish and Swedish cross tiles provide compact shared-language identity. Language corners are text-free decorative images: Finnish content uses `language-corner-fi.svg`, Swedish content uses `language-corner-sv.svg`, and actual language remains expressed with `lang="fi"` or `lang="sv"`. Active exercises must never add visible `Suomi`, `Svenska`, `Suomeksi`, or `Ruotsiksi` labels.
 
-Visual Fix V4 maps `box-hud.svg` to compact generic box indicators and maps `box-standard.svg`, `box-golden.svg`, and `box-legendary.svg` to full reward presentations. Reward artwork is never composed with a separate seal, badge, medallion, flag overlay, or cross primitive; each supplied box keeps its Nordic-cross ribbon uninterrupted. The seven description category IDs map one-to-one to `cells`, `skeleton`, `neuro`, `cardio`, `blood`, `digestion`, and `hormones`, rendered directly without another icon tile.
+Standard Box V5 maps `small → box-standard-hud.png`, `normal → box-standard-card.png`, and `large → box-standard-hero.png`. Golden and legendary rewards use their genuine V4 illustrations at every size, including compact chips. Reward artwork is never composed with a separate seal, badge, medallion, flag overlay, or cross primitive. The seven description category IDs map one-to-one to `cells`, `skeleton`, `neuro`, `cardio`, `blood`, `digestion`, and `hormones`, rendered directly without another icon tile.
 
-Backgrounds use `home-dark.webp` on `/`, `rewards-dark.webp` on rewards and season surfaces, `shell-light.webp` on setup and progress routes, and `study-light.webp` on active, waiting, and completion exercise states. They render at normal opacity with `background-size: cover`; readable content remains on its own surface. These four WebPs are the only allowed raster assets. HUD chips keep icon, label, primary value, and optional secondary value in separate elements; phones use a two-by-two grid and wider screens use four columns.
+Backgrounds use `home-dark.webp` on `/`, `rewards-dark.webp` on rewards and season surfaces, `shell-light.webp` on setup and progress routes, and `study-light.webp` on active, waiting, and completion exercise states. They render at normal opacity with `background-size: cover`; readable content remains on its own surface. The four WebP backgrounds and three Standard Box V5 PNGs are the only allowed raster assets. HUD chips keep icon, label, primary value, and optional secondary value in separate elements; phones use a two-by-two grid and wider screens use four columns.
 
 Achievement IDs map one-to-one to the twelve same-named SVGs. Stored league tiers map as `Pronssi → bronze`, `Hopea → silver`, `Kulta → gold`, `Platina → platinum`, `Timantti → diamond`, and `Konsultti → master`, while visible Swedish labels remain unchanged. Deck IDs map as `anatomi → anatomy`, `sjukdomar → diseases`, `forsta-hjalpen → first-aid`, `mediciner → medicines`, `avdelningar → departments`, `vastaanotto-anamneesi → anamnesis`, and `tutkimukset-hoito → examinations`.
 

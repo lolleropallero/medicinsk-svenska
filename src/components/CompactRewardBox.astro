@@ -1,0 +1,17 @@
+---
+import { nordicAssets, type RewardBoxKind } from '../lib/nordic-assets';
+interface Props { kind?: RewardBoxKind; label?: string }
+const { kind = 'standard', label } = Astro.props;
+const crosses = kind === 'standard'
+  ? [nordicAssets.rewardPrimitives.crossFi]
+  : kind === 'golden'
+    ? [nordicAssets.rewardPrimitives.crossSv]
+    : [nordicAssets.rewardPrimitives.crossFi, nordicAssets.rewardPrimitives.crossSv];
+const seal = kind === 'standard' ? nordicAssets.rewardPrimitives.sealCommon : kind === 'golden' ? nordicAssets.rewardPrimitives.sealGolden : nordicAssets.rewardPrimitives.sealLegendary;
+---
+<span class={`compact-reward-box compact-box-${kind}`} role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : 'true'}>
+  <span class="compact-box-surface" aria-hidden="true">
+    {crosses.map((cross) => <img class="compact-box-cross" src={cross} width="160" height="160" alt="" aria-hidden="true" />)}
+    <img class="compact-box-seal" src={seal} width="128" height="128" alt="" aria-hidden="true" />
+  </span>
+</span>

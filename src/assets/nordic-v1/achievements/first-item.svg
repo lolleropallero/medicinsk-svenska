@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="250" viewBox="0 0 220 250" fill="none"><title>Första steget</title><defs>
+<linearGradient id="blueDeep" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#006AA7"/><stop offset="1" stop-color="#003580"/></linearGradient>
+<linearGradient id="navyGlow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#123B68"/><stop offset="1" stop-color="#06162A"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFE47A"/><stop offset=".5" stop-color="#FECC02"/><stop offset="1" stop-color="#E3A900"/></linearGradient>
+<linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFFFF"/><stop offset=".5" stop-color="#DDE7F0"/><stop offset="1" stop-color="#AABBCB"/></linearGradient>
+<filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#001C46" flood-opacity=".22"/></filter>
+<filter id="smallShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#001C46" flood-opacity=".18"/></filter>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g filter="url(#shadow)">
+  <path d="M110 12 142 25l35-2 18 30 31 16-2 35 14 32-25 24-7 35-35 7-24 25-32-14-35 2-18-30-31-16 2-35-14-32 25-24 7-35 35-7 24-25 32 14Z" fill="#E9B949"/>
+  <circle cx="110" cy="116" r="82" fill="#006AA7" stroke="#fff" stroke-opacity=".5" stroke-width="5"/>
+  <circle cx="110" cy="116" r="66" fill="#06162A" opacity=".34"/>
+  <path d="M42 62h136M42 88h136" stroke="#FECC02" stroke-width="12" opacity=".28"/>
+  
+<rect x="58" y="78" width="58" height="58" rx="13" fill="#fff"/><path d="M76 78h12v58H76zM58 99h58v12H58z" fill="#003580"/>
+<rect x="106" y="78" width="58" height="58" rx="13" fill="#006AA7"/><path d="M124 78h12v58h-12zM106 99h58v12h-58z" fill="#FECC02"/>
+<path d="M73 151h28l9-16 12 26 12-19 10 9h20" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+
+  <path d="M79 184h62l-8 56-23-18-23 18-8-56Z" fill="#006AA7" stroke="#E9B949" stroke-width="5"/>
+  <path d="M103 184h14v42h-14zM79 198h62v14H79z" fill="#FECC02" opacity=".95"/>
+</g>
+</svg>

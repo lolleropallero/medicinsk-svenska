@@ -4,6 +4,7 @@ import BrandMark from '../components/BrandMark.astro';
 import NordicBackdrop from '../components/NordicBackdrop.astro';
 import MobileNavigation from '../components/MobileNavigation.astro';
 import AppIcon from '../components/AppIcon.astro';
+import { nordicAssets } from '../lib/nordic-assets';
 interface Props { title: string; description?: string }
 const { title, description = 'Harjoittele lääketieteellistä ruotsia.' } = Astro.props;
 const path = Astro.url.pathname;
@@ -19,7 +20,7 @@ const intensity=exerciseRoute?1:path.startsWith('/palkinnot')||path.startsWith('
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#06162a" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={nordicAssets.brand.mark} type="image/svg+xml" />
     <script is:inline>
       try {
         const value = JSON.parse(localStorage.getItem('medicinsk-svenska.progress.v1') || 'null');

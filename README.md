@@ -17,6 +17,7 @@ Exercise sessions and long-term progress are stored only in the current browser.
 npm ci
 npm run dev
 npm run validate:content
+npm run audit:assets
 npm run check
 npm test
 npm run test:e2e
@@ -24,14 +25,16 @@ npm run build
 npm run preview
 ```
 
-`npm run build` validates content before Astro writes the static site to `dist/`. Playwright is intentionally separate from the production build because it requires an installed browser.
+`npm run build` audits the Nordic assets, validates content, builds the static site, and audits emitted copy and media. Playwright is intentionally separate from the production build because it requires an installed browser.
 
 ## Architecture
 
 - `src/pages/` – static Astro routes (`/`, `/kortit`, `/kortit/harjoitus`, `/fraasit`, `/fraasit/harjoitus`, `/kuvailu`, `/kuvailu/harjoitus`)
 - `src/lib/` – framework-free, independently tested session and answer logic
 - `src/scripts/` – minimal browser TypeScript for active exercises
-- `src/styles/` – repository-owned responsive CSS; no runtime font or asset request
+- `src/styles/` – repository-owned responsive CSS; no external font or asset request
+- `src/assets/nordic-v1/` – the 45 production SVGs from Nordic Asset Pack V1
+- `src/lib/nordic-asset-inventory.ts` and `src/lib/nordic-assets.ts` – exact typed inventory and Vite-managed local asset URLs
 - `src/types/content.ts` – explicit application content and client-payload types
 - `content/` – version-controlled curated learning data
 - `scripts/validate-content.ts` – deployment-blocking content validation
@@ -39,11 +42,19 @@ npm run preview
 
 Published content is filtered at build time and mapped to explicit client payloads. Publication status and maintenance-only fields are never sent to the browser. There is no server state.
 
-### Nordic Clinical Arcade visual system
+### Nordic Asset Pack V1
 
-The interface uses a repository-owned Nordic Clinical Arcade identity: overlapping Finnish and Swedish cross tiles form the brand mark, while low-opacity cross fragments and abstract aurora fields provide atmosphere without putting flags behind reading text. Finnish source cues use snow surfaces and Finnish-blue markers; Swedish targets use Swedish blue with a yellow cross accent. The attached concept boards were design-development references only and are not bundled assets.
+`src/assets/nordic-v1/` contains only the 45 production SVGs: five brand assets, three backgrounds, eight reward assets, four rarity frames, twelve achievement badges, six league shields, and seven deck icons. Package previews, PNGs, HTML, CSS, the archive, and its manifest are excluded from production. `src/lib/nordic-asset-inventory.ts` is the exact typed path inventory; `src/lib/nordic-assets.ts` eagerly validates it against Vite's local SVG modules and exposes hashed same-origin URLs. `npm run audit:assets` verifies the count, category counts, existence, size, complete mapping, and SVG safety rules. The audit is part of `npm run build`.
 
-Styles are split into `tokens.css`, `base.css`, `shell.css`, `components.css`, `exercises.css`, `metagame.css`, `rewards.css`, `season.css`, and `responsive.css`. Active learning uses the quietest treatment; home, setup, and progress use moderate identity; rewards, achievements, collection, season, and leagues receive the highest controlled intensity. `src/lib/visuals.ts` owns the typed inline-SVG catalog, badge and shield mappings, reward variants, language ribbons, navigation routes, and validated cosmetic visual tokens.
+The supplied brand mark is used in the application header and favicon. Finnish and Swedish cross tiles provide compact shared-language identity. Language corners are text-free decorative images: Finnish content uses `language-corner-fi.svg`, Swedish content uses `language-corner-sv.svg`, and actual language remains expressed with `lang="fi"` or `lang="sv"`. Active exercises must never add visible `Suomi`, `Svenska`, `Suomeksi`, or `Ruotsiksi` labels.
+
+`nordic-study.svg` is reserved for active study, waiting, and completion routes; `nordic-shell-light.svg` covers home, setup, and progress; `nordic-shell-dark.svg` covers rewards, season, league, and reveal surfaces. Reading content stays on opaque surfaces. Standard, golden, and legendary boxes map directly to their matching complete SVGs; compact HUD, quest, checkpoint, notification, and shop symbols combine the supplied Finnish/Swedish cross plates with common/golden/legendary seals. Rarity frames retain their 220:260 ratio around collection, shop, capsule-result, and seasonal media.
+
+Achievement IDs map one-to-one to the twelve same-named SVGs. Stored league tiers map as `Pronssi → bronze`, `Hopea → silver`, `Kulta → gold`, `Platina → platinum`, `Timantti → diamond`, and `Konsultti → master`, while visible Swedish labels remain unchanged. Deck IDs map as `anatomi → anatomy`, `sjukdomar → diseases`, `forsta-hjalpen → first-aid`, `mediciner → medicines`, `avdelningar → departments`, `vastaanotto-anamneesi → anamnesis`, and `tutkimukset-hoito → examinations`.
+
+To add or replace an SVG, preserve its viewBox, paths, gradients, filters, title, transparency, and repository-relative filename; do not inline, recolor, rasterize, or optimize it destructively. Update the typed inventory and mapping, use an empty `alt` plus `aria-hidden="true"` when visible HTML already names it, then run `npm run audit:assets`, unit tests, the production build, and Playwright. Preview files must never enter `src/assets/nordic-v1/` or `dist/`.
+
+Styles are split into `tokens.css`, `base.css`, `shell.css`, `components.css`, `exercises.css`, `metagame.css`, `rewards.css`, `season.css`, `responsive.css`, and `nordic-assets.css`. `src/lib/visuals.ts` retains generic UI icons only for actions and navigation not covered by the pack, plus validated display and cosmetic tokens.
 
 Phones use a compact brand bar and a safe-area-aware five-item bottom navigation. Active exercise routes omit all global chrome. Themes affect the shell palette and major surfaces, card styles affect study-card pattern and geometry, progress frames affect passport framing, and titles remain limited to metagame surfaces. Reduced-motion preferences and `Lugnt läge` retain colour and layout while suppressing anticipation and celebration motion.
 

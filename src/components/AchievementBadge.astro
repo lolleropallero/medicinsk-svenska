@@ -1,8 +1,10 @@
 ---
-import AppIcon from './AppIcon.astro';
-import { achievementBadge } from '../lib/visuals';
+import { mappedAsset, nordicAssets } from '../lib/nordic-assets';
 interface Props { id: string; name: string; unlocked?: boolean }
-const { id, name, unlocked = false } = Astro.props;
-const badge = achievementBadge(id);
+const { id, unlocked = false } = Astro.props;
+const asset = mappedAsset(nordicAssets.achievements, id);
+if (!asset) throw new Error(`Unknown achievement asset: ${id}`);
 ---
-<span class:list={['achievement-badge', `badge-${id}`, { unlocked, locked: !unlocked }]} role="img" aria-label={`${name}, ${unlocked ? 'upplåst' : 'låst'}`}><span class="badge-core"><AppIcon name={badge.icon} size={32}/><b>{badge.mark}</b></span><span class="badge-ribbon">SV</span></span>
+<span class:list={['achievement-badge', `badge-${id}`, { unlocked, locked: !unlocked }]} aria-hidden="true">
+  <img src={asset} width="220" height="250" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+</span>

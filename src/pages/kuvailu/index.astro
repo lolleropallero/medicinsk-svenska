@@ -22,7 +22,7 @@ const counts = Object.fromEntries(descriptionCategoryPayload.map((category) => [
       </div>
     </fieldset>
     <a class="all-topics" data-description-start data-mode="all" href="/kuvailu/harjoitus?mode=all&amount=10">
-      <span class="row-icon"><AppIcon name="anatomy" size={32}/></span><span><strong>Kaikki aiheet</strong><small>Kaikki lääketieteen kuvaukset</small></span><span data-count={publishedDescriptions.length}>{publishedDescriptions.length} tehtävää</span><AppIcon name="arrow"/>
+      <span class="row-icon"><AppIcon name="descriptions" size={32}/></span><span><strong>Kaikki aiheet</strong><small>Kaikki lääketieteen kuvaukset</small></span><span data-count={publishedDescriptions.length}>{publishedDescriptions.length} tehtävää</span><AppIcon name="arrow"/>
     </a>
     <div class="category-list">
       {descriptionCategoryPayload.map((category) => (
@@ -33,7 +33,7 @@ const counts = Object.fromEntries(descriptionCategoryPayload.map((category) => [
           data-category={category.id}
           href={`/kuvailu/harjoitus?mode=category&category=${category.id}&amount=10`}
         >
-          <span class="row-icon"><AppIcon name={DESCRIPTION_ICONS[category.id] ?? 'anatomy'} size={32}/></span><h2>{category.nameFi}</h2><span class="category-count" data-count={counts[category.id]}>{counts[category.id]} tehtävää</span><span class="category-start">Aloita <AppIcon name="arrow"/></span>
+          <span class="row-icon"><AppIcon name={DESCRIPTION_ICONS[category.id] ?? 'descriptions'} size={32}/></span><h2>{category.nameFi}</h2><span class="category-count" data-count={counts[category.id]}>{counts[category.id]} tehtävää</span><span class="category-start">Aloita <AppIcon name="arrow"/></span>
         </a>
       ))}
     </div>

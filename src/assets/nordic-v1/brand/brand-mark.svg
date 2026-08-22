@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="150" viewBox="0 0 260 150" fill="none"><title>Medicinsk svenska dual Nordic cross brand mark</title><defs>
+<linearGradient id="blueDeep" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#006AA7"/><stop offset="1" stop-color="#003580"/></linearGradient>
+<linearGradient id="navyGlow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#123B68"/><stop offset="1" stop-color="#06162A"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFE47A"/><stop offset=".5" stop-color="#FECC02"/><stop offset="1" stop-color="#E3A900"/></linearGradient>
+<linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFFFF"/><stop offset=".5" stop-color="#DDE7F0"/><stop offset="1" stop-color="#AABBCB"/></linearGradient>
+<filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#001C46" flood-opacity=".22"/></filter>
+<filter id="smallShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#001C46" flood-opacity=".18"/></filter>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g filter="url(#shadow)">
+  <g transform="translate(22 20) rotate(-7 60 55)">
+    <rect x="0" y="0" width="112" height="112" rx="24" fill="url(#silver)" stroke="#D0DDEA" stroke-width="4"/>
+    <path d="M34 0h20v112H34zM0 44h112v20H0z" fill="#003580"/>
+  </g>
+  <g transform="translate(126 20) rotate(7 60 55)">
+    <rect x="0" y="0" width="112" height="112" rx="24" fill="url(#blueDeep)" stroke="#1689C2" stroke-width="4"/>
+    <path d="M34 0h20v112H34zM0 44h112v20H0z" fill="url(#gold)"/>
+  </g>
+</g>
+<path d="M73 92h33l12-23 19 42 18-32 14 13h24" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" filter="url(#smallShadow)"/>
+<path d="M73 92h33l12-23 19 42 18-32 14 13h24" fill="none" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="73" cy="92" r="6" fill="#003580" stroke="#fff" stroke-width="3"/><circle cx="193" cy="92" r="6" fill="#FECC02" stroke="#fff" stroke-width="3"/>
+</svg>

@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppIcon from '../../components/AppIcon.astro';
 import LanguageRibbon from '../../components/LanguageRibbon.astro';
+import FlagRibbon from '../../components/FlagRibbon.astro';
 import { deckPayload, flashcardPayload } from '../../lib/content';
 ---
 <BaseLayout title="Korttiharjoitus">
@@ -27,7 +28,7 @@ import { deckPayload, flashcardPayload } from '../../lib/content';
       <a href="/kortit">Takaisin pakkoihin</a>
     </div>
     <div id="summary-view" class="summary" hidden aria-live="polite">
-      <span class="celebration-ribbon" aria-hidden="true"><i></i><i></i></span>
+      <FlagRibbon variant="dual" />
       <h1 id="summary-title" tabindex="-1">Valmis</h1>
       <dl class="summary-stats">
         <div><dt>Ensimmäisellä</dt><dd id="summary-first"></dd></div>

@@ -1,0 +1,6 @@
+---
+import { nordicAssets, type RarityKind } from '../lib/nordic-assets';
+interface Props { rarity?: RarityKind }
+const { rarity = 'common' } = Astro.props;
+---
+<img class={`rarity-frame rarity-${rarity}`} src={nordicAssets.rarity[rarity]} width="220" height="260" alt="" aria-hidden="true" loading="lazy" decoding="async" />

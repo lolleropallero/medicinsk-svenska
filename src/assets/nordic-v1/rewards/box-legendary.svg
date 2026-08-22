@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="320" viewBox="0 0 360 320" fill="none"><title>Legendarisk låda</title><defs>
+<linearGradient id="blueDeep" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#006AA7"/><stop offset="1" stop-color="#003580"/></linearGradient>
+<linearGradient id="navyGlow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#123B68"/><stop offset="1" stop-color="#06162A"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFE47A"/><stop offset=".5" stop-color="#FECC02"/><stop offset="1" stop-color="#E3A900"/></linearGradient>
+<linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFFFF"/><stop offset=".5" stop-color="#DDE7F0"/><stop offset="1" stop-color="#AABBCB"/></linearGradient>
+<filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#001C46" flood-opacity=".22"/></filter>
+<filter id="smallShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#001C46" flood-opacity=".18"/></filter>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<ellipse cx="180" cy="285" rx="140" ry="20" fill="#00142B" opacity=".18"/>
+<g filter="url(#shadow)">
+  <rect x="48" y="76" width="264" height="196" rx="28" fill="#0A2443" stroke="#F0C45D" stroke-width="6"/>
+  <rect x="36" y="48" width="288" height="90" rx="28" fill="#123B68" stroke="#F0C45D" stroke-width="6"/>
+  <rect x="157" y="48" width="46" height="224" rx="12" fill="url(#gold)"/>
+  <rect x="36" y="90" width="288" height="38" rx="12" fill="url(#gold)"/>
+  
+<path d="M30 206C90 164 136 254 208 202s101-21 122 10" stroke="#6CE5D7" stroke-width="7" opacity=".55" filter="url(#glow)"/>
+<path d="M44 82h252" stroke="#fff" stroke-opacity=".12" stroke-width="5"/>
+<path d="M72 42h30v245H72z" fill="#fff" opacity=".75"/><path d="M102 42h18v245h-18z" fill="#003580"/>
+
+  <circle cx="180" cy="160" r="42" fill="#F6D873" stroke="#fff" stroke-opacity=".55" stroke-width="5"/>
+  <circle cx="180" cy="160" r="28" fill="#006AA7"/>
+  <path d="m180 138 7 15 17 2-13 12 4 17-15-9-15 9 4-17-13-12 17-2 7-15Z" fill="#FECC02"/>
+  <path d="M70 66h180" stroke="#fff" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"/>
+</g>
+<circle cx="278" cy="64" r="18" fill="#5ED6F3" opacity=".28" filter="url(#glow)"/>
+</svg>

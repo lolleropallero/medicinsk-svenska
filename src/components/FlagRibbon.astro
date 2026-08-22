@@ -1,5 +1,9 @@
 ---
+import { nordicAssets } from '../lib/nordic-assets';
 interface Props { variant?: 'fi'|'sv'|'dual'; label?: string }
 const { variant = 'dual', label } = Astro.props;
 ---
-<span class={`flag-ribbon flag-ribbon-${variant}`} aria-hidden={label ? undefined : 'true'} aria-label={label}><span></span><span></span></span>
+<span class={`flag-ribbon flag-ribbon-${variant}`} role={label ? 'img' : undefined} aria-hidden={label ? undefined : 'true'} aria-label={label}>
+  {(variant === 'fi' || variant === 'dual') && <img src={nordicAssets.brand.crossFi} width="128" height="128" alt="" aria-hidden="true" />}
+  {(variant === 'sv' || variant === 'dual') && <img src={nordicAssets.brand.crossSv} width="128" height="128" alt="" aria-hidden="true" />}
+</span>

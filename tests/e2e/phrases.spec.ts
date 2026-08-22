@@ -42,6 +42,7 @@ test('landing, navigation, and setup expose three complete phrase-category links
   await expect(page.getByRole('link', { name: /Kaikki fraasit.*73 fraasia/ })).toBeVisible();
   await page.locator('.category-row').filter({ hasText: 'Oireet ja vointi' }).getByRole('heading').click();
   await expect(page).toHaveURL(/category=oireet-vointi/);
+  await expect.poll(() => page.evaluate((key) => localStorage.getItem(key) !== null, STORAGE_KEY)).toBe(true);
   const state = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
   const payload = JSON.parse((await page.locator('#phrases-data').textContent())!);
   const byId = new Map(payload.map((item: { id: string; categoryId: string }) => [item.id, item.categoryId]));

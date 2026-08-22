@@ -7,10 +7,11 @@
   "scripts": {
     "dev": "astro dev",
     "validate:content": "node --experimental-strip-types scripts/validate-content.ts",
+    "audit:assets": "node --experimental-strip-types scripts/audit-assets.ts",
     "check": "astro check",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "build": "node --experimental-strip-types scripts/validate-content.ts && astro build && node --experimental-strip-types scripts/audit-built-copy.ts",
+    "build": "npm run audit:assets && node --experimental-strip-types scripts/validate-content.ts && astro build && node --experimental-strip-types scripts/audit-built-copy.ts",
     "preview": "astro preview"
   },
   "devDependencies": {

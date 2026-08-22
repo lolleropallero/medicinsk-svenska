@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="260" viewBox="0 0 220 260" fill="none"><title>Rare rarity frame</title><defs>
+<linearGradient id="blueDeep" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#006AA7"/><stop offset="1" stop-color="#003580"/></linearGradient>
+<linearGradient id="navyGlow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#123B68"/><stop offset="1" stop-color="#06162A"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFE47A"/><stop offset=".5" stop-color="#FECC02"/><stop offset="1" stop-color="#E3A900"/></linearGradient>
+<linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFFFF"/><stop offset=".5" stop-color="#DDE7F0"/><stop offset="1" stop-color="#AABBCB"/></linearGradient>
+<filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#001C46" flood-opacity=".22"/></filter>
+<filter id="smallShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#001C46" flood-opacity=".18"/></filter>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<linearGradient id="rf" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#65C8FF"/><stop offset="1" stop-color="#197EC1"/></linearGradient></defs>
+<rect x="8" y="8" width="204" height="244" rx="24" stroke="url(#rf)" stroke-width="10"/>
+<path d="M18 58V28a10 10 0 0 1 10-10h30M162 18h30a10 10 0 0 1 10 10v30M202 202v30a10 10 0 0 1-10 10h-30M58 242H28a10 10 0 0 1-10-10v-30" stroke="#65C8FF" stroke-width="4" stroke-linecap="round"/>
+<circle cx="110" cy="22" r="6" fill="#65C8FF"/><circle cx="110" cy="238" r="6" fill="#197EC1"/>
+</svg>

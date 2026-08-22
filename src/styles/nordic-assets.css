@@ -1,0 +1,183 @@
+.nordic-backdrop {
+  background-color: var(--snow);
+  background-image: var(--nordic-background);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.nordic-backdrop.intensity-3 { background-color: var(--nordic-navy-deep); }
+.metagame-route .page-heading { color: white; }
+.metagame-route .page-heading .eyebrow { color: #dbeefe; }
+.metagame-route .section-links a { border-color: rgba(255,255,255,.24); background: rgba(255,255,255,.12); color: white; }
+.exercise-route .nordic-backdrop {
+  background-color: var(--snow);
+  background-image: var(--nordic-background);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.brand-mark {
+  display: block;
+  width: auto;
+  height: 50px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 7px rgba(0,0,0,.25));
+}
+.brand-lockup.compact .brand-mark { height: 38px; }
+
+.flag-ribbon {
+  position: relative;
+  display: inline-flex;
+  width: 58px;
+  height: 36px;
+  overflow: visible;
+  border-radius: 0;
+  filter: drop-shadow(0 3px 5px rgba(0,35,85,.18));
+  transform: rotate(-4deg);
+}
+.flag-ribbon img {
+  position: absolute;
+  display: block;
+  width: 34px;
+  height: 34px;
+}
+.flag-ribbon img:first-child { left: 0; top: 0; }
+.flag-ribbon img:last-child { right: 0; bottom: 0; }
+.flag-ribbon-fi,.flag-ribbon-sv { width: 36px; }
+.flag-ribbon-fi img,.flag-ribbon-sv img { inset: 0; }
+
+.language-ribbon {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  left: 10px;
+  display: block;
+  width: clamp(104px, 30%, 146px);
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  pointer-events: none;
+}
+.language-ribbon-image { display: block; width: 100%; height: auto; }
+.cross-marker {
+  display: block;
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border: 0;
+  border-radius: 5px;
+  object-fit: contain;
+}
+.deck-icon { background: var(--surface); }
+.deck-icon img { display: block; width: 42px; height: 42px; object-fit: contain; }
+
+.reward-box-visual {
+  position: relative;
+  display: inline-grid;
+  width: 118px;
+  height: auto;
+  flex: none;
+  place-items: center;
+  filter: drop-shadow(0 10px 10px rgba(0,28,76,.2));
+}
+.reward-box-visual > img { display: block; width: 100%; height: auto; }
+.reward-box-visual.box-large { width: clamp(180px, 42vw, 240px); }
+.compact-reward-box {
+  position: relative;
+  display: inline-grid;
+  width: 44px;
+  height: 40px;
+  flex: none;
+  place-items: center;
+  filter: drop-shadow(0 4px 5px rgba(0,28,76,.2));
+}
+.compact-box-surface {
+  position: relative;
+  display: block;
+  width: 42px;
+  height: 32px;
+  overflow: hidden;
+  border: 2px solid #97b4c8;
+  border-radius: 7px 7px 10px 10px;
+  background: linear-gradient(180deg,#fff,var(--ice));
+}
+.compact-box-golden .compact-box-surface { border-color: #dca900; background: linear-gradient(180deg,var(--sv-blue),var(--fi-blue)); }
+.compact-box-legendary .compact-box-surface { border-color: #f2bd25; background: linear-gradient(180deg,var(--nordic-navy),var(--nordic-navy-deep)); }
+.compact-box-cross { position: absolute; inset: -11px auto auto -3px; width: 47px; height: 47px; object-fit: contain; }
+.compact-box-cross + .compact-box-cross { left: 7px; opacity: .8; }
+.compact-box-seal { position: absolute; z-index: 2; left: 50%; top: 50%; width: 18px; height: 18px; object-fit: contain; transform: translate(-50%,-45%); }
+
+.achievement-badge {
+  position: relative;
+  display: grid;
+  width: 78px;
+  height: 88px;
+  flex: none;
+  place-items: center;
+  filter: drop-shadow(0 5px 7px rgba(0,53,128,.2));
+}
+.achievement-badge img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.achievement-badge.locked { filter: grayscale(.9); opacity: .5; }
+.achievement-badge.unlocked { filter: drop-shadow(0 5px 8px rgba(228,154,0,.26)); }
+
+.league-badge { display: flex; flex-direction: column; align-items: center; flex: none; color: var(--fi-blue); }
+.league-badge .league-shield { display: block; width: 72px; height: 84px; object-fit: contain; clip-path: none; background: none; }
+.league-badge.large .league-shield { width: 116px; height: 136px; }
+.league-badge strong { margin-top: 3px; font-family: ui-serif,Georgia,serif; }
+
+.framed-media {
+  position: relative;
+  display: grid;
+  width: 74px;
+  aspect-ratio: 220/260;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(145deg,var(--ice),#c8e3f3);
+  color: var(--fi-blue);
+}
+.framed-media > .app-icon { position: relative; z-index: 1; }
+.rarity-frame { position: absolute; z-index: 2; inset: 0; display: block; width: 100%; height: 100%; object-fit: fill; pointer-events: none; }
+.collectible.locked .framed-media > :not(.rarity-frame) { opacity: .55; }
+.collectible.locked .rarity-frame { filter: grayscale(.8); opacity: .62; }
+.offer-icon.framed-media { width: 68px; height: auto; }
+.offer-icon .compact-reward-box { position: relative; z-index: 1; }
+
+.capsule-stage { display: grid; grid-template-columns: minmax(0,1fr) minmax(72px,96px); align-items: center; justify-items: center; gap: 8px; }
+.capsule-box { display: grid; place-items: center; }
+.capsule-reward-frame { width: 92px; }
+.session-reward-box { float: left; width: 112px; height: auto; margin: 0 14px 8px 0; }
+.notification-achievement,.notification-league { width: 42px; height: 46px; object-fit: contain; }
+.passport-cross { position: absolute; width: 180px; height: 180px; object-fit: contain; opacity: .1; }
+.passport-cross.fi { left: -38px; top: -24px; transform: rotate(-13deg); }
+.passport-cross.sv { right: -26px; bottom: -38px; transform: rotate(10deg); }
+.mini-cross { position: absolute; left: -12px; top: -20px; width: 100px; height: 100px; object-fit: contain; opacity: .14; }
+.season-route-labels > img { display: block; width: 34px; height: 34px; object-fit: contain; }
+.hud-boxes .compact-reward-box { grid-row: 1/3; width: 28px; height: 28px; transform: scale(.72); transform-origin: center; }
+.checkpoint-node .compact-reward-box { width: 36px; height: 34px; transform: scale(.78); }
+.checkpoint-node .checkpoint-cosmetic { width: 38px; height: 42px; background: transparent; }
+
+@media (max-width: 980px) { .brand-mark { height: 42px; } }
+@media (max-width: 560px) {
+  .brand-mark { height: 40px; }
+  .deck-icon img { width: 38px; height: 38px; }
+  .achievement-badge { width: 72px; height: 82px; }
+  .reward-box-visual { width: 104px; }
+  .capsule-stage { grid-template-columns: 1fr 74px; }
+}
+@media (max-width: 360px) {
+  .brand-mark { height: 36px; }
+  .cross-marker { width: 16px; height: 16px; }
+  .language-ribbon { width: 106px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reward-box-visual,.compact-reward-box,.achievement-badge,.league-badge { animation: none!important; transition: none!important; }
+}
+:root[data-calm="true"] .reward-box-visual,
+:root[data-calm="true"] .compact-reward-box,
+:root[data-calm="true"] .achievement-badge,
+:root[data-calm="true"] .league-badge { animation: none!important; transition: none!important; }

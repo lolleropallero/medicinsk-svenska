@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="280" viewBox="0 0 240 280" fill="none"><title>Diamant</title><defs>
+<linearGradient id="blueDeep" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#006AA7"/><stop offset="1" stop-color="#003580"/></linearGradient>
+<linearGradient id="navyGlow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#123B68"/><stop offset="1" stop-color="#06162A"/></linearGradient>
+<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFE47A"/><stop offset=".5" stop-color="#FECC02"/><stop offset="1" stop-color="#E3A900"/></linearGradient>
+<linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFFFF"/><stop offset=".5" stop-color="#DDE7F0"/><stop offset="1" stop-color="#AABBCB"/></linearGradient>
+<filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#001C46" flood-opacity=".22"/></filter>
+<filter id="smallShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#001C46" flood-opacity=".18"/></filter>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g filter="url(#shadow)">
+<path d="M120 18 198 47v76c0 64-36 108-78 133-42-25-78-69-78-133V47l78-29Z" fill="#1A7FB5" stroke="#7BE2FF" stroke-width="10"/>
+<path d="M120 42 176 62v59c0 45-23 79-56 100-33-21-56-55-56-100V62l56-20Z" fill="#fff" opacity=".1" stroke="#fff" stroke-opacity=".5" stroke-width="4"/>
+<path d="M91 44h20v176H91zM59 101h122v20H59z" fill="#FECC02" opacity=".9"/>
+<path d="m80 72 4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1 4-8Z" fill="#FECC02"/><path d="m110 72 4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1 4-8Z" fill="#FECC02"/><path d="m140 72 4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1 4-8Z" fill="#FECC02"/><path d="m170 72 4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1 4-8Z" fill="#FECC02"/>
+<circle cx="120" cy="146" r="38" fill="#7BE2FF" stroke="#fff" stroke-opacity=".5" stroke-width="5"/>
+<path d="m120 118 9 19 21 3-15 14 4 21-19-11-19 11 4-21-15-14 21-3 9-19Z" fill="#FECC02"/>
+</g>
+</svg>

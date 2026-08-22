@@ -1,1 +1,254 @@
-.season-hero{position:relative;display:grid;grid-template-columns:1fr auto;gap:16px;padding:25px;overflow:hidden;border:1px solid #307bac;border-radius:24px;background:linear-gradient(135deg,var(--nordic-navy-deep),var(--fi-blue),var(--sv-blue));color:white;box-shadow:var(--shadow-deep)}.season-hero h2{margin:0;font-family:ui-serif,Georgia,serif;font-size:2rem}.season-hero p{margin:5px 0;color:var(--muted-on-dark)}.season-hero .eyebrow{color:var(--sv-yellow)}.season-aurora{position:absolute;inset:0;background:radial-gradient(circle at 78% 35%,rgba(254,204,2,.22),transparent 25%),radial-gradient(ellipse at 30% 100%,rgba(44,186,194,.25),transparent 45%)}.season-medallion{position:relative;display:grid;width:96px;height:96px;grid-template-columns:auto auto;place-content:center;border:2px solid var(--sv-yellow);border-radius:50%;background:rgba(0,0,0,.2);box-shadow:0 0 26px rgba(254,204,2,.25)}.season-medallion .app-icon{grid-row:1/3;margin-right:5px;color:var(--sv-yellow)}.season-medallion b{font-family:ui-serif,Georgia,serif;font-size:1.8rem;line-height:1}.season-medallion small{color:var(--muted-on-dark)}.season-hero-progress{position:relative;grid-column:1/3;display:grid;grid-template-columns:1fr auto;gap:6px;color:var(--muted-on-dark);font-size:.76rem}.season-hero-progress .meter{grid-column:1/3;background:rgba(255,255,255,.15)}.league-summary{display:flex;align-items:center;gap:15px}.league-summary>div{flex:1}.league-summary h2{margin:0}.summary-line{display:flex;flex-wrap:wrap;gap:4px 14px}.summary-line span{color:var(--muted);font-size:.72rem}.league-summary .meter{margin-top:8px}.season-tabs{display:none;grid-column:1/-1;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border:1px solid #a7c2d5;border-radius:var(--pill);background:var(--surface)}.season-tabs button{border:0;border-radius:var(--pill)}.season-tabs button[aria-selected="true"]{background:var(--fi-blue);color:white}.season-route-labels{display:flex;align-items:center;gap:8px;margin:12px 0}.season-route-labels b{display:grid;width:34px;height:28px;place-items:center;border-radius:7px;background:white;color:var(--fi-blue);box-shadow:inset 0 0 0 2px var(--fi-blue)}.season-route-labels b:last-child{background:var(--sv-blue);color:var(--sv-yellow);box-shadow:inset 0 0 0 2px var(--sv-yellow)}.season-route-labels span{height:3px;flex:1;background:linear-gradient(90deg,var(--fi-blue),var(--sv-blue),var(--sv-yellow))}.season-path{position:relative;display:grid;gap:10px;padding-left:12px}.season-path::before{content:"";position:absolute;left:32px;top:15px;bottom:15px;width:4px;border-radius:4px;background:linear-gradient(var(--sv-yellow),var(--sv-blue),#a8bfd0)}.tier{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:11px;align-items:center;min-height:68px;padding:8px 10px;border:1px solid #c3d8e6;border-radius:var(--radius);background:var(--surface)}.checkpoint-node{z-index:1;display:grid;width:42px;height:42px;place-items:center;border:3px solid var(--surface);border-radius:50%;background:#9ab0c0;color:white;box-shadow:0 0 0 2px #9ab0c0}.tier.unlocked .checkpoint-node{background:var(--sv-yellow);color:var(--fi-blue);box-shadow:0 0 0 2px #dca900}.tier.current{border-color:#e4b100;background:#fff8d8;box-shadow:0 0 22px rgba(254,204,2,.24)}.tier.current .checkpoint-node{box-shadow:0 0 0 3px #dca900,0 0 18px var(--sv-yellow)}.tier.special{border-color:var(--epic)}.checkpoint-copy{display:flex;min-width:0;flex-direction:column}.checkpoint-copy small,.checkpoint-status{color:var(--muted);font-size:.7rem}.checkpoint-copy b{color:var(--epic);font-size:.66rem}.show-all-tiers{width:100%;margin-top:13px}.league-badge{display:flex;flex-direction:column;align-items:center;flex:none;color:var(--fi-blue)}.league-shield{position:relative;display:grid;width:70px;height:78px;place-items:center;clip-path:polygon(50% 0,92% 17%,88% 67%,50% 100%,12% 67%,8% 17%);background:linear-gradient(145deg,#d7e4ee,#839caf);color:white}.league-shield i{position:absolute;left:18%;right:18%;top:44%;height:10%;background:var(--sv-yellow)}.league-badge strong{margin-top:3px;font-family:ui-serif,Georgia,serif}.league-bronze .league-shield{background:linear-gradient(145deg,#e5ad7a,#8b4b2e)}.league-silver .league-shield{background:linear-gradient(145deg,#fff,#879dad)}.league-gold .league-shield{background:linear-gradient(145deg,#fff39a,#d38f00)}.league-platinum .league-shield{background:linear-gradient(145deg,#eaffff,#66b8c9)}.league-diamond .league-shield{background:linear-gradient(145deg,#9be7ff,#126cb0,#fecc02)}.league-master .league-shield{background:linear-gradient(145deg,#07162c,#006aa7,#d99500)}.league-badge.large .league-shield{width:110px;height:122px}.league-badge.large .app-icon{width:48px;height:48px}.league-detail{text-align:center}.league-name{font-family:ui-serif,Georgia,serif;font-size:2.1rem;font-weight:800}.league-stats{display:grid;gap:7px;margin:15px 0}.league-stats>div{display:flex;justify-content:space-between;gap:12px;padding-bottom:7px;border-bottom:1px solid #d4e1e9}.league-stats dd{margin:0;font-weight:800}.league-result,.league-goal{padding:10px;border-radius:var(--radius-sm);background:var(--ice)}.league-goal{display:flex;align-items:center;justify-content:center;gap:6px;color:var(--fi-blue);font-weight:750}
+.season-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  padding: 25px;
+  overflow: hidden;
+  border: 1px solid #307bac;
+  border-radius: 24px;
+  background: linear-gradient(
+    135deg,
+    var(--nordic-navy-deep),
+    var(--fi-blue),
+    var(--sv-blue)
+  );
+  color: white;
+  box-shadow: var(--shadow-deep);
+}
+.season-hero h2 {
+  margin: 0;
+  font-family: ui-serif, Georgia, serif;
+  font-size: 2rem;
+}
+.season-hero p {
+  margin: 5px 0;
+  color: var(--muted-on-dark);
+}
+.season-hero .eyebrow {
+  color: var(--sv-yellow);
+}
+.season-aurora {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 78% 35%,
+      rgba(254, 204, 2, 0.22),
+      transparent 25%
+    ),
+    radial-gradient(
+      ellipse at 30% 100%,
+      rgba(44, 186, 194, 0.25),
+      transparent 45%
+    );
+}
+.season-medallion {
+  position: relative;
+  display: grid;
+  width: 96px;
+  height: 96px;
+  grid-template-columns: auto auto;
+  place-content: center;
+  border: 2px solid var(--sv-yellow);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 26px rgba(254, 204, 2, 0.25);
+}
+.season-medallion .app-icon {
+  grid-row: 1/3;
+  margin-right: 5px;
+  color: var(--sv-yellow);
+}
+.season-medallion b {
+  font-family: ui-serif, Georgia, serif;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.season-medallion small {
+  color: var(--muted-on-dark);
+}
+.season-hero-progress {
+  position: relative;
+  grid-column: 1/3;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  color: var(--muted-on-dark);
+  font-size: 0.76rem;
+}
+.season-hero-progress .meter {
+  grid-column: 1/3;
+  background: rgba(255, 255, 255, 0.15);
+}
+.league-summary {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.league-summary > div {
+  flex: 1;
+}
+.league-summary h2 {
+  margin: 0;
+}
+.summary-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+}
+.summary-line span {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+.league-summary .meter {
+  margin-top: 8px;
+}
+.season-tabs {
+  display: none;
+  grid-column: 1/-1;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid #a7c2d5;
+  border-radius: var(--pill);
+  background: var(--surface);
+}
+.season-tabs button {
+  border: 0;
+  border-radius: var(--pill);
+}
+.season-tabs button[aria-selected="true"] {
+  background: var(--fi-blue);
+  color: white;
+}
+.season-route-labels {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+}
+.season-route-labels span {
+  height: 3px;
+  flex: 1;
+  background: linear-gradient(
+    90deg,
+    var(--fi-blue),
+    var(--sv-blue),
+    var(--sv-yellow)
+  );
+}
+.season-path {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  padding-left: 12px;
+}
+.season-path::before {
+  content: "";
+  position: absolute;
+  left: 32px;
+  top: 15px;
+  bottom: 15px;
+  width: 4px;
+  border-radius: 4px;
+  background: linear-gradient(var(--sv-yellow), var(--sv-blue), #a8bfd0);
+}
+.tier {
+  position: relative;
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 11px;
+  align-items: center;
+  min-height: 68px;
+  padding: 8px 10px;
+  border: 1px solid #c3d8e6;
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.checkpoint-node {
+  z-index: 1;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  background: #9ab0c0;
+  color: white;
+  box-shadow: 0 0 0 2px #9ab0c0;
+}
+.tier.unlocked .checkpoint-node {
+  background: var(--sv-yellow);
+  color: var(--fi-blue);
+  box-shadow: 0 0 0 2px #dca900;
+}
+.tier.current {
+  border-color: #e4b100;
+  background: #fff8d8;
+  box-shadow: 0 0 22px rgba(254, 204, 2, 0.24);
+}
+.tier.current .checkpoint-node {
+  box-shadow:
+    0 0 0 3px #dca900,
+    0 0 18px var(--sv-yellow);
+}
+.tier.special {
+  border-color: var(--epic);
+}
+.checkpoint-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.checkpoint-copy small,
+.checkpoint-status {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+.checkpoint-copy b {
+  color: var(--epic);
+  font-size: 0.66rem;
+}
+.show-all-tiers {
+  width: 100%;
+  margin-top: 13px;
+}
+.league-detail {
+  text-align: center;
+}
+.league-name {
+  font-family: ui-serif, Georgia, serif;
+  font-size: 2.1rem;
+  font-weight: 800;
+}
+.league-stats {
+  display: grid;
+  gap: 7px;
+  margin: 15px 0;
+}
+.league-stats > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #d4e1e9;
+}
+.league-stats dd {
+  margin: 0;
+  font-weight: 800;
+}
+.league-result,
+.league-goal {
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  background: var(--ice);
+}
+.league-goal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--fi-blue);
+  font-weight: 750;
+}

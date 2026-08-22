@@ -1,5 +1,7 @@
 ---
+import { nordicAssets } from '../lib/nordic-assets';
 interface Props { intensity?: 1|2|3 }
 const { intensity = 2 } = Astro.props;
+const background = intensity === 1 ? nordicAssets.backgrounds.study : intensity === 3 ? nordicAssets.backgrounds.dark : nordicAssets.backgrounds.light;
 ---
-<span class={`nordic-backdrop intensity-${intensity}`} aria-hidden="true"><span class="cross-fragment fi"></span><span class="cross-fragment sv"></span><span class="aurora-field"></span></span>
+<span class={`nordic-backdrop intensity-${intensity}`} style={`--nordic-background:url("${background}")`} aria-hidden="true"></span>

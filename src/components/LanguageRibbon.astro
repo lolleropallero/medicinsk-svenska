@@ -1,5 +1,9 @@
 ---
+import { nordicAssets } from '../lib/nordic-assets';
 interface Props { language: 'fi'|'sv'; id?: string }
 const { language, id } = Astro.props;
+const source = language === 'fi' ? nordicAssets.brand.languageFi : nordicAssets.brand.languageSv;
 ---
-<span id={id} class={`language-ribbon language-${language}`} aria-hidden="true"></span>
+<span id={id} class={`language-ribbon language-${language}`} aria-hidden="true">
+  <img class="language-ribbon-image" src={source} data-fi={nordicAssets.brand.languageFi} data-sv={nordicAssets.brand.languageSv} width="180" height="68" alt="" aria-hidden="true" decoding="async" />
+</span>

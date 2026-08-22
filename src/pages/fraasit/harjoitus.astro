@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppIcon from '../../components/AppIcon.astro';
 import LanguageRibbon from '../../components/LanguageRibbon.astro';
+import FlagRibbon from '../../components/FlagRibbon.astro';
 import { phraseCategoryPayload, phrasePayload } from '../../lib/content';
 ---
 <BaseLayout title="Fraasiharjoitus">
@@ -29,7 +30,7 @@ import { phraseCategoryPayload, phrasePayload } from '../../lib/content';
       <a href="/fraasit">Takaisin fraaseihin</a>
     </div>
     <div id="phrase-summary" class="summary" hidden>
-      <span class="celebration-ribbon" aria-hidden="true"><i></i><i></i></span>
+      <FlagRibbon variant="dual" />
       <h1 id="phrase-summary-title" tabindex="-1">Valmis</h1>
       <dl class="summary-stats">
         <div><dt>Ensimmäisellä</dt><dd id="phrase-summary-first"></dd></div>

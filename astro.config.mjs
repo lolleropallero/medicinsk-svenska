@@ -1,3 +1,7 @@
 import { defineConfig } from 'astro/config';
 
-export default defineConfig({ output: 'static', build: { format: 'directory' } });
+export default defineConfig({
+  output: 'static',
+  build: { format: 'directory' },
+  vite: { build: { assetsInlineLimit: 0 } },
+});

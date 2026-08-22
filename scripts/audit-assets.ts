@@ -44,8 +44,8 @@ if (nordicExpected.length !== 34) errors.push(`expected 34 retained Nordic SVG m
 if (v4Expected.length !== 15) errors.push(`expected exactly 15 V4 production mappings, found ${v4Expected.length}`);
 if (new Set([...nordicExpected, ...v4Expected]).size !== nordicExpected.length + v4Expected.length) errors.push('asset mapping contains duplicate paths');
 
-const nordicActual = walk(nordicRoot).filter((path) => extname(path).toLowerCase() === '.svg').map((path) => normalize(relative(nordicRoot, path))).sort();
-const v4Actual = walk(visualFixRoot).filter((path) => /\.(?:svg|webp)$/i.test(path)).map((path) => normalize(relative(visualFixRoot, path))).sort();
+const nordicActual = walk(nordicRoot).filter((path) => extname(path).toLowerCase() === '.svg').map((path) => normalize(relative(nordicRoot, path))).sort((left, right) => left.localeCompare(right));
+const v4Actual = walk(visualFixRoot).filter((path) => /\.(?:svg|webp)$/i.test(path)).map((path) => normalize(relative(visualFixRoot, path))).sort((left, right) => left.localeCompare(right));
 if (nordicActual.length !== 34) errors.push(`expected 34 retained Nordic SVG files, found ${nordicActual.length}`);
 if (v4Actual.length !== 15) errors.push(`expected exactly 15 V4 production files, found ${v4Actual.length}`);
 for (const path of nordicActual) if (!nordicExpected.includes(path as typeof nordicExpected[number])) errors.push(`unmapped Nordic SVG: ${path}`);

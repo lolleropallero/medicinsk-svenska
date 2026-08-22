@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import AppIcon from '../components/AppIcon.astro';
+import FlagRibbon from '../components/FlagRibbon.astro';
+import RewardBoxVisual from '../components/RewardBoxVisual.astro';
 import { publishedCards, publishedDescriptions, publishedPhrases, publishedDecks, publishedDescriptionCategories, publishedPhraseCategories } from '../lib/content';
 
 const sessionCatalog = {
@@ -15,20 +18,22 @@ const sessionCatalog = {
   <section class="home wrap">
     <h1 class="sr-only">Medicinsk svenska</h1>
     <button id="daily-launcher" class="daily-launcher" type="button" lang="sv" aria-haspopup="dialog" aria-controls="daily-overlay">
-      <span id="daily-launcher-quests"></span>
-      <span id="daily-launcher-goal"></span>
+      <span class="daily-launcher-icon"><AppIcon name="calendar" size={32}/></span>
+      <span class="daily-launcher-copy"><strong id="daily-launcher-quests"></strong><small id="daily-launcher-goal"></small></span>
+      <span class="daily-launcher-box"><RewardBoxVisual kind="standard" size="small"/></span>
+      <AppIcon name="arrow"/>
     </button>
     <div class="home-actions" aria-label="Harjoitustavat">
-      <a class="button primary" href="/kortit">Sanakortit</a>
-      <a class="button secondary" href="/fraasit">Fraasit</a>
-      <a class="button secondary" href="/kuvailu">Kuvailutehtävät</a>
+      <a class="practice-action flashcard-action" href="/kortit/"><span class="practice-action-icon"><AppIcon name="flashcards" size={32}/><FlagRibbon variant="dual"/></span><span><strong>Sanakortit</strong><small>Lääketieteen sanasto</small></span><AppIcon name="arrow"/></a>
+      <a class="practice-action phrase-action" href="/fraasit/"><span class="practice-action-icon"><AppIcon name="phrases" size={32}/><FlagRibbon variant="dual"/></span><span><strong>Fraasit</strong><small>Vastaanoton kieli</small></span><AppIcon name="arrow"/></a>
+      <a class="practice-action description-action" href="/kuvailu/"><span class="practice-action-icon"><AppIcon name="anatomy" size={32}/><FlagRibbon variant="sv"/></span><span><strong>Kuvailutehtävät</strong><small>Ruotsinkieliset määritelmät</small></span><AppIcon name="arrow"/></a>
     </div>
   </section>
   <dialog id="daily-overlay" class="daily-overlay" aria-labelledby="daily-overlay-title" lang="sv">
     <div class="daily-sheet">
       <header class="daily-overlay-head">
-        <h2 id="daily-overlay-title" tabindex="-1">Dagens uppdrag</h2>
-        <button id="daily-overlay-close" class="compact daily-overlay-close" type="button" aria-label="Stäng dagens uppdrag">×</button>
+        <span class="daily-head-icon"><AppIcon name="calendar" size={32}/></span><div><span class="eyebrow">Nordiskt studiepass</span><h2 id="daily-overlay-title" tabindex="-1">Dagens uppdrag</h2></div>
+        <button id="daily-overlay-close" class="icon-button daily-overlay-close" type="button" aria-label="Stäng dagens uppdrag"><span aria-hidden="true">×</span></button>
       </header>
       <div id="daily-overlay-content" class="daily-overlay-content" aria-live="polite"></div>
     </div>

@@ -1,0 +1,10 @@
+---
+import AppIcon from './AppIcon.astro';
+import { MOBILE_NAV_ITEMS } from '../lib/visuals';
+interface Props { path: string }
+const { path } = Astro.props;
+const activeFor = (href:string) => href === '/' ? path === '/' : path.startsWith(href.slice(0,-1));
+---
+<nav class="mobile-navigation" aria-label="Mobiilinavigaatio">
+  {MOBILE_NAV_ITEMS.map(item => <a href={item.href} aria-current={activeFor(item.href) ? 'page' : undefined}><AppIcon name={item.icon}/><span>{item.label}</span></a>)}
+</nav>

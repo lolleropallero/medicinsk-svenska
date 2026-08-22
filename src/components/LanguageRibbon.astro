@@ -1,0 +1,5 @@
+---
+interface Props { language: 'fi'|'sv'; label?: string }
+const { language, label = language === 'fi' ? 'Suomi' : 'Svenska' } = Astro.props;
+---
+<span class={`language-ribbon language-${language}`} lang={language}>{label}</span>

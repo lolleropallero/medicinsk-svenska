@@ -1,10 +1,16 @@
 ---
 import '../styles/global.css';
+import BrandMark from '../components/BrandMark.astro';
+import NordicBackdrop from '../components/NordicBackdrop.astro';
+import MobileNavigation from '../components/MobileNavigation.astro';
+import AppIcon from '../components/AppIcon.astro';
 interface Props { title: string; description?: string }
 const { title, description = 'Harjoittele lääketieteellistä ruotsia.' } = Astro.props;
 const path = Astro.url.pathname;
 const hudRoutes=['/','/kortit','/fraasit','/kuvailu','/edistyminen','/palkinnot','/kausi'];
-const showHud=hudRoutes.some(route=>path===route||path===`${route}/`)&&!path.endsWith('/harjoitus');
+const exerciseRoute=path.includes('/harjoitus');
+const showHud=hudRoutes.some(route=>path===route||path===`${route}/`)&&!exerciseRoute;
+const intensity=exerciseRoute?1:path.startsWith('/palkinnot')||path.startsWith('/kausi')?3:2;
 ---
 <!doctype html>
 <html lang="fi">
@@ -12,7 +18,8 @@ const showHud=hudRoutes.some(route=>path===route||path===`${route}/`)&&!path.end
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#f5f2ec" />
+    <meta name="theme-color" content="#06162a" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
       try {
         const value = JSON.parse(localStorage.getItem('medicinsk-svenska.progress.v1') || 'null');
@@ -22,19 +29,25 @@ const showHud=hudRoutes.some(route=>path===route||path===`${route}/`)&&!path.end
     </script>
     <title>{title} · Medicinsk svenska</title>
   </head>
-  <body class:list={{ 'home-route': path === '/' }}>
+  <body class:list={{ 'home-route': path === '/', 'exercise-route': exerciseRoute, 'metagame-route': intensity === 3 }}>
     <a class="skip-link" href="#sisalto">Siirry sisältöön</a>
-    <header class="site-header">
-      <a class="brand" href="/">Medicinsk svenska</a>
-      <nav aria-label="Päänavigaatio">
-        <a href="/kortit" aria-current={path.startsWith('/kortit') ? 'page' : undefined}>Sanakortit</a>
-        <a href="/fraasit" aria-current={path.startsWith('/fraasit') ? 'page' : undefined}>Fraasit</a>
-        <a href="/kuvailu" aria-current={path.startsWith('/kuvailu') ? 'page' : undefined}>Kuvailutehtävät</a>
-        <a href="/edistyminen" lang="sv" aria-current={path.startsWith('/edistyminen') ? 'page' : undefined}>Framsteg</a>
-      </nav>
-    </header>
+    <NordicBackdrop intensity={intensity}/>
+    {!exerciseRoute&&<header class="site-header">
+      <a class="brand" href="/" aria-label="Medicinsk svenska, etusivu"><BrandMark wordmark /></a>
+      <div class="desktop-navigation" role="navigation" aria-label="Päänavigaatio">
+        <a href="/kortit/" aria-current={path.startsWith('/kortit') ? 'page' : undefined}><AppIcon name="flashcards"/>Sanakortit</a>
+        <a href="/fraasit/" aria-current={path.startsWith('/fraasit') ? 'page' : undefined}><AppIcon name="phrases"/>Fraasit</a>
+        <a href="/kuvailu/" aria-current={path.startsWith('/kuvailu') ? 'page' : undefined}><AppIcon name="descriptions"/>Kuvailu</a>
+        <a href="/edistyminen/" lang="sv" aria-current={path.startsWith('/edistyminen') ? 'page' : undefined}><AppIcon name="progress"/>Framsteg</a>
+      </div>
+      <div class="desktop-metagame" role="navigation" aria-label="Palkinnot ja kausi">
+        <a href="/palkinnot/" lang="sv" aria-label="Belöningar" aria-current={path.startsWith('/palkinnot') ? 'page' : undefined}><AppIcon name="gift"/></a>
+        <a href="/kausi/" lang="sv" aria-label="Säsong" aria-current={path.startsWith('/kausi') ? 'page' : undefined}><AppIcon name="season"/></a>
+      </div>
+    </header>}
     {showHud&&<aside id="metagame-hud" class="metagame-hud" aria-label="Spelstatus" lang="sv"></aside>}
-    <main id="sisalto"><slot /></main>
+    <main id="sisalto" class:list={{ 'study-main': exerciseRoute }}><slot /></main>
+    {!exerciseRoute&&<MobileNavigation path={path}/>}
     <div id="reward-notifications" class="notifications" aria-live="polite"></div>
     <script src="../scripts/progress-shell.ts"></script>
   </body>

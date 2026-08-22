@@ -195,6 +195,11 @@ function startApp() {
     byId('front-term').lang = session.direction === 'fi-sv' ? 'fi' : 'sv';
     byId('back-term').textContent = sides.back;
     byId('back-term').lang = session.direction === 'fi-sv' ? 'sv' : 'fi';
+    const sourceLanguage=session.direction==='fi-sv'?'fi':'sv',targetLanguage=sourceLanguage==='fi'?'sv':'fi';
+    const sourceRibbon=byId('source-ribbon'),targetRibbon=byId('target-ribbon');
+    sourceRibbon.className=`language-ribbon language-${sourceLanguage}`;sourceRibbon.lang=sourceLanguage;sourceRibbon.textContent=sourceLanguage==='fi'?'Suomi':'Svenska';
+    targetRibbon.className=`language-ribbon language-${targetLanguage}`;targetRibbon.lang=targetLanguage;targetRibbon.textContent=targetLanguage==='fi'?'Suomi':'Svenska';
+    flashcard.dataset.direction=session.direction;
     const grammar = [partOfSpeechLabel(card.partOfSpeech), card.inflection].filter(Boolean).join(' · ');
     byId('grammar').textContent = grammar;
     byId('grammar').hidden = !grammar;

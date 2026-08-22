@@ -1,4 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppIcon from '../../components/AppIcon.astro';
+import FlagRibbon from '../../components/FlagRibbon.astro';
 ---
-<BaseLayout title="Säsong"><div class="page wrap-wide"><div class="page-heading"><h1 lang="sv">Säsong</h1><div class="section-links" lang="sv"><a href="/edistyminen/">Framsteg</a><a href="/palkinnot/">Belöningar</a></div></div><div id="season-dashboard" class="dashboard-grid"></div></div><script src="../../scripts/progress-ui.ts"></script></BaseLayout>
+<BaseLayout title="Säsong"><div class="page wrap-wide season-page"><div class="page-heading"><div class="heading-lockup"><span class="setup-icon"><AppIcon name="season" size={32}/></span><div><span class="eyebrow">Finland → Sverige</span><h1 lang="sv">Säsong</h1></div><FlagRibbon variant="dual"/></div><div class="section-links" lang="sv"><a href="/edistyminen/"><AppIcon name="progress"/>Framsteg</a><a href="/palkinnot/"><AppIcon name="gift"/>Belöningar</a></div></div><div id="season-dashboard" class="dashboard-grid"></div></div><script src="../../scripts/progress-ui.ts"></script></BaseLayout>

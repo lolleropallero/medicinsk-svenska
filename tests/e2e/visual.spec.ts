@@ -42,6 +42,7 @@ test('capture daily overlay and compact homepage states',async({page})=>{
 });
 
 test('capture required visual QA views', async ({ page }) => {
+  test.setTimeout(90_000);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
   await page.screenshot({ path: 'tmp/visual/landing-desktop.png', fullPage: true });

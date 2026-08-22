@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppIcon from '../../components/AppIcon.astro';
 import { descriptionCategoryPayload, descriptionPayload } from '../../lib/content';
 ---
 <BaseLayout title="Kuvailuharjoitus">
   <section class="practice description-practice wrap" id="description-app" aria-labelledby="description-session-label">
     <div class="practice-top">
-      <a href="/kuvailu">Takaisin</a>
+      <a class="practice-back" href="/kuvailu/"><AppIcon name="back"/>Takaisin</a>
       <strong id="description-session-label"></strong>
       <div class="session-status">
         <span id="description-progress" aria-live="polite"></span>
@@ -14,7 +15,7 @@ import { descriptionCategoryPayload, descriptionPayload } from '../../lib/conten
     </div>
     <div id="description-session-view">
       <div class="progress-track" aria-hidden="true"><span id="description-progress-bar"></span></div>
-      <article class="description-card"><p id="description-text" lang="sv"></p></article>
+      <article class="description-card"><span class="description-watermark" aria-hidden="true"><AppIcon name="anatomy" size={32}/></span><span class="language-ribbon language-sv" lang="sv">Svenska</span><p id="description-text" lang="sv"></p></article>
       <form id="answer-form">
         <label for="answer">Vastauksesi</label>
         <input id="answer" name="answer" lang="sv" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="done" />
@@ -30,6 +31,7 @@ import { descriptionCategoryPayload, descriptionPayload } from '../../lib/conten
       </div>
     </div>
     <div id="description-summary" class="summary" hidden>
+      <span class="celebration-ribbon" aria-hidden="true"><i></i><i></i></span>
       <h1 id="description-summary-title" tabindex="-1">Valmis</h1>
       <dl class="summary-stats">
         <div><dt>Oikein</dt><dd id="description-summary-correct"></dd></div>

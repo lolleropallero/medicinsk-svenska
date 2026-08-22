@@ -95,6 +95,8 @@ function render() {
   byId('description-session-label').textContent = categoryName;
 
   if (session.currentIndex >= session.selectedExerciseIds.length) {
+    if (timerId !== null) { window.clearInterval(timerId); timerId = null; }
+    const finalTime = elapsed.textContent ?? formatDuration(Math.max(0,Date.now()-session.startedAt));
     sessionView.hidden = true;
     summaryView.hidden = false;
     const summary = summarizeDescriptionSession(session);
@@ -103,7 +105,7 @@ function render() {
     byId('description-summary-correct').textContent = `${summary.correct} / ${summary.total}`;
     byId('description-summary-errors').textContent = String(summary.errors);
     byId<HTMLButtonElement>('description-retry').hidden = summary.errors === 0;
-    updateTimer();
+    byId<HTMLTimeElement>('description-summary-time').textContent = finalTime;
     byId('description-summary-title').focus();
     return;
   }
@@ -122,12 +124,14 @@ function render() {
     form.hidden = true;
     feedback.hidden = false;
     const result = session.currentResolvedResult;
+    feedback.dataset.result = result;
     byId('result-label').textContent = result === 'correct' ? 'Oikein' : result === 'revealed' ? 'Vastaus näytetty' : 'Ei aivan';
     byId('result-label').className = result === 'correct' ? 'correct-text' : 'incorrect-text';
     byId('canonical-answer').textContent = `${item.article ? `${item.article} ` : ''}${item.answerSv}`;
     nextButton.focus();
   } else {
     feedback.hidden = true;
+    delete feedback.dataset.result;
     form.hidden = false;
     answerInput.focus();
   }

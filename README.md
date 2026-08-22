@@ -39,6 +39,16 @@ npm run preview
 
 Published content is filtered at build time and mapped to explicit client payloads. Publication status and maintenance-only fields are never sent to the browser. There is no server state.
 
+### Nordic Clinical Arcade visual system
+
+The interface uses a repository-owned Nordic Clinical Arcade identity: overlapping Finnish and Swedish cross tiles form the brand mark, while low-opacity cross fragments and abstract aurora fields provide atmosphere without putting flags behind reading text. Finnish source cues use snow surfaces and Finnish-blue markers; Swedish targets use Swedish blue with a yellow cross accent. The attached concept boards were design-development references only and are not bundled assets.
+
+Styles are split into `tokens.css`, `base.css`, `shell.css`, `components.css`, `exercises.css`, `metagame.css`, `rewards.css`, `season.css`, and `responsive.css`. Active learning uses the quietest treatment; home, setup, and progress use moderate identity; rewards, achievements, collection, season, and leagues receive the highest controlled intensity. `src/lib/visuals.ts` owns the typed inline-SVG catalog, badge and shield mappings, reward variants, language ribbons, navigation routes, and validated cosmetic visual tokens.
+
+Phones use a compact brand bar and a safe-area-aware five-item bottom navigation. Active exercise routes omit all global chrome. Themes affect the shell palette and major surfaces, card styles affect study-card pattern and geometry, progress frames affect passport framing, and titles remain limited to metagame surfaces. Reduced-motion preferences and `Lugnt läge` retain colour and layout while suppressing anticipation and celebration motion.
+
+Visual regression work uses the Playwright matrix at 320 × 568, 390 × 844, 768 × 1024, and 1440 × 900. Review home, each setup and active exercise state, the daily sheet, passport, badges, boxes, shop, collection, season route, league shields, dialogs, calm mode, and reduced motion; functional and accessibility assertions remain the acceptance gate rather than screenshots alone.
+
 ### Flashcard session persistence
 
 Each compact deck row is one complete link, so its name, card count, empty space, and `Aloita` affordance all start the configured exercise. Starting an exercise creates a unique session URL and stores one versioned active session in `localStorage`. The stored state includes the originally selected card IDs, queues, mastery and attempt state, the session start time, and absolute retry timestamps. Reloading or backgrounding therefore does not resample cards, reset elapsed time, or reset a five-minute retry countdown. Durations use `MM:SS` below one hour and `H:MM:SS` thereafter.

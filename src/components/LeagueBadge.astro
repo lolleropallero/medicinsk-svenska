@@ -1,0 +1,8 @@
+---
+import AppIcon from './AppIcon.astro';
+import { leagueBadge } from '../lib/visuals';
+interface Props { tier: string; large?: boolean }
+const { tier, large = false } = Astro.props;
+const badge = leagueBadge(tier);
+---
+<span class:list={['league-badge', `league-${badge.className}`, { large }]} role="img" aria-label={`${badge.label}, liga`}><span class="league-shield"><AppIcon name="league" size={32}/><i></i></span><strong>{badge.label}</strong></span>

@@ -1,19 +1,20 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppIcon from '../../components/AppIcon.astro';
 import { phraseCategoryPayload, phrasePayload } from '../../lib/content';
 ---
 <BaseLayout title="Fraasiharjoitus">
   <section class="practice wrap phrase-practice" aria-labelledby="phrase-session-label">
     <div class="practice-top">
-      <a href="/fraasit">Takaisin</a>
+      <a class="practice-back" href="/fraasit/"><AppIcon name="back"/>Takaisin</a>
       <strong id="phrase-session-label"></strong>
       <div class="session-status"><span id="phrase-progress" aria-live="polite"></span><time id="phrase-elapsed" aria-label="Kulunut aika 00:00" datetime="PT0S">00:00</time></div>
     </div>
     <div id="phrase-session-view">
       <div class="progress-track" aria-hidden="true"><span id="phrase-progress-bar"></span></div>
       <button id="phrase-card" class="flashcard phrase-card" type="button" aria-label="Näytä vastaus">
-        <span id="phrase-fi" class="term" lang="fi"></span>
-        <span id="phrase-answer" hidden><span class="divider"></span><span id="phrase-sv" class="term answer" lang="sv"></span></span>
+        <span class="language-ribbon language-fi" lang="fi">Suomi</span><span class="speech-bubble cue"><span id="phrase-fi" class="term" lang="fi"></span></span>
+        <span id="phrase-answer" hidden><span class="answer-bridge" aria-hidden="true"><AppIcon name="arrow"/></span><span class="language-ribbon language-sv" lang="sv">Svenska</span><span class="speech-bubble target"><span id="phrase-sv" class="term answer" lang="sv"></span></span></span>
       </button>
       <div id="phrase-grade-actions" class="action-row" hidden>
         <button class="danger" id="phrase-missed" type="button">En osannut</button>
@@ -21,11 +22,13 @@ import { phraseCategoryPayload, phrasePayload } from '../../lib/content';
       </div>
     </div>
     <div id="phrase-waiting" class="waiting" hidden>
+      <span class="waiting-visual" aria-hidden="true"><AppIcon name="retry" size={32}/><i></i></span>
       <h1 id="phrase-waiting-copy" tabindex="-1"></h1>
       <p>Seuraava kertaus <strong id="phrase-retry-countdown"></strong></p>
       <a href="/fraasit">Takaisin fraaseihin</a>
     </div>
     <div id="phrase-summary" class="summary" hidden>
+      <span class="celebration-ribbon" aria-hidden="true"><i></i><i></i></span>
       <h1 id="phrase-summary-title" tabindex="-1">Valmis</h1>
       <dl class="summary-stats">
         <div><dt>Ensimmäisellä</dt><dd id="phrase-summary-first"></dd></div>

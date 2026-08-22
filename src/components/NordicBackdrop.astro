@@ -1,0 +1,5 @@
+---
+interface Props { intensity?: 1|2|3 }
+const { intensity = 2 } = Astro.props;
+---
+<span class={`nordic-backdrop intensity-${intensity}`} aria-hidden="true"><span class="cross-fragment fi"></span><span class="cross-fragment sv"></span><span class="aurora-field"></span></span>

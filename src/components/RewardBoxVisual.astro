@@ -1,0 +1,6 @@
+---
+import AppIcon from './AppIcon.astro';
+interface Props { kind?: 'standard'|'golden'|'legendary'; label?: string; size?: 'small'|'normal'|'large' }
+const { kind = 'standard', label, size = 'normal' } = Astro.props;
+---
+<span class={`reward-box-visual box-${kind} box-${size}`} role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : 'true'}><span class="box-glow"></span><span class="box-lid"></span><span class="box-body"><span class="box-cross"></span><span class="box-seal"><AppIcon name="spark" /></span></span></span>

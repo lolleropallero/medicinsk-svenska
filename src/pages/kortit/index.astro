@@ -1,16 +1,19 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import AppIcon from '../../components/AppIcon.astro';
+import FlagRibbon from '../../components/FlagRibbon.astro';
 import { publishedCards, publishedDecks } from '../../lib/content';
+import { DECK_ICONS } from '../../lib/visuals';
 const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCards.filter((c) => c.deckId === d.id).length]));
 ---
 <BaseLayout title="Sanakortit">
   <section class="page wrap study-setup" aria-labelledby="page-title">
-    <h1 id="page-title">Sanakortit</h1>
+    <header class="setup-heading"><span class="setup-icon"><AppIcon name="flashcards" size={32}/></span><div><span class="eyebrow">Suomi ↔ svenska</span><h1 id="page-title">Sanakortit</h1></div><FlagRibbon variant="dual"/></header>
     <fieldset class="direction direction-selector" id="direction-fieldset">
       <legend class="sr-only">Harjoittelusuunta</legend>
       <div class="segments segments-two">
-        <label><input type="radio" name="direction" value="fi-sv" checked /><span>Suomi → ruotsi</span></label>
-        <label><input type="radio" name="direction" value="sv-fi" /><span>Ruotsi → suomi</span></label>
+        <label><input type="radio" name="direction" value="fi-sv" checked /><span><i class="cross-marker fi" aria-hidden="true"></i>Suomi → ruotsi<i class="cross-marker sv" aria-hidden="true"></i></span></label>
+        <label><input type="radio" name="direction" value="sv-fi" /><span><i class="cross-marker sv" aria-hidden="true"></i>Ruotsi → suomi<i class="cross-marker fi" aria-hidden="true"></i></span></label>
       </div>
     </fieldset>
     <fieldset class="amount-selector">
@@ -23,7 +26,7 @@ const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCard
       </div>
     </fieldset>
     <a class="lucky" data-start data-mode="lucky" href="/kortit/harjoitus?mode=lucky&direction=fi-sv&amount=25">
-      <strong>Kokeilen onneani</strong><span data-selected-count>25 korttia</span>
+      <span class="row-icon"><AppIcon name="shuffle" size={32}/></span><span><strong>Kokeilen onneani</strong><small>Satunnainen lääketieteen kattaus</small></span><span data-selected-count>25 korttia</span><AppIcon name="arrow"/>
     </a>
     <div class="deck-list">
       {publishedDecks.map((deck) => (
@@ -34,9 +37,8 @@ const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCard
           data-deck={deck.id}
           href={`/kortit/harjoitus?mode=deck&deck=${deck.id}&direction=fi-sv&amount=25`}
         >
-          <h2>{deck.nameFi}</h2>
-          <span class="deck-count">{counts[deck.id]} korttia</span>
-          <span class="deck-start">Aloita</span>
+          <span class="row-icon"><AppIcon name={DECK_ICONS[deck.id] ?? 'flashcards'} size={32}/></span>
+          <h2>{deck.nameFi}</h2><span class="deck-count">{counts[deck.id]} korttia</span><span class="deck-start">Aloita <AppIcon name="arrow"/></span>
         </a>
       ))}
     </div>

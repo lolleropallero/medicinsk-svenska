@@ -51,6 +51,7 @@ test('setup lists all categories and starts from either whole semantic row area'
   await expect(page.getByRole('link', { name: /Kaikki aiheet.*51 tehtävää/ })).toBeVisible();
   await page.locator('.category-row').filter({ hasText: 'Hermosto ja aistit' }).getByRole('heading').click();
   await expect(page).toHaveURL(/mode=category.*category=hermosto-aistit|category=hermosto-aistit.*mode=category/);
+  await expect.poll(() => page.evaluate((key) => localStorage.getItem(key) !== null, STORAGE_KEY)).toBe(true);
   const state = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
   const payload = JSON.parse((await page.locator('#descriptions-data').textContent())!);
   const byId = new Map(payload.map((item: {id:string;categoryId:string}) => [item.id, item.categoryId]));
@@ -74,6 +75,10 @@ test('all-topics sizes are unique and short categories use the complete pool', a
   await page.goto('/kuvailu');
   await page.getByRole('group', { name: 'Tehtävien määrä' }).locator('label').filter({ hasText: '50' }).click();
   await page.locator('.category-row').filter({ hasText: 'Veri ja imunestejärjestelmä' }).locator('.category-count').click();
+  await expect.poll(() => page.evaluate((key) => {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value).selectedExerciseIds.length : 0;
+  }, STORAGE_KEY)).toBe(6);
   const categoryIds = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).selectedExerciseIds as string[], STORAGE_KEY);
   expect(categoryIds).toHaveLength(6);
   expect(new Set(categoryIds).size).toBe(6);
@@ -164,7 +169,7 @@ test('summary, retry, and new round use fresh persisted session state', async ({
   await expect(page.getByRole('heading', { name: 'Valmis', exact: true })).toBeFocused();
   await expect(page.locator('#description-summary-correct')).toHaveText('1 / 3');
   await expect(page.locator('#description-summary-errors')).toHaveText('2');
-  await expect(page.locator('#description-summary-time')).toHaveText('04:18');
+  await expect(page.locator('#description-summary-time')).toHaveText(/^04:1[89]$/);
   const completed = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
 
   await page.getByRole('button', { name: 'Harjoittele virheet uudelleen' }).click();

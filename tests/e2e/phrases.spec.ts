@@ -172,11 +172,17 @@ test('phrase routes, payload, header, touch targets, and narrow layouts are acce
     await page.goto('/fraasit');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
     await expect(page.getByRole('navigation').getByRole('link', { name: 'Fraasit' })).toBeVisible();
+    await page.evaluate((key) => localStorage.removeItem(key), STORAGE_KEY);
     await page.getByRole('link', { name: /Kaikki fraasit/ }).click();
+    await expect(page).toHaveURL(/\/fraasit\/harjoitus/);
+    const reveal = page.getByRole('button', { name: 'Näytä vastaus' });
+    await expect(reveal).toBeFocused();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
-    await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+    await reveal.click();
     for (const name of ['En osannut', 'Osasin']) {
-      expect((await page.getByRole('button', { name }).boundingBox())!.height).toBeGreaterThanOrEqual(52);
+      const grading = page.getByRole('button', { name });
+      await expect(grading).toBeVisible();
+      expect((await grading.boundingBox())!.height).toBeGreaterThanOrEqual(52);
     }
   }
   const payload = JSON.parse((await page.locator('#phrases-data').textContent())!);

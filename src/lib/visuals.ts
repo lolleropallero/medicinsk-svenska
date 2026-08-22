@@ -121,7 +121,7 @@ export function rarityVariant(rarity: string) {
 export function languageRibbon(direction: string, side: 'source'|'target') {
   const fiSource = direction !== 'sv-fi';
   const language = side === 'source' ? (fiSource ? 'fi' : 'sv') : (fiSource ? 'sv' : 'fi');
-  return { language, label: language === 'fi' ? 'Suomi' : 'Svenska', className: `language-${language}` };
+  return { language, className: `language-${language}` };
 }
 
 const COSMETIC_DEFAULTS = { theme:'theme-default', cardStyle:'cardStyle-default', progressFrame:'progressFrame-default', title:'title-default' } as const;

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppIcon from '../../components/AppIcon.astro';
+import LanguageRibbon from '../../components/LanguageRibbon.astro';
 import { descriptionCategoryPayload, descriptionPayload } from '../../lib/content';
 ---
 <BaseLayout title="Kuvailuharjoitus">
@@ -15,7 +16,7 @@ import { descriptionCategoryPayload, descriptionPayload } from '../../lib/conten
     </div>
     <div id="description-session-view">
       <div class="progress-track" aria-hidden="true"><span id="description-progress-bar"></span></div>
-      <article class="description-card"><span class="description-watermark" aria-hidden="true"><AppIcon name="anatomy" size={32}/></span><span class="language-ribbon language-sv" lang="sv">Svenska</span><p id="description-text" lang="sv"></p></article>
+      <article class="description-card"><span class="description-watermark" aria-hidden="true"><AppIcon name="anatomy" size={32}/></span><LanguageRibbon language="sv" /><p id="description-text" lang="sv"></p></article>
       <form id="answer-form">
         <label for="answer">Vastauksesi</label>
         <input id="answer" name="answer" lang="sv" autocomplete="off" autocapitalize="none" spellcheck="false" enterkeyhint="done" />

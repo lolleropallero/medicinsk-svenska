@@ -1,5 +1,6 @@
 :root{--muted:#506579;--muted-on-dark:#c9dbe8}
 .language-sv{color:white}.language-sv::before,.language-sv::after{background:var(--sv-yellow)}
+.language-ribbon{display:block;width:38px;height:26px;min-height:0;overflow:hidden;padding:0;border-radius:7px;font-size:0}.language-ribbon::before{left:10px;top:0;width:5px;height:100%}.language-ribbon::after{left:0;top:8px;width:100%;height:5px}
 .daily-overlay-head .eyebrow,.shop-head .eyebrow,.season-hero .eyebrow{color:white}
 .daily-quest-start{bottom:11px;padding:4px 8px;border-radius:8px;background:#1d604f;color:white}
 .season-summary{display:grid!important}

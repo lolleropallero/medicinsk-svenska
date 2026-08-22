@@ -1,0 +1,86 @@
+import { expect, test, type Locator, type Page } from '@playwright/test';
+import { openSpecificCard } from './helpers';
+
+const rejectedLabels = ['Suomi', 'Svenska', 'Suomeksi', 'Ruotsiksi'];
+
+async function expectNoVisibleLanguageLabels(scope: Page | Locator) {
+  for (const label of rejectedLabels) await expect(scope.getByText(label, { exact: true })).toHaveCount(0);
+}
+
+test('flashcards use text-free direction markers in both directions before and after reveal', async ({ page }) => {
+  for (const direction of ['fi-sv', 'sv-fi'] as const) {
+    await openSpecificCard(page, { id: 'anatomi-004', deckId: 'anatomi' }, direction);
+    const sourceLanguage = direction === 'fi-sv' ? 'fi' : 'sv';
+    const targetLanguage = direction === 'fi-sv' ? 'sv' : 'fi';
+    const source = page.locator('#source-ribbon');
+    const target = page.locator('#target-ribbon');
+    const front = page.locator('#front-term');
+    const back = page.locator('#back-term');
+
+    await expectNoVisibleLanguageLabels(page.locator('#flashcard-app'));
+    await expect(source).toHaveClass(new RegExp(`\\blanguage-${sourceLanguage}\\b`));
+    await expect(target).toHaveClass(new RegExp(`\\blanguage-${targetLanguage}\\b`));
+    await expect(source).toHaveAttribute('aria-hidden', 'true');
+    await expect(target).toHaveAttribute('aria-hidden', 'true');
+    await expect(source).toHaveText('');
+    await expect(target).toHaveText('');
+    await expect(front).toHaveAttribute('lang', sourceLanguage);
+    await expect(back).toHaveAttribute('lang', targetLanguage);
+    await expect(page.locator('#answer-area')).toBeHidden();
+    await expect(back).toBeHidden();
+
+    await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+    await expectNoVisibleLanguageLabels(page.locator('#flashcard-app'));
+    await expect(front).toHaveAttribute('lang', sourceLanguage);
+    await expect(back).toHaveAttribute('lang', targetLanguage);
+    await expect(back).toBeVisible();
+    await expect(source).toHaveClass(new RegExp(`\\blanguage-${sourceLanguage}\\b`));
+    await expect(target).toHaveClass(new RegExp(`\\blanguage-${targetLanguage}\\b`));
+  }
+});
+
+test('phrases retain distinct Finnish and Swedish treatments without textual labels', async ({ page }) => {
+  await page.goto('/fraasit/harjoitus?mode=all&amount=10&session=language-markers-phrases');
+  const markers = page.locator('.phrase-card .language-ribbon');
+  const cue = page.locator('.speech-bubble.cue');
+  const answer = page.locator('.speech-bubble.target');
+
+  await expectNoVisibleLanguageLabels(page.locator('.phrase-practice'));
+  await expect(markers).toHaveCount(2);
+  await expect(markers.nth(0)).toHaveClass(/\blanguage-fi\b/);
+  await expect(markers.nth(1)).toHaveClass(/\blanguage-sv\b/);
+  await expect(markers.nth(0)).toHaveAttribute('aria-hidden', 'true');
+  await expect(markers.nth(1)).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('#phrase-fi')).toHaveAttribute('lang', 'fi');
+  await expect(page.locator('#phrase-sv')).toHaveAttribute('lang', 'sv');
+  await expect(page.locator('#phrase-sv')).toBeHidden();
+
+  await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await expectNoVisibleLanguageLabels(page.locator('.phrase-practice'));
+  await expect(page.locator('#phrase-fi')).toBeVisible();
+  await expect(page.locator('#phrase-sv')).toBeVisible();
+  expect(await cue.evaluate(element => getComputedStyle(element).backgroundColor))
+    .not.toBe(await answer.evaluate(element => getComputedStyle(element).backgroundColor));
+});
+
+test('description exercise keeps Swedish only on learning data and uses a decorative marker', async ({ page }) => {
+  await page.goto('/kuvailu/harjoitus?mode=all&amount=10&session=language-markers-description');
+  const marker = page.locator('.description-card .language-ribbon');
+
+  await expectNoVisibleLanguageLabels(page.locator('.description-practice'));
+  await expect(marker).toHaveClass(/\blanguage-sv\b/);
+  await expect(marker).toHaveAttribute('aria-hidden', 'true');
+  await expect(marker).toHaveText('');
+  await expect(page.locator('#description-text')).toHaveAttribute('lang', 'sv');
+  await expect(page.getByLabel('Vastauksesi')).toHaveAttribute('lang', 'sv');
+  await expect(page.getByRole('button', { name: 'Tarkista' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Näytä vastaus' })).toBeVisible();
+
+  await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await expectNoVisibleLanguageLabels(page.locator('.description-practice'));
+  await expect(page.locator('#canonical-answer')).toHaveAttribute('lang', 'sv');
+  await expect(page.locator('#canonical-answer')).toBeVisible();
+  await expect(page.getByText('Vastaus näytetty', { exact: true })).toBeVisible();
+  const swedishIds = await page.locator('[lang="sv"]').evaluateAll(elements => elements.map(element => element.id).filter(Boolean));
+  expect(new Set(swedishIds)).toEqual(new Set(['description-text', 'answer', 'canonical-answer']));
+});

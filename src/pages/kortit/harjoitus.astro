@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppIcon from '../../components/AppIcon.astro';
+import LanguageRibbon from '../../components/LanguageRibbon.astro';
 import { deckPayload, flashcardPayload } from '../../lib/content';
 ---
 <BaseLayout title="Korttiharjoitus">
@@ -13,9 +14,9 @@ import { deckPayload, flashcardPayload } from '../../lib/content';
     <div id="session-view">
       <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
       <button id="flashcard" class="flashcard" type="button" aria-label="Näytä vastaus">
-        <span id="source-ribbon" class="language-ribbon language-fi" lang="fi">Suomi</span>
+        <LanguageRibbon id="source-ribbon" language="fi" />
         <span id="front-term" class="term"></span>
-        <span id="answer-area" hidden><span class="answer-bridge" aria-hidden="true"><AppIcon name="arrow"/></span><span id="target-ribbon" class="language-ribbon language-sv" lang="sv">Svenska</span><span id="back-term" class="term answer"></span><span id="grammar"></span></span>
+        <span id="answer-area" hidden><span class="answer-bridge" aria-hidden="true"><AppIcon name="arrow"/></span><LanguageRibbon id="target-ribbon" language="sv" /><span id="back-term" class="term answer"></span><span id="grammar"></span></span>
       </button>
       <div id="grade-actions" class="action-row" hidden><button class="danger" id="missed" aria-keyshortcuts="2" title="Pikanäppäin: 2">En osannut</button><button class="success" id="correct" aria-keyshortcuts="1" title="Pikanäppäin: 1">Osasin</button></div>
     </div>

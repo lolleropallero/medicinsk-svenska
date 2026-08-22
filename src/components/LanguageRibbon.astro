@@ -1,5 +1,5 @@
 ---
-interface Props { language: 'fi'|'sv'; label?: string }
-const { language, label = language === 'fi' ? 'Suomi' : 'Svenska' } = Astro.props;
+interface Props { language: 'fi'|'sv'; id?: string }
+const { language, id } = Astro.props;
 ---
-<span class={`language-ribbon language-${language}`} lang={language}>{label}</span>
+<span id={id} class={`language-ribbon language-${language}`} aria-hidden="true"></span>

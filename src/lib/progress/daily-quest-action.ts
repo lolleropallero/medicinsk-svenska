@@ -60,7 +60,6 @@ export function resolveDailyQuestAction(quest: Quest, context: QuestActionContex
     const mode = context.sessions[preferred]
       ? preferred
       : preferred === 'flashcards' && context.sessions.phrases ? 'phrases'
-      : preferred === 'phrases' && context.sessions.flashcards ? 'flashcards'
       : 'flashcards';
     return actionFor(mode, context);
   }

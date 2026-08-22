@@ -11,7 +11,8 @@ const path = Astro.url.pathname;
 const hudRoutes=['/','/kortit','/fraasit','/kuvailu','/edistyminen','/palkinnot','/kausi'];
 const exerciseRoute=path.includes('/harjoitus');
 const showHud=hudRoutes.some(route=>path===route||path===`${route}/`)&&!exerciseRoute;
-const intensity=exerciseRoute?1:path.startsWith('/palkinnot')||path.startsWith('/kausi')?3:2;
+const rewardRoute=path.startsWith('/palkinnot')||path.startsWith('/kausi');
+const backgroundKind=exerciseRoute?'studyLight':rewardRoute?'rewardsDark':path==='/'?'homeDark':'shellLight';
 ---
 <!doctype html>
 <html lang="fi">
@@ -30,9 +31,9 @@ const intensity=exerciseRoute?1:path.startsWith('/palkinnot')||path.startsWith('
     </script>
     <title>{title} · Medicinsk svenska</title>
   </head>
-  <body class:list={{ 'home-route': path === '/', 'exercise-route': exerciseRoute, 'metagame-route': intensity === 3 }}>
+  <body class:list={{ 'home-route': path === '/', 'exercise-route': exerciseRoute, 'metagame-route': rewardRoute }}>
     <a class="skip-link" href="#sisalto">Siirry sisältöön</a>
-    <NordicBackdrop intensity={intensity}/>
+    <NordicBackdrop kind={backgroundKind}/>
     {!exerciseRoute&&<header class="site-header">
       <a class="brand" href="/" aria-label="Medicinsk svenska, etusivu"><BrandMark wordmark /></a>
       <div class="desktop-navigation" role="navigation" aria-label="Päänavigaatio">

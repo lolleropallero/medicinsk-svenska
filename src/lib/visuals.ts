@@ -1,4 +1,5 @@
 import { mappedAsset, nordicAssets } from "./nordic-assets";
+import { visualFixAssets } from "./visual-fix-assets";
 
 export const ICON_PATHS = {
   home: '<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10M9 20v-6h6v6"/>',
@@ -36,19 +37,8 @@ export const ICON_PATHS = {
     '<path d="M5 4h14v5c0 4-3 7-7 7s-7-3-7-7V4Z"/><path d="M8 20h8M12 16v4M5 7H2v2c0 2 1.5 3 4 3M19 7h3v2c0 2-1.5 3-4 3"/>',
   progressFrame:
     '<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M7 16V9M12 16V6M17 16v-4"/>',
-  cell: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M5 9c3 1 4-2 6-4M15 18c-1-3 2-4 4-5"/>',
-  boneJoint:
-    '<path d="M7 4c1-2 4 0 3 2l4 12c1 2-2 4-3 2l-1-2-1 2c-1 2-4 0-3-2l4-12c-1-2 2-4 3-2"/>',
-  brain:
-    '<path d="M9 20c-3 0-4-3-3-5-3-2-1-6 1-6-1-3 3-5 5-3 2-2 6 0 5 3 3 0 4 4 1 6 1 2 0 5-3 5H9Z"/><path d="M12 6v14M8 10h4M12 15h4"/>',
   heartLungs:
     '<path d="M12 21V8M11 9C9 5 5 5 4 9v7c0 3 4 4 7 2M13 9c2-4 6-4 7 0v7c0 3-4 4-7 2"/><path d="M12 8V3"/>',
-  bloodLymph:
-    '<path d="M12 3s6 7 6 12a6 6 0 0 1-12 0c0-5 6-12 6-12Z"/><path d="M9 16c.5 1 1.5 1.5 3 1.5"/>',
-  digestionKidney:
-    '<path d="M9 4v7c0 4 2 6 5 6 4 0 6-3 6-6V7M9 8C5 8 4 11 4 15v5M15 7c0 3-2 5-5 5"/>',
-  hormonesReproduction:
-    '<circle cx="9" cy="9" r="5"/><path d="m13 13 5 5M15 18h4v-4M9 4V1M5 6 3 4"/>',
   arrow: '<path d="M5 12h14M14 7l5 5-5 5"/>',
   back: '<path d="m15 5-7 7 7 7"/>',
   close: '<path d="M5 5l14 14M19 5 5 19"/>',
@@ -135,17 +125,17 @@ export const REWARD_BOX_VARIANTS = {
   standard: {
     label: "Vanlig låda",
     className: "standard",
-    asset: nordicAssets.rewardBoxes.standard,
+    asset: visualFixAssets.rewards.standard,
   },
   golden: {
     label: "Gyllene låda",
     className: "golden",
-    asset: nordicAssets.rewardBoxes.golden,
+    asset: visualFixAssets.rewards.golden,
   },
   legendary: {
     label: "Legendarisk låda",
     className: "legendary",
-    asset: nordicAssets.rewardBoxes.legendary,
+    asset: visualFixAssets.rewards.legendary,
   },
 } as const;
 
@@ -210,13 +200,3 @@ export function cosmeticVisualToken(
   const pattern = new RegExp(`^${type}-(?:[1-9])$`);
   return pattern.test(id) ? id : COSMETIC_DEFAULTS[type];
 }
-
-export const DESCRIPTION_ICONS: Record<string, IconName> = {
-  "solut-kudokset-iho": "cell",
-  "luusto-nivelet-lihakset": "boneJoint",
-  "hermosto-aistit": "brain",
-  "verenkierto-hengitys": "heartLungs",
-  "veri-imunestejarjestelma": "bloodLymph",
-  "ruoansulatus-virtsatiet": "digestionKidney",
-  "lisaantyminen-hormonit": "hormonesReproduction",
-};

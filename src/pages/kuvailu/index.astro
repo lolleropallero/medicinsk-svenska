@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppIcon from '../../components/AppIcon.astro';
 import FlagRibbon from '../../components/FlagRibbon.astro';
 import { descriptionCategoryPayload, publishedDescriptions } from '../../lib/content';
-import { DESCRIPTION_ICONS } from '../../lib/visuals';
+import { visualFixAssets } from '../../lib/visual-fix-assets';
 const counts = Object.fromEntries(descriptionCategoryPayload.map((category) => [
   category.id,
   publishedDescriptions.filter((item) => item.categoryId === category.id).length,
@@ -33,7 +33,7 @@ const counts = Object.fromEntries(descriptionCategoryPayload.map((category) => [
           data-category={category.id}
           href={`/kuvailu/harjoitus?mode=category&category=${category.id}&amount=10`}
         >
-          <span class="row-icon"><AppIcon name={DESCRIPTION_ICONS[category.id] ?? 'descriptions'} size={32}/></span><h2>{category.nameFi}</h2><span class="category-count" data-count={counts[category.id]}>{counts[category.id]} tehtävää</span><span class="category-start">Aloita <AppIcon name="arrow"/></span>
+          <img class="description-category-icon" src={visualFixAssets.descriptionCategories[category.id as keyof typeof visualFixAssets.descriptionCategories]} width="72" height="72" alt="" aria-hidden="true" decoding="async" /><h2>{category.nameFi}</h2><span class="category-count" data-count={counts[category.id]}>{counts[category.id]} tehtävää</span><span class="category-start">Aloita <AppIcon name="arrow"/></span>
         </a>
       ))}
     </div>

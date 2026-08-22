@@ -6,23 +6,6 @@ export const nordicAssetPaths = {
     languageFi: 'brand/language-corner-fi.svg',
     languageSv: 'brand/language-corner-sv.svg',
   },
-  backgrounds: {
-    dark: 'backgrounds/nordic-shell-dark.svg',
-    light: 'backgrounds/nordic-shell-light.svg',
-    study: 'backgrounds/nordic-study.svg',
-  },
-  rewardBoxes: {
-    standard: 'rewards/box-standard.svg',
-    golden: 'rewards/box-golden.svg',
-    legendary: 'rewards/box-legendary.svg',
-  },
-  rewardPrimitives: {
-    crossFi: 'rewards/box-cross-fi.svg',
-    crossSv: 'rewards/box-cross-sv.svg',
-    sealCommon: 'rewards/box-seal-common.svg',
-    sealGolden: 'rewards/box-seal-golden.svg',
-    sealLegendary: 'rewards/box-seal-legendary.svg',
-  },
   rarity: {
     common: 'rarity/frame-common.svg',
     rare: 'rarity/frame-rare.svg',

@@ -11,7 +11,7 @@ test('brand, backgrounds, language corners, and all deck icons use supplied SVG 
   await loaded(brand);
   expect(await filename(brand)).toContain('brand-mark');
   await expect(page.locator('svg.brand-mark,.brand-mark svg')).toHaveCount(0);
-  expect(await page.locator('.nordic-backdrop').evaluate((node) => getComputedStyle(node).backgroundImage)).toContain('nordic-shell-light');
+  expect(await page.locator('.nordic-backdrop').evaluate((node) => getComputedStyle(node).backgroundImage)).toContain('home-dark');
 
   await page.goto('/kortit/');
   const deckImages = page.locator('.deck-row .deck-icon img');
@@ -25,7 +25,7 @@ test('brand, backgrounds, language corners, and all deck icons use supplied SVG 
 
   for (const direction of ['fi-sv','sv-fi'] as const) {
     await openSpecificCard(page, { id:'anatomi-004', deckId:'anatomi' }, direction);
-    expect(await page.locator('.nordic-backdrop').evaluate((node) => getComputedStyle(node).backgroundImage)).toContain('nordic-study');
+    expect(await page.locator('.nordic-backdrop').evaluate((node) => getComputedStyle(node).backgroundImage)).toContain('study-light');
     const source = page.locator('#source-ribbon img');
     const target = page.locator('#target-ribbon img');
     await loaded(source); await loaded(target);
@@ -50,7 +50,7 @@ test('brand, backgrounds, language corners, and all deck icons use supplied SVG 
   await expect(page.locator('.description-card img[src*="language-corner-fi"]')).toHaveCount(0);
 });
 
-test('reward boxes, compact primitives, rarity frames, achievements, and league shields are loaded', async ({ page }) => {
+test('V4 reward boxes, compact HUD art, rarity frames, achievements, and league shields are loaded', async ({ page }) => {
   await page.goto('/palkinnot/');
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key) !== null, PROGRESS)).toBe(true);
   await page.evaluate((key) => {
@@ -70,8 +70,9 @@ test('reward boxes, compact primitives, rarity frames, achievements, and league 
     expect(await filename(box)).toContain(`box-${kind}`);
   }
   const rarityFrames = page.locator('#daily-shop .rarity-frame');
-  await expect(rarityFrames).toHaveCount(4);
-  for (const rarity of ['common','rare','epic','legendary']) expect(await filename(page.locator(`#daily-shop .rarity-${rarity} .rarity-frame`))).toContain(`frame-${rarity}`);
+  await expect(rarityFrames).toHaveCount(3);
+  await expect(page.locator('#daily-shop .reward-offer-media .rarity-frame')).toHaveCount(0);
+  await expect(page.locator('#daily-shop .reward-offer-media .reward-box-visual > img')).toHaveAttribute('src', /box-(?:standard|golden|legendary)/);
 
   await page.locator('.capsule.box-legendary').click();
   const dialogBox = page.locator('.capsule-dialog .reward-box-visual > img');
@@ -81,12 +82,10 @@ test('reward boxes, compact primitives, rarity frames, achievements, and league 
   await page.getByRole('button', { name:'Stäng' }).click();
 
   await page.goto('/');
-  const compactStandard = page.locator('.overlay-goal .compact-reward-box');
-  await expect(compactStandard.locator('img[src*="box-cross-fi"]')).toHaveCount(1);
-  await expect(compactStandard.locator('img[src*="box-seal-common"]')).toHaveCount(1);
-  const compactGolden = page.locator('.daily-all-bonus .compact-reward-box');
-  await expect(compactGolden.locator('img[src*="box-cross-sv"]')).toHaveCount(1);
-  await expect(compactGolden.locator('img[src*="box-seal-golden"]')).toHaveCount(1);
+  await expect(page.locator('.overlay-goal')).toBeVisible();
+  expect(await filename(page.locator('.overlay-goal .reward-box-visual > img'))).toContain('box-standard');
+  expect(await filename(page.locator('.daily-all-bonus .reward-box-visual > img'))).toContain('box-golden');
+  await expect(page.locator('[class*="box-seal"],[class*="box-cross"]')).toHaveCount(0);
 
   await page.goto('/edistyminen/');
   const achievements = page.locator('.achievement-grid .achievement-badge img');
@@ -98,9 +97,8 @@ test('reward boxes, compact primitives, rarity frames, achievements, and league 
   await page.goto('/kausi/');
   await page.getByRole('button', { name:'Visa alla 30 steg' }).click();
   const legendaryCompact = page.locator('[data-tier="30"] .compact-reward-box');
-  await expect(legendaryCompact.locator('img[src*="box-cross-fi"]')).toHaveCount(1);
-  await expect(legendaryCompact.locator('img[src*="box-cross-sv"]')).toHaveCount(1);
-  await expect(legendaryCompact.locator('img[src*="box-seal-legendary"]')).toHaveCount(1);
+  await expect(legendaryCompact.locator('img[src*="box-hud"]')).toHaveCount(1);
+  await expect(legendaryCompact.locator('img')).toHaveCount(1);
 
   const tiers = [
     ['Pronssi','bronze'],['Hopea','silver'],['Kulta','gold'],['Platina','platinum'],['Timantti','diamond'],['Konsultti','master'],
@@ -112,19 +110,19 @@ test('reward boxes, compact primitives, rarity frames, achievements, and league 
     await loaded(shield);
     expect(await filename(shield)).toContain(asset);
   }
-  expect(await page.locator('.nordic-backdrop').evaluate((node) => getComputedStyle(node).backgroundImage)).toContain('nordic-shell-dark');
+  expect(await page.locator('.nordic-backdrop').evaluate((node) => getComputedStyle(node).backgroundImage)).toContain('rewards-dark');
 });
 
 test('asset requests are local SVGs, motion preferences preserve imagery, and portrait widths do not overflow', async ({ page }) => {
   const failed: string[] = [];
   const externalAssets: string[] = [];
-  const raster: string[] = [];
-  page.on('response', (response) => { if (response.url().includes('.svg') && response.status() >= 400) failed.push(response.url()); });
+  const webp: string[] = [];
+  page.on('response', (response) => { if (/\.(?:svg|webp)(?:$|\?)/i.test(response.url()) && response.status() >= 400) failed.push(response.url()); });
   page.on('request', (request) => {
     if (request.resourceType() === 'image' || request.resourceType() === 'font') {
       const url = new URL(request.url());
       if (url.origin !== new URL(page.url()).origin) externalAssets.push(request.url());
-      if (/\.(?:png|jpe?g|gif|webp|avif)(?:$|\?)/i.test(url.pathname)) raster.push(request.url());
+      if (/\.webp(?:$|\?)/i.test(url.pathname)) webp.push(request.url());
     }
   });
   for (const viewport of [{width:320,height:568},{width:390,height:844},{width:768,height:1024},{width:1440,height:900}]) {
@@ -138,16 +136,16 @@ test('asset requests are local SVGs, motion preferences preserve imagery, and po
   await page.evaluate((key) => { const state=JSON.parse(localStorage.getItem(key)!);state.settings.calmMode=true;localStorage.setItem(key,JSON.stringify(state)); }, PROGRESS);
   await page.reload();
   await page.getByRole('button', { name:/Dagens uppdrag/ }).click();
-  const calmAsset = page.locator('.overlay-goal .compact-reward-box');
+  const calmAsset = page.locator('.overlay-goal .reward-box-visual');
   await expect(calmAsset).toBeVisible();
   expect(await calmAsset.evaluate((node) => getComputedStyle(node).animationName)).toBe('none');
   await page.emulateMedia({ reducedMotion:'reduce' });
   await page.reload();
   await page.getByRole('button', { name:/Dagens uppdrag/ }).click();
-  const reducedAsset = page.locator('.overlay-goal .compact-reward-box');
+  const reducedAsset = page.locator('.overlay-goal .reward-box-visual');
   await expect(reducedAsset).toBeVisible();
   expect(await reducedAsset.evaluate((node) => getComputedStyle(node).animationName)).toBe('none');
   expect(failed).toEqual([]);
   expect(externalAssets).toEqual([]);
-  expect(raster).toEqual([]);
+  expect(new Set(webp.map((url) => url.match(/(home-dark|rewards-dark|shell-light|study-light)/)?.[1]))).toEqual(new Set(['home-dark','rewards-dark','shell-light','study-light']));
 });

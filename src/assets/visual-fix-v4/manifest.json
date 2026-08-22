@@ -1,0 +1,31 @@
+{
+  "version": 4,
+  "purpose": "Targeted replacement of the exact weak visuals shown in user screenshots.",
+  "rewards": [
+    "box-hud.svg",
+    "box-standard.svg",
+    "box-golden.svg",
+    "box-legendary.svg"
+  ],
+  "categoryIcons": [
+    "cells.svg",
+    "skeleton.svg",
+    "neuro.svg",
+    "cardio.svg",
+    "blood.svg",
+    "digestion.svg",
+    "hormones.svg"
+  ],
+  "backgrounds": [
+    "home-dark.webp",
+    "rewards-dark.webp",
+    "shell-light.webp",
+    "study-light.webp"
+  ],
+  "hardRules": [
+    "No seal, badge or medallion is placed over a flag or Nordic cross.",
+    "HUD label and value must be separate typographic elements.",
+    "Do not nest the category SVG tile inside another blue rounded-square tile.",
+    "Backgrounds must remain visibly present, not reduced to near-invisible watermark opacity."
+  ]
+}

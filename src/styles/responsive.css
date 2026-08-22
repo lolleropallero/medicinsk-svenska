@@ -74,21 +74,7 @@
   .hud-grid {
     gap: 4px;
   }
-  .hud-grid > a {
-    grid-template-columns: 23px auto;
-    grid-template-rows: auto auto;
-    padding: 4px 5px;
-  }
-  .hud-grid .app-icon {
-    width: 19px;
-    height: 19px;
-  }
-  .hud-grid strong {
-    font-size: 0.88rem;
-  }
-  .hud-grid small {
-    grid-column: 2;
-  }
+  .hud-grid > a { min-height: 68px; padding: 8px 10px; }
   .wrap-wide {
     width: min(100% - 28px, 760px);
   }
@@ -146,13 +132,7 @@
   }
 }
 @media (max-width: 560px) {
-  .nordic-backdrop {
-    background: linear-gradient(
-      180deg,
-      var(--nordic-navy-deep) 0 168px,
-      var(--snow) 168px 100%
-    );
-  }
+  .nordic-backdrop { position: absolute; background-attachment: scroll; }
   .wrap,
   .wrap-wide {
     width: calc(100% - 24px);
@@ -163,15 +143,21 @@
   .metagame-hud {
     background: rgba(245, 249, 253, 0.97);
   }
+  .hud-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
   .hud-grid > a {
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 9px;
+    min-height: 76px;
+    padding: 9px 10px;
     border-radius: 9px;
   }
-  .hud-grid span {
-    font-size: 0.57rem;
-  }
-  .hud-grid small {
-    font-size: 0.57rem;
-  }
+  .hud-stat__icon { width: 34px; height: 34px; }
+  .hud-grid .hud-stat__label { font-size: 0.61rem; }
+  .hud-grid .hud-stat__value { font-size: 1.02rem; }
+  .hud-grid .hud-stat__secondary { font-size: 0.6rem; }
   .home {
     padding-top: 10px;
   }
@@ -254,6 +240,10 @@
     font-size: 0.64rem;
   }
   .row-icon {
+    width: 44px;
+    height: 44px;
+  }
+  .description-category-icon {
     width: 44px;
     height: 44px;
   }
@@ -438,22 +428,21 @@
     font-size: 0.55rem;
   }
   .overlay-goal {
-    grid-template-columns: 62px 1fr;
+    grid-template-columns: 104px 1fr;
     padding: 8px;
   }
   .goal-box {
-    width: 60px;
+    width: 104px;
   }
   .goal-box .reward-box-visual {
-    transform: scale(0.82);
-    transform-origin: left center;
+    width: 104px;
   }
   .daily-all-bonus {
     padding: 7px;
   }
   .daily-all-bonus .reward-box-visual {
-    width: 54px;
-    height: 46px;
+    width: 104px;
+    height: auto;
   }
   .notifications {
     left: 8px;
@@ -479,20 +468,16 @@
     padding-inline: 4px;
   }
   .hud-grid > a {
-    grid-template-columns: 19px auto;
-    padding-inline: 3px;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 68px;
+    padding-inline: 8px;
   }
-  .hud-grid .app-icon {
-    width: 16px;
-    height: 16px;
-  }
-  .hud-grid span,
-  .hud-grid small {
-    font-size: 0.52rem;
-  }
-  .hud-grid strong {
-    font-size: 0.8rem;
-  }
+  .hud-stat__icon { width: 30px; height: 30px; }
+  .hud-stat__icon .app-icon { width: 22px; height: 22px; }
+  .hud-grid .hud-stat__label { font-size: 0.58rem; }
+  .hud-grid .hud-stat__value { font-size: 0.96rem; }
+  .hud-grid .hud-stat__secondary { font-size: 0.56rem; }
   .home {
     padding-top: 7px;
   }

@@ -2,57 +2,96 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, extname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { flattenNordicAssetPaths, nordicAssetPaths } from '../src/lib/nordic-asset-inventory.ts';
+import { flattenVisualFixAssetPaths, visualFixAssetPaths } from '../src/lib/visual-fix-asset-inventory.ts';
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const assetRoot = join(repositoryRoot, 'src', 'assets', 'nordic-v1');
-const mappingSource = readFileSync(join(repositoryRoot, 'src', 'lib', 'nordic-assets.ts'), 'utf8');
-const expected = flattenNordicAssetPaths();
+const nordicRoot = join(repositoryRoot, 'src', 'assets', 'nordic-v1');
+const visualFixRoot = join(repositoryRoot, 'src', 'assets', 'visual-fix-v4');
+const runtimeMapping = readFileSync(join(repositoryRoot, 'src', 'lib', 'visual-fix-assets.ts'), 'utf8');
 const errors: string[] = [];
-const walk = (directory: string): string[] => readdirSync(directory).flatMap((name) => {
-  const path = join(directory, name);
-  return statSync(path).isDirectory() ? walk(path) : [path];
-});
 const normalize = (path: string) => path.replaceAll('\\', '/');
+const walk = (directory: string): string[] => existsSync(directory)
+  ? readdirSync(directory).flatMap((name) => {
+      const path = join(directory, name);
+      return statSync(path).isDirectory() ? walk(path) : [path];
+    })
+  : [];
 
-const counts = {
+const nordicExpected = flattenNordicAssetPaths();
+const v4Expected = flattenVisualFixAssetPaths();
+const nordicCounts = {
   brand: Object.keys(nordicAssetPaths.brand).length,
-  backgrounds: Object.keys(nordicAssetPaths.backgrounds).length,
-  rewards: Object.keys(nordicAssetPaths.rewardBoxes).length + Object.keys(nordicAssetPaths.rewardPrimitives).length,
   rarity: Object.keys(nordicAssetPaths.rarity).length,
   achievements: Object.keys(nordicAssetPaths.achievements).length,
   leagues: Object.keys(nordicAssetPaths.leagues).length,
   decks: Object.keys(nordicAssetPaths.decks).length,
 };
-const requiredCounts = { brand: 5, backgrounds: 3, rewards: 8, rarity: 4, achievements: 12, leagues: 6, decks: 7 };
-for (const [category, count] of Object.entries(requiredCounts)) if (counts[category as keyof typeof counts] !== count) errors.push(`${category}: expected ${count}, mapped ${counts[category as keyof typeof counts]}`);
-if (expected.length !== 45) errors.push(`expected 45 mapped assets, found ${expected.length}`);
-if (new Set(expected).size !== expected.length) errors.push('asset mapping contains duplicate paths');
+const requiredNordicCounts = { brand: 5, rarity: 4, achievements: 12, leagues: 6, decks: 7 };
+const v4Counts = {
+  rewards: Object.keys(visualFixAssetPaths.rewards).length,
+  descriptionCategories: Object.keys(visualFixAssetPaths.descriptionCategories).length,
+  backgrounds: Object.keys(visualFixAssetPaths.backgrounds).length,
+};
+const requiredV4Counts = { rewards: 4, descriptionCategories: 7, backgrounds: 4 };
 
-const actual = existsSync(assetRoot) ? walk(assetRoot).filter((path) => extname(path).toLowerCase() === '.svg').map((path) => normalize(relative(assetRoot, path))).sort((left, right) => left.localeCompare(right)) : [];
-if (actual.length !== 45) errors.push(`expected 45 production SVG files, found ${actual.length}`);
-for (const path of actual) if (!expected.includes(path as typeof expected[number])) errors.push(`unmapped production SVG: ${path}`);
-for (const path of expected) {
-  const absolute = join(assetRoot, path);
-  if (!existsSync(absolute)) { errors.push(`missing expected asset: ${path}`); continue; }
-  if (statSync(absolute).size === 0) errors.push(`empty asset: ${path}`);
-  if (/preview|\.png$|\.jpe?g$/i.test(path)) errors.push(`mapping points to preview or raster file: ${path}`);
-  const svg = readFileSync(absolute, 'utf8');
-  if (/<script\b/i.test(svg)) errors.push(`${path}: contains <script>`);
-  if (/<foreignObject\b/i.test(svg)) errors.push(`${path}: contains <foreignObject>`);
-  if (/<image\b/i.test(svg)) errors.push(`${path}: embeds a raster <image>`);
-  const references = [...svg.matchAll(/(?:href|xlink:href)\s*=\s*["']([^"']+)["']/gi)].map((match) => match[1]!);
-  if (references.some((reference) => /^https?:/i.test(reference))) errors.push(`${path}: contains an external HTTP reference`);
-  if (/url\(\s*["']?https?:/i.test(svg)) errors.push(`${path}: contains an external CSS URL`);
+for (const [category, count] of Object.entries(requiredNordicCounts)) {
+  if (nordicCounts[category as keyof typeof nordicCounts] !== count) errors.push(`Nordic ${category}: expected ${count}, mapped ${nordicCounts[category as keyof typeof nordicCounts]}`);
 }
-for (const category of Object.keys(nordicAssetPaths)) if (!mappingSource.includes(`mapCategory(nordicAssetPaths.${category})`)) errors.push(`typed URL mapping omits category: ${category}`);
+for (const [category, count] of Object.entries(requiredV4Counts)) {
+  if (v4Counts[category as keyof typeof v4Counts] !== count) errors.push(`V4 ${category}: expected ${count}, mapped ${v4Counts[category as keyof typeof v4Counts]}`);
+}
+if (nordicExpected.length !== 34) errors.push(`expected 34 retained Nordic SVG mappings, found ${nordicExpected.length}`);
+if (v4Expected.length !== 15) errors.push(`expected exactly 15 V4 production mappings, found ${v4Expected.length}`);
+if (new Set([...nordicExpected, ...v4Expected]).size !== nordicExpected.length + v4Expected.length) errors.push('asset mapping contains duplicate paths');
 
-if (existsSync(join(repositoryRoot, 'dist'))) {
-  const raster = walk(join(repositoryRoot, 'dist')).filter((path) => /\.(?:png|jpe?g|gif|webp|avif)$/i.test(path));
-  if (raster.length) errors.push(`raster files present in dist: ${raster.map((path) => normalize(relative(repositoryRoot, path))).join(', ')}`);
+const nordicActual = walk(nordicRoot).filter((path) => extname(path).toLowerCase() === '.svg').map((path) => normalize(relative(nordicRoot, path))).sort();
+const v4Actual = walk(visualFixRoot).filter((path) => /\.(?:svg|webp)$/i.test(path)).map((path) => normalize(relative(visualFixRoot, path))).sort();
+if (nordicActual.length !== 34) errors.push(`expected 34 retained Nordic SVG files, found ${nordicActual.length}`);
+if (v4Actual.length !== 15) errors.push(`expected exactly 15 V4 production files, found ${v4Actual.length}`);
+for (const path of nordicActual) if (!nordicExpected.includes(path as typeof nordicExpected[number])) errors.push(`unmapped Nordic SVG: ${path}`);
+for (const path of nordicExpected) if (!nordicActual.includes(path)) errors.push(`missing Nordic SVG: ${path}`);
+for (const path of v4Actual) if (!v4Expected.includes(path)) errors.push(`unmapped V4 production asset: ${path}`);
+for (const path of v4Expected) {
+  if (!v4Actual.includes(path)) errors.push(`missing V4 production asset: ${path}`);
+  if (!runtimeMapping.includes(`../assets/visual-fix-v4/${path}?url`)) errors.push(`V4 runtime mapping lacks static import: ${path}`);
+}
+
+const allowedWebp = new Set<string>(Object.values(visualFixAssetPaths.backgrounds));
+for (const path of v4Actual.filter((path) => path.endsWith('.webp'))) {
+  if (!allowedWebp.has(path)) errors.push(`unapproved V4 raster: ${path}`);
+  const bytes = readFileSync(join(visualFixRoot, path));
+  if (bytes.subarray(0, 4).toString('ascii') !== 'RIFF' || bytes.subarray(8, 12).toString('ascii') !== 'WEBP') errors.push(`${path}: invalid WebP signature`);
+}
+
+for (const [root, paths] of [[nordicRoot, nordicActual], [visualFixRoot, v4Actual.filter((path) => path.endsWith('.svg'))]] as const) {
+  for (const path of paths) {
+    const absolute = join(root, path);
+    if (statSync(absolute).size === 0) errors.push(`empty asset: ${path}`);
+    const svg = readFileSync(absolute, 'utf8');
+    if (/<script\b/i.test(svg)) errors.push(`${path}: contains <script>`);
+    if (/<foreignObject\b/i.test(svg)) errors.push(`${path}: contains <foreignObject>`);
+    if (/<image\b/i.test(svg)) errors.push(`${path}: embeds a raster <image>`);
+    const references = [...svg.matchAll(/(?:href|xlink:href)\s*=\s*["']([^"']+)["']/gi)].map((match) => match[1]!);
+    if (references.some((reference) => /^(?:https?:|data:)/i.test(reference))) errors.push(`${path}: contains an external or embedded reference`);
+    if (/url\(\s*["']?https?:/i.test(svg)) errors.push(`${path}: contains an external CSS URL`);
+  }
+}
+
+for (const path of walk(join(repositoryRoot, 'src', 'assets'))) {
+  const relativePath = normalize(relative(join(repositoryRoot, 'src', 'assets'), path));
+  if (/\.zip$/i.test(path)) errors.push(`source zip bundled: ${relativePath}`);
+  if (/preview/i.test(relativePath)) errors.push(`preview asset bundled: ${relativePath}`);
+  if (/\.(?:png|jpe?g|gif|avif)$/i.test(path)) errors.push(`unapproved raster asset: ${relativePath}`);
+}
+
+const runtimeFiles = walk(join(repositoryRoot, 'src')).filter((path) => /\.(?:astro|ts|css)$/i.test(path));
+for (const path of runtimeFiles) {
+  const source = readFileSync(path, 'utf8');
+  if (/box-seal-(?:common|golden|legendary)|box-cross-(?:fi|sv)/i.test(source)) errors.push(`${normalize(relative(repositoryRoot, path))}: obsolete reward composition reference`);
 }
 
 if (errors.length) {
-  console.error(`Nordic asset audit failed:\n${errors.map((error) => `- ${error}`).join('\n')}`);
+  console.error(`Asset audit failed:\n${errors.map((error) => `- ${error}`).join('\n')}`);
   process.exit(1);
 }
-console.log(`Nordic asset audit clean: ${expected.length} mapped SVGs (${Object.entries(counts).map(([key, value]) => `${key} ${value}`).join(', ')}).`);
+console.log('Asset audit clean: 34 retained Nordic SVGs and exactly 15 V4 assets (rewards 4, category icons 7, backgrounds 4; four local WebPs allowed).');

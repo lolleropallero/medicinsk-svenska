@@ -7,7 +7,7 @@ import {
   iconSvg,
   leagueBadge,
 } from "../lib/visuals";
-import { nordicAssets } from "../lib/nordic-assets";
+import { visualFixAssets } from "../lib/visual-fix-assets";
 import { levelProgress } from "../lib/progress/core";
 
 function apply() {
@@ -46,22 +46,7 @@ function apply() {
 const image = (src: string, className = "") =>
   `<img${className ? ` class="${className}"` : ""} src="${src}" alt="" aria-hidden="true" decoding="async">`;
 const compactBox = (kind: "standard" | "golden" | "legendary" = "standard") => {
-  const crosses =
-      kind === "standard"
-        ? [nordicAssets.rewardPrimitives.crossFi]
-        : kind === "golden"
-          ? [nordicAssets.rewardPrimitives.crossSv]
-          : [
-              nordicAssets.rewardPrimitives.crossFi,
-              nordicAssets.rewardPrimitives.crossSv,
-            ],
-    seal =
-      kind === "standard"
-        ? nordicAssets.rewardPrimitives.sealCommon
-        : kind === "golden"
-          ? nordicAssets.rewardPrimitives.sealGolden
-          : nordicAssets.rewardPrimitives.sealLegendary;
-  return `<span class="compact-reward-box compact-box-${kind}" aria-hidden="true"><span class="compact-box-surface">${crosses.map((src) => image(src, "compact-box-cross")).join("")}${image(seal, "compact-box-seal")}</span></span>`;
+  return `<span class="compact-reward-box compact-box-${kind}" aria-hidden="true">${image(visualFixAssets.rewards.hud, "compact-box-image")}</span>`;
 };
 function notificationVisual(
   next: ReturnType<typeof loadProgress>["notifications"][number],
@@ -89,7 +74,12 @@ function hud() {
   if (!host) return;
   const level = levelProgress(state.lifetime.xp),
     boxes = state.inventory.capsules.filter((item) => !item.openedAt).length;
-  host.innerHTML = `<div class="hud-grid" lang="sv"><a href="/edistyminen/">${iconSvg("level")}<span>Nivå</span><strong>${level.level}</strong><small>${state.lifetime.xp} <abbr title="erfarenhetspoäng">XP</abbr></small></a><a href="/edistyminen/">${iconSvg("streak")}<span>Svit</span><strong>${state.streak.current}</strong><small>${state.streak.current === 1 ? "dag" : "dagar"}</small></a><a href="/palkinnot/">${iconSvg("credits")}<span>Krediter</span><strong>${state.inventory.credits}</strong></a><a class="hud-boxes ${boxes ? "has-boxes" : ""}" href="/palkinnot/#unopened-boxes">${compactBox("standard")}<span>Lådor</span><strong>${boxes}</strong>${boxes ? "<small>Öppna</small>" : ""}</a></div>`;
+  host.innerHTML = `<div class="hud-grid" lang="sv">
+    <a class="hud-stat" href="/edistyminen/" aria-label="Nivå ${level.level}, ${state.lifetime.xp} XP"><span class="hud-stat__icon" aria-hidden="true">${iconSvg("level")}</span><span class="hud-stat__copy"><span class="hud-stat__label">Nivå</span><strong class="hud-stat__value">${level.level}</strong><small class="hud-stat__secondary">${state.lifetime.xp} <abbr title="erfarenhetspoäng">XP</abbr></small></span></a>
+    <a class="hud-stat" href="/edistyminen/" aria-label="Svit ${state.streak.current} ${state.streak.current === 1 ? "dag" : "dagar"}"><span class="hud-stat__icon" aria-hidden="true">${iconSvg("streak")}</span><span class="hud-stat__copy"><span class="hud-stat__label">Svit</span><strong class="hud-stat__value">${state.streak.current}</strong><small class="hud-stat__secondary">${state.streak.current === 1 ? "dag" : "dagar"}</small></span></a>
+    <a class="hud-stat" href="/palkinnot/" aria-label="${state.inventory.credits} krediter"><span class="hud-stat__icon" aria-hidden="true">${iconSvg("credits")}</span><span class="hud-stat__copy"><span class="hud-stat__label">Krediter</span><strong class="hud-stat__value">${state.inventory.credits}</strong></span></a>
+    <a class="hud-stat hud-boxes ${boxes ? "has-boxes" : ""}" href="/palkinnot/#unopened-boxes" aria-label="${boxes} ${boxes === 1 ? "oöppnad låda" : "oöppnade lådor"}"><span class="hud-stat__icon hud-stat__box" aria-hidden="true">${compactBox("standard")}</span><span class="hud-stat__copy"><span class="hud-stat__label">Lådor</span><strong class="hud-stat__value">${boxes}</strong>${boxes ? '<small class="hud-stat__secondary">Öppna</small>' : ""}</span></a>
+  </div>`;
 }
 function refresh() {
   apply();

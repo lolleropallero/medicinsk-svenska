@@ -1,11 +1,11 @@
 ---
 import CompactRewardBox from './CompactRewardBox.astro';
-import { nordicAssets, type RewardBoxKind } from '../lib/nordic-assets';
+import { visualFixAssets, type RewardBoxKind } from '../lib/visual-fix-assets';
 interface Props { kind?: RewardBoxKind; label?: string; size?: 'small'|'normal'|'large' }
 const { kind = 'standard', label, size = 'normal' } = Astro.props;
 ---
 {size === 'small'
   ? <CompactRewardBox kind={kind} {...(label ? { label } : {})} />
   : <span class={`reward-box-visual box-${kind} box-${size}`} role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : 'true'}>
-      <img src={nordicAssets.rewardBoxes[kind]} width="360" height="320" alt="" aria-hidden="true" decoding="async" />
+      <img src={visualFixAssets.rewards[kind]} width="360" height="300" alt="" aria-hidden="true" decoding="async" />
     </span>}

@@ -5,7 +5,8 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
-.nordic-backdrop.intensity-3 { background-color: var(--nordic-navy-deep); }
+.nordic-backdrop.background-homeDark,
+.nordic-backdrop.background-rewardsDark { background-color: var(--nordic-navy-deep); }
 .metagame-route .page-heading { color: white; }
 .metagame-route .page-heading .eyebrow { color: #dbeefe; }
 .metagame-route .section-links a { border-color: rgba(255,255,255,.24); background: rgba(255,255,255,.12); color: white; }
@@ -78,7 +79,7 @@
 .reward-box-visual {
   position: relative;
   display: inline-grid;
-  width: 118px;
+  width: 132px;
   height: auto;
   flex: none;
   place-items: center;
@@ -89,27 +90,13 @@
 .compact-reward-box {
   position: relative;
   display: inline-grid;
-  width: 44px;
-  height: 40px;
+  width: 42px;
+  height: 34px;
   flex: none;
   place-items: center;
-  filter: drop-shadow(0 4px 5px rgba(0,28,76,.2));
+  filter: drop-shadow(0 4px 5px rgba(0,28,76,.24));
 }
-.compact-box-surface {
-  position: relative;
-  display: block;
-  width: 42px;
-  height: 32px;
-  overflow: hidden;
-  border: 2px solid #97b4c8;
-  border-radius: 7px 7px 10px 10px;
-  background: linear-gradient(180deg,#fff,var(--ice));
-}
-.compact-box-golden .compact-box-surface { border-color: #dca900; background: linear-gradient(180deg,var(--sv-blue),var(--fi-blue)); }
-.compact-box-legendary .compact-box-surface { border-color: #f2bd25; background: linear-gradient(180deg,var(--nordic-navy),var(--nordic-navy-deep)); }
-.compact-box-cross { position: absolute; inset: -11px auto auto -3px; width: 47px; height: 47px; object-fit: contain; }
-.compact-box-cross + .compact-box-cross { left: 7px; opacity: .8; }
-.compact-box-seal { position: absolute; z-index: 2; left: 50%; top: 50%; width: 18px; height: 18px; object-fit: contain; transform: translate(-50%,-45%); }
+.compact-box-image { display: block; width: 100%; height: 100%; object-fit: contain; }
 
 .achievement-badge {
   position: relative;
@@ -145,7 +132,8 @@
 .collectible.locked .framed-media > :not(.rarity-frame) { opacity: .55; }
 .collectible.locked .rarity-frame { filter: grayscale(.8); opacity: .62; }
 .offer-icon.framed-media { width: 68px; height: auto; }
-.offer-icon .compact-reward-box { position: relative; z-index: 1; }
+.reward-offer-media { display: grid; width: 112px; min-height: 96px; place-items: center; }
+.reward-offer-media .reward-box-visual { width: 108px; }
 
 .capsule-stage { display: grid; grid-template-columns: minmax(0,1fr) minmax(72px,96px); align-items: center; justify-items: center; gap: 8px; }
 .capsule-box { display: grid; place-items: center; }
@@ -157,8 +145,8 @@
 .passport-cross.sv { right: -26px; bottom: -38px; transform: rotate(10deg); }
 .mini-cross { position: absolute; left: -12px; top: -20px; width: 100px; height: 100px; object-fit: contain; opacity: .14; }
 .season-route-labels > img { display: block; width: 34px; height: 34px; object-fit: contain; }
-.hud-boxes .compact-reward-box { grid-row: 1/3; width: 28px; height: 28px; transform: scale(.72); transform-origin: center; }
-.checkpoint-node .compact-reward-box { width: 36px; height: 34px; transform: scale(.78); }
+.hud-stat__box .compact-reward-box { width: 34px; height: 28px; }
+.checkpoint-node .compact-reward-box { width: 36px; height: 30px; }
 .checkpoint-node .checkpoint-cosmetic { width: 38px; height: 42px; background: transparent; }
 
 @media (max-width: 980px) { .brand-mark { height: 42px; } }

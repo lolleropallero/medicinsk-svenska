@@ -33,8 +33,10 @@ npm run preview
 - `src/lib/` – framework-free, independently tested session and answer logic
 - `src/scripts/` – minimal browser TypeScript for active exercises
 - `src/styles/` – repository-owned responsive CSS; no external font or asset request
-- `src/assets/nordic-v1/` – the 45 production SVGs from Nordic Asset Pack V1
+- `src/assets/nordic-v1/` – 34 retained brand, rarity, achievement, league, and deck SVGs
+- `src/assets/visual-fix-v4/` – 15 Visual Fix V4 reward, category, and background assets
 - `src/lib/nordic-asset-inventory.ts` and `src/lib/nordic-assets.ts` – exact typed inventory and Vite-managed local asset URLs
+- `src/lib/visual-fix-asset-inventory.ts` and `src/lib/visual-fix-assets.ts` – exact V4 paths and static Vite URL imports
 - `src/types/content.ts` – explicit application content and client-payload types
 - `content/` – version-controlled curated learning data
 - `scripts/validate-content.ts` – deployment-blocking content validation
@@ -44,15 +46,17 @@ Published content is filtered at build time and mapped to explicit client payloa
 
 ### Nordic Asset Pack V1
 
-`src/assets/nordic-v1/` contains only the 45 production SVGs: five brand assets, three backgrounds, eight reward assets, four rarity frames, twelve achievement badges, six league shields, and seven deck icons. Package previews, PNGs, HTML, CSS, the archive, and its manifest are excluded from production. `src/lib/nordic-asset-inventory.ts` is the exact typed path inventory; `src/lib/nordic-assets.ts` eagerly validates it against Vite's local SVG modules and exposes hashed same-origin URLs. `npm run audit:assets` verifies the count, category counts, existence, size, complete mapping, and SVG safety rules. The audit is part of `npm run build`.
+`src/assets/nordic-v1/` retains 34 production SVGs: five brand assets, four rarity frames, twelve achievement badges, six league shields, and seven deck icons. `src/assets/visual-fix-v4/` adds exactly fifteen production assets: four reward SVGs, seven anatomical category SVGs, and four local WebP backgrounds. Package previews and source archives are excluded. The typed inventories expose Vite-managed hashed same-origin URLs, and `npm run audit:assets` verifies counts, mapping completeness, WebP policy, and SVG safety. The audit is part of `npm run build`.
 
 The supplied brand mark is used in the application header and favicon. Finnish and Swedish cross tiles provide compact shared-language identity. Language corners are text-free decorative images: Finnish content uses `language-corner-fi.svg`, Swedish content uses `language-corner-sv.svg`, and actual language remains expressed with `lang="fi"` or `lang="sv"`. Active exercises must never add visible `Suomi`, `Svenska`, `Suomeksi`, or `Ruotsiksi` labels.
 
-`nordic-study.svg` is reserved for active study, waiting, and completion routes; `nordic-shell-light.svg` covers home, setup, and progress; `nordic-shell-dark.svg` covers rewards, season, league, and reveal surfaces. Reading content stays on opaque surfaces. Standard, golden, and legendary boxes map directly to their matching complete SVGs; compact HUD, quest, checkpoint, notification, and shop symbols combine the supplied Finnish/Swedish cross plates with common/golden/legendary seals. Rarity frames retain their 220:260 ratio around collection, shop, capsule-result, and seasonal media.
+Visual Fix V4 maps `box-hud.svg` to compact generic box indicators and maps `box-standard.svg`, `box-golden.svg`, and `box-legendary.svg` to full reward presentations. Reward artwork is never composed with a separate seal, badge, medallion, flag overlay, or cross primitive; each supplied box keeps its Nordic-cross ribbon uninterrupted. The seven description category IDs map one-to-one to `cells`, `skeleton`, `neuro`, `cardio`, `blood`, `digestion`, and `hormones`, rendered directly without another icon tile.
+
+Backgrounds use `home-dark.webp` on `/`, `rewards-dark.webp` on rewards and season surfaces, `shell-light.webp` on setup and progress routes, and `study-light.webp` on active, waiting, and completion exercise states. They render at normal opacity with `background-size: cover`; readable content remains on its own surface. These four WebPs are the only allowed raster assets. HUD chips keep icon, label, primary value, and optional secondary value in separate elements; phones use a two-by-two grid and wider screens use four columns.
 
 Achievement IDs map one-to-one to the twelve same-named SVGs. Stored league tiers map as `Pronssi → bronze`, `Hopea → silver`, `Kulta → gold`, `Platina → platinum`, `Timantti → diamond`, and `Konsultti → master`, while visible Swedish labels remain unchanged. Deck IDs map as `anatomi → anatomy`, `sjukdomar → diseases`, `forsta-hjalpen → first-aid`, `mediciner → medicines`, `avdelningar → departments`, `vastaanotto-anamneesi → anamnesis`, and `tutkimukset-hoito → examinations`.
 
-To add or replace an SVG, preserve its viewBox, paths, gradients, filters, title, transparency, and repository-relative filename; do not inline, recolor, rasterize, or optimize it destructively. Update the typed inventory and mapping, use an empty `alt` plus `aria-hidden="true"` when visible HTML already names it, then run `npm run audit:assets`, unit tests, the production build, and Playwright. Preview files must never enter `src/assets/nordic-v1/` or `dist/`.
+To replace one asset safely, preserve its filename, format, dimensions or viewBox, paths, gradients, filters, title, and transparency. Update the relevant typed inventory and static import, keep decorative images at `alt=""` plus `aria-hidden="true"` when adjacent HTML names them, and run `npm run audit:assets`, unit tests, the production build, and Playwright. Do not inline, recolour, rasterize an SVG, convert a background away from WebP, or add previews or archives to production assets.
 
 Styles are split into `tokens.css`, `base.css`, `shell.css`, `components.css`, `exercises.css`, `metagame.css`, `rewards.css`, `season.css`, `responsive.css`, and `nordic-assets.css`. `src/lib/visuals.ts` retains generic UI icons only for actions and navigation not covered by the pack, plus validated display and cosmetic tokens.
 

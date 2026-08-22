@@ -87,6 +87,7 @@ import {
   rarityVariant,
   rewardBoxVariant,
 } from "../lib/visuals";
+import { visualFixAssets } from "../lib/visual-fix-assets";
 import { nordicAssets } from "../lib/nordic-assets";
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
@@ -131,29 +132,14 @@ const decorativeImage = (
 ) =>
   `<img${className ? ` class="${className}"` : ""} src="${src}" width="${width}" height="${height}" alt="" aria-hidden="true"${lazy ? ' loading="lazy"' : ""} decoding="async">`;
 const compactRewardBoxVisual = (kind: string, label?: string) => {
-  const variant = rewardBoxVariant(kind),
-    crosses =
-      variant.className === "standard"
-        ? [nordicAssets.rewardPrimitives.crossFi]
-        : variant.className === "golden"
-          ? [nordicAssets.rewardPrimitives.crossSv]
-          : [
-              nordicAssets.rewardPrimitives.crossFi,
-              nordicAssets.rewardPrimitives.crossSv,
-            ],
-    seal =
-      variant.className === "standard"
-        ? nordicAssets.rewardPrimitives.sealCommon
-        : variant.className === "golden"
-          ? nordicAssets.rewardPrimitives.sealGolden
-          : nordicAssets.rewardPrimitives.sealLegendary;
-  return `<span class="compact-reward-box reward-box-visual box-${variant.className} box-small"${label ? ` role="img" aria-label="${esc(label)}"` : ' aria-hidden="true"'}><span class="compact-box-surface" aria-hidden="true">${crosses.map((src) => decorativeImage(src, 160, 160, "compact-box-cross")).join("")}${decorativeImage(seal, 128, 128, "compact-box-seal")}</span></span>`;
+  const variant = rewardBoxVariant(kind);
+  return `<span class="compact-reward-box reward-box-visual box-${variant.className} box-small"${label ? ` role="img" aria-label="${esc(label)}"` : ' aria-hidden="true"'}>${decorativeImage(visualFixAssets.rewards.hud, 96, 76, "compact-box-image")}</span>`;
 };
 const rewardBoxVisual = (kind: string, size = "normal") => {
   const variant = rewardBoxVariant(kind);
   return size === "small"
     ? compactRewardBoxVisual(kind, variant.label)
-    : `<span class="reward-box-visual box-${variant.className} box-${size}" role="img" aria-label="${variant.label}">${decorativeImage(variant.asset, 360, 320)}</span>`;
+    : `<span class="reward-box-visual box-${variant.className} box-${size}" role="img" aria-label="${variant.label}">${decorativeImage(variant.asset, 360, 300)}</span>`;
 };
 const achievementVisual = (id: string, _name: string, unlocked: boolean) => {
   const asset = achievementBadge(id);
@@ -442,7 +428,7 @@ function renderHome() {
   $("daily-launcher-goal")!.textContent = goalComplete
     ? "Dagens mål klart"
     : `Dagens mål ${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`;
-  root.innerHTML = `<section class="overlay-goal"><span class="goal-box">${rewardBoxVisual("standard", "small")}</span><div class="goal-copy"><div><h3 lang="sv">Dagens mål</h3><strong lang="sv">${goalComplete ? `${iconSvg("check")} Klart` : `${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`}</strong></div>${progressBar(day.uniqueItemIds.length, state.settings.dailyGoal, "Dagens mål")}<small lang="sv">Vanlig låda · 10 krediter · 20 säsongspoäng</small></div></section><div class="daily-overlay-quests">${overlayQuestRows(day)}</div><footer class="daily-all-bonus"><span>${rewardBoxVisual("golden", "small")}</span><span><strong lang="sv">${allComplete ? "Alla tre uppdrag klara" : "Slutför alla tre och få en gyllene låda"}</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen yllätyslaatikon.</small></span></footer>`;
+  root.innerHTML = `<section class="overlay-goal"><span class="goal-box">${rewardBoxVisual("standard")}</span><div class="goal-copy"><div><h3 lang="sv">Dagens mål</h3><strong lang="sv">${goalComplete ? `${iconSvg("check")} Klart` : `${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`}</strong></div>${progressBar(day.uniqueItemIds.length, state.settings.dailyGoal, "Dagens mål")}<small lang="sv">Vanlig låda · 10 krediter · 20 säsongspoäng</small></div></section><div class="daily-overlay-quests">${overlayQuestRows(day)}</div><footer class="daily-all-bonus"><span>${rewardBoxVisual("golden")}</span><span><strong lang="sv">${allComplete ? "Alla tre uppdrag klara" : "Slutför alla tre och få en gyllene låda"}</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen yllätyslaatikon.</small></span></footer>`;
   bindHomeActions(root, day);
   if (activeFocus && $("daily-overlay")?.hasAttribute("open"))
     (
@@ -467,7 +453,7 @@ function renderProgress() {
     weekly = weeklyQuestProgress(state);
   root.innerHTML = `<section class="passport-card full-width" lang="sv">${decorativeImage(nordicAssets.brand.crossFi, 128, 128, "passport-cross fi")}${decorativeImage(nordicAssets.brand.crossSv, 128, 128, "passport-cross sv")}<div class="passport-brand">${iconSvg("progressFrame", 32)}<span><small>MEDICINSK SVENSKA</small><strong>Nordiskt studiepass</strong></span></div><div class="passport-level"><span class="xp-ring" style="--xp:${Math.max(4, Math.round(((state.lifetime.xp - level.currentThreshold) / (level.nextThreshold - level.currentThreshold)) * 100))}%"><b>${level.level}</b></span><span><small>Nivå</small><strong>${state.lifetime.xp} XP</strong></span></div><div class="passport-status"><span>${iconSvg("streak")}<b>${state.streak.current}</b><small>dagars svit</small></span><span>${iconSvg("title")}<b>${esc(COSMETICS.find((item) => item.id === state.inventory.equipped.title)?.name ?? "Student")}</b><small>titel</small></span><span>${iconSvg("progressFrame")}<b>${esc(COSMETICS.find((item) => item.id === state.inventory.equipped.progressFrame)?.name ?? "Basram")}</b><small>ram</small></span></div>${progressBar(state.lifetime.xp - level.currentThreshold, level.nextThreshold - level.currentThreshold, "Framsteg till nästa nivå")}</section>
   <section class="dashboard-card today-card" lang="sv"><div class="section-title"><h2>${iconSvg("calendar")} I dag</h2><strong>${day.uniqueItemIds.length} / ${state.settings.dailyGoal}</strong></div>${progressBar(day.uniqueItemIds.length, state.settings.dailyGoal, "Dagens mål")}<div class="stat-grid visual-metrics"><span>${iconSvg("check")}<strong>${day.completedItems}</strong>Uppgifter</span><span>${iconSvg("clock")}<strong>${formatMinutes(day.activeStudyMs)}</strong>Aktiv tid</span><span>${iconSvg("level")}<strong>${day.xp}</strong>XP</span><span>${iconSvg("spark")}<strong>${day.modes.length}</strong>Övningstyper</span></div>${claimable ? `<a class="reward-alert" href="/kausi/#reward-track">${iconSvg("gift")} ${claimable} säsongsbelöning väntar</a>` : ""}</section>
-  <section class="dashboard-card daily-missions"><h2 lang="sv">${iconSvg("level")} Dagens uppdrag</h2><div class="quest-list">${questRows(day)}</div><div class="all-quests-bonus">${rewardBoxVisual("golden", "small")}<span><strong lang="sv">Slutför alla tre och få en gyllene låda</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen yllätyslaatikon.</small></span></div></section>
+  <section class="dashboard-card daily-missions"><h2 lang="sv">${iconSvg("level")} Dagens uppdrag</h2><div class="quest-list">${questRows(day)}</div><div class="all-quests-bonus">${rewardBoxVisual("golden")}<span><strong lang="sv">Slutför alla tre och få en gyllene låda</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen yllätyslaatikon.</small></span></div></section>
   <section class="dashboard-card weekly-card" lang="sv"><h2>${iconSvg("streak")} Svit och vecka</h2><div class="stat-grid"><span><strong>${state.streak.current}</strong>Nuvarande svit</span><span><strong>${state.streak.longest}</strong>Längsta svit</span><span><strong>${state.inventory.streakFreezes} / 2</strong>Svitfrysningar</span><span><strong>${Object.values(state.daily).filter((value) => value.uniqueItemIds.length).length}</strong>Studiedagar</span></div><h3>Veckans uppdrag</h3><div class="weekly-quest-list">${weekly
     .map((quest, index) => {
       const copy = weeklyQuestCopy[index]!;
@@ -524,7 +510,7 @@ function renderRewards() {
   )
     .map((offer, index) => {
       const rarity = ["common", "rare", "epic", "legendary"][index % 4]!;
-      return `<article class="offer rarity-${rarity}"><span class="offer-icon framed-media">${offer.type === "capsule" ? compactRewardBoxVisual(offer.itemId) : iconSvg(offer.type === "cosmetic" ? "theme" : "retry", 32)}${rarityFrameVisual(rarity)}</span>${offer.discounted ? '<b class="discount-corner">Erbjudande</b>' : ""}<strong>${shopLabel(offer.type, offer.itemId)}</strong><span>${offer.discounted ? `<s>${offer.originalPrice}</s> ` : ""}${offer.price} krediter</span><button data-buy="${offer.id}" ${offer.purchased || state.inventory.credits < offer.price ? "disabled" : ""}>${offer.purchased ? "Redan hämtad" : `Lös in för ${offer.price} krediter`}</button></article>`;
+      return `<article class="offer rarity-${rarity}"><span class="offer-icon ${offer.type === "capsule" ? "reward-offer-media" : "framed-media"}">${offer.type === "capsule" ? rewardBoxVisual(offer.itemId) : `${iconSvg(offer.type === "cosmetic" ? "theme" : "retry", 32)}${rarityFrameVisual(rarity)}`}</span>${offer.discounted ? '<b class="discount-corner">Erbjudande</b>' : ""}<strong>${shopLabel(offer.type, offer.itemId)}</strong><span>${offer.discounted ? `<s>${offer.originalPrice}</s> ` : ""}${offer.price} krediter</span><button data-buy="${offer.id}" ${offer.purchased || state.inventory.credits < offer.price ? "disabled" : ""}>${offer.purchased ? "Redan hämtad" : `Lös in för ${offer.price} krediter`}</button></article>`;
     })
     .join(
       "",

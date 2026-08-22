@@ -1,7 +1,7 @@
 ---
-import { nordicAssets } from '../lib/nordic-assets';
-interface Props { intensity?: 1|2|3 }
-const { intensity = 2 } = Astro.props;
-const background = intensity === 1 ? nordicAssets.backgrounds.study : intensity === 3 ? nordicAssets.backgrounds.dark : nordicAssets.backgrounds.light;
+import { visualFixAssets, type BackgroundKind } from '../lib/visual-fix-assets';
+interface Props { kind: BackgroundKind }
+const { kind } = Astro.props;
+const background = visualFixAssets.backgrounds[kind];
 ---
-<span class={`nordic-backdrop intensity-${intensity}`} style={`--nordic-background:url("${background}")`} aria-hidden="true"></span>
+<span class={`nordic-backdrop background-${kind}`} style={`--nordic-background:url("${background}")`} aria-hidden="true"></span>

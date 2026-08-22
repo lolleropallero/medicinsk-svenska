@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" role="img" aria-labelledby="title">
+  <title id="title">Ruoansulatus ja virtsatiet</title>
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b73b8"/>
+      <stop offset="1" stop-color="#003580"/>
+    </linearGradient>
+    <filter id="shadow" x="-25%" y="-25%" width="150%" height="170%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#08233f" flood-opacity=".24"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <rect x="5" y="5" width="62" height="62" rx="16" fill="url(#tile)" stroke="#8fd3ff" stroke-width="2"/>
+    <path d="M14 12h20" stroke="#fff" stroke-opacity=".18" stroke-width="4" stroke-linecap="round"/>
+
+<g fill="none" stroke="#fff" stroke-width="3.1" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M37 17v13c0 4 3 7 7 7h5c6 0 9 5 8 11-2 9-12 12-20 8-8-4-10-12-8-19 2-7 6-12 8-20z"/>
+  <path d="M25 42c-7 1-11 5-11 11 0 4 3 7 7 7s7-3 7-7c0-5-1-8-3-11z"/>
+</g>
+<circle cx="52" cy="24" r="2.2" fill="#fecc02"/>
+  </g>
+</svg>

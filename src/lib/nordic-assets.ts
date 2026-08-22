@@ -18,16 +18,12 @@ function mapCategory<T extends Record<string, NordicAssetPath>>(category: T): { 
 
 export const nordicAssets = {
   brand: mapCategory(nordicAssetPaths.brand),
-  backgrounds: mapCategory(nordicAssetPaths.backgrounds),
-  rewardBoxes: mapCategory(nordicAssetPaths.rewardBoxes),
-  rewardPrimitives: mapCategory(nordicAssetPaths.rewardPrimitives),
   rarity: mapCategory(nordicAssetPaths.rarity),
   achievements: mapCategory(nordicAssetPaths.achievements),
   leagues: mapCategory(nordicAssetPaths.leagues),
   decks: mapCategory(nordicAssetPaths.decks),
 } as const;
 
-export type RewardBoxKind = keyof typeof nordicAssets.rewardBoxes;
 export type RarityKind = keyof typeof nordicAssets.rarity;
 export type AchievementAssetId = keyof typeof nordicAssets.achievements;
 export type LeagueAssetTier = keyof typeof nordicAssets.leagues;

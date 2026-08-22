@@ -41,13 +41,7 @@ describe("Nordic Clinical Arcade visual catalog", () => {
       "cardStyle",
       "title",
       "progressFrame",
-      "cell",
-      "boneJoint",
-      "brain",
       "heartLungs",
-      "bloodLymph",
-      "digestionKidney",
-      "hormonesReproduction",
     ];
     for (const name of required) expect(ICON_PATHS).toHaveProperty(name);
     expect(resolveIcon("missing-icon")).toBe("spark");

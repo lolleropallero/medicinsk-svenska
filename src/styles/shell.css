@@ -1,3 +1,4 @@
+body { position: relative; }
 .nordic-backdrop {
   position: fixed;
   inset: 0;
@@ -88,39 +89,58 @@
 }
 .hud-grid > a {
   display: grid;
-  grid-template-columns: 28px auto 1fr;
-  grid-template-rows: auto auto;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 10px;
   align-items: center;
   min-width: 0;
-  padding: 5px 12px;
+  min-height: 74px;
+  padding: 9px 12px;
   border: 1px solid rgba(0, 53, 128, 0.1);
   border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.72);
   text-decoration: none;
 }
-.hud-grid .app-icon {
-  grid-row: 1/3;
+.hud-stat__icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
   color: var(--fi-blue);
 }
-.hud-grid span {
+.hud-stat__icon .app-icon {
+  width: 26px;
+  height: 26px;
+}
+.hud-stat__copy {
+  display: grid;
+  min-width: 0;
+  align-content: center;
+  justify-items: start;
+  row-gap: 4px;
+  line-height: 1;
+}
+.hud-grid .hud-stat__label {
   color: var(--muted);
   font-size: 0.68rem;
   font-weight: 750;
+  line-height: 1;
   text-transform: uppercase;
 }
-.hud-grid strong {
-  font-size: 1rem;
+.hud-grid .hud-stat__value {
+  display: block;
+  font-size: 1.12rem;
+  font-weight: 850;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-.hud-grid small {
-  grid-column: 2/4;
+.hud-grid .hud-stat__secondary {
+  display: block;
   color: var(--muted);
   font-size: 0.68rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 .hud-boxes.has-boxes {
   border-color: #dfab00;
   background: #fff8d8;
-}
-.hud-boxes.has-boxes .app-icon {
-  color: #b27600;
 }

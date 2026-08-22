@@ -28,7 +28,7 @@ for (const [category, count] of Object.entries(requiredCounts)) if (counts[categ
 if (expected.length !== 45) errors.push(`expected 45 mapped assets, found ${expected.length}`);
 if (new Set(expected).size !== expected.length) errors.push('asset mapping contains duplicate paths');
 
-const actual = existsSync(assetRoot) ? walk(assetRoot).filter((path) => extname(path).toLowerCase() === '.svg').map((path) => normalize(relative(assetRoot, path))).sort() : [];
+const actual = existsSync(assetRoot) ? walk(assetRoot).filter((path) => extname(path).toLowerCase() === '.svg').map((path) => normalize(relative(assetRoot, path))).sort((left, right) => left.localeCompare(right)) : [];
 if (actual.length !== 45) errors.push(`expected 45 production SVG files, found ${actual.length}`);
 for (const path of actual) if (!expected.includes(path as typeof expected[number])) errors.push(`unmapped production SVG: ${path}`);
 for (const path of expected) {

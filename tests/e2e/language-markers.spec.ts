@@ -33,18 +33,13 @@ test('flashcards use language metadata without decorative flag ribbons', async (
   }
 });
 
-test('phrases retain distinct Finnish and Swedish treatments without textual labels', async ({ page }) => {
+test('phrases use language metadata without decorative flag ribbons', async ({ page }) => {
   await page.goto('/fraasit/harjoitus?mode=all&amount=10&session=language-markers-phrases');
-  const markers = page.locator('.phrase-card .language-ribbon');
   const cue = page.locator('.speech-bubble.cue');
   const answer = page.locator('.speech-bubble.target');
 
   await expectNoVisibleLanguageLabels(page.locator('.phrase-practice'));
-  await expect(markers).toHaveCount(2);
-  await expect(markers.nth(0)).toHaveClass(/\blanguage-fi\b/);
-  await expect(markers.nth(1)).toHaveClass(/\blanguage-sv\b/);
-  await expect(markers.nth(0)).toHaveAttribute('aria-hidden', 'true');
-  await expect(markers.nth(1)).toHaveAttribute('aria-hidden', 'true');
+  await expect(page.locator('.phrase-card .language-ribbon, .phrase-card img')).toHaveCount(0);
   await expect(page.locator('#phrase-fi')).toHaveAttribute('lang', 'fi');
   await expect(page.locator('#phrase-sv')).toHaveAttribute('lang', 'sv');
   await expect(page.locator('#phrase-sv')).toBeHidden();
@@ -57,14 +52,11 @@ test('phrases retain distinct Finnish and Swedish treatments without textual lab
     .not.toBe(await answer.evaluate(element => getComputedStyle(element).backgroundColor));
 });
 
-test('description exercise keeps Swedish only on learning data and uses a decorative marker', async ({ page }) => {
+test('description exercise keeps Swedish in metadata without a decorative flag ribbon', async ({ page }) => {
   await page.goto('/kuvailu/harjoitus?mode=all&amount=10&session=language-markers-description');
-  const marker = page.locator('.description-card .language-ribbon');
 
   await expectNoVisibleLanguageLabels(page.locator('.description-practice'));
-  await expect(marker).toHaveClass(/\blanguage-sv\b/);
-  await expect(marker).toHaveAttribute('aria-hidden', 'true');
-  await expect(marker).toHaveText('');
+  await expect(page.locator('.description-card .language-ribbon, .description-card img')).toHaveCount(0);
   await expect(page.locator('#description-text')).toHaveAttribute('lang', 'sv');
   await expect(page.getByLabel('Vastauksesi')).toHaveAttribute('lang', 'sv');
   await expect(page.getByRole('button', { name: 'Tarkista' })).toBeVisible();

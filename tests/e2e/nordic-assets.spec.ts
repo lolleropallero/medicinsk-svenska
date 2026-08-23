@@ -34,18 +34,12 @@ test('brand, backgrounds, language corners, and all deck icons use supplied SVG 
   }
 
   await page.goto('/fraasit/harjoitus?mode=all&amount=10&session=nordic-assets-phrase');
-  const phraseMarkers = page.locator('.phrase-card .language-ribbon img');
-  await expect(phraseMarkers).toHaveCount(2);
-  expect(await filename(phraseMarkers.nth(0))).toContain('language-corner-fi');
-  expect(await filename(phraseMarkers.nth(1))).toContain('language-corner-sv');
+  await expect(page.locator('.phrase-card .language-ribbon, .phrase-card img')).toHaveCount(0);
   await page.getByRole('button', { name:'Näytä vastaus' }).click();
-  await expect(phraseMarkers.nth(1)).toBeVisible();
+  await expect(page.locator('.phrase-card .language-ribbon, .phrase-card img')).toHaveCount(0);
 
   await page.goto('/kuvailu/harjoitus?mode=all&amount=10&session=nordic-assets-description');
-  const descriptionMarker = page.locator('.description-card .language-ribbon img');
-  await expect(descriptionMarker).toHaveCount(1);
-  expect(await filename(descriptionMarker)).toContain('language-corner-sv');
-  await expect(page.locator('.description-card img[src*="language-corner-fi"]')).toHaveCount(0);
+  await expect(page.locator('.description-card .language-ribbon, .description-card img')).toHaveCount(0);
 });
 
 test('Kruunu & Kilpi rewards, rarity frames, achievements, and league shields are loaded', async ({ page }) => {

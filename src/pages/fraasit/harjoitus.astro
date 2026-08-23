@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppIcon from '../../components/AppIcon.astro';
-import LanguageRibbon from '../../components/LanguageRibbon.astro';
 import FlagRibbon from '../../components/FlagRibbon.astro';
 import { phraseCategoryPayload, phrasePayload } from '../../lib/content';
 ---
@@ -15,8 +14,8 @@ import { phraseCategoryPayload, phrasePayload } from '../../lib/content';
     <div id="phrase-session-view">
       <div class="progress-track" aria-hidden="true"><span id="phrase-progress-bar"></span></div>
       <button id="phrase-card" class="flashcard phrase-card" type="button" aria-label="Näytä vastaus">
-        <LanguageRibbon language="fi" /><span class="speech-bubble cue"><span id="phrase-fi" class="term" lang="fi"></span></span>
-        <span id="phrase-answer" hidden><span class="answer-bridge" aria-hidden="true"><AppIcon name="arrow"/></span><LanguageRibbon language="sv" /><span class="speech-bubble target"><span id="phrase-sv" class="term answer" lang="sv"></span></span></span>
+        <span class="speech-bubble cue"><span id="phrase-fi" class="term" lang="fi"></span></span>
+        <span id="phrase-answer" hidden><span class="answer-bridge" aria-hidden="true"><AppIcon name="arrow"/></span><span class="speech-bubble target"><span id="phrase-sv" class="term answer" lang="sv"></span></span></span>
       </button>
       <div id="phrase-grade-actions" class="action-row" hidden>
         <button class="danger" id="phrase-missed" type="button">En osannut</button>

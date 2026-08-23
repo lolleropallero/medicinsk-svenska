@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { continuePastMilestone } from './helpers';
 
 const STORAGE_KEY = 'medicinsk-svenska.description-session.v1';
 
@@ -117,6 +118,7 @@ test('Swedish answer semantics and exact canonical, inflection, and article acce
   await expect(input).toHaveAttribute('enterkeyhint', 'done');
   await input.fill('HJÄRTAT.');
   await input.press('Enter');
+  await continuePastMilestone(page);
   await expect(page.locator('#result-label')).toHaveText('Oikein');
   await expect(page.locator('#canonical-answer')).toHaveText('ett hjärta');
   await expect(page.getByRole('button', { name: 'Seuraava' })).toBeFocused();
@@ -124,6 +126,7 @@ test('Swedish answer semantics and exact canonical, inflection, and article acce
   await seedDescriptionSession(page, { ids: ['beskrivning-023'], sessionId: 'correct-article', mode: 'category', categoryId: 'verenkierto-hengitys' });
   await input.fill('ett hjärta');
   await input.press('Enter');
+  await continuePastMilestone(page);
   await expect(page.locator('#result-label')).toHaveText('Oikein');
 
   for (const [sessionId, answer] of [['wrong-article', 'en hjärta'], ['definite-article', 'ett hjärtat']] as const) {
@@ -138,6 +141,7 @@ test('incorrect and revealed resolution restore feedback and focus without doubl
   await seedDescriptionSession(page, { ids: ['beskrivning-038', 'beskrivning-040'], mode: 'category', categoryId: 'ruoansulatus-virtsatiet' });
   await page.getByLabel('Vastauksesi').fill('maksa');
   await page.getByRole('button', { name: 'Tarkista' }).click();
+  await continuePastMilestone(page);
   await expect(page.getByText('Ei aivan', { exact: true })).toBeVisible();
   await expect(page.locator('#canonical-answer')).toHaveText('en lever');
   await page.reload();
@@ -147,6 +151,7 @@ test('incorrect and revealed resolution restore feedback and focus without doubl
   await page.getByRole('button', { name: 'Seuraava' }).click();
   await expect(page.getByLabel('Vastauksesi')).toBeFocused();
   await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await continuePastMilestone(page);
   await expect(page.getByText('Vastaus näytetty', { exact: true })).toBeVisible();
   await expect(page.locator('#canonical-answer')).toHaveText('njurar');
   await expect(page.getByRole('button', { name: 'Seuraava' })).toBeFocused();
@@ -159,9 +164,11 @@ test('summary, retry, and new round use fresh persisted session state', async ({
   await seedDescriptionSession(page, { ids: ['beskrivning-023', 'beskrivning-027', 'beskrivning-030'], startedAt: start.getTime() });
   await page.getByLabel('Vastauksesi').fill('hjärta');
   await page.getByRole('button', { name: 'Tarkista' }).click();
+  await continuePastMilestone(page);
   await page.getByRole('button', { name: 'Seuraava' }).click();
   await page.getByLabel('Vastauksesi').fill('fel');
   await page.getByRole('button', { name: 'Tarkista' }).click();
+  await continuePastMilestone(page);
   await page.getByRole('button', { name: 'Seuraava' }).click();
   await page.getByRole('button', { name: 'Näytä vastaus' }).click();
   await page.clock.fastForward(258_000);
@@ -184,7 +191,9 @@ test('summary, retry, and new round use fresh persisted session state', async ({
 
   for (let index = 0; index < 2; index += 1) {
     await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+    await continuePastMilestone(page);
     await page.getByRole('button', { name: 'Seuraava' }).click();
+    await continuePastMilestone(page);
   }
   const beforeNew = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
   await page.clock.fastForward(1_000);

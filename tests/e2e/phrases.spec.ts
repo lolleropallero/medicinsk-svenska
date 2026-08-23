@@ -1,5 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { continuePastMilestone } from './helpers';
 
 const STORAGE_KEY = 'medicinsk-svenska.phrase-session.v1';
 
@@ -92,6 +93,7 @@ test('Finnish cue reveals Swedish, restores focus and state, then grading advanc
   await expect(page.locator('#phrase-sv')).toBeVisible();
   await expect(page.getByRole('button', { name: 'En osannut' })).toBeFocused();
   await page.getByRole('button', { name: 'Osasin' }).click();
+  await continuePastMilestone(page);
   await expect(page.locator('#phrase-fi')).toHaveText('hengittää sisään');
   await expect(page.getByRole('button', { name: 'Näytä vastaus' })).toBeFocused();
 });
@@ -121,6 +123,7 @@ test('controlled five-minute retry waits, survives reload, continues automatical
   await expect(page.getByRole('button', { name: 'Näytä vastaus' })).toBeFocused();
   await page.getByRole('button', { name: 'Näytä vastaus' }).click();
   await page.getByRole('button', { name: 'Osasin' }).click();
+  await continuePastMilestone(page);
   await expect(page.getByRole('heading', { name: 'Valmis', exact: true })).toBeFocused();
   await expect(page.locator('#phrase-summary-first')).toHaveText('0 / 1');
   await expect(page.locator('#phrase-summary-missed')).toHaveText('1');
@@ -131,6 +134,7 @@ test('Uusi kierros creates fresh retained configuration and invalid state fails 
   await seedPhraseSession(page, ['fraasi-taustatiedot-vara-pensionerad'], { categoryId: 'taustatiedot', sessionId: 'complete-old' });
   await page.getByRole('button', { name: 'Näytä vastaus' }).click();
   await page.getByRole('button', { name: 'Osasin' }).click();
+  await continuePastMilestone(page);
   const old = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
   await page.getByRole('button', { name: 'Uusi kierros' }).click();
   const fresh = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);

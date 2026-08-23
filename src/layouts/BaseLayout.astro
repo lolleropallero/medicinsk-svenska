@@ -53,6 +53,15 @@ const backgroundKind=exerciseRoute?'studyLight':rewardRoute?'rewardsDark':path==
     <main id="sisalto" class:list={{ 'study-main': exerciseRoute }}><slot /></main>
     {!exerciseRoute&&<MobileNavigation path={path}/>}
     <div id="reward-notifications" class="notifications" aria-live="polite"></div>
+    <dialog id="milestone-overlay" class="milestone-overlay" aria-labelledby="milestone-overlay-title">
+      <div class="milestone-sheet">
+        <div class="milestone-crest" aria-hidden="true"><AppIcon name="level" size={32}/></div>
+        <p class="eyebrow">Milstolpe uppnådd</p>
+        <h2 id="milestone-overlay-title" tabindex="-1">Det här har du klarat</h2>
+        <div id="milestone-overlay-content" class="milestone-content" tabindex="0" aria-label="Milstolpar"></div>
+        <button id="milestone-overlay-continue" class="button primary milestone-continue" type="button">Fortsätt</button>
+      </div>
+    </dialog>
     <div id="music-player" aria-hidden="true" transition:persist="music-player"></div>
     <script src="../scripts/progress-shell.ts"></script>
     <script src="../scripts/music-player.ts"></script>

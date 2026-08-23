@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { openSpecificCard } from './helpers';
+import { continuePastMilestone, openSpecificCard } from './helpers';
 
 test('landing page and core routes are accessible',async({page})=>{
   await page.goto('/'); await expect(page.getByRole('heading',{name:'Dagens mål'})).toBeVisible();
@@ -38,6 +38,7 @@ test('selects session size and supports tap and keyboard grading in both directi
   await expect(page.getByRole('button',{name:'Osasin'})).toBeVisible();
   await expect(page.getByRole('button',{name:/Seuraava/})).toHaveCount(0);
   await page.keyboard.press('1');
+  await continuePastMilestone(page);
   await expect(page.locator('#progress')).toHaveText('1 / 10');
   await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeFocused();
 
@@ -84,6 +85,7 @@ test('uses an absolute controlled clock for exact delayed retries and automatic 
   for(let i=0;i<9;i++){
     await page.getByRole('button',{name:'Näytä vastaus'}).click();
     await page.getByRole('button',{name:'Osasin'}).click();
+    await continuePastMilestone(page);
   }
   await expect(page.locator('#waiting-copy')).toHaveText('1 kortti odottaa kertausta');
   await expect(page.locator('#waiting-copy')).toBeFocused();
@@ -279,11 +281,13 @@ test('completion summary and Uusi kierros create fresh retained state',async({pa
   for(let index=0;index<9;index+=1){
     await page.getByRole('button',{name:'Näytä vastaus'}).click();
     await page.getByRole('button',{name:'Osasin'}).click();
+    await continuePastMilestone(page);
   }
   await page.clock.fastForward(5*60*1000);
   await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeFocused();
   await page.getByRole('button',{name:'Näytä vastaus'}).click();
   await page.getByRole('button',{name:'Osasin'}).click();
+  await continuePastMilestone(page);
   await expect(page.getByRole('heading',{name:'Valmis',exact:true})).toBeFocused();
   await expect(page.getByText('Ensimmäisellä')).toBeVisible();
   await expect(page.locator('#summary-first')).toHaveText('9 / 10');

@@ -1,5 +1,5 @@
 import { test } from '@playwright/test';
-import { openSpecificCard } from './helpers';
+import { continuePastMilestone, openSpecificCard } from './helpers';
 
 async function seedSingleDescription(page: import('@playwright/test').Page, sessionId: string) {
   await page.goto(`/kuvailu/harjoitus?mode=all&amount=10&session=${sessionId}`);
@@ -84,10 +84,12 @@ test('capture required visual QA views', async ({ page }) => {
   await page.reload();
   await page.screenshot({ path: 'tmp/visual/description-restored-desktop.png', fullPage: true });
   await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await continuePastMilestone(page);
   await page.screenshot({ path: 'tmp/visual/description-revealed-desktop.png', fullPage: true });
   await seedSingleDescription(page, 'visual-description-incorrect');
   await page.getByLabel('Vastauksesi').fill('fel');
   await page.getByRole('button', { name: 'Tarkista' }).click();
+  await continuePastMilestone(page);
   await page.screenshot({ path: 'tmp/visual/description-incorrect-desktop.png', fullPage: true });
   await page.getByRole('button', { name: 'Seuraava' }).click();
   await page.screenshot({ path: 'tmp/visual/description-missed-summary-desktop.png', fullPage: true });
@@ -96,8 +98,10 @@ test('capture required visual QA views', async ({ page }) => {
   await seedSingleDescription(page, 'visual-description-correct');
   await page.getByLabel('Vastauksesi').fill('hjärta');
   await page.getByRole('button', { name: 'Tarkista' }).click();
+  await continuePastMilestone(page);
   await page.screenshot({ path: 'tmp/visual/description-correct-desktop.png', fullPage: true });
   await page.getByRole('button', { name: 'Seuraava' }).click();
+  await continuePastMilestone(page);
   await page.screenshot({ path: 'tmp/visual/description-summary-desktop.png', fullPage: true });
   await page.getByRole('button', { name: 'Uusi kierros' }).click();
   await page.screenshot({ path: 'tmp/visual/description-new-round-desktop.png', fullPage: true });
@@ -117,6 +121,7 @@ test('capture required visual QA views', async ({ page }) => {
   for (let index = 0; index < 10; index += 1) {
     await page.getByRole('button', { name: 'Näytä vastaus' }).click();
     await page.getByRole('button', { name: 'Osasin' }).click();
+    await continuePastMilestone(page);
   }
   await page.screenshot({ path: 'tmp/visual/summary-desktop.png', fullPage: true });
   await page.getByRole('button', { name: 'Uusi kierros' }).click();
@@ -152,6 +157,7 @@ test('capture required visual QA views', async ({ page }) => {
   for (let index = 0; index < 10; index += 1) {
     await page.getByRole('button', { name: 'Näytä vastaus' }).click();
     await page.getByRole('button', { name: index < 3 ? 'En osannut' : 'Osasin' }).click();
+    await continuePastMilestone(page);
   }
   await page.screenshot({ path: 'tmp/visual/waiting-mobile.png', fullPage: true });
   await page.goto('/kuvailu');

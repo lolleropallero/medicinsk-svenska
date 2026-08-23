@@ -10,8 +10,101 @@ import {
 import { rewardBoxImage, type RewardBoxKind } from "../lib/reward-box-assets";
 import { levelProgress } from "../lib/progress/core";
 import { requestFeedback } from "../lib/motion/feedback";
+import { rewardCopy } from "../lib/progress/copy";
+import {
+  milestoneFeedback,
+  peekPendingMilestoneBatch,
+  takePendingMilestoneBatch,
+  type MilestoneBatch,
+  type QuestMilestone,
+} from "../lib/progress/milestones";
 
 let priorHudValues: string[] | null = null;
+let milestoneScheduled = false;
+let restoreMilestoneFocus: HTMLElement | null = null;
+
+const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (character) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[character]!));
+
+const questReward = (quest: QuestMilestone) =>
+  `+${quest.reward.xp} XP · +${quest.reward.credits} krediter · +${quest.reward.seasonPoints} säsongspoäng`;
+
+function milestoneMarkup(batch: MilestoneBatch) {
+  const sections: string[] = [];
+  if (batch.levelUp) sections.push(`<section class="milestone-section milestone-level" data-milestone-kind="level">
+    <p class="milestone-kicker">Ny nivå</p><strong class="milestone-level-number">${batch.levelUp.to}</strong>
+  </section>`);
+  if (batch.achievements.length) {
+    const heading = batch.achievements.length === 1 ? 'Prestation upplåst' : 'Prestationer upplåsta';
+    sections.push(`<section class="milestone-section milestone-achievements" data-milestone-kind="achievement">
+      <h3>${heading}</h3><div class="milestone-list">${batch.achievements.map((achievement) => {
+        const asset = achievementBadge(achievement.id);
+        return `<article class="milestone-item achievement-item">${asset ? image(asset, 'milestone-achievement-badge') : ''}<div><strong>${escapeHtml(achievement.name)}</strong><p>${escapeHtml(achievement.description)}</p><small>Belöning: ${escapeHtml(rewardCopy(achievement.reward))}</small></div></article>`;
+      }).join('')}</div>
+    </section>`);
+  }
+  const questSection = (heading: string, kind: string, quests: QuestMilestone[]) => quests.length
+    ? `<section class="milestone-section milestone-quests" data-milestone-kind="${kind}"><h3>${heading}</h3><div class="milestone-list">${quests.map((quest) => `<article class="milestone-item quest-item"><span class="milestone-check" aria-hidden="true">✓</span><div><strong>${escapeHtml(quest.name)}</strong><small>${escapeHtml(questReward(quest))}</small></div></article>`).join('')}</div></section>`
+    : '';
+  sections.push(questSection('Dagens mål klart', 'daily-quest', batch.completedDailyQuests));
+  sections.push(questSection('Veckouppdrag klart', 'weekly-quest', batch.completedWeeklyQuests));
+  return sections.join('');
+}
+
+function visibleFocusableFallback() {
+  return [...document.querySelectorAll<HTMLElement>('main button:not(:disabled), main input:not(:disabled), main a[href]')]
+    .find((element) => !element.hidden && element.getClientRects().length > 0) ?? document.getElementById('sisalto');
+}
+
+function closeMilestoneOverlay() {
+  const dialog = document.getElementById('milestone-overlay') as HTMLDialogElement | null;
+  if (!dialog?.open) return;
+  dialog.close();
+  dialog.removeAttribute('lang');
+  requestFeedback('overlay-close', dialog, null);
+  const target = restoreMilestoneFocus?.isConnected && restoreMilestoneFocus.getClientRects().length
+    ? restoreMilestoneFocus : visibleFocusableFallback();
+  target?.focus({ preventScroll: true });
+  restoreMilestoneFocus = null;
+  scheduleMilestonePresentation();
+}
+
+function presentPendingMilestone() {
+  milestoneScheduled = false;
+  if (!peekPendingMilestoneBatch()) return;
+  const dialog = document.getElementById('milestone-overlay') as HTMLDialogElement | null;
+  const content = document.getElementById('milestone-overlay-content');
+  const competingDialog = document.querySelector<HTMLDialogElement>('dialog[open]:not(#milestone-overlay)');
+  if (!dialog || !content) return;
+  if (dialog.open) return;
+  if (competingDialog) {
+    competingDialog.addEventListener('close', scheduleMilestonePresentation, { once: true });
+    return;
+  }
+  const batch = takePendingMilestoneBatch();
+  if (!batch) return;
+  const feedback = milestoneFeedback(batch);
+  if (!feedback) return;
+  content.innerHTML = milestoneMarkup(batch);
+  dialog.dataset.milestoneCount = String(
+    Number(Boolean(batch.levelUp)) + batch.achievements.length
+      + batch.completedDailyQuests.length + batch.completedWeeklyQuests.length,
+  );
+  restoreMilestoneFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+  dialog.lang = 'sv';
+  dialog.showModal();
+  document.getElementById('milestone-overlay-continue')?.focus({ preventScroll: true });
+  // The visible dialog and the approved fanfare share this single semantic request.
+  requestFeedback(feedback, dialog);
+}
+
+function scheduleMilestonePresentation() {
+  if (milestoneScheduled || !peekPendingMilestoneBatch()) return;
+  milestoneScheduled = true;
+  // Progression renderers finish synchronously; the microtask hands off only after that state is settled.
+  queueMicrotask(presentPendingMilestone);
+}
 
 function apply() {
   const state = loadProgress();
@@ -93,8 +186,21 @@ function hud() {
 function refresh() {
   apply();
   hud();
+  const dialog = document.getElementById('milestone-overlay') as HTMLDialogElement | null;
+  if (dialog && dialog.dataset.bound !== 'true') {
+    dialog.dataset.bound = 'true';
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      closeMilestoneOverlay();
+    });
+  }
+  scheduleMilestonePresentation();
 }
+document.addEventListener('click', (event) => {
+  if ((event.target as Element | null)?.closest('#milestone-overlay-continue')) closeMilestoneOverlay();
+});
 document.addEventListener("astro:page-load", refresh);
+window.addEventListener('milestone-batch-pending', scheduleMilestonePresentation);
 window.addEventListener("progress-updated", refresh);
 window.addEventListener("storage", (event) => {
   if (event.key === "medicinsk-svenska.progress.v1") refresh();

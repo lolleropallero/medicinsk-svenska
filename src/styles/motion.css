@@ -34,6 +34,12 @@ button,.button {
 .notification[data-notification-kind="achievement"] .notification-achievement { animation:motion-achievement var(--motion-reward) var(--ease-pop); }
 .notification[data-notification-kind="achievement"]>span { animation:motion-row-in var(--motion-normal) var(--ease-enter) 110ms both; }
 .notification[data-notification-kind="level"] .app-icon { animation:motion-level var(--motion-emphasis) var(--ease-pop); }
+.milestone-overlay[data-motion-state]::backdrop { animation:motion-scrim-in 170ms var(--ease-standard); }
+.milestone-overlay[data-motion-state] .milestone-sheet { animation:motion-sheet-in var(--motion-emphasis) var(--ease-enter); }
+.milestone-overlay[data-motion-state="level-up"] .milestone-level-number { animation:motion-level var(--motion-emphasis) var(--ease-pop); }
+.milestone-overlay[data-motion-state="achievement"] .milestone-achievement-badge,
+.milestone-overlay[data-motion-state="level-up"] .milestone-achievement-badge { animation:motion-achievement var(--motion-reward) var(--ease-pop); }
+.milestone-overlay[data-motion-state] .milestone-check { animation:motion-check var(--motion-fast) var(--ease-pop); }
 .capsule-dialog[data-motion-state="reward-reveal"] .capsule-reward-frame,.capsule-dialog[data-motion-state="reward-reveal"] .capsule-box { animation:motion-shield 440ms var(--ease-pop); }
 .capsule-dialog[data-motion-state="reward-reveal"]>h2,.capsule-dialog[data-motion-state="reward-reveal"]>strong,.capsule-dialog[data-motion-state="reward-reveal"]>.eyebrow { animation:motion-row-in var(--motion-normal) var(--ease-enter) 100ms both; }
 .capsule-dialog[data-rarity="legendary"][data-motion-state="reward-reveal"]::before { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(110deg,transparent 25%,rgba(180,135,255,.28),transparent 70%); transform:translateX(-110%); animation:motion-sweep 520ms var(--ease-standard); }
@@ -67,7 +73,8 @@ button,.button {
 @keyframes motion-sweep{to{transform:translateX(110%)}}
 
 :root[data-calm="true"] .daily-overlay [data-motion-state],:root[data-calm="true"] .daily-overlay[data-motion-state] .daily-sheet,
-:root[data-calm="true"] .notification,:root[data-calm="true"] .reward-box-visual,:root[data-calm="true"] .hud-stat__value { animation:none!important; }
+:root[data-calm="true"] .notification,:root[data-calm="true"] .reward-box-visual,:root[data-calm="true"] .hud-stat__value,
+:root[data-calm="true"] .milestone-overlay,:root[data-calm="true"] .milestone-overlay * { animation:none!important; }
 :root[data-calm="true"] [data-motion-state="reveal"],:root[data-calm="true"] [data-motion-state="item-change"],:root[data-calm="true"] [data-motion-state="correct"],:root[data-calm="true"] [data-motion-state="incorrect"] { animation-duration:120ms; }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;animation-duration:1ms!important;animation-delay:0ms!important;animation-iteration-count:1!important;transition-duration:80ms!important;transform:none!important}

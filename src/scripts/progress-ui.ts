@@ -461,7 +461,7 @@ function renderHome() {
   bindHomeActions(root, day);
   const claimedSlots = new Set(day.quests.filter((quest) => quest.claimed).map((quest) => quest.slot));
   if (lastClaimedSlots) for (const slot of claimedSlots) if (!lastClaimedSlots.has(slot))
-    requestFeedback('quest-complete', root.querySelector<HTMLElement>(`[data-quest-slot="${slot}"]`));
+    requestFeedback('quest-complete', root.querySelector<HTMLElement>(`[data-quest-slot="${slot}"]`), null);
   if (lastAllDailyComplete === false && allComplete)
     requestFeedback('reward-reveal', root.querySelector<HTMLElement>('.daily-all-bonus'), null);
   lastClaimedSlots = claimedSlots;

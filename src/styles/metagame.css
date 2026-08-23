@@ -639,3 +639,116 @@
   margin-top: 14px;
   background: rgba(255, 255, 255, 0.15);
 }
+
+/* Milestone Presentation V1 */
+.milestone-overlay {
+  width: min(560px, calc(100% - 24px));
+  max-height: min(760px, calc(100dvh - 24px));
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(254, 204, 2, 0.7);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 24px 80px rgba(4, 20, 44, 0.38);
+}
+.milestone-overlay::backdrop { background: rgba(4, 20, 44, 0.78); }
+.milestone-sheet {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  max-height: min(760px, calc(100dvh - 24px));
+  align-items: stretch;
+  padding: 28px;
+  overflow: hidden;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(254, 204, 2, 0.2), transparent 42%),
+    linear-gradient(180deg, rgba(0, 83, 159, 0.06), transparent 34%);
+}
+.milestone-sheet::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  pointer-events: none;
+  border: 1px solid rgba(0, 53, 128, 0.15);
+  border-radius: calc(var(--radius-lg) - 6px);
+}
+.milestone-crest {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 10px;
+  place-items: center;
+  border: 2px solid var(--sv-yellow);
+  border-radius: 50%;
+  background: var(--nordic-navy);
+  color: var(--sv-yellow);
+  box-shadow: 0 0 0 5px rgba(254, 204, 2, 0.15);
+}
+.milestone-sheet > .eyebrow { color: var(--fi-blue); }
+.milestone-sheet > h2 { margin-bottom: 18px; font-family: ui-serif, Georgia, serif; font-size: 1.45rem; }
+.milestone-content { display: grid; min-height: 0; gap: 0; overflow-y: auto; text-align: left; }
+.milestone-section { padding: 16px 0; border-top: 1px solid rgba(0, 53, 128, 0.14); }
+.milestone-section:first-child { padding-top: 0; border-top: 0; }
+.milestone-section h3,
+.milestone-kicker {
+  margin: 0 0 10px;
+  color: var(--fi-blue);
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.milestone-level { text-align: center; }
+.milestone-level-number {
+  display: block;
+  color: var(--nordic-navy);
+  font-family: ui-serif, Georgia, serif;
+  font-size: clamp(4rem, 18vw, 6.5rem);
+  line-height: 0.9;
+}
+.milestone-list { display: grid; gap: 10px; }
+.milestone-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 11px;
+  border: 1px solid rgba(0, 53, 128, 0.12);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.68);
+}
+.milestone-item strong { display: block; color: var(--nordic-navy); font-size: 1.02rem; }
+.milestone-item p { margin: 2px 0 4px; color: var(--muted); }
+.milestone-item small { display: block; color: var(--fi-blue); font-weight: 700; }
+.milestone-achievement-badge { width: 58px; height: 66px; object-fit: contain; }
+.milestone-check {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--success);
+  color: white;
+  font-weight: 900;
+}
+.milestone-continue {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  margin-top: 18px;
+  box-shadow: 0 -10px 20px 8px var(--surface), 0 5px 14px rgba(228, 154, 0, 0.22);
+}
+
+@media (max-width: 380px) {
+  .milestone-overlay { width: calc(100% - 12px); height: calc(100dvh - 12px); max-height: calc(100dvh - 12px); }
+  .milestone-sheet { height: calc(100dvh - 14px); max-height: none; padding: 20px 16px 16px; }
+  .milestone-crest { width: 48px; height: 48px; margin-bottom: 7px; }
+  .milestone-sheet > h2 { margin-bottom: 12px; font-size: 1.25rem; }
+  .milestone-section { padding: 12px 0; }
+  .milestone-level-number { font-size: 4rem; }
+  .milestone-item { gap: 9px; padding: 9px; }
+  .milestone-achievement-badge { width: 48px; height: 55px; }
+}

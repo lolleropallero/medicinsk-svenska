@@ -1,5 +1,5 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
-import { openSpecificCard } from './helpers';
+import { continuePastMilestone, openSpecificCard } from './helpers';
 
 const rejectedLabels = ['Suomi', 'Svenska', 'Suomeksi', 'Ruotsiksi'];
 
@@ -63,6 +63,7 @@ test('description exercise keeps Swedish in metadata without a decorative flag r
   await expect(page.getByRole('button', { name: 'Näytä vastaus' })).toBeVisible();
 
   await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await continuePastMilestone(page);
   await expectNoVisibleLanguageLabels(page.locator('.description-practice'));
   await expect(page.locator('#canonical-answer')).toHaveAttribute('lang', 'sv');
   await expect(page.locator('#canonical-answer')).toBeVisible();

@@ -33,3 +33,8 @@ export async function openSpecificCard(
   await page.reload();
   await page.evaluate(() => window.scrollTo(0, 0));
 }
+
+export async function continuePastMilestone(page: Page) {
+  const button = page.getByRole('button', { name: 'Fortsätt' });
+  if (await button.isVisible()) await button.click();
+}

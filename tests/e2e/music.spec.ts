@@ -49,6 +49,12 @@ test('same-page playback adopts every new shuffle bag instead of looping an old 
   }
 });
 
+test('a naturally ending track advances on the same page without media errors',async({page})=>{
+  const errors:Error[]=[];page.on('pageerror',error=>errors.push(error));await page.goto('/');await dismissOverlay(page);await unlock(page);const before=await snapshot(page);
+  await page.evaluate(currentTrack=>{const audio=[...document.querySelectorAll<HTMLAudioElement>('[data-music-channel]')].find(channel=>channel.dataset.trackId===currentTrack)!;audio.currentTime=audio.duration-2;},before.currentTrack);
+  await expect.poll(async()=>(await snapshot(page)).currentTrack,{timeout:10000}).not.toBe(before.currentTrack);await expect.poll(async()=>(await snapshot(page)).crossfading).toBe(false);expect((await snapshot(page)).playing).toBe(true);expect(errors).toEqual([]);
+});
+
 test('all five local assets return usable audio and a failed current track is skipped',async({page,request})=>{
   await page.goto('/');await dismissOverlay(page);await unlock(page);const before=await snapshot(page);expect(before.sources).toHaveLength(5);
   for(const source of before.sources){const response=await request.get(source);expect(response.status()).toBe(200);expect(response.headers()['content-type']).toContain('audio/mpeg');}

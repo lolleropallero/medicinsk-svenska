@@ -20,7 +20,7 @@ function persist(){if(!session)return;const active=channels[activeIndex];if(acti
 function calm(){return document.documentElement.dataset.calm==='true';}
 function channelGain(channel:Channel){if(!channel.trackId)return 0;return effectiveMusicGain(loadMusicSettings().volume,MUSIC_CATALOG[channel.trackId].normalizationGain,calm(),ducked)*channel.mix;}
 function setGains(){for(const channel of channels)channel.audio.volume=Math.min(1,Math.max(0,channelGain(channel)));}
-function rampGains(duration:number){cancelAnimationFrame(frame);const starts=channels.map(({audio})=>audio.volume),started=performance.now();const tick=(now:number)=>{const progress=Math.min(1,(now-started)/duration);for(let index=0;index<channels.length;index++){const target=channelGain(channels[index]!);channels[index]!.audio.volume=starts[index]!+(target-starts[index]!)*progress;}if(progress<1)frame=requestAnimationFrame(tick);};frame=requestAnimationFrame(tick);}
+function rampGains(duration:number){cancelAnimationFrame(frame);const starts=channels.map(({audio})=>audio.volume),started=performance.now();const tick=(now:number)=>{const progress=Math.min(1,Math.max(0,(now-started)/duration));for(let index=0;index<channels.length;index++){const target=channelGain(channels[index]!);const gain=starts[index]!+(target-starts[index]!)*progress;channels[index]!.audio.volume=Math.min(1,Math.max(0,gain));}if(progress<1)frame=requestAnimationFrame(tick);};frame=requestAnimationFrame(tick);}
 function remainingTracks(){return MUSIC_TRACK_IDS.filter(id=>!session?.failed.includes(id));}
 function nextTrack():MusicTrackId|undefined{
   if(!session)return undefined;let position=session.position+1;

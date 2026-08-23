@@ -142,11 +142,6 @@
   background: var(--sv-yellow);
   color: var(--fi-blue);
 }
-#target-ribbon {
-  position: relative;
-  inset: auto;
-  margin: 0 0 18px;
-}
 #grammar {
   display: inline-flex;
   max-width: 100%;

@@ -26,13 +26,11 @@ test('brand, backgrounds, language corners, and all deck icons use supplied SVG 
   for (const direction of ['fi-sv','sv-fi'] as const) {
     await openSpecificCard(page, { id:'anatomi-004', deckId:'anatomi' }, direction);
     expect(await page.locator('.nordic-backdrop').evaluate((node) => getComputedStyle(node).backgroundImage)).toContain('study-light');
-    const source = page.locator('#source-ribbon img');
-    const target = page.locator('#target-ribbon img');
-    await loaded(source); await loaded(target);
-    expect(await filename(source)).toContain(direction === 'fi-sv' ? 'language-corner-fi' : 'language-corner-sv');
-    expect(await filename(target)).toContain(direction === 'fi-sv' ? 'language-corner-sv' : 'language-corner-fi');
+    await expect(page.locator('#flashcard .language-ribbon, #flashcard img')).toHaveCount(0);
+    await expect(page.locator('#front-term')).toHaveAttribute('lang', direction === 'fi-sv' ? 'fi' : 'sv');
+    await expect(page.locator('#back-term')).toHaveAttribute('lang', direction === 'fi-sv' ? 'sv' : 'fi');
     await page.getByRole('button', { name:'Näytä vastaus' }).click();
-    await expect(target).toBeVisible();
+    await expect(page.locator('#back-term')).toBeVisible();
   }
 
   await page.goto('/fraasit/harjoitus?mode=all&amount=10&session=nordic-assets-phrase');

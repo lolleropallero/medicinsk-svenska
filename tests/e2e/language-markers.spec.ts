@@ -7,23 +7,17 @@ async function expectNoVisibleLanguageLabels(scope: Page | Locator) {
   for (const label of rejectedLabels) await expect(scope.getByText(label, { exact: true })).toHaveCount(0);
 }
 
-test('flashcards use text-free direction markers in both directions before and after reveal', async ({ page }) => {
+test('flashcards use language metadata without decorative flag ribbons', async ({ page }) => {
   for (const direction of ['fi-sv', 'sv-fi'] as const) {
     await openSpecificCard(page, { id: 'anatomi-004', deckId: 'anatomi' }, direction);
     const sourceLanguage = direction === 'fi-sv' ? 'fi' : 'sv';
     const targetLanguage = direction === 'fi-sv' ? 'sv' : 'fi';
-    const source = page.locator('#source-ribbon');
-    const target = page.locator('#target-ribbon');
     const front = page.locator('#front-term');
     const back = page.locator('#back-term');
 
     await expectNoVisibleLanguageLabels(page.locator('#flashcard-app'));
-    await expect(source).toHaveClass(new RegExp(`\\blanguage-${sourceLanguage}\\b`));
-    await expect(target).toHaveClass(new RegExp(`\\blanguage-${targetLanguage}\\b`));
-    await expect(source).toHaveAttribute('aria-hidden', 'true');
-    await expect(target).toHaveAttribute('aria-hidden', 'true');
-    await expect(source).toHaveText('');
-    await expect(target).toHaveText('');
+    await expect(page.locator('#flashcard .language-ribbon')).toHaveCount(0);
+    await expect(page.locator('#flashcard img')).toHaveCount(0);
     await expect(front).toHaveAttribute('lang', sourceLanguage);
     await expect(back).toHaveAttribute('lang', targetLanguage);
     await expect(page.locator('#answer-area')).toBeHidden();
@@ -34,8 +28,8 @@ test('flashcards use text-free direction markers in both directions before and a
     await expect(front).toHaveAttribute('lang', sourceLanguage);
     await expect(back).toHaveAttribute('lang', targetLanguage);
     await expect(back).toBeVisible();
-    await expect(source).toHaveClass(new RegExp(`\\blanguage-${sourceLanguage}\\b`));
-    await expect(target).toHaveClass(new RegExp(`\\blanguage-${targetLanguage}\\b`));
+    await expect(page.locator('#flashcard .language-ribbon')).toHaveCount(0);
+    await expect(page.locator('#flashcard img')).toHaveCount(0);
   }
 });
 

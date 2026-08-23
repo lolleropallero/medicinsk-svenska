@@ -19,7 +19,6 @@ import type { DeckClient, FlashcardClient } from '../types/content';
 import { dispatchProgress } from '../lib/progress/storage';
 import { startActiveTime } from '../lib/progress/active-time';
 import { showSessionRewards } from '../lib/progress/session-summary';
-import { languageRibbon } from '../lib/visuals';
 
 const STORAGE_KEY = 'medicinsk-svenska.flashcard-session.v1';
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -196,13 +195,6 @@ function startApp() {
     byId('front-term').lang = session.direction === 'fi-sv' ? 'fi' : 'sv';
     byId('back-term').textContent = sides.back;
     byId('back-term').lang = session.direction === 'fi-sv' ? 'sv' : 'fi';
-    const sourceMarker=languageRibbon(session.direction,'source'),targetMarker=languageRibbon(session.direction,'target');
-    const sourceRibbon=byId('source-ribbon'),targetRibbon=byId('target-ribbon');
-    sourceRibbon.className=`language-ribbon ${sourceMarker.className}`;
-    targetRibbon.className=`language-ribbon ${targetMarker.className}`;
-    const sourceImage=sourceRibbon.querySelector<HTMLImageElement>('.language-ribbon-image'),targetImage=targetRibbon.querySelector<HTMLImageElement>('.language-ribbon-image');
-    if(sourceImage)sourceImage.src=sourceMarker.language==='fi'?sourceImage.dataset.fi!:sourceImage.dataset.sv!;
-    if(targetImage)targetImage.src=targetMarker.language==='fi'?targetImage.dataset.fi!:targetImage.dataset.sv!;
     flashcard.dataset.direction=session.direction;
     const grammar = [partOfSpeechLabel(card.partOfSpeech), card.inflection].filter(Boolean).join(' · ');
     byId('grammar').textContent = grammar;

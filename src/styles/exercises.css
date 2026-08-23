@@ -8,15 +8,26 @@
   align-items: center;
   min-height: 48px;
   margin-bottom: 10px;
-  color: white;
+  color: #173b5f;
 }
 .practice-back {
   display: flex;
+  min-height: 40px;
   align-items: center;
   gap: 3px;
+  padding: 7px 11px 7px 7px;
+  border: 1px solid rgba(0, 53, 128, 0.22);
+  border-radius: var(--pill);
+  background: rgba(255, 255, 255, 0.88);
+  color: #003580;
+  box-shadow: 0 3px 10px rgba(0, 53, 128, 0.1);
   font-size: 0.85rem;
   font-weight: 750;
   text-decoration: none;
+}
+.practice-back:hover {
+  border-color: #003580;
+  background: white;
 }
 .practice-back .app-icon {
   width: 20px;

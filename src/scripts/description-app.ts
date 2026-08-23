@@ -17,6 +17,7 @@ import type { DescriptionCategoryClient, DescriptionExerciseClient } from '../ty
 import { dispatchProgress } from '../lib/progress/storage';
 import { startActiveTime } from '../lib/progress/active-time';
 import { showSessionRewards } from '../lib/progress/session-summary';
+import { playSound } from '../lib/sound/player';
 
 const STORAGE_KEY = 'medicinsk-svenska.description-session.v1';
 const byId = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -139,6 +140,7 @@ function render() {
 
 function applyResolution(result: 'correct' | 'incorrect' | 'revealed') {
   if (!session || session.currentResolvedResult) return;
+  playSound(result === 'revealed' ? 'reveal' : result);
   const itemId=session.selectedExerciseIds[session.currentIndex]!;
   session = resolveDescription(session, result);
   dispatchProgress({type:'item-completed',eventId:`descriptions:${session.sessionId}:item:${itemId}`,sessionId:session.sessionId,mode:'descriptions',itemId,sourceId:session.sourceMode==='all'?'all':session.sourceCategoryId!,occurredAt:Date.now(),firstAttemptCorrect:result==='correct',hadMisses:result!=='correct',resolution:result});

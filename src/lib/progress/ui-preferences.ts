@@ -6,6 +6,8 @@ export const UI_PREFERENCES_SCHEMA_VERSION = 1 as const;
 export interface UiPreferencesV1 {
   schemaVersion: typeof UI_PREFERENCES_SCHEMA_VERSION;
   dailyOverlayDismissedDay?: string;
+  soundEnabled: boolean;
+  soundVolume: number;
 }
 
 export interface DailyOverlayEligibility {
@@ -19,7 +21,7 @@ export interface DailyOverlayEligibility {
 }
 
 export function defaultUiPreferences(): UiPreferencesV1 {
-  return { schemaVersion: UI_PREFERENCES_SCHEMA_VERSION };
+  return { schemaVersion: UI_PREFERENCES_SCHEMA_VERSION, soundEnabled: true, soundVolume: .65 };
 }
 
 export function parseUiPreferences(raw: string | null): UiPreferencesV1 {
@@ -31,24 +33,26 @@ export function parseUiPreferences(raw: string | null): UiPreferencesV1 {
     if (candidate.schemaVersion !== UI_PREFERENCES_SCHEMA_VERSION) return defaultUiPreferences();
     if (candidate.dailyOverlayDismissedDay !== undefined &&
         !/^\d{4}-\d{2}-\d{2}$/.test(candidate.dailyOverlayDismissedDay)) return defaultUiPreferences();
-    return candidate.dailyOverlayDismissedDay
-      ? { schemaVersion: UI_PREFERENCES_SCHEMA_VERSION, dailyOverlayDismissedDay: candidate.dailyOverlayDismissedDay }
-      : defaultUiPreferences();
+    const soundEnabled=typeof candidate.soundEnabled==='boolean'?candidate.soundEnabled:true;
+    const soundVolume=typeof candidate.soundVolume==='number'&&Number.isFinite(candidate.soundVolume)&&candidate.soundVolume>=0&&candidate.soundVolume<=1?candidate.soundVolume:.65;
+    return { schemaVersion:UI_PREFERENCES_SCHEMA_VERSION,soundEnabled,soundVolume,
+      ...(candidate.dailyOverlayDismissedDay?{dailyOverlayDismissedDay:candidate.dailyOverlayDismissedDay}:{}) };
   } catch {
     return defaultUiPreferences();
   }
 }
 
 export function loadUiPreferences(storage: Pick<Storage, 'getItem'> = localStorage): UiPreferencesV1 {
-  return parseUiPreferences(storage.getItem(UI_PREFERENCES_KEY));
+  try{return parseUiPreferences(storage.getItem(UI_PREFERENCES_KEY));}catch{return defaultUiPreferences();}
 }
+export function saveUiPreferences(preferences:UiPreferencesV1,storage:Pick<Storage,'setItem'>=localStorage){try{storage.setItem(UI_PREFERENCES_KEY,JSON.stringify(preferences));}catch{/* presentation preferences remain usable in memory */}return preferences;}
 
 export function markDailyOverlayHandled(
-  storage: Pick<Storage, 'setItem'> = localStorage,
+  storage: Pick<Storage, 'getItem'|'setItem'> = localStorage,
   date = new Date(),
 ): UiPreferencesV1 {
   const preferences: UiPreferencesV1 = {
-    schemaVersion: UI_PREFERENCES_SCHEMA_VERSION,
+    ...loadUiPreferences(storage),
     dailyOverlayDismissedDay: localDayKey(date),
   };
   storage.setItem(UI_PREFERENCES_KEY, JSON.stringify(preferences));
@@ -56,7 +60,7 @@ export function markDailyOverlayHandled(
 }
 
 export function dismissDailyOverlay(
-  storage: Pick<Storage, 'setItem'> = localStorage,
+  storage: Pick<Storage, 'getItem'|'setItem'> = localStorage,
   date = new Date(),
 ): UiPreferencesV1 {
   return markDailyOverlayHandled(storage, date);

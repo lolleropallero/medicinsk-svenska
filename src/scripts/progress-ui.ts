@@ -93,6 +93,8 @@ import {
   type RewardBoxSize,
 } from "../lib/reward-box-assets";
 import { nordicAssets } from "../lib/nordic-assets";
+import { playSound } from "../lib/sound/player";
+import { loadSoundSettings, saveSoundSettings } from "../lib/sound/settings";
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T | null;
@@ -403,6 +405,7 @@ function openDailyOverlay() {
   const dialog = $<HTMLDialogElement>("daily-overlay");
   if (!dialog || dialog.open || document.querySelector("dialog[open]")) return;
   dialog.showModal();
+  playSound('overlay-open');
   const target =
     dialog.querySelector<HTMLElement>("[data-quest-action]") ??
     $("daily-overlay-title");
@@ -416,6 +419,7 @@ function closeDailyOverlay(options: {
   if (!dialog?.open) return;
   if (options.markDismissed) dismissDailyOverlay();
   dialog.close();
+  playSound('overlay-close');
   if (options.restoreFocus)
     $<HTMLButtonElement>("daily-launcher")?.focus({ preventScroll: true });
 }
@@ -484,6 +488,10 @@ function renderSettings() {
   goal.value = String(state.settings.dailyGoal);
   const calm = $<HTMLInputElement>("calm-mode");
   if (calm) calm.checked = state.settings.calmMode;
+  const sound=loadSoundSettings(),enabled=$<HTMLInputElement>('sound-enabled'),volume=$<HTMLInputElement>('sound-volume'),output=$<HTMLOutputElement>('sound-volume-value');
+  if(enabled)enabled.checked=sound.enabled;
+  if(volume)volume.value=String(Math.round(sound.volume*100));
+  if(output)output.value=`${Math.round(sound.volume*100)} %`;
 }
 function shopLabel(type: string, itemId: string) {
   if (type === "cosmetic")
@@ -614,6 +622,7 @@ function showCapsule(capsule: {
     rarityCopy[rarity as keyof typeof rarityCopy];
   $("capsule-reward")!.textContent = rewardCopy(capsule.reward);
   dialog.showModal();
+  playSound('reward-reveal');
   dialog.querySelector<HTMLButtonElement>("[data-close]")?.focus();
 }
 function renderSeason() {
@@ -738,7 +747,11 @@ $<HTMLInputElement>("calm-mode")?.addEventListener("change", (event) => {
   next.settings.calmMode = (event.target as HTMLInputElement).checked;
   persist(next);
   document.documentElement.dataset.calm = String(next.settings.calmMode);
+  playSound('ui-tap');
 });
+$<HTMLInputElement>('sound-enabled')?.addEventListener('change',(event)=>{const enabled=(event.target as HTMLInputElement).checked;if(enabled){saveSoundSettings({...loadSoundSettings(),enabled});playSound('ui-tap');}else{playSound('ui-tap');saveSoundSettings({...loadSoundSettings(),enabled});}});
+$<HTMLInputElement>('sound-volume')?.addEventListener('input',(event)=>{const volume=Number((event.target as HTMLInputElement).value)/100;saveSoundSettings({...loadSoundSettings(),volume});const output=$<HTMLOutputElement>('sound-volume-value');if(output)output.value=`${Math.round(volume*100)} %`;});
+$<HTMLInputElement>('sound-volume')?.addEventListener('change',()=>playSound('ui-tap'));
 $("export-progress")?.addEventListener("click", () => {
   const blob = new Blob([JSON.stringify(exportEnvelope(state), null, 2)], {
       type: "application/json",

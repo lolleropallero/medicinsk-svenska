@@ -1,7 +1,8 @@
 import { COSMETICS } from './catalog';
 import { DAY_RE, dateFromDayKey } from './calendar';
-import { createProgressState, PROGRESS_KEY, reconcileProgress, reduceProgress } from './core';
+import { createProgressState, levelProgress, PROGRESS_KEY, reconcileProgress, reduceProgress } from './core';
 import type { ProgressEvent, ProgressNotification, ProgressStateV1, SessionReward } from './types';
+import { playMilestone } from '../sound/player';
 export { PROGRESS_KEY } from './core';
 
 const exactKeys = (value: object, keys: string[]) => Object.keys(value).every((key) => keys.includes(key));
@@ -46,7 +47,7 @@ export function loadProgress(storage: Pick<Storage,'getItem'|'setItem'|'removeIt
   storage.removeItem(PROGRESS_KEY);return createProgressState(now);
 }
 export function saveProgress(state:ProgressStateV1,storage:Pick<Storage,'setItem'>=localStorage){storage.setItem(PROGRESS_KEY,JSON.stringify(state));}
-export function dispatchProgress(event:ProgressEvent,storage:Storage=localStorage){const current=loadProgress(storage,event.occurredAt);const result=reduceProgress(current,event);if(result.applied)saveProgress(result.state,storage);return result;}
+export function dispatchProgress(event:ProgressEvent,storage:Storage=localStorage){const current=loadProgress(storage,event.occurredAt);const result=reduceProgress(current,event);if(result.applied){saveProgress(result.state,storage);const priorNotifications=new Set(current.notifications.map(item=>item.id));const added=result.state.notifications.filter(item=>!priorNotifications.has(item.id));playMilestone({levelUp:levelProgress(result.state.lifetime.xp).level>levelProgress(current.lifetime.xp).level,achievement:added.some(item=>item.kind==='achievement'),questComplete:added.some(item=>item.kind==='daily-quest'||item.kind==='weekly-quest')});}return result;}
 export interface ExportEnvelope {format:'medicinsk-svenska-progress';exportFormatVersion:1;exportedAt:number;progress:ProgressStateV1}
 export function exportEnvelope(state:ProgressStateV1,now=Date.now()):ExportEnvelope{return{format:'medicinsk-svenska-progress',exportFormatVersion:1,exportedAt:now,progress:state};}
 export function parseImport(raw:string):{ok:true;state:ProgressStateV1}|{ok:false;error:string}{try{const value:unknown=JSON.parse(raw);if(!value||typeof value!=='object'||Array.isArray(value))return{ok:false,error:'Tiedosto ei ole kelvollinen.'};const envelope=value as Partial<ExportEnvelope>;

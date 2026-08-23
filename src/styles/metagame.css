@@ -504,6 +504,11 @@
   flex-direction: row;
   align-items: center;
 }
+.settings-grid input[type="range"] {
+  width: min(220px, 58vw);
+  accent-color: var(--fi-blue);
+}
+.settings-grid output { margin-inline-start: 8px; font-variant-numeric: tabular-nums; }
 .toggle input {
   width: 22px;
   height: 22px;

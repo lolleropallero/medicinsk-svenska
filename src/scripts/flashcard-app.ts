@@ -19,6 +19,7 @@ import type { DeckClient, FlashcardClient } from '../types/content';
 import { dispatchProgress } from '../lib/progress/storage';
 import { startActiveTime } from '../lib/progress/active-time';
 import { showSessionRewards } from '../lib/progress/session-summary';
+import { playSound } from '../lib/sound/player';
 
 const STORAGE_KEY = 'medicinsk-svenska.flashcard-session.v1';
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -211,6 +212,7 @@ function startApp() {
 
   function reveal() {
     if (!session.currentCardId || session.revealed) return;
+    playSound('reveal');
     session = revealCurrentCard(session);
     persist();
     render({ focus: true });
@@ -221,6 +223,7 @@ function startApp() {
     const completedId = session.currentCardId;
     const priorAttempts = session.attemptCountByCard[completedId] ?? 0;
     gradingLocked = true;
+    playSound(correct ? 'correct' : 'incorrect');
     correctButton.disabled = true;
     missedButton.disabled = true;
     session = gradeCurrentCard(session, correct, Date.now());

@@ -21,30 +21,30 @@ const eligible = (overrides: Partial<Parameters<typeof shouldAutoOpenDailyOverla
 
 describe('daily overlay UI preferences', () => {
   it('defaults safely when absent or corrupt', () => {
-    expect(parseUiPreferences(null)).toEqual({ schemaVersion: 1 });
-    expect(parseUiPreferences('{broken')).toEqual({ schemaVersion: 1 });
-    expect(parseUiPreferences('{"schemaVersion":2}')).toEqual({ schemaVersion: 1 });
-    expect(parseUiPreferences('{"schemaVersion":1,"dailyOverlayDismissedDay":"today"}')).toEqual({ schemaVersion: 1 });
+    expect(parseUiPreferences(null)).toEqual({ schemaVersion: 1, soundEnabled:true, soundVolume:.65 });
+    expect(parseUiPreferences('{broken')).toEqual({ schemaVersion: 1, soundEnabled:true, soundVolume:.65 });
+    expect(parseUiPreferences('{"schemaVersion":2}')).toEqual({ schemaVersion: 1, soundEnabled:true, soundVolume:.65 });
+    expect(parseUiPreferences('{"schemaVersion":1,"dailyOverlayDismissedDay":"today"}')).toEqual({ schemaVersion: 1, soundEnabled:true, soundVolume:.65 });
   });
 
   it('stores dismissal for the controlled local date without touching progress', () => {
     const storage = new MemoryStorage();
     storage.setItem('medicinsk-svenska.progress.v1', '{"economy":"unchanged"}');
     dismissDailyOverlay(storage, new Date(2026, 7, 21, 9));
-    expect(JSON.parse(storage.getItem(UI_PREFERENCES_KEY)!)).toEqual({ schemaVersion: 1, dailyOverlayDismissedDay: '2026-08-21' });
+    expect(JSON.parse(storage.getItem(UI_PREFERENCES_KEY)!)).toEqual({ schemaVersion: 1, soundEnabled:true, soundVolume:.65, dailyOverlayDismissedDay: '2026-08-21' });
     expect(storage.getItem('medicinsk-svenska.progress.v1')).toBe('{"economy":"unchanged"}');
   });
 
   it('marks quest activation handled for today and permits automatic opening tomorrow', () => {
     const storage = new MemoryStorage();
     const preferences = markDailyOverlayHandled(storage, new Date(2026, 7, 21, 9));
-    expect(preferences).toEqual({ schemaVersion: 1, dailyOverlayDismissedDay: '2026-08-21' });
+    expect(preferences).toEqual({ schemaVersion: 1, soundEnabled:true, soundVolume:.65, dailyOverlayDismissedDay: '2026-08-21' });
     expect(eligible({ preferences })).toBe(false);
     expect(eligible({ localDay: '2026-08-22', preferences })).toBe(true);
   });
 
   it('opens once on an eligible day and becomes eligible on the next local day', () => {
-    const preferences = { schemaVersion: 1 as const, dailyOverlayDismissedDay: '2026-08-21' };
+    const preferences = { schemaVersion: 1 as const, soundEnabled:true, soundVolume:.65, dailyOverlayDismissedDay: '2026-08-21' };
     expect(eligible({ preferences })).toBe(false);
     expect(eligible({ localDay: '2026-08-22', preferences })).toBe(true);
   });

@@ -30,7 +30,12 @@ export function playMilestone(input:{levelUp?:boolean;achievement?:boolean;quest
   const effect=selectMilestone(input);
   return effect?playSound(effect):false;
 }
-export function selectMilestone(input:{levelUp?:boolean;achievement?:boolean;questComplete?:boolean}):SoundEffect|null{return input.levelUp?'level-up':input.achievement?'achievement':input.questComplete?'quest-complete':null;}
+export function selectMilestone(input:{levelUp?:boolean;achievement?:boolean;questComplete?:boolean}):SoundEffect|null{
+  if(input.levelUp)return 'level-up';
+  if(input.achievement)return 'achievement';
+  if(input.questComplete)return 'quest-complete';
+  return null;
+}
 if(typeof window!=='undefined'){
   const unlock=()=>unlockSound();
   window.addEventListener('pointerdown',unlock,{capture:true,once:true});

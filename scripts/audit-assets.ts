@@ -75,9 +75,18 @@ if (existsSync(join(visualFixRoot, 'rewards', 'box-standard.svg'))) errors.push(
 if (/box-(?:hud|standard)\.svg/.test(`${visualFixMapping}\n${rewardBoxMapping}`)) errors.push('obsolete V4 standard/HUD SVG remains in runtime mappings');
 if (!/standard:\s*\{\s*small:\s*rewardHudUrl,\s*normal:\s*rewardStandardUrl,\s*large:\s*rewardStandardUrl/s.test(rewardBoxMapping)) errors.push('standard reward size mapping is incomplete');
 
-const actualAudio=walk(audioRoot).filter(path=>/\.(?:ogg|wav|mp3)$/i.test(path)).map(path=>normalize(relative(audioRoot,path))).sort();
+const actualAudio=walk(audioRoot).filter(path=>/\.(?:ogg|wav|mp3)$/i.test(path)).map(path=>normalize(relative(audioRoot,path))).sort((left,right)=>left.localeCompare(right));
 if(actualAudio.length!==8)errors.push(`expected exactly 8 application audio files, found ${actualAudio.length}`);
-for(const file of audioFiles){if(!actualAudio.includes(file))errors.push(`missing approved audio: ${file}`);const absolute=join(audioRoot,file);if(existsSync(absolute)){const bytes=readFileSync(absolute);if(!bytes.length)errors.push(`empty audio: ${file}`);if(bytes.subarray(0,4).toString('ascii')!=='OggS')errors.push(`${file}: invalid OGG signature`);}if(!soundCatalog.includes(`../../assets/audio/${file}?url`))errors.push(`audio catalog lacks static import: ${file}`);}
+for(const file of audioFiles){
+  if(!actualAudio.includes(file))errors.push(`missing approved audio: ${file}`);
+  const absolute=join(audioRoot,file);
+  if(existsSync(absolute)){
+    const bytes=readFileSync(absolute);
+    if(!bytes.length)errors.push(`empty audio: ${file}`);
+    if(bytes.subarray(0,4).toString('ascii')!=='OggS')errors.push(`${file}: invalid OGG signature`);
+  }
+  if(!soundCatalog.includes(`../../assets/audio/${file}?url`))errors.push(`audio catalog lacks static import: ${file}`);
+}
 for(const id of semanticSounds)if(!soundCatalog.includes(`'${id}'`)&&!soundCatalog.includes(`${id}:`))errors.push(`missing semantic sound mapping: ${id}`);
 if((soundCatalog.match(/milestoneUrl/g)??[]).length<4)errors.push('milestone audio is not intentionally shared by three semantic events');
 if(actualAudio.some(file=>/\.(?:wav|mp3)$/i.test(file)))errors.push('WAV or MP3 duplicate bundled with application audio');

@@ -40,6 +40,15 @@ test('crossfade seam advances once, calm mode attenuates without restart, and se
   const beforeCalm=await snapshot(page);await page.evaluate(()=>document.documentElement.dataset.calm='true');await expect.poll(async()=>(await snapshot(page)).calm).toBe(true);const afterCalm=await snapshot(page);expect(afterCalm.currentTrack).toBe(beforeCalm.currentTrack);expect(afterCalm.bag).toEqual(beforeCalm.bag);
 });
 
+test('same-page playback adopts every new shuffle bag instead of looping an old subset',async({page})=>{
+  await page.goto('/');await dismissOverlay(page);await unlock(page);
+  for(let cycle=0;cycle<3;cycle++){
+    for(let step=1;step<=5;step++){
+      const before=await snapshot(page);await page.evaluate(()=>window.__musicTest!.forceNext());await expect.poll(async()=>(await snapshot(page)).currentTrack).not.toBe(before.currentTrack);await expect.poll(async()=>(await snapshot(page)).crossfading).toBe(false);const after=await snapshot(page);expect(after.position).toBe(step===5?0:step);
+    }
+  }
+});
+
 test('all five local assets return usable audio and a failed current track is skipped',async({page,request})=>{
   await page.goto('/');await dismissOverlay(page);await unlock(page);const before=await snapshot(page);expect(before.sources).toHaveLength(5);
   for(const source of before.sources){const response=await request.get(source);expect(response.status()).toBe(200);expect(response.headers()['content-type']).toContain('audio/mpeg');}

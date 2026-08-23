@@ -46,7 +46,7 @@ async function begin(){
 }
 function finishAdvance(outgoing:Channel,incoming:Channel,next:MusicTrackId){
   outgoing.audio.pause();outgoing.trackId=undefined;outgoing.audio.removeAttribute('src');outgoing.audio.load();outgoing.mix=0;
-  activeIndex=1-activeIndex;session!.previousTrack=session!.currentTrack;session!.currentTrack=next;let found=session!.bag.indexOf(next);if(found<0&&pendingBag){session!.bag=pendingBag;pendingBag=null;found=0;}session!.position=found;session!.currentTime=incoming.audio.currentTime;incoming.mix=1;crossfading=false;playing=true;setGains();prepareNext('metadata');persist();
+  activeIndex=1-activeIndex;session!.previousTrack=session!.currentTrack;const oldBagHasNext=session!.bag.slice(session!.position+1).some(id=>!session!.failed.includes(id));session!.currentTrack=next;let found=session!.bag.indexOf(next);if(!oldBagHasNext&&pendingBag?.[0]===next){session!.bag=pendingBag;pendingBag=null;found=0;}session!.position=found;session!.currentTime=incoming.audio.currentTime;incoming.mix=1;crossfading=false;playing=true;setGains();prepareNext('metadata');persist();
 }
 async function advance(useFade=true){
   if(!session||crossfading)return;const outgoing=channels[activeIndex]!,incoming=channels[1-activeIndex]!,next=incoming.trackId??nextTrack();if(!next){playing=false;outgoing.audio.pause();return;}prepare(incoming,next,'auto');

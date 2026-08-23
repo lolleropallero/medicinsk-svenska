@@ -51,6 +51,8 @@ const backgroundKind=exerciseRoute?'studyLight':rewardRoute?'rewardsDark':path==
     <main id="sisalto" class:list={{ 'study-main': exerciseRoute }}><slot /></main>
     {!exerciseRoute&&<MobileNavigation path={path}/>}
     <div id="reward-notifications" class="notifications" aria-live="polite"></div>
+    <div id="music-player" aria-hidden="true"></div>
     <script src="../scripts/progress-shell.ts"></script>
+    <script src="../scripts/music-player.ts"></script>
   </body>
 </html>

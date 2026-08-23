@@ -8,6 +8,7 @@
     "dev": "astro dev",
     "validate:content": "node --experimental-strip-types scripts/validate-content.ts",
     "audit:assets": "node --experimental-strip-types scripts/audit-assets.ts",
+    "audit:music": "node scripts/analyze-music.mjs",
     "check": "astro check",
     "test": "vitest run",
     "test:e2e": "playwright test",

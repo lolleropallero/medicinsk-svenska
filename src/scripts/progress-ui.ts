@@ -96,6 +96,7 @@ import { nordicAssets } from "../lib/nordic-assets";
 import { playSound } from "../lib/sound/player";
 import { requestFeedback } from "../lib/motion/feedback";
 import { loadSoundSettings, saveSoundSettings } from "../lib/sound/settings";
+import { loadMusicSettings, saveMusicSettings } from "../lib/music/settings";
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
   document.getElementById(id) as T | null;
@@ -517,6 +518,10 @@ function renderSettings() {
   if(enabled)enabled.checked=sound.enabled;
   if(volume)volume.value=String(Math.round(sound.volume*100));
   if(output)output.value=`${Math.round(sound.volume*100)} %`;
+  const music=loadMusicSettings(),musicEnabled=$<HTMLInputElement>('music-enabled'),musicVolume=$<HTMLInputElement>('music-volume'),musicOutput=$<HTMLOutputElement>('music-volume-value');
+  if(musicEnabled)musicEnabled.checked=music.enabled;
+  if(musicVolume)musicVolume.value=String(Math.round(music.volume*100));
+  if(musicOutput)musicOutput.value=`${Math.round(music.volume*100)} %`;
 }
 function shopLabel(type: string, itemId: string) {
   if (type === "cosmetic")
@@ -777,6 +782,8 @@ $<HTMLInputElement>("calm-mode")?.addEventListener("change", (event) => {
 $<HTMLInputElement>('sound-enabled')?.addEventListener('change',(event)=>{const enabled=(event.target as HTMLInputElement).checked;if(enabled){saveSoundSettings({...loadSoundSettings(),enabled});playSound('ui-tap');}else{playSound('ui-tap');saveSoundSettings({...loadSoundSettings(),enabled});}});
 $<HTMLInputElement>('sound-volume')?.addEventListener('input',(event)=>{const volume=Number((event.target as HTMLInputElement).value)/100;saveSoundSettings({...loadSoundSettings(),volume});const output=$<HTMLOutputElement>('sound-volume-value');if(output)output.value=`${Math.round(volume*100)} %`;});
 $<HTMLInputElement>('sound-volume')?.addEventListener('change',()=>playSound('ui-tap'));
+$<HTMLInputElement>('music-enabled')?.addEventListener('change',(event)=>saveMusicSettings({...loadMusicSettings(),enabled:(event.target as HTMLInputElement).checked}));
+$<HTMLInputElement>('music-volume')?.addEventListener('input',(event)=>{const volume=Number((event.target as HTMLInputElement).value)/100;saveMusicSettings({...loadMusicSettings(),volume});const output=$<HTMLOutputElement>('music-volume-value');if(output)output.value=`${Math.round(volume*100)} %`;});
 $("export-progress")?.addEventListener("click", () => {
   const blob = new Blob([JSON.stringify(exportEnvelope(state), null, 2)], {
       type: "application/json",

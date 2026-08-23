@@ -1,0 +1,44 @@
+import AxeBuilder from '@axe-core/playwright';
+import { expect,test,type Page } from '@playwright/test';
+
+const UI='medicinsk-svenska.ui.v1';
+type Snapshot={installed:boolean;unlocked:boolean;playing:boolean;crossfading:boolean;currentTrack?:string;bag?:string[];position?:number;failed?:string[];gains:number[];times:number[];sources:string[];calm:boolean;ducked:boolean};
+const snapshot=(page:Page)=>page.evaluate(()=>window.__musicTest!.snapshot() as Snapshot);
+async function dismissOverlay(page:Page){const close=page.getByRole('button',{name:'Stäng dagens uppdrag'});if(await close.isVisible())await close.click();}
+async function unlock(page:Page){await page.locator('body').click({position:{x:5,y:5}});await expect.poll(async()=>(await snapshot(page)).playing,{timeout:10000}).toBe(true);}
+
+test('music preferences default independently, persist, fit mobile, and remain accessible',async({page})=>{
+  await page.setViewportSize({width:320,height:568});await page.goto('/edistyminen/');
+  const music=page.getByLabel('Musiikki'),musicVolume=page.getByLabel('Musiikin voimakkuus'),sound=page.getByLabel('Ääniefektit');
+  await expect(music).toBeChecked();await expect(musicVolume).toHaveValue('20');await expect(sound).toBeChecked();
+  await musicVolume.fill('31');await music.uncheck();await sound.uncheck();await sound.check();await page.reload();
+  await expect(music).not.toBeChecked();await expect(musicVolume).toHaveValue('31');await expect(sound).toBeChecked();
+  expect(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),UI)).toMatchObject({musicEnabled:false,musicVolume:.31,soundEnabled:true,soundVolume:.65});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);
+  expect((await new AxeBuilder({page}).analyze()).violations.filter(item=>['serious','critical'].includes(item.impact??''))).toEqual([]);
+});
+
+test('one unlocked player and its shuffle session resume through internal navigation',async({page})=>{
+  const musicRequests:string[]=[];page.on('request',request=>{if(request.resourceType()==='media')musicRequests.push(request.url());});
+  await page.goto('/');expect(musicRequests).toHaveLength(0);await dismissOverlay(page);await unlock(page);
+  const before=await snapshot(page);expect(before.bag).toHaveLength(5);expect(new Set(before.bag).size).toBe(5);expect(before.currentTrack).not.toBeUndefined();expect(await page.locator('[data-music-channel]').count()).toBe(2);
+  await page.getByRole('link',{name:/Sanakortit/}).first().click();await expect(page).toHaveURL(/\/kortit\/$/);
+  await page.waitForFunction(()=>Boolean(window.__musicTest));
+  await expect.poll(async()=>(await snapshot(page)).currentTrack).toBe(before.currentTrack);const after=await snapshot(page);expect(after.bag).toEqual(before.bag);expect(await page.locator('[data-music-channel]').count()).toBe(2);expect(after.times.some(time=>time>=Math.max(0,Math.max(...before.times)-1))).toBe(true);
+  expect(new Set(musicRequests.map(url=>new URL(url).pathname).filter(path=>/music-\d{2}/.test(path))).size).toBeLessThan(5);
+});
+
+test('crossfade seam advances once, calm mode attenuates without restart, and semantic ducking is selective',async({page})=>{
+  await page.goto('/');await dismissOverlay(page);await unlock(page);const first=await snapshot(page);
+  await page.evaluate(()=>window.__musicTest!.forceNext());await expect.poll(async()=>(await snapshot(page)).currentTrack).not.toBe(first.currentTrack);const advanced=await snapshot(page);expect(advanced.position).toBe(1);
+  await page.evaluate(()=>window.dispatchEvent(new CustomEvent('sound-effect-requested',{detail:{effect:'correct',audible:true}})));expect((await snapshot(page)).ducked).toBe(false);
+  await page.evaluate(()=>window.dispatchEvent(new CustomEvent('sound-effect-requested',{detail:{effect:'level-up',audible:true}})));expect((await snapshot(page)).ducked).toBe(true);await expect.poll(async()=>(await snapshot(page)).ducked,{timeout:2000}).toBe(false);
+  const beforeCalm=await snapshot(page);await page.evaluate(()=>document.documentElement.dataset.calm='true');await expect.poll(async()=>(await snapshot(page)).calm).toBe(true);const afterCalm=await snapshot(page);expect(afterCalm.currentTrack).toBe(beforeCalm.currentTrack);expect(afterCalm.bag).toEqual(beforeCalm.bag);
+});
+
+test('all five local assets return usable audio and a failed current track is skipped',async({page,request})=>{
+  await page.goto('/');await dismissOverlay(page);await unlock(page);const before=await snapshot(page);expect(before.sources).toHaveLength(5);
+  for(const source of before.sources){const response=await request.get(source);expect(response.status()).toBe(200);expect(response.headers()['content-type']).toContain('audio/mpeg');}
+  await page.evaluate(id=>window.__musicTest!.fail(id as never),before.currentTrack!);await expect.poll(async()=>(await snapshot(page)).currentTrack,{timeout:5000}).not.toBe(before.currentTrack);
+  expect((await snapshot(page)).failed).toContain(before.currentTrack);
+});

@@ -25,17 +25,16 @@ const rasterFiles=outputFiles.filter(path=>/\.(?:png|jpe?g|gif|webp|avif)$/i.tes
 const webpFiles=rasterFiles.filter(path=>path.endsWith('.webp'));
 const pngFiles=rasterFiles.filter(path=>path.endsWith('.png'));
 const otherRasterFiles=rasterFiles.filter(path=>!path.endsWith('.webp')&&!path.endsWith('.png'));
-if(svgFiles.length!==43)matches.push(`dist: expected 43 emitted SVG assets, found ${svgFiles.length}`);
+if(svgFiles.length!==45)matches.push(`dist: expected 45 emitted SVG assets, found ${svgFiles.length}`);
 for(const path of svgFiles)if(!/\.[A-Za-z0-9_-]{6,}\.svg$/.test(path))matches.push(`${path}: SVG filename is not hashed`);
 if(webpFiles.length!==4)matches.push(`dist: expected exactly four emitted WebP backgrounds, found ${webpFiles.length}`);
 for(const name of ['home-dark','rewards-dark','shell-light','study-light'])if(!webpFiles.some(path=>path.includes(name)))matches.push(`dist: missing ${name} WebP background`);
 for(const path of webpFiles)if(!/\.[A-Za-z0-9_-]{6,}\.webp$/.test(path))matches.push(`${path}: WebP filename is not hashed`);
-if(pngFiles.length!==3)matches.push(`dist: expected exactly three Standard Box V5 PNGs, found ${pngFiles.length}`);
-for(const name of ['box-standard-hud','box-standard-card','box-standard-hero'])if(!pngFiles.some(path=>path.includes(name)))matches.push(`dist: missing ${name} PNG`);
-for(const path of pngFiles)if(!/\.[A-Za-z0-9_-]{6,}\.png$/.test(path))matches.push(`${path}: PNG filename is not hashed`);
+if(pngFiles.length!==0)matches.push(`dist: expected no PNG assets, found ${pngFiles.length}`);
+for(const name of ['reward-hud','reward-standard','reward-golden','reward-legendary'])if(!svgFiles.some(path=>path.includes(name)))matches.push(`dist: missing ${name} SVG`);
 for(const path of otherRasterFiles)matches.push(`${path}: unapproved raster image emitted`);
 for(const path of outputFiles)if(/box-(?:seal|cross)-(?:common|golden|legendary|fi|sv)/i.test(path))matches.push(`${path}: obsolete reward asset emitted`);
 for(const path of outputFiles)if(/box-(?:hud|standard)\.[A-Za-z0-9_-]{6,}\.svg$|reference-sheet/i.test(path))matches.push(`${path}: obsolete or inspection-only standard reward asset emitted`);
 for(const path of outputFiles.filter(path=>/\.(?:html|css|js)$/i.test(path))){const content=readFileSync(path,'utf8');if(/(?:url\(|src=)[^\n)]*https?:\/\//i.test(content))matches.push(`${path}: external asset URL emitted`);if(/box-seal-(?:common|golden|legendary)|box-cross-(?:fi|sv)/i.test(content))matches.push(`${path}: obsolete reward composition emitted`);for(const [label,geometry] of obsoleteInlineGeometry)if(content.includes(geometry))matches.push(`${path}: obsolete inline ${label} geometry emitted`);}
 if(matches.length){console.error(`Forbidden learner-visible copy found:\n${matches.join('\n')}`);process.exit(1);}
-console.log(`Built-output audit clean: ${files('dist').length} HTML/JavaScript files checked; ${svgFiles.length} hashed SVGs; four WebPs and exactly three Standard Box V5 PNGs.`);
+console.log(`Built-output audit clean: ${files('dist').length} HTML/JavaScript files checked; ${svgFiles.length} hashed SVGs including four Kruunu & Kilpi rewards; four WebPs and no PNGs.`);

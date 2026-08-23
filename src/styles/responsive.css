@@ -438,11 +438,11 @@
     width: 76px;
   }
   .daily-all-bonus {
-    grid-template-columns: 88px minmax(0, 1fr);
+    grid-template-columns: 80px minmax(0, 1fr);
     padding: 7px;
   }
   .daily-all-bonus .reward-box-visual {
-    width: 88px;
+    width: 80px;
     height: auto;
   }
   .notifications {

@@ -250,11 +250,11 @@
 }
 .daily-all-bonus-box {
   display: grid;
-  width: 88px;
+  width: 80px;
   place-items: center;
 }
 .daily-all-bonus-box .reward-box-visual {
-  width: 88px;
+  width: 80px;
   max-width: 100%;
 }
 .daily-all-bonus-copy { min-width: 0; }

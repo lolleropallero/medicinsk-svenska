@@ -123,17 +123,17 @@ export function leagueBadge(tier: string) {
 
 export const REWARD_BOX_VARIANTS = {
   standard: {
-    label: "Vanlig låda",
+    label: "Vanlig belöning",
     className: "standard",
     asset: rewardBoxAsset("standard", "normal"),
   },
   golden: {
-    label: "Gyllene låda",
+    label: "Gyllene belöning",
     className: "golden",
     asset: rewardBoxAsset("golden", "normal"),
   },
   legendary: {
-    label: "Legendarisk låda",
+    label: "Legendarisk belöning",
     className: "legendary",
     asset: rewardBoxAsset("legendary", "normal"),
   },

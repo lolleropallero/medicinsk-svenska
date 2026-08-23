@@ -45,18 +45,14 @@ describe('Nordic Asset Pack V1', () => {
     expect(achievement).toMatch(/unlocked\s*\?\s*["']Upplåst["']\s*:\s*["']Låst["']/);
   });
 
-  it('maps exactly 13 retained V4 assets with exact 2 / 7 / 4 category counts', () => {
-    expect(flattenVisualFixAssetPaths()).toHaveLength(13);
-    expect(Object.keys(visualFixAssetPaths.rewards)).toHaveLength(2);
+  it('maps exactly 11 retained V4 assets with exact 7 / 4 category counts', () => {
+    expect(flattenVisualFixAssetPaths()).toHaveLength(11);
     expect(Object.keys(visualFixAssetPaths.descriptionCategories)).toHaveLength(7);
     expect(Object.keys(visualFixAssetPaths.backgrounds)).toHaveLength(4);
-    expect(Object.values(visualFixAssets).flatMap((category) => Object.values(category))).toHaveLength(13);
+    expect(Object.values(visualFixAssets).flatMap((category) => Object.values(category))).toHaveLength(11);
   });
 
-  it('maps all reward boxes, description categories, and backgrounds exactly', () => {
-    expect(visualFixAssetPaths.rewards).toEqual({
-      golden: 'rewards/box-golden.svg', legendary: 'rewards/box-legendary.svg',
-    });
+  it('maps all retained description categories and backgrounds exactly', () => {
     expect(visualFixAssetPaths.descriptionCategories).toEqual({
       'solut-kudokset-iho': 'category-icons/cells.svg',
       'luusto-nivelet-lihakset': 'category-icons/skeleton.svg',
@@ -85,7 +81,7 @@ describe('Nordic Asset Pack V1', () => {
     const compact = readFileSync(new URL('../../src/components/CompactRewardBox.astro', import.meta.url), 'utf8');
     expect(shell).toContain('hud-stat__label');
     expect(shell).toContain('hud-stat__value');
-    expect(shell).toContain('>Lådor</span>');
+    expect(shell).toContain('>Belöningar</span>');
     expect(`${shell}${rewardUi}${compact}`).not.toMatch(/box-seal|box-cross|compact-box-surface/);
     expect(compact).toContain("rewardBoxImage(kind, 'small')");
   });

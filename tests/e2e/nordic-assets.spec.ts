@@ -50,7 +50,7 @@ test('brand, backgrounds, language corners, and all deck icons use supplied SVG 
   await expect(page.locator('.description-card img[src*="language-corner-fi"]')).toHaveCount(0);
 });
 
-test('V5 standard boxes, kind-aware compact art, rarity frames, achievements, and league shields are loaded', async ({ page }) => {
+test('Kruunu & Kilpi rewards, rarity frames, achievements, and league shields are loaded', async ({ page }) => {
   await page.goto('/palkinnot/');
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key) !== null, PROGRESS)).toBe(true);
   await page.evaluate((key) => {
@@ -67,24 +67,24 @@ test('V5 standard boxes, kind-aware compact art, rarity frames, achievements, an
   for (const kind of ['standard','golden','legendary']) {
     const box = page.locator(`.capsule.box-${kind} .reward-box-visual > img`);
     await loaded(box);
-    expect(await filename(box)).toContain(`box-${kind}`);
+    expect(await filename(box)).toContain(`reward-${kind}`);
   }
   const rarityFrames = page.locator('#daily-shop .rarity-frame');
   await expect(rarityFrames).toHaveCount(3);
   await expect(page.locator('#daily-shop .reward-offer-media .rarity-frame')).toHaveCount(0);
-  await expect(page.locator('#daily-shop .reward-offer-media .reward-box-visual > img')).toHaveAttribute('src', /box-(?:standard|golden|legendary)/);
+  await expect(page.locator('#daily-shop .reward-offer-media .reward-box-visual > img')).toHaveAttribute('src', /reward-(?:standard|golden|legendary)/);
 
   await page.locator('.capsule.box-legendary').click();
   const dialogBox = page.locator('.capsule-dialog .reward-box-visual > img');
   await loaded(dialogBox);
-  expect(await filename(dialogBox)).toContain('box-legendary');
+  expect(await filename(dialogBox)).toContain('reward-legendary');
   await expect(page.locator('.capsule-dialog .rarity-frame')).toHaveCount(1);
   await page.getByRole('button', { name:'Stäng' }).click();
 
   await page.goto('/');
   await expect(page.locator('.overlay-goal')).toBeVisible();
-  expect(await filename(page.locator('.overlay-goal .reward-box-visual > img'))).toContain('box-standard-card');
-  expect(await filename(page.locator('.daily-all-bonus .reward-box-visual > img'))).toContain('box-golden');
+  expect(await filename(page.locator('.overlay-goal .reward-box-visual > img'))).toContain('reward-standard');
+  expect(await filename(page.locator('.daily-all-bonus .reward-box-visual > img'))).toContain('reward-golden');
   await expect(page.locator('[class*="box-seal"],[class*="box-cross"]')).toHaveCount(0);
 
   await page.goto('/edistyminen/');
@@ -97,11 +97,11 @@ test('V5 standard boxes, kind-aware compact art, rarity frames, achievements, an
   await page.goto('/kausi/');
   await page.getByRole('button', { name:'Visa alla 30 steg' }).click();
   const goldenCompact = page.locator('[data-tier="20"] .compact-reward-box');
-  await expect(goldenCompact.locator('img[src*="box-golden"]')).toHaveCount(1);
-  await expect(goldenCompact.locator('img[src*="box-standard"]')).toHaveCount(0);
+  await expect(goldenCompact.locator('img[src*="reward-golden"]')).toHaveCount(1);
+  await expect(goldenCompact.locator('img[src*="reward-standard"]')).toHaveCount(0);
   const legendaryCompact = page.locator('[data-tier="30"] .compact-reward-box');
-  await expect(legendaryCompact.locator('img[src*="box-legendary"]')).toHaveCount(1);
-  await expect(legendaryCompact.locator('img[src*="box-standard"]')).toHaveCount(0);
+  await expect(legendaryCompact.locator('img[src*="reward-legendary"]')).toHaveCount(1);
+  await expect(legendaryCompact.locator('img[src*="reward-standard"]')).toHaveCount(0);
   await expect(legendaryCompact.locator('img')).toHaveCount(1);
 
   const tiers = [

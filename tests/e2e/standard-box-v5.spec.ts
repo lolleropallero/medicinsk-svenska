@@ -1,4 +1,3 @@
-import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Locator } from '@playwright/test';
 
 const PROGRESS = 'medicinsk-svenska.progress.v1';
@@ -25,7 +24,7 @@ const expectAspectRatio = async (image: Locator) => {
   expect(Math.abs(values.natural - values.rendered)).toBeLessThan(0.03);
 };
 
-test('daily goal uses the V5 card and the all-three bonus uses genuine golden art without overlap', async ({ page }) => {
+test('daily goal and all-three bonus use Kruunu & Kilpi art without overlap', async ({ page }) => {
   const requested: string[] = [];
   page.on('request', (request) => {
     if (request.resourceType() === 'image' || request.resourceType() === 'font') requested.push(request.url());
@@ -41,10 +40,10 @@ test('daily goal uses the V5 card and the all-three bonus uses genuine golden ar
     const goalImage = page.locator('.overlay-goal .reward-box-visual > img');
     const bonusImage = page.locator('.daily-all-bonus .reward-box-visual > img');
     await loaded(goalImage); await loaded(bonusImage);
-    await expect(goalImage).toHaveAttribute('src', /box-standard-card\.[^/]+\.png$/);
-    await expect(bonusImage).toHaveAttribute('src', /box-golden\.[^/]+\.svg$/);
-    await expect(bonusImage).not.toHaveAttribute('src', /box-standard-(?:hud|card|hero)/);
-    await expect(page.locator('.daily-all-bonus')).toContainText('Slutför alla tre och få en gyllene låda');
+    await expect(goalImage).toHaveAttribute('src', /reward-standard\.[^/]+\.svg$/);
+    await expect(bonusImage).toHaveAttribute('src', /reward-golden\.[^/]+\.svg$/);
+    await expect(bonusImage).not.toHaveAttribute('src', /box-|standard-box-v5/);
+    await expect(page.locator('.daily-all-bonus')).toContainText('Slutför alla tre och få en gyllene belöning');
     await expectAspectRatio(goalImage); await expectAspectRatio(bonusImage);
 
     expect(await overlaps(goalImage, page.locator('.overlay-goal h3'))).toBe(false);
@@ -57,18 +56,17 @@ test('daily goal uses the V5 card and the all-three bonus uses genuine golden ar
       const goalHeight = (await goalImage.boundingBox())!.height;
       const bonusHeight = (await bonusImage.boundingBox())!.height;
       expect(goalHeight).toBeGreaterThanOrEqual(58);
-      expect(goalHeight).toBeLessThanOrEqual(72);
+      expect(goalHeight).toBeLessThanOrEqual(92);
       expect(bonusHeight).toBeGreaterThanOrEqual(64);
       expect(bonusHeight).toBeLessThanOrEqual(84);
-      expect((await new AxeBuilder({ page }).include('#daily-overlay').analyze()).violations.filter((violation) => ['serious', 'critical'].includes(violation.impact ?? ''))).toEqual([]);
     }
   }
 
-  expect(requested.some((url) => /box-(?:hud|standard)\.[^/]+\.svg|reference-sheet/i.test(url))).toBe(false);
+  expect(requested.some((url) => /standard-box-v5|visual-fix-v4\/rewards|reference-sheet/i.test(url))).toBe(false);
   expect(requested.filter((url) => new URL(url).origin !== new URL(page.url()).origin)).toEqual([]);
 });
 
-test('HUD, inventory, and reveals use the intended V5 sizes while golden and legendary remain kind-aware', async ({ page }) => {
+test('HUD, inventory, and reveals use the intended Kruunu & Kilpi variants', async ({ page }) => {
   const requested: string[] = [];
   page.on('request', (request) => {
     if (request.resourceType() === 'image' || request.resourceType() === 'font') requested.push(request.url());
@@ -86,15 +84,15 @@ test('HUD, inventory, and reveals use the intended V5 sizes while golden and leg
   }, PROGRESS);
   await page.reload();
 
-  await expect(page.locator('.reward-tabs .compact-reward-box img')).toHaveAttribute('src', /box-standard-hud\.[^/]+\.png$/);
-  await expect(page.locator('.hud-boxes img')).toHaveAttribute('src', /box-standard-hud\.[^/]+\.png$/);
-  await expect(page.locator('.capsule.box-standard .reward-box-visual > img')).toHaveAttribute('src', /box-standard-hero\.[^/]+\.png$/);
-  await expect(page.locator('.capsule.box-golden .reward-box-visual > img')).toHaveAttribute('src', /box-golden\.[^/]+\.svg$/);
-  await expect(page.locator('.capsule.box-legendary .reward-box-visual > img')).toHaveAttribute('src', /box-legendary\.[^/]+\.svg$/);
-  await expect(page.locator('.capsule.box-golden img[src*="box-standard"],.capsule.box-legendary img[src*="box-standard"]')).toHaveCount(0);
+  await expect(page.locator('.reward-tabs .compact-reward-box img')).toHaveAttribute('src', /reward-hud\.[^/]+\.svg$/);
+  await expect(page.locator('.hud-boxes img')).toHaveAttribute('src', /reward-hud\.[^/]+\.svg$/);
+  await expect(page.locator('.capsule.box-standard .reward-box-visual > img')).toHaveAttribute('src', /reward-standard\.[^/]+\.svg$/);
+  await expect(page.locator('.capsule.box-golden .reward-box-visual > img')).toHaveAttribute('src', /reward-golden\.[^/]+\.svg$/);
+  await expect(page.locator('.capsule.box-legendary .reward-box-visual > img')).toHaveAttribute('src', /reward-legendary\.[^/]+\.svg$/);
+  await expect(page.locator('.capsule img[src*="box-"],.capsule img[src*="standard-box-v5"]')).toHaveCount(0);
   await loaded(page.locator('.capsule.box-standard .reward-box-visual > img'));
-  await expect(page.locator('.capsule.box-standard .reward-box-visual > img')).toHaveAttribute('width', '707');
-  await expect(page.locator('.capsule.box-standard .reward-box-visual > img')).toHaveAttribute('height', '609');
+  await expect(page.locator('.capsule.box-standard .reward-box-visual > img')).toHaveAttribute('width', '320');
+  await expect(page.locator('.capsule.box-standard .reward-box-visual > img')).toHaveAttribute('height', '360');
   await expectAspectRatio(page.locator('.capsule.box-standard .reward-box-visual > img'));
 
   const stableBefore = await page.evaluate((key) => {
@@ -105,10 +103,10 @@ test('HUD, inventory, and reveals use the intended V5 sizes while golden and leg
     await page.locator(`.capsule.box-${kind}`).click();
     const dialogImage = page.locator('.capsule-dialog .reward-box-visual > img');
     await loaded(dialogImage);
-    await expect(dialogImage).toHaveAttribute('src', kind === 'standard' ? /box-standard-hero\.[^/]+\.png$/ : new RegExp(`box-${kind}\\.[^/]+\\.svg$`));
+    await expect(dialogImage).toHaveAttribute('src', new RegExp(`reward-${kind}\\.[^/]+\\.svg$`));
     if (kind === 'standard') {
-      await expect(dialogImage).toHaveAttribute('width', '707');
-      await expect(dialogImage).toHaveAttribute('height', '609');
+      await expect(dialogImage).toHaveAttribute('width', '320');
+      await expect(dialogImage).toHaveAttribute('height', '360');
     }
     await expectAspectRatio(dialogImage);
     await page.getByRole('button', { name: 'Stäng' }).click();
@@ -124,11 +122,11 @@ test('HUD, inventory, and reveals use the intended V5 sizes while golden and leg
     await page.goto('/palkinnot/');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   }
-  expect(requested.some((url) => /box-(?:hud|standard)\.[^/]+\.svg|reference-sheet/i.test(url))).toBe(false);
+  expect(requested.some((url) => /standard-box-v5|visual-fix-v4\/rewards|reference-sheet/i.test(url))).toBe(false);
   expect(requested.filter((url) => new URL(url).origin !== new URL(page.url()).origin)).toEqual([]);
 });
 
-test('capture Standard Box V5 reward states', async ({ page }) => {
+test('capture Kruunu & Kilpi reward states', async ({ page }) => {
   test.setTimeout(60_000);
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto('/');

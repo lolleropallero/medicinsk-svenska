@@ -21,9 +21,9 @@ test('HUD is a separated 2x2 mobile grid and a four-column desktop grid', async 
     await page.reload();
     const cards = page.locator('.hud-stat');
     await expect(cards).toHaveCount(4);
-    await expect(page.locator('.hud-stat__label')).toHaveText(['Nivå', 'Svit', 'Krediter', 'Lådor']);
+    await expect(page.locator('.hud-stat__label')).toHaveText(['Nivå', 'Svit', 'Krediter', 'Belöningar']);
     await expect(page.locator('.hud-stat__value')).toHaveText([/\d+/, '42', '123456', '2']);
-    await expect(page.locator('.hud-boxes img')).toHaveAttribute('src', /box-standard-hud/);
+    await expect(page.locator('.hud-boxes img')).toHaveAttribute('src', /reward-hud/);
     await expect(page.locator('[class*="box-seal"],[class*="box-cross"],.compact-box-surface')).toHaveCount(0);
     const geometry = await cards.evaluateAll((nodes) => nodes.map((node) => {
       const card = node.getBoundingClientRect();
@@ -69,7 +69,7 @@ test('all seven description rows use the exact direct V4 category assets', async
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
 });
 
-test('reward cards and reveal use V4 boxes without any overlay seal', async ({ page }) => {
+test('reward cards and reveal use Kruunu & Kilpi shields without any overlay seal', async ({ page }) => {
   await page.goto('/palkinnot/');
   await expect.poll(() => page.evaluate((key) => localStorage.getItem(key) !== null, PROGRESS)).toBe(true);
   await page.evaluate((key) => {
@@ -84,14 +84,14 @@ test('reward cards and reveal use V4 boxes without any overlay seal', async ({ p
   await page.reload();
   for (const kind of ['standard', 'golden', 'legendary']) {
     const image = page.locator(`.capsule.box-${kind} .reward-box-visual > img`);
-    await expect(image).toHaveAttribute('src', kind === 'standard' ? /box-standard-hero\./ : new RegExp(`box-${kind}\\.`));
+    await expect(image).toHaveAttribute('src', new RegExp(`reward-${kind}\\.`));
     const box = await image.boundingBox();
     expect(box!.width).toBeGreaterThanOrEqual(108);
     expect(box!.height).toBeGreaterThanOrEqual(90);
   }
   await expect(page.locator('[class*="box-seal"],[class*="box-cross"],.compact-box-surface')).toHaveCount(0);
   await page.locator('.capsule.box-golden').click();
-  await expect(page.locator('.capsule-dialog .reward-box-visual > img')).toHaveAttribute('src', /box-golden/);
+  await expect(page.locator('.capsule-dialog .reward-box-visual > img')).toHaveAttribute('src', /reward-golden/);
   const reveal = await page.locator('.capsule-dialog .reward-box-visual > img').boundingBox();
   expect(reveal!.width).toBeGreaterThanOrEqual(180);
   await expect(page.locator('.capsule-dialog [class*="box-seal"],.capsule-dialog [class*="box-cross"]')).toHaveCount(0);

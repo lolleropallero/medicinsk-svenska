@@ -1,5 +1,3 @@
-import boxGoldenUrl from '../assets/visual-fix-v4/rewards/box-golden.svg?url';
-import boxLegendaryUrl from '../assets/visual-fix-v4/rewards/box-legendary.svg?url';
 import cellsUrl from '../assets/visual-fix-v4/category-icons/cells.svg?url';
 import skeletonUrl from '../assets/visual-fix-v4/category-icons/skeleton.svg?url';
 import neuroUrl from '../assets/visual-fix-v4/category-icons/neuro.svg?url';
@@ -13,10 +11,6 @@ import shellLightUrl from '../assets/visual-fix-v4/backgrounds/shell-light.webp?
 import studyLightUrl from '../assets/visual-fix-v4/backgrounds/study-light.webp?url';
 
 export const visualFixAssets = {
-  rewards: {
-    golden: boxGoldenUrl,
-    legendary: boxLegendaryUrl,
-  },
   descriptionCategories: {
     'solut-kudokset-iho': cellsUrl,
     'luusto-nivelet-lihakset': skeletonUrl,

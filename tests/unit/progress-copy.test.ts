@@ -8,11 +8,11 @@ import type { ProgressStateV1, Quest } from '../../src/lib/progress/types';
 const day='2026-08-21',at=Date.parse('2026-08-21T12:00:00Z');
 describe('Swedish progress copy',()=>{
   it('maps every rarity',()=>expect(rarityCopy).toEqual({common:'Vanlig',rare:'Sällsynt',epic:'Episk',legendary:'Legendarisk'}));
-  it('maps every box kind',()=>expect(boxCopy).toEqual({standard:'Vanlig låda',golden:'Gyllene låda',legendary:'Legendarisk låda'}));
+  it('maps every box kind to reward-facing copy',()=>expect(boxCopy).toEqual({standard:'Vanlig belöning',golden:'Gyllene belöning',legendary:'Legendarisk belöning'}));
   it('maps stored league values for display',()=>expect(leagueCopy).toEqual({Pronssi:'Brons',Hopea:'Silver',Kulta:'Guld',Platina:'Platina',Timantti:'Diamant',Konsultti:'Mästare'}));
   it('maps league results',()=>expect(leagueResultCopy({kind:'promoted',tier:'Kulta'})).toBe('Du steg till Guld'));
   it('maps rewards without custom currency symbols',()=>expect(rewardCopy({type:'credits',amount:10})).toBe('10 krediter'));
-  it('uses singular and plural box actions',()=>{expect(nextActionCopy({kind:'open-box',count:1,href:'/'})).toBe('Öppna en överraskningslåda');expect(nextActionCopy({kind:'open-box',count:2,href:'/'})).toBe('Öppna 2 överraskningslådor');});
+  it('uses singular and plural reward actions',()=>{expect(nextActionCopy({kind:'open-box',count:1,href:'/'})).toBe('Öppna en belöning');expect(nextActionCopy({kind:'open-box',count:2,href:'/'})).toBe('Öppna 2 belöningar');});
   it('contains exact bilingual weekly quests',()=>expect(weeklyQuestCopy).toEqual([{sv:'Studera under 5 dagar',fi:'Opiskele viitenä päivänä'},{sv:'Gör 100 olika uppgifter',fi:'Suorita 100 eri tehtävää'},{sv:'Använd alla tre övningstyperna',fi:'Käytä kaikkia kolmea harjoitustapaa'}]));
   it('derives every daily quest from semantics',()=>{const variants:Quest[]=[
     {id:'1',slot:1,kind:'items',target:10,xp:5,credits:10,seasonPoints:10,rerollIndex:0,claimed:false},

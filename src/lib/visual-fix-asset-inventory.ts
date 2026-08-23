@@ -1,8 +1,4 @@
 export const visualFixAssetPaths = {
-  rewards: {
-    golden: 'rewards/box-golden.svg',
-    legendary: 'rewards/box-legendary.svg',
-  },
   descriptionCategories: {
     'solut-kudokset-iho': 'category-icons/cells.svg',
     'luusto-nivelet-lihakset': 'category-icons/skeleton.svg',

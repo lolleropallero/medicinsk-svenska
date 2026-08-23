@@ -6,9 +6,9 @@ const PROGRESS='medicinsk-svenska.progress.v1';
 const readProgress=(page:import('@playwright/test').Page)=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),PROGRESS);
 
 test('fresh home is a compact launcher with HUD and an automatic daily overlay',async({page})=>{
-  await page.goto('/');await expect(page.getByRole('dialog',{name:'Dagens uppdrag'})).toBeVisible();await expect(page.getByRole('heading',{name:'Dagens mål'})).toBeVisible();await expect(page.locator('.overlay-goal')).toContainText('0 / 10');await expect(page.getByText('Vanlig låda · 10 krediter · 20 säsongspoäng')).toBeVisible();
-  await expect(page.locator('#metagame-hud')).toContainText('Nivå');await expect(page.locator('#metagame-hud')).toContainText('Svit');await expect(page.locator('#metagame-hud')).toContainText('Krediter');await expect(page.locator('#metagame-hud')).toContainText('Lådor');
-  await expect(page.locator('.daily-overlay-quests .daily-quest-row')).toHaveCount(3);await expect(page.getByText('Gör 10 olika uppgifter')).toBeVisible();await expect(page.getByText('Suorita 10 eri tehtävää')).toBeVisible();await expect(page.getByText('Slutför alla tre och få en gyllene låda')).toBeVisible();
+  await page.goto('/');await expect(page.getByRole('dialog',{name:'Dagens uppdrag'})).toBeVisible();await expect(page.getByRole('heading',{name:'Dagens mål'})).toBeVisible();await expect(page.locator('.overlay-goal')).toContainText('0 / 10');await expect(page.getByText('Vanlig belöning · 10 krediter · 20 säsongspoäng')).toBeVisible();
+  await expect(page.locator('#metagame-hud')).toContainText('Nivå');await expect(page.locator('#metagame-hud')).toContainText('Svit');await expect(page.locator('#metagame-hud')).toContainText('Krediter');await expect(page.locator('#metagame-hud')).toContainText('Belöningar');
+  await expect(page.locator('.daily-overlay-quests .daily-quest-row')).toHaveCount(3);await expect(page.getByText('Gör 10 olika uppgifter')).toBeVisible();await expect(page.getByText('Suorita 10 eri tehtävää')).toBeVisible();await expect(page.getByText('Slutför alla tre och få en gyllene belöning')).toBeVisible();
   await page.getByRole('button',{name:'Stäng dagens uppdrag'}).click();await expect(page.getByRole('button',{name:/Dagens uppdrag 0 \/ 3/})).toBeVisible();await expect(page.locator('.home .quest,.home .daily-quest-row')).toHaveCount(0);
   await page.getByRole('link',{name:'Framsteg',exact:true}).click();await expect(page.getByRole('heading',{name:'Framsteg'})).toBeVisible();await expect(page.getByText('Nivå 1')).toBeVisible();
 });
@@ -34,8 +34,8 @@ test('daily goal is awarded once and appears on progress page',async({page})=>{
 
 test('capsule opens once, shows rarity text, and collection equipment is operable',async({page})=>{
   await page.goto('/palkinnot/');await expect(page.locator('.inventory-head')).toBeVisible();await expect.poll(()=>page.evaluate(key=>localStorage.getItem(key)!==null,PROGRESS)).toBe(true);await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)!);state.inventory.capsules.push({id:'browser-capsule',kind:'golden',earnedAt:Date.now()});localStorage.setItem(key,JSON.stringify(state));},PROGRESS);await page.reload();
-  await page.getByRole('button',{name:/Gyllene låda Öppna/}).click();await expect(page.getByRole('dialog')).toBeVisible();await expect(page.locator('#capsule-rarity')).toHaveText(/Sällsynt|Episk|Legendarisk/);await page.getByRole('button',{name:'Stäng'}).click();
-  const progress=await readProgress(page);expect(progress.inventory.capsules.find((c:{id:string})=>c.id==='browser-capsule').openedAt).toBeTruthy();await page.reload();await expect(page.getByRole('button',{name:/Gyllene låda Öppna/})).toHaveCount(0);
+  await page.getByRole('button',{name:/Gyllene belöning Öppna/}).click();await expect(page.getByRole('dialog')).toBeVisible();await expect(page.locator('#capsule-rarity')).toHaveText(/Sällsynt|Episk|Legendarisk/);await page.getByRole('button',{name:'Stäng'}).click();
+  const progress=await readProgress(page);expect(progress.inventory.capsules.find((c:{id:string})=>c.id==='browser-capsule').openedAt).toBeTruthy();await page.reload();await expect(page.getByRole('button',{name:/Gyllene belöning Öppna/})).toHaveCount(0);
 });
 
 test('rewards information architecture keeps the shop near the top and collection compact',async({page})=>{

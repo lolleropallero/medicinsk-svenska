@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 132" fill="none">
+  <defs>
+    <linearGradient id="hud-gold" x1="18" y1="12" x2="101" y2="117" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFE08A"/><stop offset=".48" stop-color="#F4BF43"/><stop offset="1" stop-color="#B87308"/>
+    </linearGradient>
+    <linearGradient id="hud-blue" x1="60" y1="15" x2="60" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#123F79"/><stop offset="1" stop-color="#05234E"/>
+    </linearGradient>
+  </defs>
+  <path d="M60 7c14 10 29 16 47 20v31c0 32-18 54-47 68C31 112 13 90 13 58V27c18-4 33-10 47-20Z" fill="url(#hud-blue)" stroke="#7D520B" stroke-width="10" stroke-linejoin="round"/>
+  <path d="M60 7c14 10 29 16 47 20v31c0 32-18 54-47 68C31 112 13 90 13 58V27c18-4 33-10 47-20Z" stroke="url(#hud-gold)" stroke-width="6" stroke-linejoin="round"/>
+  <g fill="url(#hud-gold)">
+    <path d="M25 43h26l-3 18H28l-3-18Zm2 0-3-12 8 7 6-12 6 12 9-7-4 12H27Z"/>
+    <path d="M69 43h26l-3 18H72l-3-18Zm2 0-3-12 8 7 6-12 6 12 9-7-4 12H71Z"/>
+    <path d="M47 82h26l-3 18H50l-3-18Zm2 0-3-12 8 7 6-12 6 12 9-7-4 12H49Z"/>
+  </g>
+</svg>

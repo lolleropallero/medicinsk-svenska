@@ -2,7 +2,7 @@ import { COSMETICS } from './catalog';
 import type { Achievement, CapsuleKind, ExerciseMode, LeagueResult, LeagueTier, ProgressNotification, Quest, Rarity, Reward, SessionReward } from './types';
 
 export const rarityCopy:Record<Rarity,string>={common:'Vanlig',rare:'Sällsynt',epic:'Episk',legendary:'Legendarisk'};
-export const boxCopy:Record<CapsuleKind,string>={standard:'Vanlig låda',golden:'Gyllene låda',legendary:'Legendarisk låda'};
+export const boxCopy:Record<CapsuleKind,string>={standard:'Vanlig belöning',golden:'Gyllene belöning',legendary:'Legendarisk belöning'};
 export const leagueCopy:Record<LeagueTier,string>={Pronssi:'Brons',Hopea:'Silver',Kulta:'Guld',Platina:'Platina',Timantti:'Diamant',Konsultti:'Mästare'};
 export const modeRoutes:Record<ExerciseMode,string>={flashcards:'/kortit/',phrases:'/fraasit/',descriptions:'/kuvailu/'};
 
@@ -44,17 +44,17 @@ export function notificationCopy(notification:ProgressNotification):string{
   if(notification.kind==='level')return `Ny nivå: ${notification.level}`;
   if(notification.kind==='daily-goal')return'Dagens mål klart';if(notification.kind==='daily-quest')return'Dagens uppdrag klart';
   if(notification.kind==='weekly-quest')return'Veckans uppdrag klart';if(notification.kind==='achievement')return'Prestation upplåst';
-  if(notification.kind==='golden-box')return'Du fick en gyllene låda';if(notification.kind==='season-step')return'Nytt steg i säsongen';
+  if(notification.kind==='golden-box')return'Du fick en gyllene belöning';if(notification.kind==='season-step')return'Nytt steg i säsongen';
   if(notification.kind==='league')return leagueResultCopy(notification.result);return'Välkommen tillbaka';
 }
 export function sessionRewardCopy(reward:SessionReward):string{
   if(reward.kind==='xp')return`+${reward.amount} XP`;if(reward.kind==='credits')return`+${reward.amount} krediter`;
   if(reward.kind==='season-points')return`+${reward.amount} säsongspoäng`;if(reward.kind==='daily-quest')return'Dagens uppdrag klart';
-  if(reward.kind==='daily-goal')return'Dagens mål klart';if(reward.kind==='golden-box')return'Gyllene låda erhållen';return'Vanlig låda erhållen';
+  if(reward.kind==='daily-goal')return'Dagens mål klart';if(reward.kind==='golden-box')return'Gyllene belöning erhållen';return'Vanlig belöning erhållen';
 }
 export type NextAction={kind:'open-box';count:number;href:string}|{kind:'claim-season';count:number;href:string}|{kind:'daily-goal';remaining:number;href:string}|{kind:'daily-quest';quest:Quest;remaining:number;href:string}|{kind:'continue';mode:ExerciseMode;href:string};
 export function nextActionCopy(action:NextAction):string{
-  if(action.kind==='open-box')return action.count===1?'Öppna en överraskningslåda':`Öppna ${action.count} överraskningslådor`;
+  if(action.kind==='open-box')return action.count===1?'Öppna en belöning':`Öppna ${action.count} belöningar`;
   if(action.kind==='claim-season')return action.count===1?'Hämta säsongsbelöningen':`Hämta ${action.count} säsongsbelöningar`;
   if(action.kind==='daily-goal')return`${action.remaining} uppgifter kvar till dagens mål`;
   if(action.kind==='daily-quest'){

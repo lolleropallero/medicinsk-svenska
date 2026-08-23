@@ -1,43 +1,36 @@
-import boxStandardHudUrl from '../assets/standard-box-v5/box-standard-hud.png?url';
-import boxStandardCardUrl from '../assets/standard-box-v5/box-standard-card.png?url';
-import boxStandardHeroUrl from '../assets/standard-box-v5/box-standard-hero.png?url';
-import boxGoldenUrl from '../assets/visual-fix-v4/rewards/box-golden.svg?url';
-import boxLegendaryUrl from '../assets/visual-fix-v4/rewards/box-legendary.svg?url';
+import rewardHudUrl from '../assets/rewards-kruunu-kilpi/reward-hud.svg?url';
+import rewardStandardUrl from '../assets/rewards-kruunu-kilpi/reward-standard.svg?url';
+import rewardGoldenUrl from '../assets/rewards-kruunu-kilpi/reward-golden.svg?url';
+import rewardLegendaryUrl from '../assets/rewards-kruunu-kilpi/reward-legendary.svg?url';
 
 export type RewardBoxKind = 'standard' | 'golden' | 'legendary';
 export type RewardBoxSize = 'small' | 'normal' | 'large';
 
-export const standardBoxV5Assets = {
-  hud: boxStandardHudUrl,
-  card: boxStandardCardUrl,
-  hero: boxStandardHeroUrl,
-} as const;
-
 export const rewardBoxAssets = {
   standard: {
-    small: standardBoxV5Assets.hud,
-    normal: standardBoxV5Assets.card,
-    large: standardBoxV5Assets.hero,
+    small: rewardHudUrl,
+    normal: rewardStandardUrl,
+    large: rewardStandardUrl,
   },
-  golden: { small: boxGoldenUrl, normal: boxGoldenUrl, large: boxGoldenUrl },
-  legendary: { small: boxLegendaryUrl, normal: boxLegendaryUrl, large: boxLegendaryUrl },
+  golden: { small: rewardGoldenUrl, normal: rewardGoldenUrl, large: rewardGoldenUrl },
+  legendary: { small: rewardLegendaryUrl, normal: rewardLegendaryUrl, large: rewardLegendaryUrl },
 } as const satisfies Record<RewardBoxKind, Record<RewardBoxSize, string>>;
 
 const rewardBoxDimensions = {
   standard: {
-    small: { width: 258, height: 227 },
-    normal: { width: 453, height: 403 },
-    large: { width: 707, height: 609 },
+    small: { width: 120, height: 132 },
+    normal: { width: 320, height: 360 },
+    large: { width: 320, height: 360 },
   },
   golden: {
-    small: { width: 360, height: 300 },
-    normal: { width: 360, height: 300 },
-    large: { width: 360, height: 300 },
+    small: { width: 400, height: 420 },
+    normal: { width: 400, height: 420 },
+    large: { width: 400, height: 420 },
   },
   legendary: {
-    small: { width: 360, height: 300 },
-    normal: { width: 360, height: 300 },
-    large: { width: 360, height: 300 },
+    small: { width: 400, height: 440 },
+    normal: { width: 400, height: 440 },
+    large: { width: 400, height: 440 },
   },
 } as const satisfies Record<RewardBoxKind, Record<RewardBoxSize, { width: number; height: number }>>;
 

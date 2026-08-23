@@ -20,6 +20,20 @@ for(const path of activeExerciseHtml){const content=readFileSync(path,'utf8');fo
 for(const path of files('dist/_astro').filter(path=>/harjoitus\.[^\\/]+\.js$/.test(path))){const content=readFileSync(path,'utf8');for(const label of languageLabels)if(content.includes(`"${label}"`)||content.includes(`'${label}'`))matches.push(`${path}: active exercise label ${label}`);}
 const emitted=(directory:string):string[]=>readdirSync(directory).flatMap(name=>{const path=join(directory,name);return statSync(path).isDirectory()?emitted(path):[path];});
 const outputFiles=emitted('dist');
+const productionOrigin='https://medicinsksvenska.fi';
+const retiredOrigin='https://medicinsk-svenska.aleksisalone.workers.dev';
+for(const path of outputFiles.filter(path=>path.endsWith('.html'))){
+  const content=readFileSync(path,'utf8'),relativePath=path.replace(/\\/g,'/').replace(/^dist\//,''),pathname=relativePath==='index.html'?'/':`/${relativePath.replace(/index\.html$/,'')}`,expected=`${productionOrigin}${pathname}`;
+  const canonicals=[...content.matchAll(/<link rel="canonical" href="([^"]+)"/g)].map(match=>match[1]);
+  const openGraphUrls=[...content.matchAll(/<meta property="og:url" content="([^"]+)"/g)].map(match=>match[1]);
+  if(canonicals.length!==1||canonicals[0]!==expected)matches.push(`${path}: expected one canonical URL ${expected}, found ${canonicals.join(', ')||'none'}`);
+  if(openGraphUrls.length!==1||openGraphUrls[0]!==expected)matches.push(`${path}: expected one og:url ${expected}, found ${openGraphUrls.join(', ')||'none'}`);
+}
+const sitemapIndex=readFileSync('dist/sitemap-index.xml','utf8'),sitemap=readFileSync('dist/sitemap-0.xml','utf8'),robots=readFileSync('dist/robots.txt','utf8');
+if(!sitemapIndex.includes(`${productionOrigin}/sitemap-0.xml`))matches.push('dist/sitemap-index.xml: canonical sitemap URL missing');
+for(const route of ['/','/kortit/harjoitus/','/edistyminen/'])if(!sitemap.includes(`<loc>${productionOrigin}${route}</loc>`))matches.push(`dist/sitemap-0.xml: missing ${route}`);
+if(!robots.includes(`Sitemap: ${productionOrigin}/sitemap-index.xml`))matches.push('dist/robots.txt: canonical sitemap reference missing');
+for(const [path,content] of [['dist/sitemap-index.xml',sitemapIndex],['dist/sitemap-0.xml',sitemap],['dist/robots.txt',robots]] as const)if(content.includes(retiredOrigin))matches.push(`${path}: retired production origin emitted`);
 const svgFiles=outputFiles.filter(path=>path.endsWith('.svg'));
 const rasterFiles=outputFiles.filter(path=>/\.(?:png|jpe?g|gif|webp|avif)$/i.test(path));
 const webpFiles=rasterFiles.filter(path=>path.endsWith('.webp'));

@@ -9,6 +9,7 @@ import { nordicAssets } from '../lib/nordic-assets';
 interface Props { title: string; description?: string }
 const { title, description = 'Harjoittele lääketieteellistä ruotsia.' } = Astro.props;
 const path = Astro.url.pathname;
+const canonicalUrl = new URL(path, Astro.site);
 const hudRoutes=['/','/kortit','/fraasit','/kuvailu','/edistyminen','/palkinnot','/kausi'];
 const exerciseRoute=path.includes('/harjoitus');
 const showHud=hudRoutes.some(route=>path===route||path===`${route}/`)&&!exerciseRoute;
@@ -21,6 +22,8 @@ const backgroundKind=exerciseRoute?'studyLight':rewardRoute?'rewardsDark':path==
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta name="theme-color" content="#06162a" />
     <link rel="icon" href={nordicAssets.brand.mark} type="image/svg+xml" />
     <script is:inline>

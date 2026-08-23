@@ -35,7 +35,7 @@ npm run preview
 - `src/styles/` – repository-owned responsive CSS; no external font or asset request
 - `src/assets/nordic-v1/` – 34 retained brand, rarity, achievement, league, and deck SVGs
 - `src/assets/visual-fix-v4/` – 13 retained Visual Fix V4 reward, category, and background assets
-- `src/assets/standard-box-v5/` – three transparent Standard Box V5 PNG variants
+- `src/assets/rewards-kruunu-kilpi/` – the local HUD, standard, golden, and legendary reward SVG family
 - `src/lib/nordic-asset-inventory.ts` and `src/lib/nordic-assets.ts` – exact typed inventory and Vite-managed local asset URLs
 - `src/lib/visual-fix-asset-inventory.ts` and `src/lib/visual-fix-assets.ts` – exact retained V4 paths and static Vite URL imports
 - `src/lib/standard-box-v5-asset-inventory.ts` and `src/lib/reward-box-assets.ts` – exact V5 paths and kind/size-aware reward resolution
@@ -52,7 +52,7 @@ Published content is filtered at build time and mapped to explicit client payloa
 
 The supplied brand mark is used in the application header and favicon. Finnish and Swedish cross tiles provide compact shared-language identity. Language corners are text-free decorative images: Finnish content uses `language-corner-fi.svg`, Swedish content uses `language-corner-sv.svg`, and actual language remains expressed with `lang="fi"` or `lang="sv"`. Active exercises must never add visible `Suomi`, `Svenska`, `Suomeksi`, or `Ruotsiksi` labels.
 
-Standard Box V5 maps `small → box-standard-hud.png`, `normal → box-standard-card.png`, and `large → box-standard-hero.png`. Golden and legendary rewards use their genuine V4 illustrations at every size, including compact chips. Reward artwork is never composed with a separate seal, badge, medallion, flag overlay, or cross primitive. The seven description category IDs map one-to-one to `cells`, `skeleton`, `neuro`, `cardio`, `blood`, `digestion`, and `hormones`, rendered directly without another icon tile.
+Kruunu & Kilpi maps the compact standard size to `reward-hud.svg`, larger standard contexts to `reward-standard.svg`, and golden and legendary contexts to their matching shield SVG at every size. Reward artwork is never composed with a separate seal, badge, medallion, flag overlay, or cross primitive. The seven description category IDs map one-to-one to `cells`, `skeleton`, `neuro`, `cardio`, `blood`, `digestion`, and `hormones`, rendered directly without another icon tile.
 
 Backgrounds use `home-dark.webp` on `/`, `rewards-dark.webp` on rewards and season surfaces, `shell-light.webp` on setup and progress routes, and `study-light.webp` on active, waiting, and completion exercise states. They render at normal opacity with `background-size: cover`; readable content remains on its own surface. The four WebP backgrounds are the only allowed raster assets; the HUD, standard, golden, and legendary Kruunu & Kilpi reward visuals are local SVGs. HUD chips keep icon, label, primary value, and optional secondary value in separate elements; phones use a two-by-two grid and wider screens use four columns.
 

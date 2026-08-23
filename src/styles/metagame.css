@@ -243,9 +243,13 @@
 .daily-all-bonus {
   margin-top: 10px;
 }
+.all-quests-bonus {
+  margin-top: 14px;
+}
 .daily-all-bonus > span:last-child,
 .all-quests-bonus > span:last-child {
   display: flex;
+  min-width: 0;
   flex-direction: column;
 }
 .daily-all-bonus-box {
@@ -254,6 +258,10 @@
   place-items: center;
 }
 .daily-all-bonus-box .reward-box-visual {
+  width: 80px;
+  max-width: 100%;
+}
+.all-quests-bonus .reward-box-visual {
   width: 80px;
   max-width: 100%;
 }

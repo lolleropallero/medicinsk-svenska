@@ -126,6 +126,26 @@ test('HUD, inventory, and reveals use the intended Kruunu & Kilpi variants', asy
   expect(requested.filter((url) => new URL(url).origin !== new URL(page.url()).origin)).toEqual([]);
 });
 
+test('progress-page golden bonus keeps its shield inside the media column with clear card spacing', async ({ page }) => {
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    await page.goto('/edistyminen/');
+    const bonus = page.locator('.all-quests-bonus');
+    const shield = bonus.locator('.reward-box-visual');
+    const copy = bonus.locator(':scope > span:last-child');
+    const quests = page.locator('.daily-missions .quest-list');
+    const [bonusBox, shieldBox, copyBox, questsBox] = await Promise.all([
+      bonus.boundingBox(), shield.boundingBox(), copy.boundingBox(), quests.boundingBox(),
+    ]);
+    if (!bonusBox || !shieldBox || !copyBox || !questsBox) throw new Error('missing progress bonus geometry');
+    expect(shieldBox.x + shieldBox.width).toBeLessThanOrEqual(copyBox.x);
+    expect(shieldBox.x).toBeGreaterThanOrEqual(bonusBox.x);
+    expect(shieldBox.x + shieldBox.width).toBeLessThanOrEqual(bonusBox.x + bonusBox.width);
+    expect(bonusBox.y - (questsBox.y + questsBox.height)).toBeGreaterThanOrEqual(12);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+  }
+});
+
 test('capture Kruunu & Kilpi reward states', async ({ page }) => {
   test.setTimeout(60_000);
   await page.setViewportSize({ width: 320, height: 568 });

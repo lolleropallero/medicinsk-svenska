@@ -42,3 +42,8 @@ test('all five local assets return usable audio and a failed current track is sk
   await page.evaluate(id=>window.__musicTest!.fail(id as never),before.currentTrack!);await expect.poll(async()=>(await snapshot(page)).currentTrack,{timeout:5000}).not.toBe(before.currentTrack);
   expect((await snapshot(page)).failed).toContain(before.currentTrack);
 });
+
+test('a gesture retries playback when session resume was blocked by autoplay policy',async({page})=>{
+  await page.addInitScript(()=>{sessionStorage.setItem('medicinsk-svenska.music-unlocked.v1','true');let calls=0;HTMLMediaElement.prototype.play=function(){calls++;return calls===1?Promise.reject(new DOMException('blocked','NotAllowedError')):Promise.resolve();};});
+  await page.goto('/');await expect.poll(async()=>(await snapshot(page)).playing).toBe(false);await page.locator('body').click({position:{x:5,y:5}});await expect.poll(async()=>(await snapshot(page)).playing).toBe(true);
+});

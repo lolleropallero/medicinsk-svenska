@@ -21,6 +21,9 @@ import { startActiveTime } from '../lib/progress/active-time';
 import { showSessionRewards } from '../lib/progress/session-summary';
 import { requestFeedback } from '../lib/motion/feedback';
 
+function initializeFlashcardApp() {
+if (!document.getElementById('cards-data')) return;
+const controller = new AbortController();
 const STORAGE_KEY = 'medicinsk-svenska.flashcard-session.v1';
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const allCards = JSON.parse(byId<HTMLScriptElement>('cards-data').textContent ?? '[]') as FlashcardClient[];
@@ -262,9 +265,9 @@ function startApp() {
     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
     if (event.key === '1' && session.revealed) grade(true);
     if (event.key === '2' && session.revealed) grade(false);
-  });
+  }, { signal: controller.signal });
 
-  setInterval(() => {
+  const clockTimer = window.setInterval(() => {
     const wasWaiting = !session.currentCardId && !isSessionComplete(session);
     const advanced = advanceSession(session, Date.now());
     if (advanced !== session) {
@@ -278,11 +281,20 @@ function startApp() {
 
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) render();
-  });
+  }, { signal: controller.signal });
 
-  startActiveTime({mode:'flashcards',sessionId:()=>session.sessionId,eligible:()=>Boolean(session.currentCardId&&!isSessionComplete(session)&&errorView.hidden)});
+  const activeTime = startActiveTime({mode:'flashcards',sessionId:()=>session.sessionId,eligible:()=>Boolean(session.currentCardId&&!isSessionComplete(session)&&errorView.hidden)});
+  document.addEventListener('astro:before-swap', () => {
+    controller.abort();
+    window.clearInterval(clockTimer);
+    clearRetryTimer();
+    activeTime.stop();
+  }, { once: true });
 
   render({ focus: true });
 }
 
 startApp();
+}
+
+document.addEventListener('astro:page-load', initializeFlashcardApp);

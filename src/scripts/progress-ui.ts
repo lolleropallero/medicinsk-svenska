@@ -764,6 +764,10 @@ function checkDailyAutoOpen() {
   });
 }
 
+function initializeProgressUi() {
+  state = loadProgress();
+  autoOpenChecked = false;
+  if (attentionTimer !== undefined) window.clearTimeout(attentionTimer);
 $<HTMLSelectElement>("daily-goal")?.addEventListener("change", (event) =>
   persist(
     setDailyGoal(
@@ -840,9 +844,11 @@ $<HTMLDialogElement>("daily-overlay")?.addEventListener("cancel", (event) => {
   event.preventDefault();
   closeDailyOverlay({ markDismissed: true, restoreFocus: true });
 });
+render();
+checkDailyAutoOpen();
+}
 window.addEventListener("progress-updated", render);
 window.addEventListener("storage", (event) => {
   if (event.key === PROGRESS_KEY) render();
 });
-render();
-checkDailyAutoOpen();
+document.addEventListener("astro:page-load", initializeProgressUi);

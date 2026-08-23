@@ -87,7 +87,7 @@ test('legacy V1 display strings are ignored without changing progress or replayi
 
 test('reward surfacing links directly and active exercises omit the full HUD',async({page})=>{
   await page.goto('/');await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)!);state.inventory.capsules.push({id:'home-box',kind:'standard',earnedAt:Date.now()});state.seasons.points=100;state.settings.calmMode=true;localStorage.setItem(key,JSON.stringify(state));},PROGRESS);await page.reload();
-  await expect(page.locator('.hud-boxes')).toContainText('1');await expect(page.locator('.hud-boxes')).toContainText('Öppna');await expect(page.getByText(/säsongsbelöning väntar/)).toHaveCount(0);expect(await page.locator('.hud-boxes').evaluate(element=>getComputedStyle(element).animationName)).toBe('none');await page.locator('.hud-boxes').click();expect(page.url()).toContain('/palkinnot/#unopened-boxes');
+  await expect(page.locator('.hud-boxes')).toContainText('1');await expect(page.locator('.hud-boxes')).toContainText('Öppna');await expect(page.getByText(/säsongsbelöning väntar/)).toHaveCount(0);expect(await page.locator('.hud-boxes').evaluate(element=>getComputedStyle(element).animationName)).toBe('none');await page.locator('.hud-boxes').click();await expect(page).toHaveURL(/\/palkinnot\/#unopened-boxes$/);
   await page.goto('/kortit/harjoitus?mode=deck&deck=anatomi&direction=fi-sv&amount=10&session=no-hud');await expect(page.locator('#metagame-hud')).toHaveCount(0);
 });
 

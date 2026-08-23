@@ -18,13 +18,17 @@ test('music preferences default independently, persist, fit mobile, and remain a
   expect((await new AxeBuilder({page}).analyze()).violations.filter(item=>['serious','critical'].includes(item.impact??''))).toEqual([]);
 });
 
-test('one unlocked player and its shuffle session resume through internal navigation',async({page})=>{
+test('front-page playback starts on a gesture and the same player continues through internal navigation',async({page})=>{
   const musicRequests:string[]=[];page.on('request',request=>{if(request.resourceType()==='media')musicRequests.push(request.url());});
   await page.goto('/');expect(musicRequests).toHaveLength(0);await dismissOverlay(page);await unlock(page);
+  await page.waitForTimeout(500);
   const before=await snapshot(page);expect(before.bag).toHaveLength(5);expect(new Set(before.bag).size).toBe(5);expect(before.currentTrack).not.toBeUndefined();expect(await page.locator('[data-music-channel]').count()).toBe(2);
+  await page.evaluate(()=>{(window as typeof window & {__persistentMusicNode?:Element}).__persistentMusicNode=document.querySelector('[data-music-channel]')!;});
   await page.getByRole('link',{name:/Sanakortit/}).first().click();await expect(page).toHaveURL(/\/kortit\/$/);
   await page.waitForFunction(()=>Boolean(window.__musicTest));
-  await expect.poll(async()=>(await snapshot(page)).currentTrack).toBe(before.currentTrack);const after=await snapshot(page);expect(after.bag).toEqual(before.bag);expect(await page.locator('[data-music-channel]').count()).toBe(2);expect(after.times.some(time=>time>=Math.max(0,Math.max(...before.times)-1))).toBe(true);
+  await page.waitForTimeout(500);
+  await expect.poll(async()=>(await snapshot(page)).currentTrack).toBe(before.currentTrack);const after=await snapshot(page);expect(after.playing).toBe(true);expect(after.bag).toEqual(before.bag);expect(await page.locator('[data-music-channel]').count()).toBe(2);expect(await page.evaluate(()=>(window as typeof window & {__persistentMusicNode?:Element}).__persistentMusicNode===document.querySelector('[data-music-channel]'))).toBe(true);expect(Math.max(...after.times)).toBeGreaterThan(Math.max(...before.times));
+  await page.locator('.deck-row').filter({hasText:'Anatomia'}).click();await expect(page.locator('#progress')).toHaveText('0 / 25');await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeFocused();expect(await page.evaluate(()=>(window as typeof window & {__persistentMusicNode?:Element}).__persistentMusicNode===document.querySelector('[data-music-channel]'))).toBe(true);expect((await snapshot(page)).playing).toBe(true);
   expect(new Set(musicRequests.map(url=>new URL(url).pathname).filter(path=>/music-\d{2}/.test(path))).size).toBeLessThan(5);
 });
 

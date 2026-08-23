@@ -1,6 +1,7 @@
 import type { DescriptionRequestedAmount } from '../lib/description-session';
 
 const STORAGE_KEY = 'medicinsk-svenska.description-session.v1';
+function initializeDescriptionSetup() {
 const amountInputs = [...document.querySelectorAll<HTMLInputElement>('input[name="description-amount"]')];
 const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-description-start]')];
 
@@ -21,3 +22,6 @@ function updateLinks() {
 amountInputs.forEach((input) => input.addEventListener('change', updateLinks));
 links.forEach((link) => link.addEventListener('click', () => localStorage.removeItem(STORAGE_KEY)));
 updateLinks();
+}
+
+document.addEventListener('astro:page-load', initializeDescriptionSetup);

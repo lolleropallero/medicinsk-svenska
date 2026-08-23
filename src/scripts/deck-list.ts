@@ -2,6 +2,7 @@ import { buildSessionUrl } from '../lib/session-url';
 import type { Direction } from '../types/content';
 import type { RequestedAmount, SessionMode } from '../lib/session';
 
+function initializeDeckList() {
 const starts = document.querySelectorAll<HTMLAnchorElement>('[data-start]');
 const radios = document.querySelectorAll<HTMLInputElement>('input[name="direction"], input[name="amount"]');
 
@@ -35,5 +36,7 @@ radios.forEach((radio) => radio.addEventListener('change', updateLinks));
 starts.forEach((link) => link.addEventListener('click', () => {
   link.href = buildSessionUrl(configurationFor(link));
 }));
-window.addEventListener('pageshow', updateLinks);
 updateLinks();
+}
+
+document.addEventListener('astro:page-load', initializeDeckList);

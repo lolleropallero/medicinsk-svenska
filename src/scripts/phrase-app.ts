@@ -19,6 +19,9 @@ import { startActiveTime } from '../lib/progress/active-time';
 import { showSessionRewards } from '../lib/progress/session-summary';
 import { requestFeedback } from '../lib/motion/feedback';
 
+function initializePhraseApp() {
+if (!document.getElementById('phrases-data')) return;
+const controller = new AbortController();
 const STORAGE_KEY = 'medicinsk-svenska.phrase-session.v1';
 const byId = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const phrases = JSON.parse(byId<HTMLScriptElement>('phrases-data').textContent ?? '[]') as ClinicalPhraseClient[];
@@ -186,15 +189,24 @@ function startApp() {
   missed.addEventListener('click', () => grade(false));
   correct.addEventListener('click', () => grade(true));
   byId<HTMLButtonElement>('phrase-new-round').addEventListener('click', newRound);
-  setInterval(() => {
+  const clockTimer = window.setInterval(() => {
     const waiting = !session.currentPhraseId && !isPhraseSessionComplete(session);
     const advanced = advancePhraseSession(session, Date.now());
     if (advanced !== session) { session = advanced; persist(); render(waiting); }
     else updateClocks();
   }, 1000);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
-  startActiveTime({mode:'phrases',sessionId:()=>session.sessionId,eligible:()=>Boolean(session.currentPhraseId&&!isPhraseSessionComplete(session)&&errorView.hidden)});
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); }, { signal: controller.signal });
+  const activeTime = startActiveTime({mode:'phrases',sessionId:()=>session.sessionId,eligible:()=>Boolean(session.currentPhraseId&&!isPhraseSessionComplete(session)&&errorView.hidden)});
+  document.addEventListener('astro:before-swap', () => {
+    controller.abort();
+    window.clearInterval(clockTimer);
+    clearRetryTimer();
+    activeTime.stop();
+  }, { once: true });
   render(true);
 }
 
 startApp();
+}
+
+document.addEventListener('astro:page-load', initializePhraseApp);

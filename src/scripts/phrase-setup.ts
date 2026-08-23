@@ -1,6 +1,7 @@
 import type { PhraseRequestedAmount } from '../lib/phrase-session';
 
 const STORAGE_KEY = 'medicinsk-svenska.phrase-session.v1';
+function initializePhraseSetup() {
 const inputs = [...document.querySelectorAll<HTMLInputElement>('input[name="phrase-amount"]')];
 const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-phrase-start]')];
 
@@ -18,3 +19,6 @@ function updateLinks() {
 inputs.forEach((input) => input.addEventListener('change', updateLinks));
 links.forEach((link) => link.addEventListener('click', () => localStorage.removeItem(STORAGE_KEY)));
 updateLinks();
+}
+
+document.addEventListener('astro:page-load', initializePhraseSetup);

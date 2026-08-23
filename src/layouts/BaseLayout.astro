@@ -4,6 +4,7 @@ import BrandMark from '../components/BrandMark.astro';
 import NordicBackdrop from '../components/NordicBackdrop.astro';
 import MobileNavigation from '../components/MobileNavigation.astro';
 import AppIcon from '../components/AppIcon.astro';
+import { ClientRouter } from 'astro:transitions';
 import { nordicAssets } from '../lib/nordic-assets';
 interface Props { title: string; description?: string }
 const { title, description = 'Harjoittele lääketieteellistä ruotsia.' } = Astro.props;
@@ -30,6 +31,7 @@ const backgroundKind=exerciseRoute?'studyLight':rewardRoute?'rewardsDark':path==
       } catch {}
     </script>
     <title>{title} · Medicinsk svenska</title>
+    <ClientRouter />
   </head>
   <body class:list={{ 'home-route': path === '/', 'exercise-route': exerciseRoute, 'metagame-route': rewardRoute }}>
     <a class="skip-link" href="#sisalto">Siirry sisältöön</a>
@@ -51,7 +53,7 @@ const backgroundKind=exerciseRoute?'studyLight':rewardRoute?'rewardsDark':path==
     <main id="sisalto" class:list={{ 'study-main': exerciseRoute }}><slot /></main>
     {!exerciseRoute&&<MobileNavigation path={path}/>}
     <div id="reward-notifications" class="notifications" aria-live="polite"></div>
-    <div id="music-player" aria-hidden="true"></div>
+    <div id="music-player" aria-hidden="true" transition:persist="music-player"></div>
     <script src="../scripts/progress-shell.ts"></script>
     <script src="../scripts/music-player.ts"></script>
   </body>

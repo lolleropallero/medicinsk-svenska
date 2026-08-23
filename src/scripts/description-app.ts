@@ -19,6 +19,8 @@ import { startActiveTime } from '../lib/progress/active-time';
 import { showSessionRewards } from '../lib/progress/session-summary';
 import { requestFeedback } from '../lib/motion/feedback';
 
+function initializeDescriptionApp() {
+if (!document.getElementById('descriptions-data')) return;
 const STORAGE_KEY = 'medicinsk-svenska.description-session.v1';
 const byId = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
 const exercises = JSON.parse(byId<HTMLScriptElement>('descriptions-data').textContent ?? '[]') as DescriptionExerciseClient[];
@@ -38,6 +40,7 @@ const nextButton = byId<HTMLButtonElement>('description-next');
 const elapsed = byId<HTMLTimeElement>('description-elapsed');
 let session: DescriptionSession | null = null;
 let timerId: number | null = null;
+let activeTime: ReturnType<typeof startActiveTime> | null = null;
 
 const newSessionId = () => crypto.randomUUID();
 
@@ -220,8 +223,15 @@ function restoreOrCreate() {
   }
   startTimer();
   dispatchProgress({type:'session-started',eventId:`descriptions:${session.sessionId}:started`,sessionId:session.sessionId,mode:'descriptions',sourceId:session.sourceMode==='all'?'all':session.sourceCategoryId!,selectedCount:session.selectedExerciseIds.length,occurredAt:session.startedAt});
-  startActiveTime({mode:'descriptions',sessionId:()=>session!.sessionId,eligible:()=>Boolean(session&&session.currentIndex<session.selectedExerciseIds.length&&!session.currentResolvedResult&&!errorView.hidden)});
+  activeTime = startActiveTime({mode:'descriptions',sessionId:()=>session!.sessionId,eligible:()=>Boolean(session&&session.currentIndex<session.selectedExerciseIds.length&&!session.currentResolvedResult&&!errorView.hidden)});
   render();
 }
 
 restoreOrCreate();
+document.addEventListener('astro:before-swap', () => {
+  if (timerId !== null) window.clearInterval(timerId);
+  activeTime?.stop();
+}, { once: true });
+}
+
+document.addEventListener('astro:page-load', initializeDescriptionApp);

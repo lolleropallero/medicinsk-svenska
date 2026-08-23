@@ -94,7 +94,7 @@ function refresh() {
   apply();
   hud();
 }
-refresh();
+document.addEventListener("astro:page-load", refresh);
 window.addEventListener("progress-updated", refresh);
 window.addEventListener("storage", (event) => {
   if (event.key === "medicinsk-svenska.progress.v1") refresh();

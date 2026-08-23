@@ -94,6 +94,7 @@ import {
 } from "../lib/reward-box-assets";
 import { nordicAssets } from "../lib/nordic-assets";
 import { playSound } from "../lib/sound/player";
+import { requestFeedback } from "../lib/motion/feedback";
 import { loadSoundSettings, saveSoundSettings } from "../lib/sound/settings";
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) =>
@@ -191,6 +192,9 @@ let collectionShowAll = false;
 let seasonMobilePanel: "rewards" | "league" = "rewards";
 let seasonShowAll = false;
 let autoOpenChecked = false;
+let lastClaimedSlots: Set<number> | null = null;
+let lastAllDailyComplete: boolean | null = null;
+let attentionTimer: number | undefined;
 const SESSION_KEYS: Record<ExerciseMode, string> = {
   flashcards: "medicinsk-svenska.flashcard-session.v1",
   phrases: "medicinsk-svenska.phrase-session.v1",
@@ -401,11 +405,12 @@ function bindHomeActions(root: HTMLElement, day = today()) {
       }),
     );
 }
-function openDailyOverlay() {
+function openDailyOverlay(automatic = false) {
   const dialog = $<HTMLDialogElement>("daily-overlay");
   if (!dialog || dialog.open || document.querySelector("dialog[open]")) return;
   dialog.showModal();
-  playSound('overlay-open');
+  dialog.dataset.dailyEntrance = automatic ? 'automatic' : 'manual';
+  requestFeedback('overlay-open', dialog);
   const target =
     dialog.querySelector<HTMLElement>("[data-quest-action]") ??
     $("daily-overlay-title");
@@ -419,9 +424,22 @@ function closeDailyOverlay(options: {
   if (!dialog?.open) return;
   if (options.markDismissed) dismissDailyOverlay();
   dialog.close();
-  playSound('overlay-close');
+  requestFeedback('overlay-close', dialog);
   if (options.restoreFocus)
     $<HTMLButtonElement>("daily-launcher")?.focus({ preventScroll: true });
+  scheduleDailyAttention();
+}
+function scheduleDailyAttention() {
+  if (attentionTimer !== undefined) window.clearTimeout(attentionTimer);
+  const launcher = $<HTMLButtonElement>('daily-launcher'), day = today();
+  const incomplete = day.uniqueItemIds.length < state.settings.dailyGoal || day.quests.some((quest) => !quest.claimed);
+  if (!launcher || !incomplete || state.settings.calmMode || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  attentionTimer = window.setTimeout(() => {
+    const last = Number(sessionStorage.getItem('medicinsk-svenska.daily-nudge-at') ?? 0);
+    if (document.hidden || $<HTMLDialogElement>('daily-overlay')?.open || Date.now() - last < 300_000) return;
+    requestFeedback('daily-attention', launcher, null);
+    sessionStorage.setItem('medicinsk-svenska.daily-nudge-at', String(Date.now()));
+  }, 25_000);
 }
 function renderHome() {
   const launcher = $<HTMLButtonElement>("daily-launcher"),
@@ -440,6 +458,13 @@ function renderHome() {
     : `Dagens mål ${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`;
   root.innerHTML = `<section class="overlay-goal"><span class="goal-box">${rewardBoxVisual("standard")}</span><div class="goal-copy"><div><h3 lang="sv">Dagens mål</h3><strong lang="sv">${goalComplete ? `${iconSvg("check")} Klart` : `${day.uniqueItemIds.length} / ${state.settings.dailyGoal}`}</strong></div>${progressBar(day.uniqueItemIds.length, state.settings.dailyGoal, "Dagens mål")}<small lang="sv">Vanlig belöning · 10 krediter · 20 säsongspoäng</small></div></section><div class="daily-overlay-quests">${overlayQuestRows(day)}</div><footer class="daily-all-bonus"><span class="daily-all-bonus-box">${rewardBoxVisual("golden")}</span><span class="daily-all-bonus-copy"><strong lang="sv">${allComplete ? "Alla tre uppdrag klara" : "Slutför alla tre och få en gyllene belöning"}</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen palkinnon.</small></span></footer>`;
   bindHomeActions(root, day);
+  const claimedSlots = new Set(day.quests.filter((quest) => quest.claimed).map((quest) => quest.slot));
+  if (lastClaimedSlots) for (const slot of claimedSlots) if (!lastClaimedSlots.has(slot))
+    requestFeedback('quest-complete', root.querySelector<HTMLElement>(`[data-quest-slot="${slot}"]`));
+  if (lastAllDailyComplete === false && allComplete)
+    requestFeedback('reward-reveal', root.querySelector<HTMLElement>('.daily-all-bonus'), null);
+  lastClaimedSlots = claimedSlots;
+  lastAllDailyComplete = allComplete;
   if (activeFocus && $("daily-overlay")?.hasAttribute("open"))
     (
       root.querySelector<HTMLElement>(`[data-focus-id="${activeFocus}"]`) ??
@@ -622,7 +647,7 @@ function showCapsule(capsule: {
     rarityCopy[rarity as keyof typeof rarityCopy];
   $("capsule-reward")!.textContent = rewardCopy(capsule.reward);
   dialog.showModal();
-  playSound('reward-reveal');
+  requestFeedback('reward-reveal', dialog);
   dialog.querySelector<HTMLButtonElement>("[data-close]")?.focus();
 }
 function renderSeason() {
@@ -730,7 +755,7 @@ function checkDailyAutoOpen() {
         otherModalOpen,
       })
     )
-      openDailyOverlay();
+      openDailyOverlay(true);
   });
 }
 
@@ -795,7 +820,7 @@ $<HTMLDialogElement>("capsule-dialog")?.addEventListener("click", (event) => {
 });
 $<HTMLButtonElement>("daily-launcher")?.addEventListener(
   "click",
-  openDailyOverlay,
+  () => openDailyOverlay(false),
 );
 $<HTMLButtonElement>("daily-overlay-close")?.addEventListener("click", () =>
   closeDailyOverlay({ markDismissed: true, restoreFocus: true }),

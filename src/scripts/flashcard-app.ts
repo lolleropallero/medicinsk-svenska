@@ -19,7 +19,7 @@ import type { DeckClient, FlashcardClient } from '../types/content';
 import { dispatchProgress } from '../lib/progress/storage';
 import { startActiveTime } from '../lib/progress/active-time';
 import { showSessionRewards } from '../lib/progress/session-summary';
-import { playSound } from '../lib/sound/player';
+import { requestFeedback } from '../lib/motion/feedback';
 
 const STORAGE_KEY = 'medicinsk-svenska.flashcard-session.v1';
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -212,10 +212,10 @@ function startApp() {
 
   function reveal() {
     if (!session.currentCardId || session.revealed) return;
-    playSound('reveal');
     session = revealCurrentCard(session);
     persist();
     render({ focus: true });
+    requestFeedback('reveal', flashcard);
   }
 
   function grade(correct: boolean) {
@@ -223,7 +223,7 @@ function startApp() {
     const completedId = session.currentCardId;
     const priorAttempts = session.attemptCountByCard[completedId] ?? 0;
     gradingLocked = true;
-    playSound(correct ? 'correct' : 'incorrect');
+    requestFeedback(correct ? 'correct' : 'incorrect', sessionView);
     correctButton.disabled = true;
     missedButton.disabled = true;
     session = gradeCurrentCard(session, correct, Date.now());
@@ -231,6 +231,7 @@ function startApp() {
       mode:'flashcards',itemId:completedId,sourceId,occurredAt:Date.now(),firstAttemptCorrect:priorAttempts===0,hadMisses:priorAttempts>0,resolution:'mastered'});
     persist();
     render({ focus: true });
+    requestFeedback('item-change', flashcard, null);
     correctButton.disabled = false;
     missedButton.disabled = false;
     gradingLocked = false;

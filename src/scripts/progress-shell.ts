@@ -9,6 +9,9 @@ import {
 } from "../lib/visuals";
 import { rewardBoxImage, type RewardBoxKind } from "../lib/reward-box-assets";
 import { levelProgress } from "../lib/progress/core";
+import { requestFeedback } from "../lib/motion/feedback";
+
+let priorHudValues: string[] | null = null;
 
 function apply() {
   const state = loadProgress();
@@ -32,7 +35,7 @@ function apply() {
   const next = state.notifications[0];
   if (host)
     host.innerHTML = next
-      ? `<div class="notification" role="status">${notificationVisual(next)}<span lang="sv"><strong>${notificationCopy(next)}</strong><small>Belöningen har lagts till.</small></span><button type="button" aria-label="Stäng meddelandet" lang="sv">Stäng</button></div>`
+      ? `<div class="notification" data-notification-kind="${next.kind}" role="status">${notificationVisual(next)}<span lang="sv"><strong>${notificationCopy(next)}</strong><small>Belöningen har lagts till.</small></span><button type="button" aria-label="Stäng meddelandet" lang="sv">Stäng</button></div>`
       : "";
   host?.querySelector("button")?.addEventListener("click", () => {
     const current = loadProgress();
@@ -81,6 +84,11 @@ function hud() {
     <a class="hud-stat" href="/palkinnot/" aria-label="${state.inventory.credits} krediter"><span class="hud-stat__icon" aria-hidden="true">${iconSvg("credits")}</span><span class="hud-stat__copy"><span class="hud-stat__label">Krediter</span><strong class="hud-stat__value">${state.inventory.credits}</strong></span></a>
     <a class="hud-stat hud-boxes ${boxes ? "has-boxes" : ""}" href="/palkinnot/#unopened-boxes" aria-label="${boxes} ${boxes === 1 ? "oöppnad belöning" : "oöppnade belöningar"}"><span class="hud-stat__icon hud-stat__box" aria-hidden="true">${compactBox("standard")}</span><span class="hud-stat__copy"><span class="hud-stat__label">Belöningar</span><strong class="hud-stat__value">${boxes}</strong>${boxes ? '<small class="hud-stat__secondary">Öppna</small>' : ""}</span></a>
   </div>`;
+  const values = [String(level.level), String(state.streak.current), String(state.inventory.credits), String(boxes)];
+  if (priorHudValues) host.querySelectorAll<HTMLElement>('.hud-stat__value').forEach((node,index) => {
+    if (priorHudValues?.[index] !== values[index]) requestFeedback('hud-increment', node, null);
+  });
+  priorHudValues = values;
 }
 function refresh() {
   apply();

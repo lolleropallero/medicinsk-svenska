@@ -17,7 +17,7 @@ import type { ClinicalPhraseClient, PhraseCategoryClient } from '../types/conten
 import { dispatchProgress } from '../lib/progress/storage';
 import { startActiveTime } from '../lib/progress/active-time';
 import { showSessionRewards } from '../lib/progress/session-summary';
-import { playSound } from '../lib/sound/player';
+import { requestFeedback } from '../lib/motion/feedback';
 
 const STORAGE_KEY = 'medicinsk-svenska.phrase-session.v1';
 const byId = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -158,17 +158,16 @@ function startApp() {
   function reveal() {
     const next = revealPhrase(session);
     if (next === session) return;
-    playSound('reveal');
-    session = next; persist(); render(true);
+    session = next; persist(); render(true); requestFeedback('reveal', card);
   }
   function grade(value: boolean) {
     if (grading || !session.revealed) return;
-    playSound(value ? 'correct' : 'incorrect');
+    requestFeedback(value ? 'correct' : 'incorrect', sessionView);
     const completedId=session.currentPhraseId!;const priorAttempts=session.attemptCountByPhrase[completedId]??0;
     grading = true; missed.disabled = true; correct.disabled = true;
     session = gradePhrase(session, value, Date.now());
     if(value)dispatchProgress({type:'item-completed',eventId:`phrases:${session.sessionId}:item:${completedId}`,sessionId:session.sessionId,mode:'phrases',itemId:completedId,sourceId,occurredAt:Date.now(),firstAttemptCorrect:priorAttempts===0,hadMisses:priorAttempts>0,resolution:'mastered'});
-    persist(); render(true);
+    persist(); render(true); requestFeedback('item-change', card, null);
     missed.disabled = false; correct.disabled = false; grading = false;
   }
   function newRound() {

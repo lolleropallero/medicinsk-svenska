@@ -1,0 +1,75 @@
+/* Motion System V1: semantic states are emitted by lib/motion/feedback.ts. */
+button,.button {
+  transition: transform var(--motion-instant) var(--ease-standard),box-shadow var(--motion-fast) var(--ease-standard),background-color var(--motion-fast) var(--ease-standard),border-color var(--motion-fast) var(--ease-standard);
+}
+.meter>span { transition: width var(--motion-normal) var(--ease-standard); }
+
+[data-motion-state="reveal"] { animation: motion-card-settle var(--motion-normal) var(--ease-enter); }
+[data-motion-state="reveal"] .term:first-of-type,
+[data-motion-state="reveal"] .speech-bubble:first-of-type { animation: motion-cue-up var(--motion-normal) var(--ease-enter); }
+[data-motion-state="reveal"] #answer-area,
+[data-motion-state="reveal"] #phrase-answer,
+.feedback[data-motion-state="reveal"],.feedback[data-motion-state="correct"],.feedback[data-motion-state="incorrect"] { animation: motion-answer-in var(--motion-normal) var(--ease-enter); }
+[data-motion-state="reveal"] .answer-bridge { animation: motion-divider-in var(--motion-fast) var(--ease-enter); transform-origin:left; }
+[data-motion-state="item-change"] { animation: motion-item-in 210ms var(--ease-enter); }
+[data-motion-state="correct"] { animation: motion-correct var(--motion-fast) var(--ease-pop); }
+[data-motion-state="incorrect"] { animation: motion-incorrect var(--motion-fast) var(--ease-standard); }
+.feedback[data-result="correct"][data-motion-state]::before { content:"✓"; display:inline-grid; width:24px; height:24px; margin:0 8px 6px 0; place-items:center; border-radius:50%; background:var(--success); color:white; animation:motion-check var(--motion-fast) var(--ease-pop); }
+
+.daily-overlay[data-motion-state="overlay-open"]::backdrop { animation:motion-scrim-in 170ms var(--ease-standard); }
+.daily-overlay[data-motion-state="overlay-open"] .daily-sheet { animation:motion-sheet-in var(--motion-emphasis) var(--ease-enter); }
+.daily-overlay[data-daily-entrance="automatic"][data-motion-state="overlay-open"] .overlay-goal,
+.daily-overlay[data-daily-entrance="automatic"][data-motion-state="overlay-open"] .daily-quest-row,
+.daily-overlay[data-daily-entrance="automatic"][data-motion-state="overlay-open"] .daily-all-bonus { animation:motion-row-in var(--motion-fast) var(--ease-enter) both; }
+.daily-overlay[data-daily-entrance="automatic"] .overlay-goal{animation-delay:60ms!important}
+.daily-overlay[data-daily-entrance="automatic"] .daily-quest-row:nth-child(1){animation-delay:100ms!important}
+.daily-overlay[data-daily-entrance="automatic"] .daily-quest-row:nth-child(2){animation-delay:140ms!important}
+.daily-overlay[data-daily-entrance="automatic"] .daily-quest-row:nth-child(3){animation-delay:180ms!important}
+.daily-overlay[data-daily-entrance="automatic"] .daily-all-bonus{animation-delay:220ms!important}
+.daily-overlay[data-daily-entrance="automatic"][data-motion-state="overlay-open"] .overlay-goal .meter>span { animation:motion-progress 460ms var(--ease-enter); transform-origin:left; }
+.daily-launcher[data-motion-state="daily-attention"] { animation:motion-attention 460ms var(--ease-enter); }
+.mission-ticket[data-motion-state="quest-complete"] { animation:motion-quest-complete 300ms var(--ease-enter); }
+.daily-all-bonus[data-motion-state="reward-reveal"] .reward-box-visual,.all-quests-bonus[data-motion-state="reward-reveal"] .reward-box-visual { animation:motion-shield 460ms var(--ease-pop); }
+
+.notification[data-notification-kind="achievement"] .notification-achievement { animation:motion-achievement var(--motion-reward) var(--ease-pop); }
+.notification[data-notification-kind="achievement"]>span { animation:motion-row-in var(--motion-normal) var(--ease-enter) 110ms both; }
+.notification[data-notification-kind="level"] .app-icon { animation:motion-level var(--motion-emphasis) var(--ease-pop); }
+.capsule-dialog[data-motion-state="reward-reveal"] .capsule-reward-frame,.capsule-dialog[data-motion-state="reward-reveal"] .capsule-box { animation:motion-shield 440ms var(--ease-pop); }
+.capsule-dialog[data-motion-state="reward-reveal"]>h2,.capsule-dialog[data-motion-state="reward-reveal"]>strong,.capsule-dialog[data-motion-state="reward-reveal"]>.eyebrow { animation:motion-row-in var(--motion-normal) var(--ease-enter) 100ms both; }
+.capsule-dialog[data-rarity="legendary"][data-motion-state="reward-reveal"]::before { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(110deg,transparent 25%,rgba(180,135,255,.28),transparent 70%); transform:translateX(-110%); animation:motion-sweep 520ms var(--ease-standard); }
+.hud-stat__value[data-motion-state="hud-increment"] { display:inline-block; animation:motion-number var(--motion-fast) var(--ease-enter); }
+.mobile-navigation a[aria-current="page"] .app-icon,.desktop-navigation a[aria-current="page"] .app-icon { animation:motion-nav var(--motion-fast) var(--ease-pop); }
+.offer[data-motion-state="correct"] { animation:motion-purchase var(--motion-fast) var(--ease-standard); }
+.checkpoint[data-motion-state="season-unlock"] .checkpoint-node { animation:motion-checkpoint 420ms var(--ease-pop); }
+.league-badge[data-motion-state="league-promotion"] { animation:motion-achievement var(--motion-reward) var(--ease-pop); }
+
+@keyframes motion-card-settle{0%{transform:scale(.985)}100%{transform:scale(1)}}
+@keyframes motion-cue-up{from{transform:translateY(5px)}to{transform:translateY(0)}}
+@keyframes motion-divider-in{from{opacity:0;transform:scaleX(0)}to{opacity:1;transform:scaleX(1)}}
+@keyframes motion-answer-in{from{opacity:0;transform:translateY(9px) scale(.99)}to{opacity:1;transform:none}}
+@keyframes motion-item-in{0%{opacity:0;transform:translateY(11px) scale(.99)}100%{opacity:1;transform:none}}
+@keyframes motion-correct{0%{box-shadow:0 0 0 0 rgba(22,132,91,.45)}60%{box-shadow:0 0 0 4px rgba(22,132,91,.22)}100%{box-shadow:0 0 0 0 transparent}}
+@keyframes motion-incorrect{0%,100%{transform:translateX(0)}25%{transform:translateX(-3px)}55%{transform:translateX(3px)}80%{transform:translateX(-1px)}}
+@keyframes motion-check{0%{transform:scale(.6)}65%{transform:scale(1.1)}100%{transform:scale(1)}}
+@keyframes motion-scrim-in{from{background:rgba(4,20,44,0)}to{background:rgba(4,20,44,.76)}}
+@keyframes motion-sheet-in{0%{transform:translateY(100%)}82%{transform:translateY(-5px)}100%{transform:translateY(0)}}
+@keyframes motion-row-in{from{transform:translateY(8px)}to{transform:none}}
+@keyframes motion-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes motion-attention{0%,100%{transform:none;border-color:var(--fi-blue)}45%{transform:translateY(-3px);border-color:var(--sv-yellow)}}
+@keyframes motion-quest-complete{0%{box-shadow:0 0 0 0 rgba(228,154,0,0)}55%{box-shadow:0 0 0 5px rgba(228,154,0,.25)}100%{box-shadow:none}}
+@keyframes motion-shield{0%{opacity:0;transform:scale(.72) rotate(-4deg)}65%{opacity:1;transform:scale(1.07) rotate(1deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes motion-achievement{0%{opacity:0;transform:scale(.65) rotate(-5deg)}65%{opacity:1;transform:scale(1.08)}100%{transform:none}}
+@keyframes motion-level{0%{opacity:0;transform:translateY(100%)}70%{opacity:1;transform:translateY(-5%)}100%{transform:none}}
+@keyframes motion-number{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes motion-nav{50%{transform:scale(1.07)}}
+@keyframes motion-purchase{50%{transform:scale(.97)}}
+@keyframes motion-checkpoint{0%{transform:scale(.7)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes motion-sweep{to{transform:translateX(110%)}}
+
+:root[data-calm="true"] .daily-overlay [data-motion-state],:root[data-calm="true"] .daily-overlay[data-motion-state] .daily-sheet,
+:root[data-calm="true"] .notification,:root[data-calm="true"] .reward-box-visual,:root[data-calm="true"] .hud-stat__value { animation:none!important; }
+:root[data-calm="true"] [data-motion-state="reveal"],:root[data-calm="true"] [data-motion-state="item-change"],:root[data-calm="true"] [data-motion-state="correct"],:root[data-calm="true"] [data-motion-state="incorrect"] { animation-duration:120ms; }
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:1ms!important;animation-delay:0ms!important;animation-iteration-count:1!important;transition-duration:80ms!important;transform:none!important}
+  .daily-launcher[data-motion-state="daily-attention"]{animation:none!important}
+}

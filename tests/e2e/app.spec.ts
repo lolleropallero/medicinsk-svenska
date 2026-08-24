@@ -245,8 +245,8 @@ test('long medical compounds wrap at 320 by 568 without accessibility violations
 test('elapsed timer uses absolute time across controlled advances and reload',async({page})=>{
   const start=new Date('2026-02-01T12:00:00.000Z');
   await page.clock.install({time:start});
+  await page.clock.pauseAt(start);
   await page.goto('/kortit/harjoitus?mode=deck&deck=anatomi&direction=fi-sv&amount=10&session=elapsed-clock');
-  await page.clock.pauseAt(start.getTime()+1_000);
   await expect(page.locator('#elapsed-time')).toHaveText('00:00');
   const initialBox=await page.locator('#elapsed-time').boundingBox();
   await page.clock.fastForward(5_000);

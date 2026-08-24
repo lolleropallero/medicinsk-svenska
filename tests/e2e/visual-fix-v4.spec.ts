@@ -130,7 +130,12 @@ test('all four route backgrounds load visibly as same-origin WebPs with correct 
     for (const [route, asset] of routes) {
       await page.goto(route);
       expect(await backgroundImage(page)).toContain(asset);
-      expect(await page.locator('.nordic-backdrop').evaluate((node) => ({ size: getComputedStyle(node).backgroundSize, repeat: getComputedStyle(node).backgroundRepeat, opacity: getComputedStyle(node).opacity, attachment: getComputedStyle(node).backgroundAttachment }))).toEqual({ size: 'cover', repeat: 'no-repeat', opacity: '1', attachment: 'scroll' });
+      const backdrop = await page.locator('.nordic-backdrop').evaluate((node) => {
+        const style = getComputedStyle(node);
+        const last = (value: string) => value.split(',').at(-1)?.trim();
+        return { size: last(style.backgroundSize), repeat: last(style.backgroundRepeat), opacity: style.opacity, attachment: last(style.backgroundAttachment) };
+      });
+      expect(backdrop).toEqual({ size: 'cover', repeat: 'no-repeat', opacity: '1', attachment: 'scroll' });
     }
   }
   expect(failed).toEqual([]);

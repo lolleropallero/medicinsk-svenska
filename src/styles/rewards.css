@@ -227,7 +227,7 @@
   position: relative;
   display: flex;
   min-width: 0;
-  min-height: 190px;
+  min-height: 218px;
   flex-direction: column;
   gap: 7px;
   padding: 13px;
@@ -238,16 +238,30 @@
 }
 .offer-icon {
   display: grid;
-  width: 58px;
-  height: 58px;
+  width: 100%;
+  min-height: 92px;
   place-items: center;
-  border-radius: 15px;
+  border-radius: var(--radius-sm);
   background: linear-gradient(145deg, var(--ice), #c8e3f3);
   color: var(--fi-blue);
+}
+.cosmetic-offer-media {
+  background:
+    radial-gradient(circle at 16% 18%, rgba(255,255,255,.9), transparent 26%),
+    linear-gradient(145deg, var(--ice), var(--surface));
+}
+.cosmetic-offer-media .cosmetic-preview {
+  width: min(132px, 100%);
+  height: 86px;
 }
 .offer > span:not(.offer-icon) {
   color: var(--muted);
   font-size: 0.75rem;
+}
+.offer > small {
+  color: var(--muted);
+  font-size: 0.66rem;
+  line-height: 1.25;
 }
 .offer button {
   margin-top: auto;
@@ -268,6 +282,19 @@
 .appearance-preview {
   margin-bottom: 14px;
 }
+.loadout-preview {
+  display: grid;
+  gap: 10px;
+}
+.loadout-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.loadout-strip .cosmetic-preview {
+  width: 100%;
+  height: 72px;
+}
 .passport-mini {
   position: relative;
   display: flex;
@@ -276,10 +303,14 @@
   justify-content: end;
   padding: 16px;
   overflow: hidden;
-  border: 3px solid var(--frame-color);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--nordic-navy), var(--fi-blue));
+  border: var(--passport-frame-border);
+  border-radius: var(--passport-frame-radius);
+  background:
+    var(--passport-frame-pattern),
+    linear-gradient(135deg, var(--nordic-navy), var(--fi-blue));
+  background-size: 24px 24px, auto;
   color: white;
+  box-shadow: var(--passport-frame-outline);
 }
 .passport-mini > .app-icon {
   position: absolute;
@@ -327,7 +358,7 @@
 .collectible {
   display: flex;
   min-width: 0;
-  min-height: 178px;
+  min-height: 202px;
   flex-direction: column;
   padding: 10px;
   border: 1px solid #c5dae8;
@@ -350,12 +381,18 @@
 .cosmetic-swatch {
   position: relative;
   display: grid;
-  height: 68px;
+  min-height: 84px;
   margin-bottom: 7px;
   place-items: center;
   border-radius: var(--radius-sm);
-  background: linear-gradient(145deg, var(--sv-blue), var(--fi-blue));
+  background:
+    radial-gradient(circle at 12% 14%, rgba(255,255,255,.8), transparent 24%),
+    linear-gradient(145deg, var(--ice), var(--surface));
   color: white;
+}
+.cosmetic-swatch .cosmetic-preview {
+  width: min(118px, 100%);
+  height: 78px;
 }
 .cosmetic-swatch > .app-icon + .app-icon {
   position: absolute;
@@ -365,11 +402,16 @@
   height: 17px;
 }
 .collectible.locked {
-  filter: grayscale(0.85);
-  opacity: 0.56;
+  opacity: 0.72;
 }
 .collectible.locked .cosmetic-swatch {
-  background: #c4d0d8;
+  background:
+    repeating-linear-gradient(135deg, rgba(18,38,58,.06) 0 8px, transparent 8px 16px),
+    linear-gradient(145deg, var(--ice), var(--surface));
+}
+.collectible.equipped {
+  border-color: var(--sv-yellow);
+  box-shadow: 0 0 0 2px rgba(254,204,2,.24), var(--shadow);
 }
 .capsule-dialog {
   position: relative;

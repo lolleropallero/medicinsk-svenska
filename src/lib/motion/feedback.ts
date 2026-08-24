@@ -22,7 +22,7 @@ export function requestFeedback(effect: MotionEffect, target?: HTMLElement | nul
       cleanup.set(target, window.setTimeout(() => {
         if (target.dataset.motionState === effect) delete target.dataset.motionState;
         cleanup.delete(target);
-      }, detail.mode === 'reduced' ? 80 : MOTION_CATALOG[effect].duration + 40));
+      }, detail.mode === 'reduced' ? 80 : Math.max(900, MOTION_CATALOG[effect].duration + 40)));
     }
   }
   if (sound) playSound(sound);

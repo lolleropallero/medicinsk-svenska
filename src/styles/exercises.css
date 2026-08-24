@@ -81,14 +81,16 @@
   justify-content: center;
   overflow: hidden;
   padding: 54px clamp(24px, 7vw, 56px) 32px;
-  border: 1px solid #bfd4e3;
+  border: var(--card-border-width) var(--card-border-style) var(--card-border-color);
   border-radius: var(--card-radius);
-  background-color: var(--cream);
+  background-color: var(--card-surface);
   background-image:
+    var(--card-ornament),
     var(--card-pattern),
     linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(229, 241, 250, 0.45));
+  background-size: auto, 28px 28px, auto;
   color: var(--text);
-  box-shadow: var(--shadow);
+  box-shadow: var(--card-shadow);
   text-align: center;
   cursor: pointer;
 }
@@ -97,20 +99,23 @@
   content: "";
   position: absolute;
   z-index: 0;
-  opacity: 0.025;
-  background: var(--fi-blue);
+  pointer-events: none;
 }
 .flashcard::before {
-  left: 13%;
-  top: 0;
-  width: 7%;
-  height: 100%;
+  inset: 12px;
+  border: 1px solid var(--card-inner-border);
+  border-radius: max(6px, calc(var(--card-radius) - 9px));
+  background: transparent;
+  opacity: 1;
 }
 .flashcard::after {
   left: 0;
-  top: 27%;
+  right: 0;
+  top: 0;
   width: 100%;
-  height: 9%;
+  height: 9px;
+  background: var(--card-top-band);
+  opacity: 1;
 }
 .flashcard > * {
   position: relative;
@@ -118,6 +123,65 @@
 }
 .flashcard:not(:disabled):hover {
   border-color: var(--sv-blue);
+}
+.flashcard::before,
+.description-card::before {
+  transition: border-color var(--motion);
+}
+:root[data-card-style="cardStyle-1"] .flashcard::before,
+:root[data-card-style="cardStyle-1"] .description-card::before {
+  border-top: 0;
+  border-right: 0;
+  border-left-color: rgba(25,126,193,.24);
+}
+:root[data-card-style="cardStyle-2"] .flashcard::before,
+:root[data-card-style="cardStyle-2"] .description-card::before {
+  border-color: rgba(0,106,167,.2);
+}
+:root[data-card-style="cardStyle-3"] .flashcard::after,
+:root[data-card-style="cardStyle-3"] .description-card::after {
+  left: auto;
+  right: 18px;
+  top: 16px;
+  width: 34px;
+  height: 18px;
+  border-radius: 2px;
+  background: rgba(157,116,51,.22);
+}
+:root[data-card-style="cardStyle-4"] .flashcard::before,
+:root[data-card-style="cardStyle-4"] .description-card::before {
+  border-width: 3px;
+  border-style: double;
+  border-color: rgba(0,53,128,.34);
+}
+:root[data-card-style="cardStyle-5"] .flashcard,
+:root[data-card-style="cardStyle-5"] .description-card {
+  padding-top: 62px;
+}
+:root[data-card-style="cardStyle-6"] .flashcard,
+:root[data-card-style="cardStyle-6"] .description-card {
+  clip-path: polygon(0 0, calc(100% - var(--card-corner-size)) 0, 100% var(--card-corner-size), 100% 100%, var(--card-corner-size) 100%, 0 calc(100% - var(--card-corner-size)));
+}
+:root[data-card-style="cardStyle-7"] .flashcard::before,
+:root[data-card-style="cardStyle-7"] .description-card::before {
+  inset: 18px;
+  border-color: rgba(40,127,112,.16);
+}
+:root[data-card-style="cardStyle-8"] .flashcard::before,
+:root[data-card-style="cardStyle-8"] .description-card::before {
+  inset: 8px;
+  border: 2px solid rgba(6,22,42,.82);
+  box-shadow: inset 0 0 0 4px rgba(86,165,255,.14);
+}
+:root[data-card-style="cardStyle-9"] .flashcard::before,
+:root[data-card-style="cardStyle-9"] .description-card::before {
+  left: 22%;
+  border-color: rgba(49,93,104,.16);
+}
+:root[data-card-style="season-epic-2"] .flashcard::before,
+:root[data-card-style="season-epic-2"] .description-card::before {
+  border-color: rgba(120,87,198,.28);
+  box-shadow: inset 0 0 0 5px rgba(228,154,0,.08);
 }
 .flashcard:disabled {
   cursor: default;
@@ -128,6 +192,7 @@
   font-family: ui-serif, Georgia, Cambria, serif;
   font-size: clamp(2.35rem, 8vw, 4.6rem);
   font-weight: 650;
+  letter-spacing: var(--card-type-spacing);
   line-height: 1.08;
   overflow-wrap: anywhere;
   hyphens: auto;
@@ -227,16 +292,39 @@
   align-items: center;
   overflow: hidden;
   padding: 52px clamp(24px, 5vw, 42px) 28px;
-  border: 1px solid #bfd4e3;
+  border: var(--card-border-width) var(--card-border-style) var(--card-border-color);
   border-radius: var(--radius-lg);
-  background: linear-gradient(145deg, var(--cream), var(--surface));
-  box-shadow: var(--shadow);
+  background:
+    var(--card-ornament),
+    var(--card-pattern),
+    linear-gradient(145deg, var(--card-surface), var(--surface));
+  background-size: auto, 28px 28px, auto;
+  box-shadow: var(--card-shadow);
+}
+.description-card::before,
+.description-card::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+.description-card::before {
+  inset: 12px;
+  border: 1px solid var(--card-inner-border);
+  border-radius: max(6px, calc(var(--card-radius) - 9px));
+}
+.description-card::after {
+  inset: 0 0 auto;
+  height: 9px;
+  background: var(--card-top-band);
 }
 .description-card p {
   position: relative;
+  z-index: 1;
   margin: 0;
   font-family: ui-serif, Georgia, Cambria, serif;
   font-size: clamp(1.3rem, 4vw, 1.85rem);
+  letter-spacing: var(--card-type-spacing);
   line-height: 1.42;
 }
 .description-watermark {

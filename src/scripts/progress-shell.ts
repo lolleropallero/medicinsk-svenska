@@ -3,6 +3,7 @@ import { loadProgress, saveProgress } from "../lib/progress/storage";
 import { notificationCopy } from "../lib/progress/copy";
 import {
   achievementBadge,
+  cosmeticCssVariables,
   cosmeticVisualToken,
   iconSvg,
   leagueBadge,
@@ -109,20 +110,27 @@ function scheduleMilestonePresentation() {
 function apply() {
   const state = loadProgress();
   const root = document.documentElement;
-  const theme = state.inventory.equipped.theme;
-  root.dataset.theme = COSMETICS.some(
-    (c) => c.id === theme && c.type === "theme",
-  )
-    ? cosmeticVisualToken("theme", theme)
+  const equipped = state.inventory.equipped;
+  const theme = cosmeticVisualToken("theme", equipped.theme);
+  root.dataset.theme = COSMETICS.some((c) => c.id === theme && c.type === "theme")
+    ? theme
     : DEFAULT_COSMETICS.theme;
-  root.dataset.cardStyle = cosmeticVisualToken(
-    "cardStyle",
-    state.inventory.equipped.cardStyle,
-  );
+  root.dataset.cardStyle = cosmeticVisualToken("cardStyle", equipped.cardStyle);
   root.dataset.progressFrame = cosmeticVisualToken(
     "progressFrame",
-    state.inventory.equipped.progressFrame,
+    equipped.progressFrame,
   );
+  root.dataset.title = cosmeticVisualToken("title", equipped.title);
+  for (const [type, id] of [
+    ["theme", root.dataset.theme],
+    ["cardStyle", root.dataset.cardStyle],
+    ["progressFrame", root.dataset.progressFrame],
+    ["title", root.dataset.title],
+  ] as const)
+    for (const [property, value] of Object.entries(
+      cosmeticCssVariables(type, id),
+    ))
+      root.style.setProperty(property, value);
   root.dataset.calm = String(state.settings.calmMode);
   const host = document.getElementById("reward-notifications");
   const next = state.notifications[0];

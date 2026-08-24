@@ -2,19 +2,25 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   ACHIEVEMENT_BADGES,
+  COSMETIC_VISUALS,
   ICON_PATHS,
   LEAGUE_BADGES,
   MOBILE_NAV_ITEMS,
   RARITY_VARIANTS,
   REWARD_BOX_VARIANTS,
   achievementBadge,
+  cosmeticCssVariables,
+  cosmeticPreviewMarkup,
   cosmeticVisualToken,
+  cosmeticVisualDefinition,
   languageRibbon,
   leagueBadge,
+  missingCosmeticVisualIds,
   rarityVariant,
   resolveIcon,
   rewardBoxVariant,
 } from "../../src/lib/visuals";
+import { COSMETICS } from "../../src/lib/progress/catalog";
 
 describe("Nordic Clinical Arcade visual catalog", () => {
   it("contains every required icon family and uses a safe fallback", () => {
@@ -119,6 +125,34 @@ describe("Nordic Clinical Arcade visual catalog", () => {
       "progressFrame-default",
     );
     expect(cosmeticVisualToken("title", "title-99")).toBe("title-default");
+  });
+
+  it("visually realizes every catalog cosmetic with data-driven previews", () => {
+    expect(COSMETICS).toHaveLength(44);
+    expect(missingCosmeticVisualIds()).toEqual([]);
+    expect(Object.keys(COSMETIC_VISUALS).sort()).toEqual(
+      COSMETICS.map((item) => item.id).sort(),
+    );
+
+    for (const item of COSMETICS) {
+      expect(cosmeticVisualDefinition(item.type, item.id)).toMatchObject({
+        id: item.id,
+        type: item.type,
+      });
+      const vars = cosmeticCssVariables(item.type, item.id);
+      expect(Object.keys(vars).length).toBeGreaterThan(8);
+      if (item.type === "theme") expect(vars).toHaveProperty("--background");
+      if (item.type === "cardStyle") expect(vars).toHaveProperty("--card-pattern");
+      if (item.type === "progressFrame")
+        expect(vars).toHaveProperty("--passport-frame-border");
+      if (item.type === "title") expect(vars).toHaveProperty("--title-accent");
+
+      const preview = cosmeticPreviewMarkup(item, { compact: true });
+      expect(preview).toContain(`data-cosmetic-preview-id="${item.id}"`);
+      expect(preview).toContain(`cosmetic-preview-${item.type}`);
+      expect(preview).not.toContain("rarity-frame");
+      expect(preview).not.toContain("app-icon");
+    }
   });
 
   it("defines the five stable mobile navigation routes", () => {

@@ -16,7 +16,10 @@ body { position: relative; }
   min-height: 74px;
   padding: 10px max(24px, calc((100% - 1240px) / 2));
   border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(6, 22, 42, 0.82);
+  background:
+    var(--theme-motif),
+    var(--shell-surface);
+  background-size: 42px 42px, auto;
   color: var(--text-on-dark);
   backdrop-filter: blur(16px);
 }
@@ -79,7 +82,10 @@ body { position: relative; }
   z-index: 5;
   padding: 8px max(18px, calc((100% - 960px) / 2));
   border-bottom: 1px solid rgba(0, 53, 128, 0.11);
-  background: rgba(245, 249, 253, 0.94);
+  background:
+    var(--theme-motif),
+    color-mix(in srgb, var(--snow), transparent 6%);
+  background-size: 34px 34px, auto;
   backdrop-filter: blur(14px);
 }
 .hud-grid {

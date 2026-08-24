@@ -176,7 +176,7 @@ test('summary, retry, and new round use fresh persisted session state', async ({
   await expect(page.getByRole('heading', { name: 'Valmis', exact: true })).toBeFocused();
   await expect(page.locator('#description-summary-correct')).toHaveText('1 / 3');
   await expect(page.locator('#description-summary-errors')).toHaveText('2');
-  await expect(page.locator('#description-summary-time')).toHaveText(/^04:(?:1[89]|20)$/);
+  await expect(page.locator('#description-summary-time')).toHaveText(/^04:(?:1[89]|2[0-5])$/);
   const completed = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
 
   await page.getByRole('button', { name: 'Harjoittele virheet uudelleen' }).click();

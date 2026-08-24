@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { continuePastMilestone, openSpecificCard } from './helpers';
 
 async function seedSingleDescription(page: import('@playwright/test').Page, sessionId: string) {
@@ -166,6 +166,50 @@ test('capture required visual QA views', async ({ page }) => {
   await page.screenshot({ path: 'tmp/visual/phrases-setup-mobile.png', fullPage: true });
 
 });
+
+test('capture complete cosmetics catalog preview audit', async ({ page }) => {
+  test.setTimeout(60_000);
+  const progressKey = 'medicinsk-svenska.progress.v1';
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/palkinnot/');
+  await page.locator('.inventory-head').waitFor();
+  await page.evaluate((key) => {
+    const state = JSON.parse(localStorage.getItem(key)!);
+    const ids = [
+      'theme-default','theme-1','theme-2','theme-3','theme-4','theme-5','theme-6','theme-7','theme-8','theme-9',
+      'cardStyle-default','cardStyle-1','cardStyle-2','cardStyle-3','cardStyle-4','cardStyle-5','cardStyle-6','cardStyle-7','cardStyle-8','cardStyle-9',
+      'progressFrame-default','progressFrame-1','progressFrame-2','progressFrame-3','progressFrame-4','progressFrame-5','progressFrame-6','progressFrame-7','progressFrame-8','progressFrame-9',
+      'title-default','title-1','title-2','title-3','title-4','title-5','title-6','title-7','title-8','title-9',
+      'season-rare','season-epic-1','season-epic-2','season-legendary',
+    ];
+    state.inventory.ownedCosmeticIds = ids;
+    state.inventory.equipped = { theme:'season-legendary', cardStyle:'season-epic-2', progressFrame:'season-epic-1', title:'season-rare' };
+    state.inventory.credits = 1000;
+    localStorage.setItem(key, JSON.stringify(state));
+  }, progressKey);
+  await page.reload();
+  await expectCatalogPreviewState(page, 44);
+  await page.screenshot({ path: 'tmp/visual/cosmetics-catalog-all-desktop.png', fullPage: true });
+  for (const filter of ['theme','cardStyle','progressFrame','title']) {
+    await page.locator('#collection-filter').selectOption(filter);
+    await page.screenshot({ path: `tmp/visual/cosmetics-catalog-${filter}-desktop.png`, fullPage: true });
+  }
+  await page.goto('/edistyminen/');
+  await page.screenshot({ path: 'tmp/visual/cosmetics-equipped-season-passport-desktop.png', fullPage: true });
+  await openSpecificCard(page, { id: 'anatomi-001', deckId: 'anatomi' }, 'fi-sv');
+  await page.screenshot({ path: 'tmp/visual/cosmetics-equipped-season-card-desktop.png', fullPage: true });
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto('/palkinnot/');
+  await page.locator('#collection').scrollIntoViewIfNeeded();
+  await page.screenshot({ path: 'tmp/visual/cosmetics-catalog-mobile-320.png', fullPage: true });
+});
+
+async function expectCatalogPreviewState(page: import('@playwright/test').Page, count: number) {
+  await expect(page.locator('#collection .collectible')).toHaveCount(count);
+  await expect(page.locator('#collection .cosmetic-preview')).toHaveCount(count);
+  await expect(page.locator('#collection .rarity-frame,#collection .cosmetic-swatch .app-icon')).toHaveCount(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+}
 
 test('capture portrait mobile UX repair views',async({page})=>{
   const progressKey='medicinsk-svenska.progress.v1';

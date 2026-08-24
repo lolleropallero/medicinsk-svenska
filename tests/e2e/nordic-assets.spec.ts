@@ -2,7 +2,10 @@ import { expect, test, type Locator } from '@playwright/test';
 import { openSpecificCard } from './helpers';
 
 const PROGRESS = 'medicinsk-svenska.progress.v1';
-const loaded = async (image: Locator) => expect.poll(() => image.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true);
+const loaded = async (image: Locator) => {
+  await expect(image).toBeVisible({ timeout: 10_000 });
+  await expect.poll(() => image.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0), { timeout: 10_000 }).toBe(true);
+};
 const filename = async (image: Locator) => image.getAttribute('src');
 
 test('brand, backgrounds, language corners, and all deck icons use supplied SVG assets', async ({ page }) => {
@@ -61,8 +64,8 @@ test('Kruunu & Kilpi rewards, rarity frames, achievements, and league shields ar
     await loaded(box);
     expect(await filename(box)).toContain(`reward-${kind}`);
   }
-  const rarityFrames = page.locator('#daily-shop .rarity-frame');
-  await expect(rarityFrames).toHaveCount(3);
+  await expect(page.locator('#daily-shop .offer[data-offer-type="cosmetic"] .cosmetic-preview')).toHaveCount(2);
+  await expect(page.locator('#daily-shop .rarity-frame')).toHaveCount(0);
   await expect(page.locator('#daily-shop .reward-offer-media .rarity-frame')).toHaveCount(0);
   await expect(page.locator('#daily-shop .reward-offer-media .reward-box-visual > img')).toHaveAttribute('src', /reward-(?:standard|golden|legendary)/);
 
@@ -70,7 +73,7 @@ test('Kruunu & Kilpi rewards, rarity frames, achievements, and league shields ar
   const dialogBox = page.locator('.capsule-dialog .reward-box-visual > img');
   await loaded(dialogBox);
   expect(await filename(dialogBox)).toContain('reward-legendary');
-  await expect(page.locator('.capsule-dialog .rarity-frame')).toHaveCount(1);
+  await expect(page.locator('.capsule-dialog .cosmetic-preview,.capsule-dialog .rarity-frame')).toHaveCount(1);
   await page.getByRole('button', { name:'Stäng' }).click();
 
   await page.goto('/');

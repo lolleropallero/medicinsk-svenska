@@ -82,6 +82,8 @@ import {
 } from "../lib/description-session";
 import {
   achievementBadge,
+  cosmeticPreviewLabel,
+  cosmeticPreviewMarkup,
   iconSvg,
   leagueBadge,
   rarityVariant,
@@ -170,6 +172,10 @@ const rarityFrameVisual = (rarity: string) => {
     true,
   );
 };
+const findCosmetic = (id: string) => COSMETICS.find((item) => item.id === id);
+const equippedCosmetic = (type: CosmeticType) =>
+  findCosmetic(state.inventory.equipped[type]) ??
+  COSMETICS.find((item) => item.type === type)!;
 const seasonRewardVisual = (rewards: Reward[]) => {
   const capsule = rewards.find(
     (reward): reward is Extract<Reward, { type: "capsule" }> =>
@@ -183,9 +189,7 @@ const seasonRewardVisual = (rewards: Reward[]) => {
     item = cosmetic
       ? COSMETICS.find((value) => value.id === cosmetic.cosmeticId)
       : undefined;
-  return item
-    ? `<span class="checkpoint-cosmetic framed-media">${iconSvg(item.type === "theme" ? "theme" : item.type === "cardStyle" ? "cardStyle" : item.type === "progressFrame" ? "progressFrame" : "title", 24)}${rarityFrameVisual(item.rarity)}</span>`
-    : "";
+  return item ? cosmeticPreviewMarkup(item, { compact: true }) : "";
 };
 let state = loadProgress();
 let collectionFilter = "owned";
@@ -486,8 +490,10 @@ function renderProgress() {
       return { key, value: state.daily[key] ?? emptyDay(state, key) };
     }),
     claimable = claimableSeasonCount(state),
-    weekly = weeklyQuestProgress(state);
-  root.innerHTML = `<section class="passport-card full-width" lang="sv">${decorativeImage(nordicAssets.brand.crossFi, 128, 128, "passport-cross fi")}${decorativeImage(nordicAssets.brand.crossSv, 128, 128, "passport-cross sv")}<div class="passport-brand">${iconSvg("progressFrame", 32)}<span><small>MEDICINSK SVENSKA</small><strong>Nordiskt studiepass</strong></span></div><div class="passport-level"><span class="xp-ring" style="--xp:${Math.max(4, Math.round(((state.lifetime.xp - level.currentThreshold) / (level.nextThreshold - level.currentThreshold)) * 100))}%"><b>${level.level}</b></span><span><small>Nivå</small><strong>${state.lifetime.xp} XP</strong></span></div><div class="passport-status"><span>${iconSvg("streak")}<b>${state.streak.current}</b><small>dagars svit</small></span><span>${iconSvg("title")}<b>${esc(COSMETICS.find((item) => item.id === state.inventory.equipped.title)?.name ?? "Student")}</b><small>titel</small></span><span>${iconSvg("progressFrame")}<b>${esc(COSMETICS.find((item) => item.id === state.inventory.equipped.progressFrame)?.name ?? "Basram")}</b><small>ram</small></span></div>${progressBar(state.lifetime.xp - level.currentThreshold, level.nextThreshold - level.currentThreshold, "Framsteg till nästa nivå")}</section>
+    weekly = weeklyQuestProgress(state),
+    currentTitle = equippedCosmetic("title"),
+    currentFrame = equippedCosmetic("progressFrame");
+  root.innerHTML = `<section class="passport-card full-width" lang="sv" data-progress-frame-id="${esc(currentFrame.id)}" data-title-id="${esc(currentTitle.id)}">${decorativeImage(nordicAssets.brand.crossFi, 128, 128, "passport-cross fi")}${decorativeImage(nordicAssets.brand.crossSv, 128, 128, "passport-cross sv")}<span class="passport-frame-ornament" aria-hidden="true"></span><div class="passport-brand">${iconSvg("progressFrame", 32)}<span><small>MEDICINSK SVENSKA</small><strong>Nordiskt studiepass</strong></span></div><div class="passport-level"><span class="xp-ring" style="--xp:${Math.max(4, Math.round(((state.lifetime.xp - level.currentThreshold) / (level.nextThreshold - level.currentThreshold)) * 100))}%"><b>${level.level}</b></span><span><small>Nivå</small><strong>${state.lifetime.xp} XP</strong></span></div><div class="passport-status"><span>${iconSvg("streak")}<b>${state.streak.current}</b><small>dagars svit</small></span><span class="passport-title-status">${iconSvg("title")}<b>${esc(currentTitle.name)}</b><small>${currentTitle.seasonExclusive ? "säsongstitel" : "titel"}</small></span><span>${iconSvg("progressFrame")}<b>${esc(currentFrame.name)}</b><small>ram</small></span></div>${progressBar(state.lifetime.xp - level.currentThreshold, level.nextThreshold - level.currentThreshold, "Framsteg till nästa nivå")}</section>
   <section class="dashboard-card today-card" lang="sv"><div class="section-title"><h2>${iconSvg("calendar")} I dag</h2><strong>${day.uniqueItemIds.length} / ${state.settings.dailyGoal}</strong></div>${progressBar(day.uniqueItemIds.length, state.settings.dailyGoal, "Dagens mål")}<div class="stat-grid visual-metrics"><span>${iconSvg("check")}<strong>${day.completedItems}</strong>Uppgifter</span><span>${iconSvg("clock")}<strong>${formatMinutes(day.activeStudyMs)}</strong>Aktiv tid</span><span>${iconSvg("level")}<strong>${day.xp}</strong>XP</span><span>${iconSvg("spark")}<strong>${day.modes.length}</strong>Övningstyper</span></div>${claimable ? `<a class="reward-alert" href="/kausi/#reward-track">${iconSvg("gift")} ${claimable} säsongsbelöning väntar</a>` : ""}</section>
   <section class="dashboard-card daily-missions"><h2 lang="sv">${iconSvg("level")} Dagens uppdrag</h2><div class="quest-list">${questRows(day)}</div><div class="all-quests-bonus">${rewardBoxVisual("golden")}<span><strong lang="sv">Slutför alla tre och få en gyllene belöning</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen palkinnon.</small></span></div></section>
   <section class="dashboard-card weekly-card" lang="sv"><h2>${iconSvg("streak")} Svit och vecka</h2><div class="stat-grid"><span><strong>${state.streak.current}</strong>Nuvarande svit</span><span><strong>${state.streak.longest}</strong>Längsta svit</span><span><strong>${state.inventory.streakFreezes} / 2</strong>Svitfrysningar</span><span><strong>${Object.values(state.daily).filter((value) => value.uniqueItemIds.length).length}</strong>Studiedagar</span></div><h3>Veckans uppdrag</h3><div class="weekly-quest-list">${weekly
@@ -546,20 +552,30 @@ function renderRewards() {
     seasonal = COSMETICS.filter((item) => item.seasonExclusive),
     ownedSeasonal = seasonal.filter((item) =>
       state.inventory.ownedCosmeticIds.includes(item.id),
-    ).length;
+    ).length,
+    currentTheme = equippedCosmetic("theme"),
+    currentCard = equippedCosmetic("cardStyle"),
+    currentFrame = equippedCosmetic("progressFrame"),
+    currentTitle = equippedCosmetic("title");
   root.innerHTML = `<section class="dashboard-card inventory-head full-width" lang="sv"><div>${iconSvg("credits")}<span>Krediter</span><strong>${state.inventory.credits}</strong></div><div>${iconSvg("streak")}<span>Svitfrysningar</span><strong>${state.inventory.streakFreezes} / 2</strong></div><div>${iconSvg("retry")}<span>Uppdragsbyten</span><strong>${state.inventory.rerollTokens}</strong></div></section>
   <section id="unopened-boxes" class="dashboard-card full-width box-vault" lang="sv"><div class="section-title"><div><span class="eyebrow">Belöningsvalv</span><h2>${compactRewardBoxVisual("standard")} Belöningar</h2></div><span>${unopened.length} oöppnade</span></div>${unopened.length ? `<div class="capsule-list">${unopened.map((item) => `<button class="capsule box-${item.kind}" data-open="${item.id}" aria-label="${boxCopy[item.kind]} Öppna">${rewardBoxVisual(item.kind, "large")}<span><strong>${boxCopy[item.kind]}</strong><small>Raritet visas alltid efter öppning</small><b>Öppna ${iconSvg("arrow")}</b></span></button>`).join("")}</div>` : '<div class="empty-vault">' + rewardBoxVisual("standard") + "<p>Inga oöppnade belöningar.</p></div>"}<details><summary>Chanser och garanti</summary><p>Vanlig 65 % · Sällsynt 25 % · Episk 8 % · Legendarisk 2 %</p><p>Sällsynt eller bättre senast om ${plural(4 - state.loot.sinceRare, "belöning", "belöningar")}<br>Episk eller bättre senast om ${plural(12 - state.loot.sinceEpic, "belöning", "belöningar")}<br>Legendarisk senast om ${plural(40 - state.loot.sinceLegendary, "belöning", "belöningar")}</p></details></section>
   <section id="daily-shop" class="dashboard-card full-width shop-card" lang="sv"><header class="shop-head"><span>${iconSvg("shop", 32)}</span><div><span class="eyebrow">Uppdateras dagligen</span><h2>Dagens butik</h2></div><strong>${iconSvg("credits")} ${state.inventory.credits}</strong></header><div class="shop-grid">${dailyShop(
     state,
   )
-    .map((offer, index) => {
-      const rarity = ["common", "rare", "epic", "legendary"][index % 4]!;
-      return `<article class="offer rarity-${rarity}"><span class="offer-icon ${offer.type === "capsule" ? "reward-offer-media" : "framed-media"}">${offer.type === "capsule" ? rewardBoxVisual(offer.itemId) : `${iconSvg(offer.type === "cosmetic" ? "theme" : "retry", 32)}${rarityFrameVisual(rarity)}`}</span>${offer.discounted ? '<b class="discount-corner">Erbjudande</b>' : ""}<strong>${shopLabel(offer.type, offer.itemId)}</strong><span>${offer.discounted ? `<s>${offer.originalPrice}</s> ` : ""}${offer.price} krediter</span><button data-buy="${offer.id}" ${offer.purchased || state.inventory.credits < offer.price ? "disabled" : ""}>${offer.purchased ? "Redan hämtad" : `Lös in för ${offer.price} krediter`}</button></article>`;
+    .map((offer) => {
+      const item = offer.type === "cosmetic" ? findCosmetic(offer.itemId) : undefined,
+        rarity = item?.rarity ?? (offer.type === "capsule" ? (offer.itemId === "golden" ? "rare" : "common") : "common"),
+        media = item
+          ? cosmeticPreviewMarkup(item, { compact: true })
+          : offer.type === "capsule"
+            ? rewardBoxVisual(offer.itemId)
+            : `<span class="utility-preview">${iconSvg(offer.itemId === "streakFreeze" ? "streak" : "retry", 30)}</span>`;
+      return `<article class="offer rarity-${rarity}" data-offer-type="${offer.type}"${item ? ` data-cosmetic-id="${item.id}"` : ""}><span class="offer-icon ${offer.type === "capsule" ? "reward-offer-media" : "cosmetic-offer-media"}">${media}</span>${offer.discounted ? '<b class="discount-corner">Erbjudande</b>' : ""}<strong>${shopLabel(offer.type, offer.itemId)}</strong><small>${item ? cosmeticPreviewLabel(item) : offer.type === "capsule" ? "Belöningslåda" : "Hjälpmedel"}</small><span>${offer.discounted ? `<s>${offer.originalPrice}</s> ` : ""}${offer.price} krediter</span><button data-buy="${offer.id}" ${offer.purchased || state.inventory.credits < offer.price ? "disabled" : ""}>${offer.purchased ? "Redan hämtad" : `Lös in för ${offer.price} krediter`}</button></article>`;
     })
     .join(
       "",
     )}</div>${state.settings.calmMode ? "" : `<p class="muted">Nya erbjudanden om ${new Date(msUntilLocalMidnight()).toISOString().slice(11, 19)}</p>`}</section>
-  <section id="appearance" class="dashboard-card appearance-card" lang="sv"><h2>${iconSvg("theme")} Utseende</h2><div class="appearance-preview"><span class="passport-mini">${decorativeImage(nordicAssets.brand.crossFi, 128, 128, "mini-cross")}${iconSvg("progressFrame", 32)}<strong>${esc(COSMETICS.find((item) => item.id === state.inventory.equipped.title)?.name ?? "Student")}</strong><small>Medicinsk svenska</small></span></div><div class="equipment">${(
+  <section id="appearance" class="dashboard-card appearance-card" lang="sv"><h2>${iconSvg("theme")} Utseende</h2><div class="appearance-preview loadout-preview"><div class="loadout-strip">${cosmeticPreviewMarkup(currentTheme, { compact: true, equipped: true })}${cosmeticPreviewMarkup(currentCard, { compact: true, equipped: true })}${cosmeticPreviewMarkup(currentFrame, { compact: true, equipped: true })}</div><span class="passport-mini" data-progress-frame-id="${esc(currentFrame.id)}">${decorativeImage(nordicAssets.brand.crossFi, 128, 128, "mini-cross")}${iconSvg("progressFrame", 32)}<strong>${esc(currentTitle.name)}</strong><small>${esc(currentTheme.name)} · ${esc(currentCard.name)}</small></span></div><div class="equipment">${(
     ["theme", "cardStyle", "progressFrame", "title"] as CosmeticType[]
   )
     .map(
@@ -578,8 +594,9 @@ function renderRewards() {
     .join("")}</div></section>
   <section id="collection" class="dashboard-card collection-card" lang="sv"><div class="section-title"><div><span class="eyebrow">Nordiskt samlingspass</span><h2>${iconSvg("collection")} Samling</h2></div></div><div class="collection-counts"><span>Bassamling <strong>${ownedBase} / ${EARNABLE_COSMETICS.length}</strong></span><span>Säsong <strong>${ownedSeasonal} / ${seasonal.length}</strong></span></div><div class="collection-controls"><label class="filter-label">Visa i samlingen<select id="collection-filter"><option value="owned" ${collectionFilter === "owned" ? "selected" : ""}>Ägda</option><option value="all" ${collectionFilter === "all" ? "selected" : ""}>Alla</option><option value="theme" ${collectionFilter === "theme" ? "selected" : ""}>Teman</option><option value="cardStyle" ${collectionFilter === "cardStyle" ? "selected" : ""}>Kortstilar</option><option value="progressFrame" ${collectionFilter === "progressFrame" ? "selected" : ""}>Framstegsramar</option><option value="title" ${collectionFilter === "title" ? "selected" : ""}>Titlar</option></select></label>${collectionShowAll ? "" : `<button type="button" class="compact" data-show-all-collection>Visa alla</button>`}</div><div class="collection-grid">${collection
     .map((item) => {
-      const owned = state.inventory.ownedCosmeticIds.includes(item.id);
-      return `<article class="collectible rarity-${item.rarity} ${owned ? "owned" : "locked"}" data-cosmetic-id="${item.id}"><div class="cosmetic-swatch framed-media">${iconSvg(item.type === "theme" ? "theme" : item.type === "cardStyle" ? "cardStyle" : item.type === "progressFrame" ? "progressFrame" : "title", 32)}${owned ? "" : iconSvg("lock")}${rarityFrameVisual(item.rarity)}</div><strong>${item.name}</strong><span class="rarity-label">${rarityCopy[item.rarity]}${item.seasonExclusive ? " · Säsong" : ""}</span><small>${owned ? item.description : "Låst"}</small>${owned && state.inventory.equipped[item.type] !== item.id ? `<button data-use="${item.id}" class="compact">Använd</button>` : owned ? "<b>Utrustad</b>" : ""}</article>`;
+      const owned = state.inventory.ownedCosmeticIds.includes(item.id),
+        equipped = state.inventory.equipped[item.type] === item.id;
+      return `<article class="collectible rarity-${item.rarity} ${owned ? "owned" : "locked"} ${equipped ? "equipped" : ""}" data-cosmetic-id="${item.id}"><div class="cosmetic-swatch">${cosmeticPreviewMarkup(item, { compact: true, locked: !owned, equipped })}</div><strong>${item.name}</strong><span class="rarity-label">${rarityCopy[item.rarity]}${item.seasonExclusive ? " · Säsong" : ""}</span><small>${item.description}${owned ? "" : " · Låst"}</small>${owned && !equipped ? `<button data-use="${item.id}" class="compact">Använd</button>` : owned ? "<b>Utrustad</b>" : ""}</article>`;
     })
     .join("")}</div></section>`;
   root.querySelectorAll<HTMLButtonElement>("[data-open]").forEach((button) =>
@@ -646,8 +663,13 @@ function showCapsule(capsule: {
   const rarity = capsule.rarity ?? "common";
   dialog.dataset.rarity = rarity;
   const stage = dialog.querySelector<HTMLElement>(".capsule-stage");
-  if (stage)
-    stage.innerHTML = `<span class="capsule-box">${rewardBoxVisual(capsule.kind, "large")}</span><span class="capsule-reward-frame framed-media">${iconSvg(capsule.reward.type === "cosmetic" ? "theme" : capsule.reward.type === "credits" ? "credits" : "gift", 32)}${rarityFrameVisual(rarity)}</span>`;
+  if (stage) {
+    const rewardItem =
+      capsule.reward.type === "cosmetic"
+        ? findCosmetic(capsule.reward.cosmeticId)
+        : undefined;
+    stage.innerHTML = `<span class="capsule-box">${rewardBoxVisual(capsule.kind, "large")}</span><span class="capsule-reward-frame">${rewardItem ? cosmeticPreviewMarkup(rewardItem, { compact: true }) : `<span class="framed-media">${iconSvg(capsule.reward.type === "credits" ? "credits" : "gift", 32)}${rarityFrameVisual(rarity)}</span>`}</span>`;
+  }
   $("capsule-rarity")!.textContent =
     rarityCopy[rarity as keyof typeof rarityCopy];
   $("capsule-reward")!.textContent = rewardCopy(capsule.reward);

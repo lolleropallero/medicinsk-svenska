@@ -30,6 +30,9 @@ const backgroundKind=exerciseRoute?'studyLight':rewardRoute?'rewardsDark':path==
       try {
         const value = JSON.parse(localStorage.getItem('medicinsk-svenska.progress.v1') || 'null');
         if (value?.inventory?.equipped?.theme) document.documentElement.dataset.theme = value.inventory.equipped.theme;
+        if (value?.inventory?.equipped?.cardStyle) document.documentElement.dataset.cardStyle = value.inventory.equipped.cardStyle;
+        if (value?.inventory?.equipped?.progressFrame) document.documentElement.dataset.progressFrame = value.inventory.equipped.progressFrame;
+        if (value?.inventory?.equipped?.title) document.documentElement.dataset.title = value.inventory.equipped.title;
         if (typeof value?.settings?.calmMode === 'boolean') document.documentElement.dataset.calm = String(value.settings.calmMode);
       } catch {}
     </script>

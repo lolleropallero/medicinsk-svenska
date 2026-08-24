@@ -2,7 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect,test,type Page } from '@playwright/test';
 
 const UI='medicinsk-svenska.ui.v1';
-type Snapshot={installed:boolean;unlocked:boolean;playing:boolean;crossfading:boolean;currentTrack?:string;bag?:string[];position?:number;failed?:string[];gains:number[];times:number[];sources:string[];calm:boolean;ducked:boolean};
+type Snapshot={installed:boolean;unlocked:boolean;playing:boolean;crossfading:boolean;suspendedForVisibility:boolean;currentTrack?:string;bag?:string[];position?:number;failed?:string[];gains:number[];times:number[];paused:boolean[];sources:string[];calm:boolean;ducked:boolean};
 const snapshot=(page:Page)=>page.evaluate(()=>window.__musicTest!.snapshot() as Snapshot);
 async function dismissOverlay(page:Page){const close=page.getByRole('button',{name:'Stäng dagens uppdrag'});if(await close.isVisible())await close.click();}
 async function unlock(page:Page){await page.locator('body').click({position:{x:5,y:5}});await expect.poll(async()=>(await snapshot(page)).playing,{timeout:10000}).toBe(true);}
@@ -53,6 +53,14 @@ test('a naturally ending track advances on the same page without media errors',a
   const errors:Error[]=[];page.on('pageerror',error=>errors.push(error));await page.goto('/');await dismissOverlay(page);await unlock(page);const before=await snapshot(page);
   await page.evaluate(currentTrack=>{const audio=[...document.querySelectorAll<HTMLAudioElement>('[data-music-channel]')].find(channel=>channel.dataset.trackId===currentTrack)!;audio.currentTime=audio.duration-2;},before.currentTrack);
   await expect.poll(async()=>(await snapshot(page)).currentTrack,{timeout:10000}).not.toBe(before.currentTrack);await expect.poll(async()=>(await snapshot(page)).crossfading).toBe(false);expect((await snapshot(page)).playing).toBe(true);expect(errors).toEqual([]);
+});
+
+test('tab switches and phone locking suspend playback until the page is visible again',async({page})=>{
+  await page.goto('/');await dismissOverlay(page);await unlock(page);const before=await snapshot(page);
+  await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'));});
+  await expect.poll(async()=>(await snapshot(page)).playing).toBe(false);const hidden=await snapshot(page);expect(hidden.suspendedForVisibility).toBe(true);expect(hidden.paused.every(Boolean)).toBe(true);await page.waitForTimeout(400);expect(Math.max(...(await snapshot(page)).times)).toBeCloseTo(Math.max(...hidden.times),1);
+  await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,value:false});document.dispatchEvent(new Event('visibilitychange'));});
+  await expect.poll(async()=>(await snapshot(page)).playing,{timeout:10000}).toBe(true);const resumed=await snapshot(page);expect(resumed.suspendedForVisibility).toBe(false);expect(resumed.currentTrack).toBe(before.currentTrack);await page.waitForTimeout(400);expect(Math.max(...(await snapshot(page)).times)).toBeGreaterThan(Math.max(...resumed.times));
 });
 
 test('all five local assets return usable audio and a failed current track is skipped',async({page,request})=>{

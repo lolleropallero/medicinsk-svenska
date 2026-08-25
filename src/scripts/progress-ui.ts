@@ -379,8 +379,11 @@ function overlayQuestRows(day = today()) {
         value = getQuestProgress(day, quest),
         valueCopy = questValue(quest, value),
         canReroll = canRerollQuest(quest, day, state.inventory.rerollTokens),
-        body = `<span class="daily-quest-icon">${iconSvg(questIcon(quest), 32)}</span><span class="daily-quest-copy"><span class="daily-quest-head"><span><strong lang="sv">${copy.sv}</strong><small lang="fi">${copy.fi}</small></span><b lang="sv">${quest.claimed ? "Klart" : valueCopy}</b></span>${progressBar(value, quest.target, `${copy.sv}: ${valueCopy}`)}<span class="daily-quest-reward reward-chips" lang="sv"><b>+${quest.xp} XP</b><b>+${quest.credits} krediter</b><b>+${quest.seasonPoints} SP</b></span></span>`;
-      return `<article class="daily-quest-row mission-ticket ${quest.claimed ? "done" : ""}" data-quest-slot="${quest.slot}">${quest.claimed ? `<div class="daily-quest-complete">${body}</div>` : `<button type="button" class="daily-quest-action" data-quest-action="${quest.slot}" data-focus-id="quest-${quest.slot}">${body}<span class="daily-quest-start" lang="sv">Starta ${iconSvg("arrow")}</span></button>`}${canReroll ? `<button type="button" data-reroll="${quest.slot}" data-focus-id="reroll-${quest.slot}" class="compact tertiary daily-reroll" lang="sv">${iconSvg("retry")} Byt uppdrag</button>` : ""}</article>`;
+        start = quest.claimed
+          ? ""
+          : `<span class="daily-quest-start" lang="sv">Starta ${iconSvg("arrow")}</span>`,
+        body = `<span class="daily-quest-icon">${iconSvg(questIcon(quest), 32)}</span><span class="daily-quest-copy"><span class="daily-quest-head"><span><strong lang="sv">${copy.sv}</strong><small lang="fi">${copy.fi}</small></span><b lang="sv">${quest.claimed ? "Klart" : valueCopy}</b></span><span class="daily-quest-progress-line">${progressBar(value, quest.target, `${copy.sv}: ${valueCopy}`)}${start}</span><span class="daily-quest-reward reward-chips" lang="sv"><b>+${quest.xp} XP</b><b>+${quest.credits} krediter</b><b>+${quest.seasonPoints} SP</b></span></span>`;
+      return `<article class="daily-quest-row mission-ticket ${quest.claimed ? "done" : ""}" data-quest-slot="${quest.slot}">${quest.claimed ? `<div class="daily-quest-complete">${body}</div>` : `<button type="button" class="daily-quest-action" data-quest-action="${quest.slot}" data-focus-id="quest-${quest.slot}">${body}</button>`}${canReroll ? `<button type="button" data-reroll="${quest.slot}" data-focus-id="reroll-${quest.slot}" class="compact tertiary daily-reroll" lang="sv">${iconSvg("retry")} Byt uppdrag</button>` : ""}</article>`;
     })
     .join("");
 }

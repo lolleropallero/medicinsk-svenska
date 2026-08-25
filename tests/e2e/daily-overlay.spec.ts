@@ -24,11 +24,12 @@ test('automatic entry focuses the first quest without a clipped orange divider',
 });
 
 test('daily quest start affordance stays in the mission area above reroll',async({page})=>{
-  await page.setViewportSize({width:560,height:784});await page.goto('/');const row=page.locator('[data-quest-slot="1"]'),action=row.locator('[data-quest-action]'),start=action.locator('.daily-quest-start'),reroll=row.locator('[data-reroll]');
+  await page.setViewportSize({width:560,height:784});await page.goto('/');const row=page.locator('[data-quest-slot="1"]'),action=row.locator('[data-quest-action]'),start=action.locator('.daily-quest-start'),meter=action.locator('.daily-quest-progress-line .meter'),rewards=action.locator('.daily-quest-reward'),reroll=row.locator('[data-reroll]');
   await expect(row).toBeVisible();await page.waitForTimeout(400);
-  const boxes=async()=>({action:(await action.boundingBox())!,start:(await start.boundingBox())!,reroll:(await reroll.boundingBox())!});
-  const before=await boxes();expect(before.start.y+before.start.height).toBeLessThanOrEqual(before.action.y+before.action.height+1);expect(before.start.y+before.start.height).toBeLessThanOrEqual(before.reroll.y);
-  await action.hover();const after=await boxes();expect(after.start.y+after.start.height).toBeLessThanOrEqual(after.action.y+after.action.height+1);expect(after.start.y+after.start.height).toBeLessThanOrEqual(after.reroll.y);expect(Math.abs(after.start.y-before.start.y)).toBeLessThanOrEqual(2);
+  const boxes=async()=>({action:(await action.boundingBox())!,start:(await start.boundingBox())!,meter:(await meter.boundingBox())!,rewards:(await rewards.boundingBox())!,reroll:(await reroll.boundingBox())!});
+  const aligned=(box:Awaited<ReturnType<typeof boxes>>)=>{expect(Math.abs((box.start.y+box.start.height/2)-(box.meter.y+box.meter.height/2))).toBeLessThanOrEqual(3);expect(box.start.y+box.start.height).toBeLessThanOrEqual(box.rewards.y+1);expect(box.start.y+box.start.height).toBeLessThanOrEqual(box.reroll.y);expect(box.start.y+box.start.height).toBeLessThanOrEqual(box.action.y+box.action.height+1);};
+  const before=await boxes();aligned(before);
+  await action.hover();const after=await boxes();aligned(after);expect(Math.abs(after.start.y-before.start.y)).toBeLessThanOrEqual(2);
 });
 
 test('quest activation handles today before navigation, home stays quiet, and tomorrow auto-opens',async({page})=>{

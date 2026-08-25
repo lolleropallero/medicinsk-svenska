@@ -140,7 +140,7 @@
   width: 100%;
   grid-template-columns: 46px minmax(0, 1fr);
   gap: 10px;
-  padding: 12px 80px 12px 12px;
+  padding: 12px;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -194,8 +194,18 @@
   flex: none;
   font-size: 0.75rem;
 }
-.daily-quest-copy .meter {
-  margin: 7px 0;
+.daily-quest-copy {
+  min-width: 0;
+}
+.daily-quest-progress-line {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  margin: 7px 0 6px;
+}
+.daily-quest-progress-line .meter {
+  margin: 0;
 }
 .reward-chips {
   display: flex;
@@ -210,12 +220,11 @@
   font-size: 0.63rem;
 }
 .daily-quest-start {
-  position: absolute;
-  right: 10px;
-  bottom: 14px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-self: end;
   gap: 2px;
+  min-height: 30px;
   color: var(--fi-blue);
   font-size: 0.76rem;
   font-weight: 850;

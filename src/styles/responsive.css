@@ -401,7 +401,7 @@
   .daily-quest-complete {
     grid-template-columns: 38px minmax(0, 1fr);
     gap: 8px;
-    padding: 9px 67px 9px 8px;
+    padding: 9px 8px;
   }
   .daily-quest-icon {
     width: 36px;
@@ -421,8 +421,7 @@
     font-size: 0.66rem;
   }
   .daily-quest-start {
-    right: 7px;
-    bottom: 12px;
+    min-height: 28px;
   }
   .reward-chips b {
     font-size: 0.55rem;

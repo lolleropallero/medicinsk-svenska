@@ -1,3 +1,5 @@
+import type { VocabularyAnswerMode } from '../session';
+
 export type ExerciseMode = 'flashcards' | 'phrases' | 'descriptions';
 export type Rarity = 'common' | 'rare' | 'epic' | 'legendary';
 export type CosmeticType = 'theme' | 'cardStyle' | 'progressFrame' | 'title';
@@ -40,6 +42,7 @@ export type Reward =
 export type QuestKind = 'items' | 'mode' | 'active' | 'variety' | 'retries' | 'sessions';
 export interface Quest {
   id: string; slot: number; kind: QuestKind; label?: string; target: number; mode?: ExerciseMode;
+  answerMode?: VocabularyAnswerMode;
   xp: number; credits: number; seasonPoints: number; rerollIndex: number; claimed: boolean;
 }
 export interface DailyProgress {

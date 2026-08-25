@@ -66,6 +66,7 @@ import {
   isStoredSession,
   type CreateSessionOptions,
   type FlashcardSession,
+  type VocabularyAnswerMode,
 } from "../lib/session";
 import { buildPhraseSessionUrl } from "../lib/phrase-url";
 import {
@@ -205,6 +206,11 @@ const SESSION_KEYS: Record<ExerciseMode, string> = {
   phrases: "medicinsk-svenska.phrase-session.v1",
   descriptions: "medicinsk-svenska.description-session.v1",
 };
+const VOCABULARY_ANSWER_MODES: readonly VocabularyAnswerMode[] = [
+  "cards",
+  "choice",
+  "written",
+];
 
 interface DailySessionCatalog {
   cards: [string, string][];
@@ -259,6 +265,7 @@ function resumableSessions(): Partial<Record<ExerciseMode, ResumableSession>> {
       sessions.flashcards = {
         href: buildSessionUrl(expected),
         startedAt: candidate.startedAt,
+        answerMode: expected.answerMode,
       };
   }
   const phrase = storedValue(SESSION_KEYS.phrases);
@@ -334,6 +341,20 @@ function freshSessionUrls(): Record<ExerciseMode, string> {
     }),
   };
 }
+function freshFlashcardUrls(): Record<VocabularyAnswerMode, string> {
+  return Object.fromEntries(
+    VOCABULARY_ANSWER_MODES.map((answerMode) => [
+      answerMode,
+      buildSessionUrl({
+        sessionId: crypto.randomUUID(),
+        mode: "lucky",
+        answerMode,
+        direction: "fi-sv",
+        requestedAmount: 10,
+      }),
+    ]),
+  ) as Record<VocabularyAnswerMode, string>;
+}
 function persist(next: ProgressStateV1) {
   state = next;
   saveProgress(state);
@@ -404,6 +425,7 @@ function bindHomeActions(root: HTMLElement, day = today()) {
           modesUsedToday: day.modes,
           sessions: resumableSessions(),
           freshUrls: freshSessionUrls(),
+          freshFlashcardUrls: freshFlashcardUrls(),
         });
         if (!action) return;
         try {

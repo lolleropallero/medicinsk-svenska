@@ -7,9 +7,13 @@ export const leagueCopy:Record<LeagueTier,string>={Pronssi:'Brons',Hopea:'Silver
 export const modeRoutes:Record<ExerciseMode,string>={flashcards:'/kortit/',phrases:'/fraasit/',descriptions:'/kuvailu/'};
 
 export interface BilingualCopy { sv:string; fi:string }
-export function questCopy(quest:Pick<Quest,'kind'|'mode'|'target'>):BilingualCopy{
+export function questCopy(quest:Pick<Quest,'kind'|'mode'|'target'|'answerMode'>):BilingualCopy{
   if(quest.kind==='items')return{sv:'Gör 10 olika uppgifter',fi:'Suorita 10 eri tehtävää'};
-  if(quest.kind==='mode'&&quest.mode==='flashcards')return{sv:'Träna 10 ordkort',fi:'Harjoittele 10 sanakorttia'};
+  if(quest.kind==='mode'&&quest.mode==='flashcards'){
+    if('answerMode' in quest&&quest.answerMode==='choice')return{sv:'Gör 10 flervalsuppgifter',fi:'Harjoittele 10 monivalintaa'};
+    if('answerMode' in quest&&quest.answerMode==='written')return{sv:'Skriv 10 ordsvar',fi:'Kirjoita 10 sanavastausta'};
+    return{sv:'Träna 10 ordkort',fi:'Harjoittele 10 sanakorttia'};
+  }
   if(quest.kind==='mode'&&quest.mode==='phrases')return{sv:'Träna 5 fraser',fi:'Harjoittele 5 fraasia'};
   if(quest.kind==='mode')return{sv:'Lös 5 beskrivningsuppgifter',fi:'Ratkaise 5 kuvailutehtävää'};
   if(quest.kind==='active')return{sv:'Studera aktivt i 5 minuter',fi:'Opiskele aktiivisesti 5 minuuttia'};

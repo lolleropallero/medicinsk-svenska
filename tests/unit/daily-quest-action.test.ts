@@ -1,13 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { resolveDailyQuestAction, type QuestActionContext } from '../../src/lib/progress/daily-quest-action';
 import type { ExerciseMode, Quest, QuestKind } from '../../src/lib/progress/types';
+import type { VocabularyAnswerMode } from '../../src/lib/session';
 
-const quest = (kind:QuestKind, mode?:ExerciseMode, claimed=false):Quest => ({
+const quest = (kind:QuestKind, mode?:ExerciseMode, claimed=false, answerMode?:VocabularyAnswerMode):Quest => ({
   id:`q-${kind}-${mode??'any'}`,slot:1,kind,...(mode?{mode}:{}),target:kind==='active'?300_000:10,
-  xp:5,credits:10,seasonPoints:10,rerollIndex:0,claimed,
+  ...(answerMode?{answerMode}:{}),xp:5,credits:10,seasonPoints:10,rerollIndex:0,claimed,
 });
 const base:QuestActionContext={
   modesUsedToday:[],sessions:{},freshUrls:{flashcards:'/fresh/cards',phrases:'/fresh/phrases',descriptions:'/fresh/descriptions'},
+  freshFlashcardUrls:{cards:'/fresh/cards',choice:'/fresh/choice',written:'/fresh/written'},
 };
 
 describe('daily quest direct action resolver',()=>{
@@ -22,15 +24,23 @@ describe('daily quest direct action resolver',()=>{
     expect(resolveDailyQuestAction(quest('mode','phrases'),context)).toEqual({mode:'phrases',href:'/resume/phrases',resumesSession:true});
   });
 
+  it('starts the daily vocabulary answer mode instead of inheriting another stored flashcard mode',()=>{
+    const context={...base,sessions:{flashcards:{href:'/resume/cards',startedAt:20,answerMode:'cards' as const}}};
+    expect(resolveDailyQuestAction(quest('mode','flashcards',false,'choice'),context)).toEqual({mode:'flashcards',href:'/fresh/choice',resumesSession:false});
+    expect(resolveDailyQuestAction(quest('mode','flashcards',false,'cards'),context)).toEqual({mode:'flashcards',href:'/resume/cards',resumesSession:true});
+  });
+
   it('uses the last-mode session for generic items, otherwise falls back to fresh lucky flashcards',()=>{
     expect(resolveDailyQuestAction(quest('items'),{...base,lastUsedMode:'descriptions',sessions:{descriptions:{href:'/resume/descriptions',startedAt:1}}})).toMatchObject({mode:'descriptions',resumesSession:true});
     expect(resolveDailyQuestAction(quest('items'),{...base,lastUsedMode:'phrases'})).toMatchObject({mode:'flashcards',href:'/fresh/cards',resumesSession:false});
+    expect(resolveDailyQuestAction(quest('items',undefined,false,'written'),{...base,lastUsedMode:'phrases'})).toMatchObject({mode:'flashcards',href:'/fresh/written',resumesSession:false});
   });
 
   it('uses the most recent active session for active study and falls back to last mode',()=>{
     const sessions={flashcards:{href:'/old',startedAt:10},descriptions:{href:'/new',startedAt:30}};
     expect(resolveDailyQuestAction(quest('active'),{...base,lastUsedMode:'phrases',sessions})).toMatchObject({mode:'descriptions',href:'/new',resumesSession:true});
     expect(resolveDailyQuestAction(quest('active'),{...base,lastUsedMode:'phrases'})).toMatchObject({mode:'phrases',href:'/fresh/phrases'});
+    expect(resolveDailyQuestAction(quest('active',undefined,false,'choice'),{...base})).toMatchObject({mode:'flashcards',href:'/fresh/choice'});
   });
 
   it('selects an unused mode for variety and prefers its resumable session',()=>{

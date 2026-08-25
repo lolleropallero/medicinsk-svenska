@@ -3,11 +3,13 @@ import { addLocalDays, daysBetween, localDayKey, localWeekKey, seasonInfo } from
 import type { Capsule, CapsuleKind, DailyProgress, EventResult, ExerciseMode, ProgressEvent, ProgressStateV1, Quest, Rarity, Reward, SessionReward } from './types';
 import type { NextAction } from './copy';
 import { modeRoutes } from './copy';
+import type { VocabularyAnswerMode } from '../session';
 
 export const PROGRESS_KEY = 'medicinsk-svenska.progress.v1';
 export const MAX_EVENTS = 10_000;
 export const MAX_DAYS = 400;
 const rarityRank: Record<Rarity,number> = { common:0,rare:1,epic:2,legendary:3 };
+const VOCABULARY_ANSWER_MODES: readonly VocabularyAnswerMode[] = ['cards','choice','written'];
 
 export function hashSeed(value: string): number {
   let hash = 2166136261;
@@ -22,6 +24,38 @@ export function levelProgress(xp: number) {
   return { level, currentThreshold:current, nextThreshold:next, within:xp-current, remaining:next-xp, percent:(xp-current)/(next-current)*100 };
 }
 
+function isVocabularyAnswerMode(value: unknown): value is VocabularyAnswerMode {
+  return value === 'cards' || value === 'choice' || value === 'written';
+}
+function questCanUseVocabularyAnswer(quest: Pick<Quest,'kind'|'mode'>): boolean {
+  return quest.kind !== 'mode' || quest.mode === 'flashcards';
+}
+export function dailyVocabularyAnswerMode(installationId: string, day: string, slot: number, rerollIndex: number): VocabularyAnswerMode {
+  return VOCABULARY_ANSWER_MODES[hashSeed(`${installationId}:${day}:${slot}:${rerollIndex}:answer`) % VOCABULARY_ANSWER_MODES.length]!;
+}
+function withDailyAnswerMode<T extends Quest>(quest: T, installationId: string, day: string): T {
+  if (questCanUseVocabularyAnswer(quest)) quest.answerMode = dailyVocabularyAnswerMode(installationId, day, quest.slot, quest.rerollIndex);
+  else delete quest.answerMode;
+  return quest;
+}
+function ensureDailyAnswerModes(state: Pick<ProgressStateV1,'installationId'>, key: string, day: DailyProgress): boolean {
+  let changed = false;
+  for (const quest of day.quests) {
+    if (questCanUseVocabularyAnswer(quest)) {
+      const answerMode = isVocabularyAnswerMode(quest.answerMode)
+        ? quest.answerMode
+        : dailyVocabularyAnswerMode(state.installationId, key, quest.slot, quest.rerollIndex);
+      if (quest.answerMode !== answerMode) {
+        quest.answerMode = answerMode;
+        changed = true;
+      }
+    } else if (quest.answerMode !== undefined) {
+      delete quest.answerMode;
+      changed = true;
+    }
+  }
+  return changed;
+}
 export function generateDailyQuests(installationId: string, day: string, rerolls: number[] = [0,0,0]): Quest[] {
   const slot2Modes: [ExerciseMode,number][] = [['flashcards',10],['phrases',5],['descriptions',5]];
   const slot3: Pick<Quest,'kind'|'target'>[] = [
@@ -30,9 +64,9 @@ export function generateDailyQuests(installationId: string, day: string, rerolls
   const mode = slot2Modes[hashSeed(`${installationId}:${day}:2:${rerolls[1]}`) % slot2Modes.length]!;
   const behaviour = slot3[hashSeed(`${installationId}:${day}:3:${rerolls[2]}`) % slot3.length]!;
   return [
-    {id:`${day}:1:${rerolls[0]}`,slot:1,kind:'items',target:10,xp:5,credits:10,seasonPoints:10,rerollIndex:rerolls[0]!,claimed:false},
-    {id:`${day}:2:${rerolls[1]}`,slot:2,kind:'mode',mode:mode[0],target:mode[1],xp:10,credits:15,seasonPoints:15,rerollIndex:rerolls[1]!,claimed:false},
-    {id:`${day}:3:${rerolls[2]}`,slot:3,...behaviour,xp:15,credits:20,seasonPoints:20,rerollIndex:rerolls[2]!,claimed:false},
+    withDailyAnswerMode({id:`${day}:1:${rerolls[0]}`,slot:1,kind:'items',target:10,xp:5,credits:10,seasonPoints:10,rerollIndex:rerolls[0]!,claimed:false}, installationId, day),
+    withDailyAnswerMode({id:`${day}:2:${rerolls[1]}`,slot:2,kind:'mode',mode:mode[0],target:mode[1],xp:10,credits:15,seasonPoints:15,rerollIndex:rerolls[1]!,claimed:false}, installationId, day),
+    withDailyAnswerMode({id:`${day}:3:${rerolls[2]}`,slot:3,...behaviour,xp:15,credits:20,seasonPoints:20,rerollIndex:rerolls[2]!,claimed:false}, installationId, day),
   ];
 }
 export function emptyDay(state: Pick<ProgressStateV1,'installationId'|'settings'>, day: string): DailyProgress {
@@ -184,6 +218,7 @@ export const LEAGUE_TIERS=['Pronssi','Hopea','Kulta','Platina','Timantti','Konsu
 export const LEAGUE_PROMOTION_XP=[150,250,400,600,850,Infinity] as const;
 export const LEAGUE_RETENTION_XP=[-1,75,125,200,300,500] as const;
 export function reconcileProgress(input:ProgressStateV1,now=Date.now()):ProgressStateV1{const state=structuredClone(input),today=localDayKey(now);let changed=false;
+  for (const [key, day] of Object.entries(state.daily)) if (ensureDailyAnswerModes(state,key,day)) changed=true;
   const last=state.streak.lastReconciledDay??localDayKey(state.createdAt);let cursor=last,unprotected:string[]=[];let previousStreak=state.streak.current;
   while(cursor<today){const record=state.daily[cursor];if(!record?.qualified&&state.streak.current>0){if(state.inventory.streakFreezes>0){state.inventory.streakFreezes--;const target=record??emptyDay(state,cursor);target.freezeUsed=true;state.daily[cursor]=target;}else{previousStreak=state.streak.current;state.streak.current=0;unprotected.push(cursor);}}cursor=addLocalDays(cursor,1)??today;changed=true;}
   if(unprotected.length===1&&unprotected[0]===addLocalDays(today,-1)){const cooldown=state.streak.lastRescueDay?daysBetween(state.streak.lastRescueDay,today):null;if(cooldown===null||cooldown>=30)state.streak.rescue={day:today,previousStreak,progress:0};}

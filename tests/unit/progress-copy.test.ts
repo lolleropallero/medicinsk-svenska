@@ -17,9 +17,11 @@ describe('Swedish progress copy',()=>{
   it('derives every daily quest from semantics',()=>{const variants:Quest[]=[
     {id:'1',slot:1,kind:'items',target:10,xp:5,credits:10,seasonPoints:10,rerollIndex:0,claimed:false},
     ...(['flashcards','phrases','descriptions'] as const).map((mode,index)=>({id:`m${index}`,slot:2,kind:'mode' as const,mode,target:mode==='flashcards'?10:5,xp:1,credits:1,seasonPoints:1,rerollIndex:0,claimed:false})),
+    {id:'choice',slot:2,kind:'mode',mode:'flashcards',answerMode:'choice',target:10,xp:1,credits:1,seasonPoints:1,rerollIndex:0,claimed:false},
+    {id:'written',slot:2,kind:'mode',mode:'flashcards',answerMode:'written',target:10,xp:1,credits:1,seasonPoints:1,rerollIndex:0,claimed:false},
     ...(['active','variety','retries','sessions'] as const).map((kind,index)=>({id:`q${index}`,slot:3,kind,target:kind==='active'?300000:kind==='retries'?3:2,xp:1,credits:1,seasonPoints:1,rerollIndex:0,claimed:false})),
   ];expect(variants.map(questCopy)).toEqual([
-    {sv:'Gör 10 olika uppgifter',fi:'Suorita 10 eri tehtävää'},{sv:'Träna 10 ordkort',fi:'Harjoittele 10 sanakorttia'},{sv:'Träna 5 fraser',fi:'Harjoittele 5 fraasia'},{sv:'Lös 5 beskrivningsuppgifter',fi:'Ratkaise 5 kuvailutehtävää'},{sv:'Studera aktivt i 5 minuter',fi:'Opiskele aktiivisesti 5 minuuttia'},{sv:'Använd två övningstyper',fi:'Käytä kahta harjoitustapaa'},{sv:'Bemästra 3 repetitioner',fi:'Hallitse 3 kertausta'},{sv:'Slutför 2 övningspass',fi:'Suorita 2 harjoituskierrosta'},
+    {sv:'Gör 10 olika uppgifter',fi:'Suorita 10 eri tehtävää'},{sv:'Träna 10 ordkort',fi:'Harjoittele 10 sanakorttia'},{sv:'Träna 5 fraser',fi:'Harjoittele 5 fraasia'},{sv:'Lös 5 beskrivningsuppgifter',fi:'Ratkaise 5 kuvailutehtävää'},{sv:'Gör 10 flervalsuppgifter',fi:'Harjoittele 10 monivalintaa'},{sv:'Skriv 10 ordsvar',fi:'Kirjoita 10 sanavastausta'},{sv:'Studera aktivt i 5 minuter',fi:'Opiskele aktiivisesti 5 minuuttia'},{sv:'Använd två övningstyper',fi:'Käytä kahta harjoitustapaa'},{sv:'Bemästra 3 repetitioner',fi:'Hallitse 3 kertausta'},{sv:'Slutför 2 övningspass',fi:'Suorita 2 harjoituskierrosta'},
   ]);});
   it('derives achievements by stable ID',()=>expect(achievementCopy({id:'first-item'})).toEqual({name:'Första steget',description:'Slutför din första uppgift.'}));
   it('derives notification and session reward copy',()=>{expect(notificationCopy({id:'a',kind:'achievement'})).toBe('Prestation upplåst');expect(sessionRewardCopy({kind:'credits',amount:10})).toBe('+10 krediter');});

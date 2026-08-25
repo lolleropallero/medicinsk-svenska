@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { addLocalDays, dateFromDayKey, daysBetween, localDayKey, localMidnight, localWeekKey, msUntilLocalMidnight, seasonInfo } from '../../src/lib/progress/calendar';
 import { EARNABLE_COSMETICS } from '../../src/lib/progress/catalog';
-import { buyShopOffer, claimSeason, createProgressState, dailyShop, generateDailyQuests, levelFromXp, levelProgress, levelThreshold, nextAction, openCapsule, rarityForRoll, reconcileProgress, reduceProgress, rerollQuest, setDailyGoal } from '../../src/lib/progress/core';
+import { buyShopOffer, claimSeason, createProgressState, dailyShop, dailyVocabularyAnswerMode, generateDailyQuests, levelFromXp, levelProgress, levelThreshold, nextAction, openCapsule, rarityForRoll, reconcileProgress, reduceProgress, rerollQuest, setDailyGoal } from '../../src/lib/progress/core';
 import { exportEnvelope, isProgressState, parseImport } from '../../src/lib/progress/storage';
 import type { ItemCompletedEvent, ProgressStateV1 } from '../../src/lib/progress/types';
 
@@ -33,6 +33,24 @@ describe('XP, levels, and events',()=>{
 
 describe('goals, quests, and streaks',()=>{
   it('generates stable three-slot daily quests',()=>{const a=generateDailyQuests('install','2026-08-21'),b=generateDailyQuests('install','2026-08-21');expect(a).toEqual(b);expect(a.map(q=>q.slot)).toEqual([1,2,3]);});
+  it('assigns deterministic daily vocabulary answer modes without changing quest progress semantics',()=>{
+    const quests=generateDailyQuests('install','2026-08-21');
+    expect(quests[0]!.answerMode).toBe(dailyVocabularyAnswerMode('install','2026-08-21',1,0));
+    const answerModes=new Set(Array.from({length:45},(_,index)=>generateDailyQuests('install',`2026-09-${String(index%28+1).padStart(2,'0')}`)).flatMap(day=>day.map(quest=>quest.answerMode).filter(Boolean)));
+    expect(answerModes).toEqual(new Set(['cards','choice','written']));
+    const state=applyItems(createProgressState(at('2026-08-21'),'install'),'2026-08-21',10);
+    expect(state.daily['2026-08-21']!.quests[0]!.claimed).toBe(true);
+  });
+  it('hydrates legacy stored quests with deterministic vocabulary answer modes',()=>{
+    const state=createProgressState(at('2026-08-21'),'install'),key='2026-08-21';
+    state.daily[key]={
+      uniqueItemIds:[],completedItems:0,activeStudyMs:0,xp:0,modes:[],sessionsStarted:0,sessionsCompleted:0,retriesMastered:0,
+      goalTarget:10,goalClaimed:false,qualified:false,freezeUsed:false,
+      quests:[{id:`${key}:1:0`,slot:1,kind:'items',target:10,xp:5,credits:10,seasonPoints:10,rerollIndex:0,claimed:false}],
+      freeRerollUsed:false,allQuestsClaimed:false,sessionDropEligible:0,sessionDropAwarded:false,
+    };
+    expect(reconcileProgress(state,at(key)).daily[key]!.quests[0]!.answerMode).toBe(dailyVocabularyAnswerMode('install',key,1,0));
+  });
   it('claims the basic daily quest once',()=>{const state=applyItems(createProgressState(at('2026-08-21'),'install'),'2026-08-21',10);expect(state.daily['2026-08-21']!.quests[0]!.claimed).toBe(true);expect(state.lifetime.xp).toBeGreaterThanOrEqual(25);});
   it('uses one free reroll persistently',()=>{let state=createProgressState(at('2026-08-21'),'install');state=reconcileProgress(state,at('2026-08-21'));const next=rerollQuest(state,2,at('2026-08-21'))!;expect(next.daily['2026-08-21']!.freeRerollUsed).toBe(true);expect(rerollQuest(next,2,at('2026-08-21'))).toBeNull();});
   it.each([5,10,20,30] as const)('supports daily goal %i',goal=>{let state=createProgressState(at('2026-08-21'),'install');state=setDailyGoal(state,goal,at('2026-08-21'));state=applyItems(state,'2026-08-21',goal);expect(state.daily['2026-08-21']!.qualified).toBe(true);});

@@ -7,8 +7,9 @@ const STORAGE_KEY = 'medicinsk-svenska.flashcard-session.v1';
 test('new physician decks are compact semantic rows with exact counts', async ({ page }) => {
   await page.goto('/kortit');
   const expected = [
-    ['Vastaanotto ja anamneesi', '27 korttia', 'vastaanotto-anamneesi'],
-    ['Tutkimukset ja hoito', '50 korttia', 'tutkimukset-hoito'],
+    ['Vastaanotto ja anamneesi', '26 korttia', 'vastaanotto-anamneesi'],
+    ['Tutkimukset ja hoito', '49 korttia', 'tutkimukset-hoito'],
+    ['Laboratoriokokeet', '45 korttia', 'laboratoriokokeet'],
     ['Osastot', '18 korttia', 'avdelningar'],
   ] as const;
   for (const [name, count] of expected) {
@@ -19,7 +20,7 @@ test('new physician decks are compact semantic rows with exact counts', async ({
     await expect(row.locator('.deck-count')).toHaveText(count);
   }
   const intake = page.locator('.deck-row').filter({ hasText: 'Vastaanotto ja anamneesi' });
-  await intake.getByRole('heading', { name: 'Vastaanotto ja anamneesi' }).click();
+  await intake.click();
   await expect(page).toHaveURL(/deck=vastaanotto-anamneesi/);
   await expect(page.locator('#progress')).toHaveText('0 / 25');
 });
@@ -35,13 +36,13 @@ test('new decks select ten cards and cap a requested fifty without duplicates', 
 
   await page.goto('/kortit/harjoitus?mode=deck&deck=vastaanotto-anamneesi&direction=fi-sv&amount=50&session=physician-small-pool');
   state = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
-  expect(state.selectedCardIds).toHaveLength(27);
-  expect(new Set(state.selectedCardIds).size).toBe(27);
-  await expect(page.locator('#progress')).toHaveText('0 / 27');
+  expect(state.selectedCardIds).toHaveLength(26);
+  expect(new Set(state.selectedCardIds).size).toBe(26);
+  await expect(page.locator('#progress')).toHaveText('0 / 26');
 });
 
 test('a deterministic new card works in both directions and reveals grammar only on demand', async ({ page }) => {
-  const card = { id: 'vastaanotto-anamneesi-urinprov', deckId: 'vastaanotto-anamneesi' };
+  const card = { id: 'laboratoriokokeet-urinprov', deckId: 'laboratoriokokeet' };
   await openSpecificCard(page, card, 'fi-sv');
   await expect(page.locator('#front-term')).toHaveText('virtsanäyte');
   await expect(page.locator('#answer-area')).toBeHidden();
@@ -66,21 +67,22 @@ test('lucky mode includes the expanded global pool and new IDs persist across re
   await expect.poll(() => page.evaluate((key) => {
     const value = localStorage.getItem(key);
     return value ? JSON.parse(value).selectedCardIds.length : 0;
-  }, STORAGE_KEY)).toBe(455);
+  }, STORAGE_KEY)).toBe(498);
   const before = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
-  expect(before.selectedCardIds).toHaveLength(455);
-  expect(new Set(before.selectedCardIds).size).toBe(455);
+  expect(before.selectedCardIds).toHaveLength(498);
+  expect(new Set(before.selectedCardIds).size).toBe(498);
   expect(before.selectedCardIds).toContain('tutkimukset-hoito-epikris');
+  expect(before.selectedCardIds).toContain('laboratoriokokeet-blodprov');
   await page.reload();
   const after = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
   expect(after.selectedCardIds).toEqual(before.selectedCardIds);
 });
 
-test('all seven rows remain usable on narrow phones without overflow or serious accessibility issues', async ({ page }) => {
+test('all eight rows remain usable on narrow phones without overflow or serious accessibility issues', async ({ page }) => {
   for (const viewport of [{ width: 320, height: 568 }, { width: 390, height: 844 }]) {
     await page.setViewportSize(viewport);
     await page.goto('/kortit');
-    await expect(page.locator('.deck-row')).toHaveCount(7);
+    await expect(page.locator('.deck-row')).toHaveCount(8);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
     const rows = await page.locator('.deck-row').evaluateAll((elements) => elements.map((element) => element.getBoundingClientRect().height));
     expect(rows.every((height) => height >= 56)).toBe(true);

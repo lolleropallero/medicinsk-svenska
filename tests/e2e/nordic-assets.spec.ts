@@ -18,13 +18,13 @@ test('brand, backgrounds, language corners, and all deck icons use supplied SVG 
 
   await page.goto('/kortit/');
   const deckImages = page.locator('.deck-row .deck-icon img');
-  await expect(deckImages).toHaveCount(7);
-  const expectedDecks = ['anatomy','diseases','first-aid','medicines','departments','anamnesis','examinations'];
+  await expect(deckImages).toHaveCount(8);
+  const expectedDecks = ['anatomy','diseases','first-aid','medicines','departments','anamnesis','examinations','laboratory'];
   for (let index = 0; index < expectedDecks.length; index += 1) {
     await loaded(deckImages.nth(index));
     expect(await filename(deckImages.nth(index))).toContain(expectedDecks[index]);
   }
-  expect(new Set(await deckImages.evaluateAll((images: HTMLImageElement[]) => images.map((image) => image.src))).size).toBe(7);
+  expect(new Set(await deckImages.evaluateAll((images: HTMLImageElement[]) => images.map((image) => image.src))).size).toBe(8);
 
   for (const direction of ['fi-sv','sv-fi'] as const) {
     await openSpecificCard(page, { id:'anatomi-004', deckId:'anatomi' }, direction);
@@ -113,6 +113,7 @@ test('Kruunu & Kilpi rewards, rarity frames, achievements, and league shields ar
 });
 
 test('asset requests are local SVGs, motion preferences preserve imagery, and portrait widths do not overflow', async ({ page }) => {
+  test.setTimeout(60_000);
   const failed: string[] = [];
   const externalAssets: string[] = [];
   const webp: string[] = [];

@@ -39,7 +39,7 @@ const rasterFiles=outputFiles.filter(path=>/\.(?:png|jpe?g|gif|webp|avif)$/i.tes
 const webpFiles=rasterFiles.filter(path=>path.endsWith('.webp'));
 const pngFiles=rasterFiles.filter(path=>path.endsWith('.png'));
 const otherRasterFiles=rasterFiles.filter(path=>!path.endsWith('.webp')&&!path.endsWith('.png'));
-if(svgFiles.length!==45)matches.push(`dist: expected 45 emitted SVG assets, found ${svgFiles.length}`);
+if(svgFiles.length!==46)matches.push(`dist: expected 46 emitted SVG assets, found ${svgFiles.length}`);
 for(const path of svgFiles)if(!/\.[A-Za-z0-9_-]{6,}\.svg$/.test(path))matches.push(`${path}: SVG filename is not hashed`);
 if(webpFiles.length!==4)matches.push(`dist: expected exactly four emitted WebP backgrounds, found ${webpFiles.length}`);
 for(const name of ['home-dark','rewards-dark','shell-light','study-light'])if(!webpFiles.some(path=>path.includes(name)))matches.push(`dist: missing ${name} WebP background`);

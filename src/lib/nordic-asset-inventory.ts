@@ -42,6 +42,7 @@ export const nordicAssetPaths = {
     avdelningar: 'deck-icons/departments.svg',
     'vastaanotto-anamneesi': 'deck-icons/anamnesis.svg',
     'tutkimukset-hoito': 'deck-icons/examinations.svg',
+    laboratoriokokeet: 'deck-icons/laboratory.svg',
   },
 } as const;
 

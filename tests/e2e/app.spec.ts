@@ -70,7 +70,7 @@ test('the deck count area activates the same single semantic row link',async({pa
 });
 
 test('uses an absolute controlled clock for exact delayed retries and automatic focus',async({page})=>{
-  const start = new Date('2026-01-01T10:00:00.000Z');
+  const start = new Date('2030-01-01T10:00:00.000Z');
   await page.clock.install({time:start});
   await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=fi-sv&amount=10&session=retry-test');
   const missedAt=start.getTime()+1_000;
@@ -243,7 +243,7 @@ test('long medical compounds wrap at 320 by 568 without accessibility violations
 });
 
 test('elapsed timer uses absolute time across controlled advances and reload',async({page})=>{
-  const start=new Date('2026-02-01T12:00:00.000Z');
+  const start=new Date('2030-02-01T12:00:00.000Z');
   await page.clock.install({time:start});
   await page.clock.pauseAt(start);
   await page.goto('/kortit/harjoitus?mode=deck&deck=anatomi&direction=fi-sv&amount=10&session=elapsed-clock');
@@ -272,7 +272,7 @@ test('restored revealed state focuses the first grading action',async({page})=>{
 
 test('completion summary and Uusi kierros create fresh retained state',async({page})=>{
   await page.addInitScript(()=>{let value=0;Math.random=()=>{value=(value+0.137)%1;return value;}});
-  const start=new Date('2026-03-01T09:00:00.000Z');
+  const start=new Date('2030-03-01T09:00:00.000Z');
   await page.clock.install({time:start});
   await page.clock.pauseAt(start);
   await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=sv-fi&amount=10&session=summary-round');

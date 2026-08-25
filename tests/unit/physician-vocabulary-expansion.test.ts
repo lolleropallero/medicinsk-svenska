@@ -11,7 +11,7 @@ const originalCards = cards.slice(0, 373);
 const newCards = cards.slice(373);
 const byId = new Map(cards.map((card) => [card.id, card]));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
-const allowedTargets = new Set(['vastaanotto-anamneesi', 'tutkimukset-hoito', 'avdelningar']);
+const allowedTargets = new Set(['vastaanotto-anamneesi', 'tutkimukset-hoito', 'laboratoriokokeet', 'avdelningar']);
 const roles = new Set([
   'sjukskötare', 'sjuksköterska', 'närvårdare', 'primärskötare', 'överskötare',
   'avdelningsskötare', 'vårdare', 'socialarbetare', 'hemvårdare', 'barnskötare',
@@ -23,10 +23,10 @@ const locationIds = new Set([
 const slug = (value: string) => value.normalize('NFD').replace(/\p{Mark}/gu, '').toLocaleLowerCase('sv').replace(/[^a-z0-9]+/gu, '-').replace(/^-|-$/gu, '');
 
 describe('physician vocabulary expansion', () => {
-  it('publishes the two exact, non-empty new decks', () => {
+  it('publishes the exact, non-empty physician vocabulary decks', () => {
     expect(decksData.map((deck) => deck.id)).toEqual([
       'anatomi', 'sjukdomar', 'forsta-hjalpen', 'mediciner', 'avdelningar',
-      'vastaanotto-anamneesi', 'tutkimukset-hoito',
+      'vastaanotto-anamneesi', 'tutkimukset-hoito', 'laboratoriokokeet',
     ]);
     expect(decksData.filter((deck) => deck.id === 'vastaanotto-anamneesi')).toEqual([
       { id: 'vastaanotto-anamneesi', nameFi: 'Vastaanotto ja anamneesi', status: 'published' },
@@ -34,8 +34,12 @@ describe('physician vocabulary expansion', () => {
     expect(decksData.filter((deck) => deck.id === 'tutkimukset-hoito')).toEqual([
       { id: 'tutkimukset-hoito', nameFi: 'Tutkimukset ja hoito', status: 'published' },
     ]);
-    expect(cards.filter((card) => card.deckId === 'vastaanotto-anamneesi')).toHaveLength(27);
-    expect(cards.filter((card) => card.deckId === 'tutkimukset-hoito')).toHaveLength(50);
+    expect(decksData.filter((deck) => deck.id === 'laboratoriokokeet')).toEqual([
+      { id: 'laboratoriokokeet', nameFi: 'Laboratoriokokeet', status: 'published' },
+    ]);
+    expect(cards.filter((card) => card.deckId === 'vastaanotto-anamneesi')).toHaveLength(26);
+    expect(cards.filter((card) => card.deckId === 'tutkimukset-hoito')).toHaveLength(49);
+    expect(cards.filter((card) => card.deckId === 'laboratoriokokeet')).toHaveLength(45);
   });
 
   it('preserves every accepted card and all description semantics byte-for-byte', () => {
@@ -46,9 +50,10 @@ describe('physician vocabulary expansion', () => {
   });
 
   it('keeps every new item one-word, typed, unique, and in an allowed target', () => {
-    expect(newCards).toHaveLength(82);
+    expect(newCards).toHaveLength(125);
     expect(newCards.every((card) => allowedTargets.has(card.deckId))).toBe(true);
-    expect(newCards.every((card) => !/\s|\//u.test(card.fi) && !/\s|\//u.test(card.sv))).toBe(true);
+    expect(newCards.filter((card) => card.deckId !== 'laboratoriokokeet').every((card) => !/\s|\//u.test(card.fi) && !/\s|\//u.test(card.sv))).toBe(true);
+    expect(newCards.filter((card) => card.deckId === 'laboratoriokokeet').every((card) => !/[\/\n\r]/u.test(card.fi) && !/[\/\n\r]/u.test(card.sv) && card.fi === card.fi.trim() && card.sv === card.sv.trim())).toBe(true);
     expect(newCards.every((card) => ['noun', 'verb', 'adjective', 'adverb', 'other'].includes(card.partOfSpeech))).toBe(true);
     expect(newCards.every((card) => card.article === undefined || card.partOfSpeech === 'noun')).toBe(true);
     expect(newCards.every((card) => !/^(?:en|ett)\s/iu.test(card.sv))).toBe(true);
@@ -73,7 +78,11 @@ describe('physician vocabulary expansion', () => {
     ['tutkimukset-hoito-stralbehandling', { fi: 'sädehoito', sv: 'strålbehandling' }],
     ['tutkimukset-hoito-rehabilitera', { fi: 'kuntouttaa', sv: 'rehabilitera', partOfSpeech: 'verb' }],
     ['tutkimukset-hoito-patientcentrerad', { fi: 'potilaskeskeinen', sv: 'patientcentrerad', partOfSpeech: 'adjective' }],
-    ['vastaanotto-anamneesi-urinprov', { fi: 'virtsanäyte', sv: 'urinprov', article: 'ett', inflection: 'urinprovet, urinprov, urinproven' }],
+    ['laboratoriokokeet-urinprov', { fi: 'virtsanäyte', sv: 'urinprov', article: 'ett', inflection: 'urinprovet, urinprov, urinproven' }],
+    ['laboratoriokokeet-blodprov', { fi: 'verikoe', sv: 'blodprov', article: 'ett', partOfSpeech: 'noun' }],
+    ['laboratoriokokeet-fasteprov', { fi: 'paastonäyte', sv: 'fasteprov', article: 'ett', partOfSpeech: 'noun' }],
+    ['laboratoriokokeet-stick-i-fingret', { fi: 'pisto sormeen', sv: 'stick i fingret', partOfSpeech: 'other' }],
+    ['laboratoriokokeet-provet-tas-i-armen', { fi: 'näyte otetaan käsivarresta', sv: 'provet tas i armen', partOfSpeech: 'other' }],
     ['osastot-giftinformationscentral', { fi: 'myrkytystietokeskus', sv: 'giftinformationscentral', article: 'en' }],
   ])('contains representative curated card %s', (id, fields) => {
     expect(byId.get(id)).toMatchObject(fields);

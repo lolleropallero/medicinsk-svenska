@@ -23,14 +23,16 @@ const answerAlternativePattern = /[\/;\n]|\s+(?:eller|tai)\s+/iu;
 const requiredExpansionDecks = new Map([
   ['vastaanotto-anamneesi', 'Vastaanotto ja anamneesi'],
   ['tutkimukset-hoito', 'Tutkimukset ja hoito'],
+  ['laboratoriokokeet', 'Laboratoriokokeet'],
 ]);
 const allowedDeckIds = new Set([
   'anatomi', 'sjukdomar', 'forsta-hjalpen', 'mediciner', 'avdelningar',
-  'vastaanotto-anamneesi', 'tutkimukset-hoito',
+  'vastaanotto-anamneesi', 'tutkimukset-hoito', 'laboratoriokokeet',
 ]);
 const expansionPrefixes = new Map([
   ['vastaanotto-anamneesi-', 'vastaanotto-anamneesi'],
   ['tutkimukset-hoito-', 'tutkimukset-hoito'],
+  ['laboratoriokokeet-', 'laboratoriokokeet'],
   ['osastot-', 'avdelningar'],
 ]);
 const excludedRoleTerms = new Set([
@@ -129,7 +131,13 @@ export function validateContent(
     check(fi.trim().length > 0 && sv.trim().length > 0, `empty term on ${id}`);
     check(!fi.includes('\n') && !fi.includes('\r') && !sv.includes('\n') && !sv.includes('\r'), `newline in term on ${id}`);
     check(!fi.includes('/') && !sv.includes('/'), `slash-separated term on ${id}`);
-    check(!/\s/u.test(fi.trim()) && !/\s/u.test(sv.trim()), `term is not one lexical item on ${id}`);
+    if (deckId === 'laboratoriokokeet') {
+      check(fi === fi.trim() && sv === sv.trim(), `leading or trailing whitespace in laboratory term on ${id}`);
+      check(!/\s{2,}/u.test(fi) && !/\s{2,}/u.test(sv), `repeated whitespace in laboratory term on ${id}`);
+      check(fi.length <= 180 && sv.length <= 180, `laboratory term is too long on ${id}`);
+    } else {
+      check(!/\s/u.test(fi.trim()) && !/\s/u.test(sv.trim()), `term is not one lexical item on ${id}`);
+    }
     check(!/^(?:en|ett)\s+/iu.test(sv.trim()), `article embedded in Swedish term on ${id}`);
     check(publicationStatuses.has(status), `invalid card publication status: ${id}`);
     check(partOfSpeechValues.has(partOfSpeech), `missing or invalid part of speech on ${id}`);
@@ -310,11 +318,11 @@ const errors = [
   ...validatePhraseContent(phraseCategories, phrases),
 ];
 const publishedDecks = decks.filter((deck) => isRecord(deck) && deck.status === 'published');
-if (publishedDecks.length !== 7) {
-  errors.push('exactly seven decks must be published');
+if (publishedDecks.length !== 8) {
+  errors.push('exactly eight decks must be published');
 }
 if (decks.length !== allowedDeckIds.size || decks.some((deck) => !isRecord(deck) || !allowedDeckIds.has(text(deck.id)))) {
-  errors.push('only the seven approved flashcard decks may exist');
+  errors.push('only the eight approved flashcard decks may exist');
 }
 for (const [id, nameFi] of requiredExpansionDecks) {
   const matches = publishedDecks.filter((deck) => isRecord(deck) && deck.id === id && deck.nameFi === nameFi);
@@ -336,7 +344,7 @@ if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));
   process.exit(1);
 }
-if (cards.length !== 455) errors.push('flashcards must remain exactly 455');
+if (cards.length !== 498) errors.push('flashcards must remain exactly 498');
 if (descriptions.length !== 51) errors.push('descriptions must remain exactly 51');
 const expectedDescriptionCounts = [8, 7, 7, 8, 6, 7, 8];
 const actualDescriptionCounts = descriptionCategories

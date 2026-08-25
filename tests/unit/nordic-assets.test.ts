@@ -6,19 +6,19 @@ import { flattenVisualFixAssetPaths, visualFixAssetPaths } from '../../src/lib/v
 import { visualFixAssets } from '../../src/lib/visual-fix-assets';
 
 describe('Nordic Asset Pack V1', () => {
-  it('retains exactly 34 non-superseded Nordic SVGs with the required category counts', () => {
-    expect(flattenNordicAssetPaths()).toHaveLength(34);
+  it('retains exactly 35 non-superseded Nordic SVGs with the required category counts', () => {
+    expect(flattenNordicAssetPaths()).toHaveLength(35);
     expect(Object.keys(nordicAssetPaths.brand)).toHaveLength(5);
     expect(Object.keys(nordicAssetPaths.rarity)).toHaveLength(4);
     expect(Object.keys(nordicAssetPaths.achievements)).toHaveLength(12);
     expect(Object.keys(nordicAssetPaths.leagues)).toHaveLength(6);
-    expect(Object.keys(nordicAssetPaths.decks)).toHaveLength(7);
+    expect(Object.keys(nordicAssetPaths.decks)).toHaveLength(8);
     expect(flattenNordicAssetPaths().every((path) => path.endsWith('.svg'))).toBe(true);
   });
 
   it('resolves every mapped URL and fails an invalid fallback lookup safely', () => {
     const urls = Object.values(nordicAssets).flatMap((category) => Object.values(category));
-    expect(urls).toHaveLength(34);
+    expect(urls).toHaveLength(35);
     expect(urls.every((url) => typeof url === 'string' && url.includes('.svg'))).toBe(true);
     expect(mappedAsset(nordicAssets.decks, 'missing')).toBeUndefined();
   });
@@ -33,7 +33,7 @@ describe('Nordic Asset Pack V1', () => {
     ]);
     expect(Object.values(nordicAssetPaths.leagues)).toEqual(['league/bronze.svg','league/silver.svg','league/gold.svg','league/platinum.svg','league/diamond.svg','league/master.svg']);
     expect(nordicAssetPaths.decks).toEqual({
-      anatomi:'deck-icons/anatomy.svg',sjukdomar:'deck-icons/diseases.svg','forsta-hjalpen':'deck-icons/first-aid.svg',mediciner:'deck-icons/medicines.svg',avdelningar:'deck-icons/departments.svg','vastaanotto-anamneesi':'deck-icons/anamnesis.svg','tutkimukset-hoito':'deck-icons/examinations.svg',
+      anatomi:'deck-icons/anatomy.svg',sjukdomar:'deck-icons/diseases.svg','forsta-hjalpen':'deck-icons/first-aid.svg',mediciner:'deck-icons/medicines.svg',avdelningar:'deck-icons/departments.svg','vastaanotto-anamneesi':'deck-icons/anamnesis.svg','tutkimukset-hoito':'deck-icons/examinations.svg',laboratoriokokeet:'deck-icons/laboratory.svg',
     });
   });
 

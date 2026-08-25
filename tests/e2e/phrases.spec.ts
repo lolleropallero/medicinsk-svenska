@@ -99,8 +99,8 @@ test('Finnish cue reveals Swedish, restores focus and state, then grading advanc
 });
 
 test('controlled five-minute retry waits, survives reload, continues automatically, and summarizes', async ({ page }) => {
-  const clockStart = new Date('2026-07-01T09:59:00.000Z');
-  const start = new Date('2026-07-01T10:00:00.000Z');
+  const clockStart = new Date('2030-07-01T09:59:00.000Z');
+  const start = new Date('2030-07-01T10:00:00.000Z');
   await page.clock.install({ time: clockStart });
   await page.clock.pauseAt(start);
   await seedPhraseSession(page, ['fraasi-oireet-vointi-gora-ont'], { categoryId: 'oireet-vointi', startedAt: start.getTime() });

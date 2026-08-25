@@ -36,7 +36,7 @@ const nordicCounts = {
   leagues: Object.keys(nordicAssetPaths.leagues).length,
   decks: Object.keys(nordicAssetPaths.decks).length,
 };
-const requiredNordicCounts = { brand: 5, rarity: 4, achievements: 12, leagues: 6, decks: 7 };
+const requiredNordicCounts = { brand: 5, rarity: 4, achievements: 12, leagues: 6, decks: 8 };
 const v4Counts = {
   descriptionCategories: Object.keys(visualFixAssetPaths.descriptionCategories).length,
   backgrounds: Object.keys(visualFixAssetPaths.backgrounds).length,
@@ -49,7 +49,7 @@ for (const [category, count] of Object.entries(requiredNordicCounts)) {
 for (const [category, count] of Object.entries(requiredV4Counts)) {
   if (v4Counts[category as keyof typeof v4Counts] !== count) errors.push(`V4 ${category}: expected ${count}, mapped ${v4Counts[category as keyof typeof v4Counts]}`);
 }
-if (nordicExpected.length !== 34) errors.push(`expected 34 retained Nordic SVG mappings, found ${nordicExpected.length}`);
+if (nordicExpected.length !== 35) errors.push(`expected 35 retained Nordic SVG mappings, found ${nordicExpected.length}`);
 if (v4Expected.length !== 11) errors.push(`expected exactly 11 retained V4 production mappings, found ${v4Expected.length}`);
 if (rewardVisualExpected.length !== 4) errors.push(`expected exactly four Kruunu & Kilpi reward mappings, found ${rewardVisualExpected.length}`);
 if (new Set(rewardVisualExpected).size !== rewardVisualExpected.length) errors.push('Kruunu & Kilpi mapping contains duplicate paths');
@@ -57,7 +57,7 @@ if (new Set(rewardVisualExpected).size !== rewardVisualExpected.length) errors.p
 const nordicActual = walk(nordicRoot).filter((path) => extname(path).toLowerCase() === '.svg').map((path) => normalize(relative(nordicRoot, path))).sort((left, right) => left.localeCompare(right));
 const v4Actual = walk(visualFixRoot).filter((path) => /\.(?:svg|webp)$/i.test(path)).map((path) => normalize(relative(visualFixRoot, path))).sort((left, right) => left.localeCompare(right));
 const rewardVisualActual = walk(rewardVisualRoot).filter((path) => path.toLowerCase().endsWith('.svg')).map((path) => normalize(relative(rewardVisualRoot, path))).sort((left, right) => left.localeCompare(right));
-if (nordicActual.length !== 34) errors.push(`expected 34 retained Nordic SVG files, found ${nordicActual.length}`);
+if (nordicActual.length !== 35) errors.push(`expected 35 retained Nordic SVG files, found ${nordicActual.length}`);
 if (v4Actual.length !== 11) errors.push(`expected exactly 11 retained V4 production files, found ${v4Actual.length}`);
 if (rewardVisualActual.length !== 4) errors.push(`expected exactly four Kruunu & Kilpi SVGs, found ${rewardVisualActual.length}`);
 for (const path of nordicActual) if (!nordicExpected.includes(path as typeof nordicExpected[number])) errors.push(`unmapped Nordic SVG: ${path}`);
@@ -157,4 +157,4 @@ if (errors.length) {
   console.error(`Asset audit failed:\n${errors.map((error) => `- ${error}`).join('\n')}`);
   process.exit(1);
 }
-console.log('Asset audit clean: 34 Nordic SVGs, 11 retained V4 assets, four Kruunu & Kilpi reward SVGs, four local WebPs, exactly eight approved local SFX OGGs, and exactly five local music MP3s.');
+console.log('Asset audit clean: 35 Nordic SVGs, 11 retained V4 assets, four Kruunu & Kilpi reward SVGs, four local WebPs, exactly eight approved local SFX OGGs, and exactly five local music MP3s.');

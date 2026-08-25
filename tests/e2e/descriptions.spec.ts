@@ -86,7 +86,7 @@ test('all-topics sizes are unique and short categories use the complete pool', a
 });
 
 test('absolute timer, draft, order, and focus survive controlled background time and reload', async ({ page }) => {
-  const start = new Date('2026-05-01T09:00:00.000Z');
+  const start = new Date('2030-05-01T09:00:00.000Z');
   await page.clock.install({ time: start });
   await page.goto('/kuvailu/harjoitus?mode=all&amount=10&session=persistence-clock');
   await expect(page.locator('#description-elapsed')).toHaveText('00:00');
@@ -159,7 +159,7 @@ test('incorrect and revealed resolution restore feedback and focus without doubl
 
 test('summary, retry, and new round use fresh persisted session state', async ({ page }) => {
   await page.addInitScript(() => { let value = 0; Math.random = () => { value = (value + 0.173) % 1; return value; }; });
-  const start = new Date('2026-06-01T10:00:00.000Z');
+  const start = new Date('2030-06-01T10:00:00.000Z');
   await page.clock.install({ time: start });
   await seedDescriptionSession(page, { ids: ['beskrivning-023', 'beskrivning-027', 'beskrivning-030'], startedAt: start.getTime() });
   await page.getByLabel('Vastauksesi').fill('hjärta');

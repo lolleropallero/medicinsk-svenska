@@ -33,5 +33,10 @@
     "id": "tutkimukset-hoito",
     "nameFi": "Tutkimukset ja hoito",
     "status": "published"
+  },
+  {
+    "id": "laboratoriokokeet",
+    "nameFi": "Laboratoriokokeet",
+    "status": "published"
   }
 ]

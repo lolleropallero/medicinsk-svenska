@@ -4,7 +4,7 @@ A calm, static study application for Finnish medical students practising medical
 
 ## Scope
 
-V1 is designed only for medical students. It contains seven decks: Anatomia (130 cards), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (27), and Tutkimukset ja hoito (50). The 455 flashcards are accompanied by 73 clinical phrases in three categories and 51 Swedish descriptions of anatomy and physiology. It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
+V1 is designed only for medical students. It contains eight decks: Anatomia (130 cards), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (26), Tutkimukset ja hoito (49), and Laboratoriokokeet (45). The 498 flashcards are accompanied by 73 clinical phrases in three categories and 51 Swedish descriptions of anatomy and physiology. It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
 
 Exercise sessions and long-term progress are stored only in the current browser. They are not tied to an account or synchronized between devices.
 
@@ -33,7 +33,7 @@ npm run preview
 - `src/lib/` – framework-free, independently tested session and answer logic
 - `src/scripts/` – minimal browser TypeScript for active exercises
 - `src/styles/` – repository-owned responsive CSS; no external font or asset request
-- `src/assets/nordic-v1/` – 34 retained brand, rarity, achievement, league, and deck SVGs
+- `src/assets/nordic-v1/` – 35 retained brand, rarity, achievement, league, and deck SVGs
 - `src/assets/visual-fix-v4/` – 13 retained Visual Fix V4 reward, category, and background assets
 - `src/assets/rewards-kruunu-kilpi/` – the local HUD, standard, golden, and legendary reward SVG family
 - `src/lib/nordic-asset-inventory.ts` and `src/lib/nordic-assets.ts` – exact typed inventory and Vite-managed local asset URLs
@@ -48,7 +48,7 @@ Published content is filtered at build time and mapped to explicit client payloa
 
 ### Nordic Asset Pack V1
 
-`src/assets/nordic-v1/` retains 34 production SVGs: five brand assets, four rarity frames, twelve achievement badges, six league shields, and seven deck icons. `src/assets/visual-fix-v4/` retains thirteen production assets: two genuine golden/legendary reward SVGs, seven anatomical category SVGs, and four local WebP backgrounds. `src/assets/standard-box-v5/` contains exactly three transparent standard-box PNGs for HUD, card, and hero use. Package previews, reference sheets, and source archives are excluded. The typed inventories expose Vite-managed hashed same-origin URLs, and `npm run audit:assets` verifies counts, mapping completeness, PNG alpha channels, WebP policy, and SVG safety. The audit is part of `npm run build`.
+`src/assets/nordic-v1/` retains 35 production SVGs: five brand assets, four rarity frames, twelve achievement badges, six league shields, and eight deck icons. `src/assets/visual-fix-v4/` retains thirteen production assets: two genuine golden/legendary reward SVGs, seven anatomical category SVGs, and four local WebP backgrounds. `src/assets/standard-box-v5/` contains exactly three transparent standard-box PNGs for HUD, card, and hero use. Package previews, reference sheets, and source archives are excluded. The typed inventories expose Vite-managed hashed same-origin URLs, and `npm run audit:assets` verifies counts, mapping completeness, PNG alpha channels, WebP policy, and SVG safety. The audit is part of `npm run build`.
 
 The supplied brand mark is used in the application header and favicon. Finnish and Swedish cross tiles provide compact shared-language identity. Language corners are text-free decorative images: Finnish content uses `language-corner-fi.svg`, Swedish content uses `language-corner-sv.svg`, and actual language remains expressed with `lang="fi"` or `lang="sv"`. Active exercises must never add visible `Suomi`, `Svenska`, `Suomeksi`, or `Ruotsiksi` labels.
 
@@ -56,7 +56,7 @@ Kruunu & Kilpi maps the compact standard size to `reward-hud.svg`, larger standa
 
 Backgrounds use `home-dark.webp` on `/`, `rewards-dark.webp` on rewards and season surfaces, `shell-light.webp` on setup and progress routes, and `study-light.webp` on active, waiting, and completion exercise states. They render at normal opacity with `background-size: cover`; readable content remains on its own surface. The four WebP backgrounds are the only allowed raster assets; the HUD, standard, golden, and legendary Kruunu & Kilpi reward visuals are local SVGs. HUD chips keep icon, label, primary value, and optional secondary value in separate elements; phones use a two-by-two grid and wider screens use four columns.
 
-Achievement IDs map one-to-one to the twelve same-named SVGs. Stored league tiers map as `Pronssi → bronze`, `Hopea → silver`, `Kulta → gold`, `Platina → platinum`, `Timantti → diamond`, and `Konsultti → master`, while visible Swedish labels remain unchanged. Deck IDs map as `anatomi → anatomy`, `sjukdomar → diseases`, `forsta-hjalpen → first-aid`, `mediciner → medicines`, `avdelningar → departments`, `vastaanotto-anamneesi → anamnesis`, and `tutkimukset-hoito → examinations`.
+Achievement IDs map one-to-one to the twelve same-named SVGs. Stored league tiers map as `Pronssi → bronze`, `Hopea → silver`, `Kulta → gold`, `Platina → platinum`, `Timantti → diamond`, and `Konsultti → master`, while visible Swedish labels remain unchanged. Deck IDs map as `anatomi → anatomy`, `sjukdomar → diseases`, `forsta-hjalpen → first-aid`, `mediciner → medicines`, `avdelningar → departments`, `vastaanotto-anamneesi → anamnesis`, `tutkimukset-hoito → examinations`, and `laboratoriokokeet → laboratory`.
 
 To replace one asset safely, preserve its filename, format, dimensions or viewBox, paths, gradients, filters, title, and transparency. Update the relevant typed inventory and static import, keep decorative images at `alt=""` plus `aria-hidden="true"` when adjacent HTML names them, and run `npm run audit:assets`, unit tests, the production build, and Playwright. Do not inline, recolour, rasterize an SVG, convert a background away from WebP, or add previews or archives to production assets.
 
@@ -98,11 +98,11 @@ The typed phrase session persists its exact shuffled selection, current item, re
 
 ### Add a flashcard
 
-Add an object to `content/flashcards.json` with a unique ID, one Finnish lexical item, one canonical Swedish lexical item, a publication status, and one of the closed `partOfSpeech` values. Store `en` or `ett` in `article`, never in `sv`. Optional grammar belongs in `inflection`, not in the term.
+Add an object to `content/flashcards.json` with a unique ID, one Finnish lexical item, one canonical Swedish lexical item, a publication status, and one of the closed `partOfSpeech` values. Store `en` or `ett` in `article`, never in `sv`. Optional grammar belongs in `inflection`, not in the term. The `laboratoriokokeet` deck may also contain concise lab-preparation phrases when they are canonical study expressions.
 
 The canonical-term rule is strict: no slash-separated alternatives, synonym lists, multiple meanings, phrases, definitions, or examples. Hyphenated and closed compounds count as one lexical item. Omit an entry when its canonical mapping cannot be established confidently.
 
-Flashcards are curated for physician-relevant study. Every Finnish and Swedish side must be one lexical item, and uniqueness is global and bidirectional: a normalized term maps to exactly one term in the other language across all seven decks.
+Flashcards are curated for physician-relevant study. Outside `laboratoriokokeet`, every Finnish and Swedish side must be one lexical item. Uniqueness is global and bidirectional: a normalized term maps to exactly one term in the other language across all eight decks.
 
 ### Add a description
 

@@ -23,6 +23,14 @@ test('automatic entry focuses the first quest without a clipped orange divider',
   await page.setViewportSize({width:390,height:844});await page.goto('/');const action=page.locator('[data-quest-action]').first(),start=action.locator('.daily-quest-start');await expect(action).toBeFocused();expect(await action.evaluate(element=>getComputedStyle(element).outlineStyle)).toBe('none');expect(await start.evaluate(element=>getComputedStyle(element).boxShadow)).toContain('rgb(255, 159, 28)');
 });
 
+test('daily quest start affordance stays in the mission area above reroll',async({page})=>{
+  await page.setViewportSize({width:560,height:784});await page.goto('/');const row=page.locator('[data-quest-slot="1"]'),action=row.locator('[data-quest-action]'),start=action.locator('.daily-quest-start'),reroll=row.locator('[data-reroll]');
+  await expect(row).toBeVisible();await page.waitForTimeout(400);
+  const boxes=async()=>({action:(await action.boundingBox())!,start:(await start.boundingBox())!,reroll:(await reroll.boundingBox())!});
+  const before=await boxes();expect(before.start.y+before.start.height).toBeLessThanOrEqual(before.action.y+before.action.height+1);expect(before.start.y+before.start.height).toBeLessThanOrEqual(before.reroll.y);
+  await action.hover();const after=await boxes();expect(after.start.y+after.start.height).toBeLessThanOrEqual(after.action.y+after.action.height+1);expect(after.start.y+after.start.height).toBeLessThanOrEqual(after.reroll.y);expect(Math.abs(after.start.y-before.start.y)).toBeLessThanOrEqual(2);
+});
+
 test('quest activation handles today before navigation, home stays quiet, and tomorrow auto-opens',async({page})=>{
   const testNow='medicinsk-svenska.test-now',firstDay=new Date(2026,7,21,12).getTime(),nextDay=new Date(2026,7,22,12).getTime();await page.addInitScript(({key,fallback})=>{const NativeDate=Date,readNow=()=>{try{return Number(localStorage.getItem(key))||fallback;}catch{return fallback;}};globalThis.Date=new Proxy(NativeDate,{construct(target,args,newTarget){return Reflect.construct(target,args.length?args:[readNow()],newTarget);},apply(target,thisArg,args){return Reflect.apply(target,thisArg,args.length?args:[readNow()]);},get(target,property,receiver){return property==='now'?readNow:Reflect.get(target,property,receiver);}}) as DateConstructor;},{key:testNow,fallback:firstDay});
   await page.goto('/');const dialog=page.getByRole('dialog',{name:'Dagens uppdrag'});await expect(dialog).toBeVisible();await page.locator('[data-quest-action="1"]').click();await expect(page).toHaveURL(/\/kortit\/harjoitus\?.*mode=lucky.*amount=10/);expect(await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),UI)).toEqual({schemaVersion:1,soundEnabled:true,soundVolume:.65,musicEnabled:true,musicVolume:0,dailyOverlayDismissedDay:'2026-08-21'});

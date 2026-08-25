@@ -135,6 +135,7 @@
 }
 .daily-quest-action,
 .daily-quest-complete {
+  position: relative;
   display: grid;
   width: 100%;
   grid-template-columns: 46px minmax(0, 1fr);
@@ -145,6 +146,10 @@
   background: transparent;
   color: var(--text);
   text-align: left;
+}
+.daily-quest-action:not(:disabled):hover {
+  transform: none;
+  box-shadow: none;
 }
 .daily-quest-action:focus-visible {
   outline: none;

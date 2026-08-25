@@ -23,7 +23,7 @@ export interface DailyOverlayEligibility {
 }
 
 export function defaultUiPreferences(): UiPreferencesV1 {
-  return { schemaVersion: UI_PREFERENCES_SCHEMA_VERSION, soundEnabled: true, soundVolume: .65, musicEnabled:true, musicVolume:.20 };
+  return { schemaVersion: UI_PREFERENCES_SCHEMA_VERSION, soundEnabled: true, soundVolume: .65, musicEnabled:true, musicVolume:0 };
 }
 
 export function parseUiPreferences(raw: string | null): UiPreferencesV1 {
@@ -38,7 +38,7 @@ export function parseUiPreferences(raw: string | null): UiPreferencesV1 {
     const soundEnabled=typeof candidate.soundEnabled==='boolean'?candidate.soundEnabled:true;
     const soundVolume=typeof candidate.soundVolume==='number'&&Number.isFinite(candidate.soundVolume)&&candidate.soundVolume>=0&&candidate.soundVolume<=1?candidate.soundVolume:.65;
     const musicEnabled=typeof candidate.musicEnabled==='boolean'?candidate.musicEnabled:true;
-    const musicVolume=typeof candidate.musicVolume==='number'&&Number.isFinite(candidate.musicVolume)&&candidate.musicVolume>=0&&candidate.musicVolume<=1?candidate.musicVolume:.20;
+    const musicVolume=typeof candidate.musicVolume==='number'&&Number.isFinite(candidate.musicVolume)&&candidate.musicVolume>=0&&candidate.musicVolume<=1?candidate.musicVolume:0;
     return { schemaVersion:UI_PREFERENCES_SCHEMA_VERSION,soundEnabled,soundVolume,musicEnabled,musicVolume,
       ...(candidate.dailyOverlayDismissedDay?{dailyOverlayDismissedDay:candidate.dailyOverlayDismissedDay}:{}) };
   } catch {

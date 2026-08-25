@@ -1,10 +1,10 @@
 import { loadUiPreferences, saveUiPreferences } from '../progress/ui-preferences';
 import type { MusicSettings } from './types';
 
-export const DEFAULT_MUSIC_SETTINGS:MusicSettings={enabled:true,volume:.20};
+export const DEFAULT_MUSIC_SETTINGS:MusicSettings={enabled:true,volume:0};
 export function loadMusicSettings():MusicSettings { const value=loadUiPreferences();return{enabled:value.musicEnabled,volume:value.musicVolume}; }
 export function saveMusicSettings(settings:MusicSettings){
-  const current=loadUiPreferences(),next={enabled:Boolean(settings.enabled),volume:Math.min(1,Math.max(0,Number.isFinite(settings.volume)?settings.volume:.20))};
+  const current=loadUiPreferences(),next={enabled:Boolean(settings.enabled),volume:Math.min(1,Math.max(0,Number.isFinite(settings.volume)?settings.volume:DEFAULT_MUSIC_SETTINGS.volume))};
   saveUiPreferences({...current,musicEnabled:next.enabled,musicVolume:next.volume});
   if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('music-settings-changed',{detail:next}));
   return next;

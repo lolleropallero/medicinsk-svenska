@@ -1,22 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="220" height="250" viewBox="0 0 220 250" fill="none"><title>Tre dagars svit</title><defs>
-<linearGradient id="blueDeep" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#006AA7"/><stop offset="1" stop-color="#003580"/></linearGradient>
-<linearGradient id="navyGlow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#123B68"/><stop offset="1" stop-color="#06162A"/></linearGradient>
-<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFE47A"/><stop offset=".5" stop-color="#FECC02"/><stop offset="1" stop-color="#E3A900"/></linearGradient>
-<linearGradient id="silver" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFFFF"/><stop offset=".5" stop-color="#DDE7F0"/><stop offset="1" stop-color="#AABBCB"/></linearGradient>
-<filter id="shadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#001C46" flood-opacity=".22"/></filter>
-<filter id="smallShadow" x="-30%" y="-30%" width="160%" height="170%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#001C46" flood-opacity=".18"/></filter>
-<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-</defs>
-<g filter="url(#shadow)">
-  <path d="M110 12 142 25l35-2 18 30 31 16-2 35 14 32-25 24-7 35-35 7-24 25-32-14-35 2-18-30-31-16 2-35-14-32 25-24 7-35 35-7 24-25 32 14Z" fill="#E9B949"/>
-  <circle cx="110" cy="116" r="82" fill="#006AA7" stroke="#fff" stroke-opacity=".5" stroke-width="5"/>
-  <circle cx="110" cy="116" r="66" fill="#06162A" opacity=".34"/>
-  <path d="M42 62h136M42 88h136" stroke="#FECC02" stroke-width="12" opacity=".28"/>
-  
-<path d="M109 52c18 23 34 39 27 66-4 18-17 34-36 39-26-2-45-22-44-48 1-18 12-33 27-44-1 16 4 26 13 33-2-21 4-34 13-46Z" fill="#FECC02" stroke="#fff" stroke-width="4"/>
-<text x="108" y="136" text-anchor="middle" fill="#06162A" font-family="system-ui,sans-serif" font-size="39" font-weight="900">3</text>
-
-  <path d="M79 184h62l-8 56-23-18-23 18-8-56Z" fill="#006AA7" stroke="#E9B949" stroke-width="5"/>
-  <path d="M103 184h14v42h-14zM79 198h62v14H79z" fill="#FECC02" opacity=".95"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="250" viewBox="0 0 220 250" fill="none">
+  <title>Tre dagars svit</title>
+  <path d="M110 14 178 44v78c0 50-30 82-68 108-38-26-68-58-68-108V44l68-30Z" fill="#003580" stroke="#06162A" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M110 32 160 54v66c0 36-20 60-50 82-30-22-50-46-50-82V54l50-22Z" fill="#006AA7"/>
+  <rect x="60" y="62" width="100" height="106" rx="12" fill="#F7FBFF" stroke="#D6E7F5" stroke-width="4"/>
+  <path d="M60 88h100" stroke="#006AA7" stroke-width="8"/>
+  <path d="M86 56v22M134 56v22" stroke="#FECC02" stroke-width="8" stroke-linecap="round"/>
+  <rect x="73" y="108" width="24" height="24" rx="5" fill="#E8F3FB" stroke="#9BC5DE" stroke-width="3"/>
+  <rect x="98" y="108" width="24" height="24" rx="5" fill="#E8F3FB" stroke="#9BC5DE" stroke-width="3"/>
+  <rect x="123" y="108" width="24" height="24" rx="5" fill="#E8F3FB" stroke="#9BC5DE" stroke-width="3"/>
+  <path d="m79 120 5 5 9-11M104 120l5 5 9-11M129 120l5 5 9-11" stroke="#003580" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="110" cy="170" r="28" fill="#FECC02" stroke="#FFF7BF" stroke-width="4"/>
+  <text x="110" y="183" text-anchor="middle" fill="#06162A" font-family="system-ui,sans-serif" font-size="40" font-weight="900">3</text>
+  <path d="M82 204h56v18l-18 14-10-9-10 9-18-14v-18Z" fill="#FECC02" stroke="#06162A" stroke-width="4" stroke-linejoin="round"/>
 </svg>

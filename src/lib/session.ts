@@ -1,6 +1,6 @@
 import type { Direction, FlashcardClient } from '../types/content';
 
-export const RETRY_DELAY_MS = 5 * 60 * 1000;
+export const RETRY_DELAY_MS = 2 * 60 * 1000;
 export const SESSION_SCHEMA_VERSION = 1 as const;
 
 export type RequestedAmount = 10 | 25 | 50 | 'all';
@@ -173,8 +173,9 @@ export function revealCurrentCard(session: FlashcardSession): FlashcardSession {
 export function advanceSession(session: FlashcardSession, now = Date.now()): FlashcardSession {
   if (session.currentCardId) return session;
 
+  const retryQueueOpen = session.unseenCardQueue.length === 0;
   const dueRetries = session.pendingRetries
-    .filter((retry) => retry.dueAt <= now)
+    .filter((retry) => retry.dueAt <= now || retryQueueOpen)
     .sort((a, b) => a.dueAt - b.dueAt);
 
   if (dueRetries.length > 0) {

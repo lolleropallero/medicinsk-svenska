@@ -1,7 +1,8 @@
-import { RETRY_DELAY_MS, shuffled } from './session';
+import { shuffled } from './session';
 import type { ClinicalPhraseClient } from '../types/content';
 
 export const PHRASE_SESSION_SCHEMA_VERSION = 1 as const;
+export const PHRASE_RETRY_DELAY_MS = 2 * 60 * 1000;
 export type PhraseRequestedAmount = 10 | 25 | 'all';
 export type PhraseSessionMode = 'all' | 'category';
 
@@ -75,7 +76,10 @@ export function revealPhrase(session: PhraseSession): PhraseSession {
 
 export function advancePhraseSession(session: PhraseSession, now = Date.now()): PhraseSession {
   if (session.currentPhraseId) return session;
-  const due = session.pendingRetries.filter((retry) => retry.dueAt <= now).sort((a, b) => a.dueAt - b.dueAt)[0];
+  const retryQueueOpen = session.unseenPhraseQueue.length === 0;
+  const due = session.pendingRetries
+    .filter((retry) => retry.dueAt <= now || retryQueueOpen)
+    .sort((a, b) => a.dueAt - b.dueAt)[0];
   if (due) return {
     ...session,
     currentPhraseId: due.phraseId,
@@ -108,7 +112,7 @@ export function gradePhrase(session: PhraseSession, correct: boolean, now = Date
     revealed: false,
     pendingRetries: [
       ...session.pendingRetries.filter((retry) => retry.phraseId !== phraseId),
-      { phraseId, dueAt: now + RETRY_DELAY_MS },
+      { phraseId, dueAt: now + PHRASE_RETRY_DELAY_MS },
     ],
     attemptCountByPhrase,
     firstAttemptCorrectByPhrase,

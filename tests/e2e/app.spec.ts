@@ -69,7 +69,7 @@ test('the deck count area activates the same single semantic row link',async({pa
   expect(keyboardSession).not.toBe(firstSession);
 });
 
-test('uses an absolute controlled clock for exact delayed retries and automatic focus',async({page})=>{
+test('uses a two-minute retry cap and replays missed cards immediately after the normal queue',async({page})=>{
   const start = new Date('2030-01-01T10:00:00.000Z');
   await page.clock.install({time:start});
   await page.goto('/kortit/harjoitus?mode=deck&deck=avdelningar&direction=fi-sv&amount=10&session=retry-test');
@@ -80,40 +80,34 @@ test('uses an absolute controlled clock for exact delayed retries and automatic 
   await page.getByRole('button',{name:'En osannut'}).click();
   const missedState=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
   expect(missedState.pendingRetries).toHaveLength(1);
-  expect(missedState.pendingRetries[0].dueAt).toBe(missedAt+5*60*1000);
+  expect(missedState.pendingRetries[0].dueAt).toBe(missedAt+2*60*1000);
   const retryCardId=missedState.pendingRetries[0].cardId;
+  expect(missedState.currentCardId).not.toBe(retryCardId);
   for(let i=0;i<9;i++){
     await page.getByRole('button',{name:'Näytä vastaus'}).click();
     await page.getByRole('button',{name:'Osasin'}).click();
     await continuePastMilestone(page);
   }
-  await expect(page.locator('#waiting-copy')).toHaveText('1 kortti odottaa kertausta');
-  await expect(page.locator('#waiting-copy')).toBeFocused();
-  await expect(page.getByText(/Seuraava kertaus/)).toBeVisible();
-  await expect(page.locator('#retry-countdown')).toHaveText('05:00');
-  await expect(page.getByRole('link',{name:'Takaisin pakkoihin'})).toBeVisible();
-  const waitingUrl=page.url();
-  await page.getByRole('link',{name:'Takaisin pakkoihin'}).click();
-  await expect(page.getByRole('heading',{name:'Sanakortit'})).toBeVisible();
-  await page.goto(waitingUrl);
-  const resumed=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
-  expect(resumed.pendingRetries[0].cardId).toBe(retryCardId);
-  await expect(page.locator('#waiting-copy')).toBeFocused();
-  await page.clock.fastForward(299_999);
-  const justBefore=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
-  expect(justBefore.currentCardId).toBeNull();
-  expect(justBefore.pendingRetries[0].cardId).toBe(retryCardId);
-  await expect(page.locator('#retry-countdown')).toHaveText('00:01');
-  await page.reload();
-  await expect(page.locator('#retry-countdown')).toHaveText('00:01');
-  await page.clock.fastForward(1);
+  await expect(page.locator('#waiting-view')).toBeHidden();
   await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeFocused();
-  const dueState=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
-  expect(dueState.currentCardId).toBe(retryCardId);
+  const replayed=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
+  expect(replayed.currentCardId).toBe(retryCardId);
+  expect(replayed.pendingRetries).toEqual([]);
+  expect(replayed.masteredCardIds).toHaveLength(9);
   await page.getByRole('button',{name:'Näytä vastaus'}).click();
   await page.getByRole('button',{name:'En osannut'}).click();
   const failedAgain=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
-  expect(failedAgain.pendingRetries).toEqual([{cardId:retryCardId,dueAt:missedAt+10*60*1000}]);
+  expect(failedAgain.currentCardId).toBe(retryCardId);
+  expect(failedAgain.pendingRetries).toEqual([]);
+  expect(failedAgain.totalMissedCount).toBe(2);
+  await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeFocused();
+  await page.getByRole('button',{name:'Näytä vastaus'}).click();
+  await page.getByRole('button',{name:'Osasin'}).click();
+  await continuePastMilestone(page);
+  await expect(page.getByRole('heading',{name:'Valmis',exact:true})).toBeFocused();
+  const completed=await page.evaluate(()=>JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
+  expect(completed.masteredCardIds).toHaveLength(10);
+  expect(completed.pendingRetries).toEqual([]);
 });
 test('lucky mode respects 10, 50, and Kaikki without duplicates',async({page})=>{
   for(const [label,expected] of [['10',10],['50',50]] as const){
@@ -283,8 +277,8 @@ test('completion summary and Uusi kierros create fresh retained state',async({pa
     await page.getByRole('button',{name:'Osasin'}).click();
     await continuePastMilestone(page);
   }
-  await page.clock.fastForward(5*60*1000);
   await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeFocused();
+  await page.clock.fastForward(2*60*1000);
   await page.getByRole('button',{name:'Näytä vastaus'}).click();
   await page.getByRole('button',{name:'Osasin'}).click();
   await continuePastMilestone(page);
@@ -292,7 +286,7 @@ test('completion summary and Uusi kierros create fresh retained state',async({pa
   await expect(page.getByText('Ensimmäisellä')).toBeVisible();
   await expect(page.locator('#summary-first')).toHaveText('9 / 10');
   await expect(page.locator('#summary-missed')).toHaveText('1');
-  await expect(page.locator('#summary-time')).toHaveText('05:00');
+  await expect(page.locator('#summary-time')).toHaveText('02:00');
   await expect(page.getByText(/osattu|prosent/i)).toHaveCount(0);
   await page.clock.resume();
   expect((await new AxeBuilder({page}).analyze()).violations.filter(v=>['serious','critical'].includes(v.impact??''))).toEqual([]);

@@ -98,36 +98,50 @@ test('Finnish cue reveals Swedish, restores focus and state, then grading advanc
   await expect(page.getByRole('button', { name: 'Näytä vastaus' })).toBeFocused();
 });
 
-test('controlled five-minute retry waits, survives reload, continues automatically, and summarizes', async ({ page }) => {
+test('controlled two-minute retry cap replays missed phrases when the normal queue ends', async ({ page }) => {
   const clockStart = new Date('2030-07-01T09:59:00.000Z');
   const start = new Date('2030-07-01T10:00:00.000Z');
   await page.clock.install({ time: clockStart });
   await page.clock.pauseAt(start);
-  await seedPhraseSession(page, ['fraasi-oireet-vointi-gora-ont'], { categoryId: 'oireet-vointi', startedAt: start.getTime() });
+  await seedPhraseSession(page, [
+    'fraasi-oireet-vointi-gora-ont',
+    'fraasi-oireet-vointi-andas-in',
+    'fraasi-oireet-vointi-andas-ut',
+  ], { categoryId: 'oireet-vointi', startedAt: start.getTime() });
   await expect(page.locator('#phrase-elapsed')).toHaveText('00:00');
   await page.clock.pauseAt(start.getTime() + 1_000);
   await page.getByRole('button', { name: 'Näytä vastaus' }).click();
   await page.getByRole('button', { name: 'En osannut' }).click();
   const waiting = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
-  expect(waiting.pendingRetries[0].dueAt).toBe(start.getTime() + 1_000 + 5 * 60 * 1000);
-  await expect(page.locator('#phrase-waiting-copy')).toHaveText('1 fraasi odottaa kertausta');
-  await expect(page.locator('#phrase-waiting-copy')).toBeFocused();
-  await expect(page.getByRole('link', { name: 'Takaisin fraaseihin' })).toBeVisible();
-  await expect(page.locator('#phrase-retry-countdown')).toHaveText('05:00');
-  await page.clock.fastForward(299_999);
-  await expect(page.locator('#phrase-retry-countdown')).toHaveText('00:01');
-  expect((await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY)).currentPhraseId).toBeNull();
-  await page.reload();
-  await expect(page.locator('#phrase-retry-countdown')).toHaveText('00:01');
-  await page.clock.fastForward(1);
+  const retryPhraseId = waiting.pendingRetries[0].phraseId;
+  expect(waiting.pendingRetries[0].dueAt).toBe(start.getTime() + 1_000 + 2 * 60 * 1000);
+  expect(waiting.currentPhraseId).not.toBe(retryPhraseId);
+  await page.clock.pauseAt(start.getTime() + 1_000 + 2 * 60 * 1000 + 1);
+  await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await page.getByRole('button', { name: 'Osasin' }).click();
+  await continuePastMilestone(page);
   await expect(page.getByRole('button', { name: 'Näytä vastaus' })).toBeFocused();
+  const capped = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
+  expect(capped.currentPhraseId).toBe(retryPhraseId);
+  expect(capped.pendingRetries).toEqual([]);
+  expect(capped.unseenPhraseQueue).toHaveLength(1);
+  await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await page.getByRole('button', { name: 'En osannut' }).click();
+  const rescheduled = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
+  expect(rescheduled.pendingRetries[0].phraseId).toBe(retryPhraseId);
+  expect(rescheduled.currentPhraseId).not.toBe(retryPhraseId);
+  await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await page.getByRole('button', { name: 'Osasin' }).click();
+  await continuePastMilestone(page);
+  const replayed = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
+  expect(replayed.currentPhraseId).toBe(retryPhraseId);
+  expect(replayed.pendingRetries).toEqual([]);
   await page.getByRole('button', { name: 'Näytä vastaus' }).click();
   await page.getByRole('button', { name: 'Osasin' }).click();
   await continuePastMilestone(page);
   await expect(page.getByRole('heading', { name: 'Valmis', exact: true })).toBeFocused();
-  await expect(page.locator('#phrase-summary-first')).toHaveText('0 / 1');
-  await expect(page.locator('#phrase-summary-missed')).toHaveText('1');
-  await expect(page.locator('#phrase-summary-time')).toHaveText('05:01');
+  await expect(page.locator('#phrase-summary-first')).toHaveText('2 / 3');
+  await expect(page.locator('#phrase-summary-missed')).toHaveText('2');
 });
 
 test('Uusi kierros creates fresh retained configuration and invalid state fails closed', async ({ page }) => {

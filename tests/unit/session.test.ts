@@ -83,29 +83,51 @@ describe('persisted session state', () => {
     expect(gradeCurrentCard(graded, true, 2_001)).toEqual(graded);
   });
 
-  it('schedules En osannut exactly five minutes in the future', () => {
-    const initial = createSession([card(1)], options, 1_000, seededRandom(1));
+  it('schedules En osannut at the two-minute cap while unseen cards remain', () => {
+    const initial = createSession([card(1), card(2)], options, 1_000, seededRandom(1));
     const firstId = initial.currentCardId!;
     const missed = gradeCurrentCard(revealCurrentCard(initial), false, 2_000);
     expect(missed.pendingRetries).toEqual([{ cardId: firstId, dueAt: 2_000 + RETRY_DELAY_MS }]);
-    expect(missed.currentCardId).toBeNull();
+    expect(missed.currentCardId).not.toBe(firstId);
     expect(missed.totalMissedCount).toBe(1);
     expect(missed.firstAttemptCorrectByCard[firstId]).toBe(false);
     expect(isSessionComplete(missed)).toBe(false);
   });
 
-  it('returns a due retry and completes only after it is mastered', () => {
+  it('replays a failed final card immediately and completes only after it is mastered', () => {
     const initial = createSession([card(1)], options, 1_000, seededRandom(1));
     const firstId = initial.currentCardId!;
-    const missedAt = 2_000;
-    const waiting = gradeCurrentCard(revealCurrentCard(initial), false, missedAt);
-    expect(advanceSession(waiting, missedAt + RETRY_DELAY_MS - 1).currentCardId).toBeNull();
-    const due = advanceSession(waiting, missedAt + RETRY_DELAY_MS);
-    expect(due.currentCardId).toBe(firstId);
-    const completed = gradeCurrentCard(revealCurrentCard(due), true, missedAt + RETRY_DELAY_MS + 1);
+    const missed = gradeCurrentCard(revealCurrentCard(initial), false, 2_000);
+    expect(missed.currentCardId).toBe(firstId);
+    expect(missed.pendingRetries).toEqual([]);
+    expect(missed.totalMissedCount).toBe(1);
+    expect(isSessionComplete(missed)).toBe(false);
+    const completed = gradeCurrentCard(revealCurrentCard(missed), true, 2_001);
     expect(completed.attemptCountByCard[firstId]).toBe(2);
     expect(completed.firstAttemptCorrectByCard[firstId]).toBe(false);
     expect(isSessionComplete(completed)).toBe(true);
+  });
+
+  it('replays a missed card immediately when normal cards are exhausted before the cap', () => {
+    const initial = createSession([card(1), card(2)], options, 1_000, seededRandom(1));
+    const firstId = initial.currentCardId!;
+    let session = gradeCurrentCard(revealCurrentCard(initial), false, 2_000);
+    expect(session.pendingRetries).toEqual([{ cardId: firstId, dueAt: 2_000 + RETRY_DELAY_MS }]);
+    expect(session.currentCardId).not.toBe(firstId);
+    session = gradeCurrentCard(revealCurrentCard(session), true, 3_000);
+    expect(session.currentCardId).toBe(firstId);
+    expect(session.pendingRetries).toEqual([]);
+  });
+
+  it('prioritizes a retry that reaches the cap over remaining unseen cards', () => {
+    const initial = createSession([card(1), card(2), card(3)], options, 1_000, seededRandom(1));
+    const firstId = initial.currentCardId!;
+    let session = gradeCurrentCard(revealCurrentCard(initial), false, 2_000);
+    expect(session.currentCardId).not.toBe(firstId);
+    session = gradeCurrentCard(revealCurrentCard(session), true, 2_000 + RETRY_DELAY_MS + 1);
+    expect(session.currentCardId).toBe(firstId);
+    expect(session.pendingRetries).toEqual([]);
+    expect(session.unseenCardQueue).toHaveLength(1);
   });
 
   it('accepts a valid serialized state and rejects unknown card references', () => {

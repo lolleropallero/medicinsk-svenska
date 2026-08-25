@@ -23,7 +23,7 @@ async function seedPhraseView(
     selectedPhraseIds: [phraseId], unseenPhraseQueue: [],
     currentPhraseId: state === 'unrevealed' || state === 'revealed' ? phraseId : null,
     revealed: state === 'revealed', masteredPhraseIds: state === 'complete' ? [phraseId] : [],
-    pendingRetries: state === 'waiting' ? [{ phraseId, dueAt: Date.now() + 300_000 }] : [],
+    pendingRetries: state === 'waiting' ? [{ phraseId, dueAt: Date.now() + 120_000 }] : [],
     attemptCountByPhrase: state === 'waiting' || state === 'complete' ? { [phraseId]: 1 } : {},
     firstAttemptCorrectByPhrase: state === 'waiting' ? { [phraseId]: false } : state === 'complete' ? { [phraseId]: true } : {},
     totalMissedCount: state === 'waiting' ? 1 : 0, startedAt: Date.now() - 65_000,

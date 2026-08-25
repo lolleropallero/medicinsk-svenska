@@ -197,16 +197,17 @@ test('390 x 844 layout remains contained and readable', async ({ page }) => {
   expect((bounds?.x ?? 0) + (bounds?.width ?? 0)).toBeLessThanOrEqual(390);
 });
 
-test('En osannut keeps the five-minute retry and creates no fake milestone', async ({ page }) => {
+test('En osannut replays the final card immediately and creates no fake milestone', async ({ page }) => {
   await prepareCard(page, () => {});
   await page.getByRole('button', { name: 'Näytä vastaus' }).click();
-  const gradedAt = Date.now();
   await page.getByRole('button', { name: 'En osannut' }).click();
   await expect(page.getByRole('dialog', { name: 'Det här har du klarat' })).not.toBeVisible();
   expect(await page.evaluate(() => (window as unknown as { milestoneSounds: string[] }).milestoneSounds)).toEqual([]);
-  const retryAt = await page.evaluate(() => JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!).pendingRetries[0].dueAt);
-  expect(retryAt - gradedAt).toBeGreaterThanOrEqual(299_000);
-  expect(retryAt - gradedAt).toBeLessThanOrEqual(301_000);
+  const retryState = await page.evaluate(() => JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
+  expect(retryState.pendingRetries).toEqual([]);
+  expect(retryState.currentCardId).toBe('anatomi-004');
+  expect(retryState.totalMissedCount).toBe(1);
+  await expect(page.getByRole('button', { name: 'Näytä vastaus' })).toBeFocused();
 });
 
 test('persisted milestones establish a silent baseline on reload', async ({ page }) => {

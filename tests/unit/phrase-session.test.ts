@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
-  advancePhraseSession, createNewPhraseRound, createPhraseSession, gradePhrase, isPhraseSessionComplete,
+  PHRASE_RETRY_DELAY_MS, advancePhraseSession, createNewPhraseRound, createPhraseSession, gradePhrase, isPhraseSessionComplete,
   isStoredPhraseSession, phraseNextRetryAt, revealPhrase, selectPhrases, summarizePhraseSession,
   type PhraseSession, type PhraseValidationContext,
   type PhraseSessionConfiguration,
 } from '../../src/lib/phrase-session';
-import { RETRY_DELAY_MS, seededRandom } from '../../src/lib/session';
+import { seededRandom } from '../../src/lib/session';
 import type { ClinicalPhraseClient } from '../../src/types/content';
 
 const phrase = (index: number, categoryId = 'c'): ClinicalPhraseClient => ({ id: `p${index}`, categoryId, fi: `fi ${index}`, sv: `sv ${index}` });
@@ -48,26 +48,47 @@ describe('phrase delayed recall session', () => {
     expect(graded.currentPhraseId).not.toBe(initial.currentPhraseId);
     expect(gradePhrase(graded, true, 2_001)).toBe(graded);
   });
-  it('schedules exactly five minutes and is eligible only at due time', () => {
-    const initial = createPhraseSession([phrase(1)], configuration, 1_000, seededRandom(1));
+  it('schedules En osannut at the two-minute cap while unseen phrases remain', () => {
+    const initial = createPhraseSession([phrase(1), phrase(2)], configuration, 1_000, seededRandom(1));
     const waiting = gradePhrase(revealPhrase(initial), false, 2_000);
-    expect(waiting.pendingRetries).toEqual([{ phraseId: initial.currentPhraseId, dueAt: 2_000 + RETRY_DELAY_MS }]);
-    expect(phraseNextRetryAt(waiting)).toBe(2_000 + RETRY_DELAY_MS);
-    expect(advancePhraseSession(waiting, 2_000 + RETRY_DELAY_MS - 1).currentPhraseId).toBeNull();
-    expect(advancePhraseSession(waiting, 2_000 + RETRY_DELAY_MS).currentPhraseId).toBe(initial.currentPhraseId);
+    expect(waiting.pendingRetries).toEqual([{ phraseId: initial.currentPhraseId, dueAt: 2_000 + PHRASE_RETRY_DELAY_MS }]);
+    expect(phraseNextRetryAt(waiting)).toBe(2_000 + PHRASE_RETRY_DELAY_MS);
+    expect(waiting.currentPhraseId).not.toBe(initial.currentPhraseId);
+  });
+  it('replays a failed final phrase immediately and completes only after it is mastered', () => {
+    const initial = createPhraseSession([phrase(1)], configuration, 1_000, seededRandom(1));
+    const missed = gradePhrase(revealPhrase(initial), false, 2_000);
+    expect(missed.currentPhraseId).toBe(initial.currentPhraseId);
+    expect(missed.pendingRetries).toEqual([]);
+    expect(missed.totalMissedCount).toBe(1);
+    expect(isPhraseSessionComplete(missed)).toBe(false);
+    const completed = gradePhrase(revealPhrase(missed), true, 2_001);
+    expect(completed.attemptCountByPhrase[initial.currentPhraseId!]).toBe(2);
+    expect(completed.firstAttemptCorrectByPhrase[initial.currentPhraseId!]).toBe(false);
+    expect(isPhraseSessionComplete(completed)).toBe(true);
+  });
+  it('replays a missed phrase immediately when normal phrases are exhausted before the cap', () => {
+    const initial = createPhraseSession([phrase(1), phrase(2)], configuration, 1_000, seededRandom(1));
+    const firstId = initial.currentPhraseId!;
+    let session = gradePhrase(revealPhrase(initial), false, 2_000);
+    expect(session.pendingRetries).toEqual([{ phraseId: firstId, dueAt: 2_000 + PHRASE_RETRY_DELAY_MS }]);
+    expect(session.currentPhraseId).not.toBe(firstId);
+    session = gradePhrase(revealPhrase(session), true, 3_000);
+    expect(session.currentPhraseId).toBe(firstId);
+    expect(session.pendingRetries).toEqual([]);
   });
   it('prioritizes a due retry over unseen phrases at a boundary', () => {
     const initial = createPhraseSession([phrase(1), phrase(2)], configuration, 0, seededRandom(1));
     const missed = gradePhrase(revealPhrase(initial), false, 1_000);
     const boundary = { ...missed, currentPhraseId: null, unseenPhraseQueue: missed.currentPhraseId ? [missed.currentPhraseId, ...missed.unseenPhraseQueue] : missed.unseenPhraseQueue };
-    expect(advancePhraseSession(boundary, 1_000 + RETRY_DELAY_MS).currentPhraseId).toBe(initial.currentPhraseId);
+    expect(advancePhraseSession(boundary, 1_000 + PHRASE_RETRY_DELAY_MS).currentPhraseId).toBe(initial.currentPhraseId);
   });
-  it('a repeated failure gets a fresh interval and failures count every action', () => {
+  it('repeated final-phrase failures replay immediately and count every action', () => {
     const initial = createPhraseSession([phrase(1)], configuration, 0, seededRandom(1));
     const first = gradePhrase(revealPhrase(initial), false, 1_000);
-    const retry = advancePhraseSession(first, 1_000 + RETRY_DELAY_MS);
-    const second = gradePhrase(revealPhrase(retry), false, 9_000 + RETRY_DELAY_MS);
-    expect(second.pendingRetries[0]!.dueAt).toBe(9_000 + 2 * RETRY_DELAY_MS);
+    const second = gradePhrase(revealPhrase(first), false, 2_000);
+    expect(second.currentPhraseId).toBe(initial.currentPhraseId);
+    expect(second.pendingRetries).toEqual([]);
     expect(second.totalMissedCount).toBe(2);
     expect(second.firstAttemptCorrectByPhrase[initial.currentPhraseId!]).toBe(false);
   });
@@ -90,7 +111,7 @@ describe('phrase delayed recall session', () => {
 
 describe('stored phrase session validation', () => {
   it('round trips valid state and restores revealed and retry states', () => {
-    const initial = createPhraseSession([phrase(1)], configuration, 1_000, seededRandom(1));
+    const initial = createPhraseSession([phrase(1), phrase(2)], configuration, 1_000, seededRandom(1));
     expect(isStoredPhraseSession(JSON.parse(JSON.stringify(initial)), context(initial))).toBe(true);
     const revealed = revealPhrase(initial);
     expect(isStoredPhraseSession(JSON.parse(JSON.stringify(revealed)), context(revealed))).toBe(true);

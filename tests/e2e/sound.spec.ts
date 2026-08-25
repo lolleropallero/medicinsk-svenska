@@ -5,6 +5,12 @@ import { openSpecificCard } from './helpers';
 const UI='medicinsk-svenska.ui.v1';
 async function probe(page:Page){await page.addInitScript(()=>{(window as unknown as {soundEvents:{effect:string;audible:boolean}[]}).soundEvents=[];window.addEventListener('sound-effect-requested',(event)=>{(window as unknown as {soundEvents:{effect:string;audible:boolean}[]}).soundEvents.push((event as CustomEvent).detail);});});}
 const events=(page:Page)=>page.evaluate(()=>(window as unknown as {soundEvents:{effect:string;audible:boolean}[]}).soundEvents);
+const currentCardAnswer=(page:Page)=>page.evaluate(()=>{
+  const state=JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!);
+  const cards=JSON.parse(document.getElementById('cards-data')!.textContent!) as {id:string;fi:string;sv:string;article?:string}[];
+  const card=cards.find(item=>item.id===state.currentCardId)!;
+  return state.direction==='fi-sv'?`${card.article?`${card.article} `:''}${card.sv}`:card.fi;
+});
 
 test('exercise actions request only their semantic learning sounds',async({page})=>{
   await probe(page);
@@ -12,6 +18,16 @@ test('exercise actions request only their semantic learning sounds',async({page}
   await page.getByRole('button',{name:'Näytä vastaus'}).click();
   await page.getByRole('button',{name:'Osasin'}).click();
   expect((await events(page)).map(item=>item.effect).slice(0,2)).toEqual(['reveal','correct']);
+
+  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=anatomi&direction=sv-fi&amount=10&session=sound-choice');
+  const choiceAnswer=await currentCardAnswer(page),labels=await page.locator('#choice-options .choice-label').allTextContents();
+  await page.locator('#choice-options button').nth(labels.findIndex(label=>label===choiceAnswer)).click();
+  expect((await events(page)).map(item=>item.effect)).toContain('correct');
+
+  await page.goto('/kortit/harjoitus?mode=deck&answer=written&deck=anatomi&direction=fi-sv&amount=10&session=sound-written');
+  await page.getByLabel('Vastauksesi').fill('väärä vastaus');
+  await page.getByRole('button',{name:'Tarkista'}).click();
+  expect((await events(page)).map(item=>item.effect)).toContain('incorrect');
 
   await page.goto('/fraasit/harjoitus?mode=all&amount=10&session=sound-phrase');
   await page.getByRole('button',{name:'Näytä vastaus'}).click();

@@ -241,6 +241,7 @@ function resumableSessions(): Partial<Record<ExerciseMode, ResumableSession>> {
       expected: CreateSessionOptions = {
         sessionId: candidate.sessionId,
         mode: candidate.mode,
+        answerMode: candidate.answerMode ?? "cards",
         direction: candidate.direction,
         requestedAmount: candidate.requestedAmount,
         ...(candidate.mode === "deck" && candidate.sourceDeckId
@@ -316,6 +317,7 @@ function freshSessionUrls(): Record<ExerciseMode, string> {
     flashcards: buildSessionUrl({
       sessionId: crypto.randomUUID(),
       mode: "lucky",
+      answerMode: "cards",
       direction: "fi-sv",
       requestedAmount: 10,
     }),

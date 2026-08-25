@@ -1,10 +1,10 @@
 import { buildSessionUrl } from '../lib/session-url';
 import type { Direction } from '../types/content';
-import type { RequestedAmount, SessionMode } from '../lib/session';
+import type { RequestedAmount, SessionMode, VocabularyAnswerMode } from '../lib/session';
 
 function initializeDeckList() {
 const starts = document.querySelectorAll<HTMLAnchorElement>('[data-start]');
-const radios = document.querySelectorAll<HTMLInputElement>('input[name="direction"], input[name="amount"]');
+const radios = document.querySelectorAll<HTMLInputElement>('input[name="direction"], input[name="answer"], input[name="amount"]');
 
 function selectedValue(name: string): string | undefined {
   return document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value;
@@ -15,6 +15,7 @@ function configurationFor(link: HTMLAnchorElement) {
   return {
     sessionId: crypto.randomUUID(),
     mode,
+    answerMode: (selectedValue('answer') ?? 'cards') as VocabularyAnswerMode,
     ...(mode === 'deck' && link.dataset.deck ? { sourceDeckId: link.dataset.deck } : {}),
     direction: (selectedValue('direction') ?? 'fi-sv') as Direction,
     requestedAmount: (selectedValue('amount') === 'all'

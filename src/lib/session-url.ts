@@ -3,6 +3,7 @@ import {
   type CreateSessionOptions,
   type RequestedAmount,
   type SessionMode,
+  type VocabularyAnswerMode,
 } from './session';
 import type { Direction } from '../types/content';
 
@@ -16,11 +17,19 @@ function parseAmount(value: string | null): RequestedAmount | null {
   return value === 'all' ? 'all' : null;
 }
 
+function parseAnswerMode(value: string | null): VocabularyAnswerMode | null {
+  if (value === null || value === 'cards' || value === 'choice' || value === 'written') {
+    return value ?? 'cards';
+  }
+  return null;
+}
+
 export function parseSessionRequest(search: string, validDeckIds: ReadonlySet<string>): SessionRequestResult {
   const params = new URLSearchParams(search);
   const mode = params.get('mode') as SessionMode | null;
   const direction = params.get('direction') as Direction | null;
   const requestedAmount = parseAmount(params.get('amount'));
+  const answerMode = parseAnswerMode(params.get('answer'));
   const deck = params.get('deck');
   const hasSession = params.has('session');
   const sessionId = params.get('session');
@@ -29,6 +38,7 @@ export function parseSessionRequest(search: string, validDeckIds: ReadonlySet<st
     (mode !== 'deck' && mode !== 'lucky') ||
     (direction !== 'fi-sv' && direction !== 'sv-fi') ||
     requestedAmount === null ||
+    answerMode === null ||
     (hasSession && !isReasonableSessionId(sessionId))
   ) return { ok: false };
 
@@ -36,12 +46,12 @@ export function parseSessionRequest(search: string, validDeckIds: ReadonlySet<st
     if (!deck || !validDeckIds.has(deck)) return { ok: false };
     return {
       ok: true,
-      value: { mode, sourceDeckId: deck, direction, requestedAmount, sessionId },
+      value: { mode, answerMode, sourceDeckId: deck, direction, requestedAmount, sessionId },
     };
   }
 
   if (params.has('deck')) return { ok: false };
-  return { ok: true, value: { mode, direction, requestedAmount, sessionId } };
+  return { ok: true, value: { mode, answerMode, direction, requestedAmount, sessionId } };
 }
 
 export function buildSessionUrl(
@@ -50,6 +60,7 @@ export function buildSessionUrl(
 ): string {
   const params = new URLSearchParams({
     mode: configuration.mode,
+    answer: configuration.answerMode,
     direction: configuration.direction,
     amount: String(configuration.requestedAmount),
     session: configuration.sessionId,

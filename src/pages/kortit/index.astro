@@ -16,6 +16,14 @@ const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCard
         <label><input type="radio" name="direction" value="sv-fi" /><span><img class="cross-marker" src={nordicAssets.brand.crossSv} width="128" height="128" alt="" aria-hidden="true" />Ruotsi → suomi<img class="cross-marker" src={nordicAssets.brand.crossFi} width="128" height="128" alt="" aria-hidden="true" /></span></label>
       </div>
     </fieldset>
+    <fieldset class="answer-mode-selector">
+      <legend>Harjoitustapa</legend>
+      <div class="segments segments-three">
+        <label><input type="radio" name="answer" value="cards" checked /><span>Kortit</span></label>
+        <label><input type="radio" name="answer" value="choice" /><span>Monivalinta</span></label>
+        <label><input type="radio" name="answer" value="written" /><span>Kirjoita</span></label>
+      </div>
+    </fieldset>
     <fieldset class="amount-selector">
       <legend>Korttien määrä</legend>
       <div class="segments">
@@ -25,7 +33,7 @@ const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCard
         <label><input type="radio" name="amount" value="all" /><span>Kaikki</span></label>
       </div>
     </fieldset>
-    <a class="lucky" data-start data-mode="lucky" href="/kortit/harjoitus?mode=lucky&direction=fi-sv&amount=25">
+    <a class="lucky" data-start data-mode="lucky" href="/kortit/harjoitus?mode=lucky&answer=cards&direction=fi-sv&amount=25">
       <span class="row-icon"><AppIcon name="shuffle" size={32}/></span><span><strong>Kokeilen onneani</strong><small>Satunnainen lääketieteen kattaus</small></span><span data-selected-count>25 korttia</span><AppIcon name="arrow"/>
     </a>
     <div class="deck-list">
@@ -35,7 +43,7 @@ const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCard
           data-start
           data-mode="deck"
           data-deck={deck.id}
-          href={`/kortit/harjoitus?mode=deck&deck=${deck.id}&direction=fi-sv&amount=25`}
+          href={`/kortit/harjoitus?mode=deck&answer=cards&deck=${deck.id}&direction=fi-sv&amount=25`}
         >
           <span class="row-icon deck-icon"><img src={nordicAssets.decks[deck.id as keyof typeof nordicAssets.decks]} width="96" height="96" alt="" aria-hidden="true" decoding="async" /></span>
           <h2>{deck.nameFi}</h2><span class="deck-count">{counts[deck.id]} korttia</span><span class="deck-start">Aloita <AppIcon name="arrow"/></span>

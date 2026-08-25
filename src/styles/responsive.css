@@ -496,9 +496,20 @@
   }
   .segments span {
     font-size: 0.68rem;
+    min-height: 38px;
+  }
+  .study-setup fieldset {
+    margin-bottom: 8px;
   }
   .setup-heading > .flag-ribbon {
     display: none;
+  }
+  .setup-heading {
+    margin-bottom: 12px;
+  }
+  .lucky,
+  .all-topics {
+    min-height: 60px;
   }
   .reward-tabs a {
     min-width: 0;
@@ -581,6 +592,10 @@
     min-height: 330px;
     padding-top: 45px;
   }
+  .answer-card {
+    min-height: 230px;
+    padding-top: 43px;
+  }
   .action-row {
     margin-top: 9px;
   }
@@ -618,6 +633,16 @@
   }
   .flashcard {
     min-height: min(390px, 58dvh);
+  }
+  .answer-card {
+    min-height: min(300px, 43dvh);
+  }
+  .choice-options {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .choice-options button {
+    min-height: 58px;
   }
   .action-row button {
     min-width: 0;

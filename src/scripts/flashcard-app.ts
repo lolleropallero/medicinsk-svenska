@@ -9,6 +9,7 @@ import {
   nextRetryAt,
   revealCurrentCard,
   summarizeSession,
+  updateAnswerDraft,
   type CreateSessionOptions,
   type FlashcardSession,
 } from '../lib/session';
@@ -20,6 +21,14 @@ import { dispatchProgress } from '../lib/progress/storage';
 import { startActiveTime } from '../lib/progress/active-time';
 import { showSessionRewards } from '../lib/progress/session-summary';
 import { requestFeedback } from '../lib/motion/feedback';
+import {
+  createMultipleChoiceOptions,
+  isWrittenAnswerCorrect,
+  normalizeWrittenAnswer,
+  stableChoiceRandom,
+  vocabularyAnswerText,
+  vocabularyPromptText,
+} from '../lib/vocabulary-exercise';
 
 function initializeFlashcardApp() {
 if (!document.getElementById('cards-data')) return;
@@ -41,6 +50,19 @@ const answerArea = byId('answer-area');
 const gradeActions = byId('grade-actions');
 const correctButton = byId<HTMLButtonElement>('correct');
 const missedButton = byId<HTMLButtonElement>('missed');
+const choiceExercise = byId('choice-exercise');
+const choiceOptions = byId('choice-options');
+const choiceFeedback = byId('choice-feedback');
+const choiceCorrectAnswer = byId('choice-correct-answer');
+const choiceSubmittedAnswer = byId('choice-submitted-answer');
+const choiceContinue = byId<HTMLButtonElement>('choice-continue');
+const writtenExercise = byId('written-exercise');
+const writtenForm = byId<HTMLFormElement>('written-form');
+const writtenInput = byId<HTMLInputElement>('written-answer');
+const writtenFeedback = byId('written-feedback');
+const writtenCorrectAnswer = byId('written-correct-answer');
+const writtenSubmittedAnswer = byId('written-submitted-answer');
+const writtenContinue = byId<HTMLButtonElement>('written-continue');
 const elapsedTime = byId<HTMLTimeElement>('elapsed-time');
 const retryCountdown = byId('retry-countdown');
 const sessionStatus = elapsedTime.parentElement as HTMLElement;
@@ -81,11 +103,17 @@ function startApp() {
   function readStoredSession(): FlashcardSession | null {
     try {
       const parsed: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
-      return isStoredSession(parsed, {
+      if (!isStoredSession(parsed, {
         cardDeckById,
         validDeckIds,
         expected: configuration,
-      }) ? parsed : null;
+      })) return null;
+      const restored = parsed as FlashcardSession;
+      return {
+        ...restored,
+        answerMode: restored.answerMode ?? configuration.answerMode,
+        answerDraft: restored.answerDraft ?? '',
+      };
     } catch {
       return null;
     }
@@ -139,6 +167,95 @@ function startApp() {
       persist();
       render({ focus: true });
     }, Math.max(0, dueAt - now));
+  }
+
+  function hideExerciseModes() {
+    flashcard.hidden = true;
+    gradeActions.hidden = true;
+    choiceExercise.hidden = true;
+    writtenExercise.hidden = true;
+  }
+
+  function renderSubmittedAnswer(target: HTMLElement) {
+    target.textContent = session.answerDraft ? `Vastauksesi: ${session.answerDraft}` : '';
+    target.hidden = !session.answerDraft;
+  }
+
+  function renderChoiceExercise(card: FlashcardClient, focus = false) {
+    const prompt = vocabularyPromptText(card, session.direction);
+    const answer = vocabularyAnswerText(card, session.direction);
+    const promptNode = byId('choice-prompt');
+    const options = createMultipleChoiceOptions(
+      card,
+      allCards,
+      session.direction,
+      stableChoiceRandom(session.sessionId, card.id, session.attemptCountByCard[card.id] ?? 0),
+    );
+    if (options.length !== 4) {
+      showInvalidRequest();
+      return;
+    }
+
+    hideExerciseModes();
+    choiceExercise.hidden = false;
+    promptNode.textContent = prompt;
+    promptNode.lang = session.direction === 'fi-sv' ? 'fi' : 'sv';
+    choiceOptions.replaceChildren(...options.map((option, index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.choiceAnswer = option.label;
+      button.dataset.choiceCorrect = String(option.correct);
+      button.disabled = session.revealed;
+      if (session.revealed && option.correct) button.dataset.result = 'correct';
+      if (
+        session.revealed &&
+        !option.correct &&
+        normalizeWrittenAnswer(option.label) === normalizeWrittenAnswer(session.answerDraft)
+      ) button.dataset.result = 'incorrect';
+
+      const marker = document.createElement('span');
+      marker.className = 'choice-index';
+      marker.textContent = String(index + 1);
+      const label = document.createElement('span');
+      label.className = 'choice-label';
+      label.lang = session.direction === 'fi-sv' ? 'sv' : 'fi';
+      label.textContent = option.label;
+      button.append(marker, label);
+      return button;
+    }));
+    choiceCorrectAnswer.textContent = answer;
+    choiceCorrectAnswer.lang = session.direction === 'fi-sv' ? 'sv' : 'fi';
+    renderSubmittedAnswer(choiceSubmittedAnswer);
+    choiceFeedback.hidden = !session.revealed;
+    choiceContinue.hidden = !session.revealed;
+    if (focus) {
+      if (session.revealed) choiceContinue.focus();
+      else choiceOptions.querySelector<HTMLButtonElement>('button')?.focus();
+    }
+  }
+
+  function renderWrittenExercise(card: FlashcardClient, focus = false) {
+    const promptNode = byId('written-prompt');
+    promptNode.textContent = vocabularyPromptText(card, session.direction);
+    promptNode.lang = session.direction === 'fi-sv' ? 'fi' : 'sv';
+    hideExerciseModes();
+    writtenExercise.hidden = false;
+    writtenInput.value = session.answerDraft;
+    writtenForm.hidden = session.revealed;
+    writtenFeedback.hidden = !session.revealed;
+    writtenCorrectAnswer.textContent = vocabularyAnswerText(card, session.direction);
+    writtenCorrectAnswer.lang = session.direction === 'fi-sv' ? 'sv' : 'fi';
+    renderSubmittedAnswer(writtenSubmittedAnswer);
+    writtenContinue.hidden = !session.revealed;
+    if (focus) (session.revealed ? writtenContinue : writtenInput).focus();
+  }
+
+  function revealIncorrect(answer: string) {
+    if (gradingLocked || !session.currentCardId || session.revealed) return;
+    session = revealCurrentCard(updateAnswerDraft(session, answer));
+    persist();
+    render({ focus: true });
+    requestFeedback('incorrect', sessionView);
   }
 
   function render(options: { focus?: boolean } = {}) {
@@ -195,6 +312,16 @@ function startApp() {
     sessionView.hidden = false;
     waitingView.hidden = true;
     summaryView.hidden = true;
+    if (session.answerMode === 'choice') {
+      renderChoiceExercise(card, options.focus);
+      return;
+    }
+    if (session.answerMode === 'written') {
+      renderWrittenExercise(card, options.focus);
+      return;
+    }
+    hideExerciseModes();
+    flashcard.hidden = false;
     byId('front-term').textContent = sides.front;
     byId('front-term').lang = session.direction === 'fi-sv' ? 'fi' : 'sv';
     byId('back-term').textContent = sides.back;
@@ -221,22 +348,26 @@ function startApp() {
     requestFeedback('reveal', flashcard);
   }
 
-  function grade(correct: boolean) {
+  function grade(correct: boolean, options: { playOutcome?: boolean } = {}) {
     if (gradingLocked || !session.revealed || !session.currentCardId) return;
     const completedId = session.currentCardId;
     const priorAttempts = session.attemptCountByCard[completedId] ?? 0;
     gradingLocked = true;
-    requestFeedback(correct ? 'correct' : 'incorrect', sessionView);
+    if (options.playOutcome ?? true) requestFeedback(correct ? 'correct' : 'incorrect', sessionView);
     correctButton.disabled = true;
     missedButton.disabled = true;
+    choiceContinue.disabled = true;
+    writtenContinue.disabled = true;
     session = gradeCurrentCard(session, correct, Date.now());
     if (correct) dispatchProgress({type:'item-completed',eventId:`flashcards:${session.sessionId}:item:${completedId}`,sessionId:session.sessionId,
       mode:'flashcards',itemId:completedId,sourceId,occurredAt:Date.now(),firstAttemptCorrect:priorAttempts===0,hadMisses:priorAttempts>0,resolution:'mastered'});
     persist();
     render({ focus: true });
-    requestFeedback('item-change', flashcard, null);
+    requestFeedback('item-change', session.answerMode === 'cards' ? flashcard : sessionView, null);
     correctButton.disabled = false;
     missedButton.disabled = false;
+    choiceContinue.disabled = false;
+    writtenContinue.disabled = false;
     gradingLocked = false;
   }
 
@@ -246,6 +377,7 @@ function startApp() {
     configuration = {
       sessionId,
       mode: session.mode,
+      answerMode: session.answerMode,
       ...(session.mode === 'deck' && session.sourceDeckId ? { sourceDeckId: session.sourceDeckId } : {}),
       direction: session.direction,
       requestedAmount: session.requestedAmount,
@@ -260,11 +392,46 @@ function startApp() {
   flashcard.addEventListener('click', reveal);
   correctButton.addEventListener('click', () => grade(true));
   missedButton.addEventListener('click', () => grade(false));
+  choiceOptions.addEventListener('click', (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>('button[data-choice-answer]');
+    if (!button || session.revealed) return;
+    const answer = button.dataset.choiceAnswer ?? '';
+    if (button.dataset.choiceCorrect === 'true') {
+      session = revealCurrentCard(updateAnswerDraft(session, answer));
+      grade(true);
+    } else {
+      revealIncorrect(answer);
+    }
+  });
+  choiceContinue.addEventListener('click', () => grade(false, { playOutcome: false }));
+  writtenForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!session.currentCardId || session.revealed) return;
+    const card = cardById.get(session.currentCardId);
+    if (!card) return;
+    const answer = writtenInput.value;
+    session = updateAnswerDraft(session, answer);
+    if (isWrittenAnswerCorrect(card, session.direction, answer)) {
+      session = revealCurrentCard(session);
+      grade(true);
+    } else {
+      revealIncorrect(answer);
+    }
+  });
+  writtenInput.addEventListener('input', () => {
+    if (session.answerMode !== 'written' || session.revealed) return;
+    session = updateAnswerDraft(session, writtenInput.value);
+    persist();
+  });
+  writtenContinue.addEventListener('click', () => grade(false, { playOutcome: false }));
   byId<HTMLButtonElement>('new-round').addEventListener('click', startNewRound);
   document.addEventListener('keydown', (event) => {
     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
-    if (event.key === '1' && session.revealed) grade(true);
-    if (event.key === '2' && session.revealed) grade(false);
+    if (session.answerMode === 'choice' && !session.revealed && /^[1-4]$/u.test(event.key)) {
+      choiceOptions.querySelectorAll<HTMLButtonElement>('button')[Number(event.key) - 1]?.click();
+    }
+    if (session.answerMode === 'cards' && event.key === '1' && session.revealed) grade(true);
+    if (session.answerMode === 'cards' && event.key === '2' && session.revealed) grade(false);
   }, { signal: controller.signal });
 
   const clockTimer = window.setInterval(() => {

@@ -25,7 +25,7 @@ const card = (n: number, deckId = 'd'): FlashcardClient => ({
   article: 'en',
   partOfSpeech: 'noun',
 });
-const options = { sessionId: 'session-1', mode: 'deck' as const, sourceDeckId: 'd', direction: 'fi-sv' as const, requestedAmount: 10 as const };
+const options = { sessionId: 'session-1', mode: 'deck' as const, answerMode: 'cards' as const, sourceDeckId: 'd', direction: 'fi-sv' as const, requestedAmount: 10 as const };
 const contextFor = (
   session: FlashcardSession,
   cardDeckById = new Map(session.selectedCardIds.map((id) => [id, 'd'])),
@@ -69,6 +69,8 @@ describe('persisted session state', () => {
     expect(session.selectedCardIds).toHaveLength(10);
     expect(session.currentCardId).toBe(session.selectedCardIds[0]);
     expect(session.unseenCardQueue).toEqual(session.selectedCardIds.slice(1));
+    expect(session.answerMode).toBe('cards');
+    expect(session.answerDraft).toBe('');
     expect(session.startedAt).toBe(1_000);
   });
 
@@ -151,7 +153,7 @@ describe('persisted session state', () => {
   it('rejects deck mode without a source deck and lucky mode with one', () => {
     const deckSession = createSession([card(1)], options, 1_000, seededRandom(1));
     expect(isStoredSession({ ...deckSession, sourceDeckId: undefined }, contextFor(deckSession))).toBe(false);
-    const luckyOptions = { sessionId: options.sessionId, mode: 'lucky' as const, direction: options.direction, requestedAmount: options.requestedAmount };
+    const luckyOptions = { sessionId: options.sessionId, mode: 'lucky' as const, answerMode: options.answerMode, direction: options.direction, requestedAmount: options.requestedAmount };
     const luckySession = createSession([card(1)], luckyOptions, 1_000, seededRandom(1));
     expect(isStoredSession({ ...luckySession, sourceDeckId: 'd' }, contextFor(luckySession, undefined, luckyOptions))).toBe(false);
   });
@@ -160,6 +162,7 @@ describe('persisted session state', () => {
     const session = createSession([card(1)], options, 1_000, seededRandom(1));
     expect(isStoredSession(session, contextFor(session, undefined, { ...options, direction: 'sv-fi' }))).toBe(false);
     expect(isStoredSession(session, contextFor(session, undefined, { ...options, requestedAmount: 25 }))).toBe(false);
+    expect(isStoredSession({ ...session, answerMode: 'choice' }, contextFor(session))).toBe(false);
   });
 
   it('rejects empty session IDs and revealed state without a current card', () => {
@@ -248,7 +251,7 @@ describe('new round', () => {
   });
 
   it('retains lucky mode without a source deck', () => {
-    const luckyOptions = { sessionId: 'lucky-1', mode: 'lucky' as const, direction: 'sv-fi' as const, requestedAmount: 25 as const };
+    const luckyOptions = { sessionId: 'lucky-1', mode: 'lucky' as const, answerMode: 'cards' as const, direction: 'sv-fi' as const, requestedAmount: 25 as const };
     const previous = createSession(Array.from({ length: 30 }, (_, index) => card(index)), luckyOptions, 1_000, seededRandom(1));
     const next = createNewRoundSession(Array.from({ length: 30 }, (_, index) => card(index)), previous, 'lucky-2', 2_000, seededRandom(2));
     expect(next).toMatchObject({ sessionId: 'lucky-2', mode: 'lucky', direction: 'sv-fi', requestedAmount: 25 });

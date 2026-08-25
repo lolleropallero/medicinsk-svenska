@@ -2,6 +2,26 @@ import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { continuePastMilestone, openSpecificCard } from './helpers';
 
+const FLASHCARD_STORAGE = 'medicinsk-svenska.flashcard-session.v1';
+
+async function currentVocabularyAnswer(page: import('@playwright/test').Page) {
+  return page.evaluate((key) => {
+    const state = JSON.parse(localStorage.getItem(key)!);
+    const cards = JSON.parse(document.getElementById('cards-data')!.textContent!) as { id: string; fi: string; sv: string; article?: string }[];
+    const card = cards.find((item) => item.id === state.currentCardId)!;
+    return state.direction === 'fi-sv' ? `${card.article ? `${card.article} ` : ''}${card.sv}` : card.fi;
+  }, FLASHCARD_STORAGE);
+}
+
+async function currentVocabularyPrompt(page: import('@playwright/test').Page) {
+  return page.evaluate((key) => {
+    const state = JSON.parse(localStorage.getItem(key)!);
+    const cards = JSON.parse(document.getElementById('cards-data')!.textContent!) as { id: string; fi: string; sv: string; article?: string }[];
+    const card = cards.find((item) => item.id === state.currentCardId)!;
+    return state.direction === 'fi-sv' ? card.fi : `${card.article ? `${card.article} ` : ''}${card.sv}`;
+  }, FLASHCARD_STORAGE);
+}
+
 test('landing page and core routes are accessible',async({page})=>{
   await page.goto('/'); await expect(page.getByRole('heading',{name:'Dagens mål'})).toBeVisible();
   const landingText=await page.locator('body').innerText();
@@ -13,6 +33,10 @@ test('landing page and core routes are accessible',async({page})=>{
 });
 test('selects session size and supports tap and keyboard grading in both directions',async({page})=>{
   await page.goto('/kortit');
+  await expect(page.getByRole('group',{name:'Harjoitustapa'}).getByLabel('Kortit')).toBeChecked();
+  await page.getByRole('group',{name:'Harjoitustapa'}).locator('label').filter({hasText:'Monivalinta'}).click();
+  await expect(page.getByRole('group',{name:'Harjoitustapa'}).getByLabel('Monivalinta')).toBeChecked();
+  await page.getByRole('group',{name:'Harjoitustapa'}).locator('label').filter({hasText:'Kortit'}).click();
   await expect(page.getByRole('group',{name:'Korttien määrä'}).getByLabel('25')).toBeChecked();
   await page.getByRole('group',{name:'Korttien määrä'}).locator('label').filter({hasText:'10'}).click();
   const anatomyRow=page.locator('.deck-row').filter({hasText:'Anatomia'});
@@ -53,6 +77,82 @@ test('selects session size and supports tap and keyboard grading in both directi
   await expect(page.getByRole('button',{name:'Näytä vastaus'})).toBeFocused();
   await page.keyboard.press('Space');
   await expect(page.locator('#answer-area')).toBeVisible();
+});
+
+test('multiple choice mode has four unique options, wrong feedback persistence, and retry integration',async({page})=>{
+  await page.addInitScript(()=>{(window as unknown as {feedback:string[]}).feedback=[];window.addEventListener('app-feedback',event=>(window as unknown as {feedback:string[]}).feedback.push((event as CustomEvent).detail.effect));});
+  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=anatomi&direction=fi-sv&amount=10&session=choice-fi');
+  await expect(page.locator('#choice-exercise')).toBeVisible();
+  await expect(page.locator('#flashcard')).toBeHidden();
+  const prompt=await currentVocabularyPrompt(page),correctAnswer=await currentVocabularyAnswer(page);
+  await expect(page.locator('#choice-prompt')).toHaveText(prompt);
+  const labels=await page.locator('#choice-options .choice-label').allTextContents();
+  expect(labels).toHaveLength(4);
+  expect(new Set(labels).size).toBe(4);
+  expect(labels).toContain(correctAnswer);
+  const wrongIndex=labels.findIndex(label=>label!==correctAnswer);
+  await page.locator('#choice-options button').nth(wrongIndex).click();
+  await expect(page.locator('#choice-feedback')).toBeVisible();
+  await expect(page.locator('#choice-correct-answer')).toHaveText(correctAnswer);
+  await expect(page.locator('#choice-submitted-answer')).toContainText(labels[wrongIndex]!);
+  await expect(page.getByRole('button',{name:'Jatka'})).toBeFocused();
+  const revealed=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),FLASHCARD_STORAGE);
+  expect(revealed).toMatchObject({answerMode:'choice',revealed:true,answerDraft:labels[wrongIndex],totalMissedCount:0});
+  expect(await page.evaluate(()=>(window as unknown as {feedback:string[]}).feedback)).toContain('incorrect');
+  await page.reload();
+  await expect(page.locator('#choice-feedback')).toBeVisible();
+  await expect(page.locator('#choice-correct-answer')).toHaveText(correctAnswer);
+  await page.getByRole('button',{name:'Jatka'}).click();
+  const retried=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),FLASHCARD_STORAGE);
+  expect(retried.answerMode).toBe('choice');
+  expect(retried.totalMissedCount).toBe(1);
+  expect(retried.currentCardId).not.toBe(revealed.currentCardId);
+  expect(retried.revealed).toBe(false);
+});
+
+test('multiple choice mode grades a correct Swedish-to-Finnish answer through the existing mastery path',async({page})=>{
+  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=anatomi&direction=sv-fi&amount=10&session=choice-sv');
+  const correctAnswer=await currentVocabularyAnswer(page);
+  const labels=await page.locator('#choice-options .choice-label').allTextContents();
+  await page.locator('#choice-options button').nth(labels.findIndex(label=>label===correctAnswer)).click();
+  await continuePastMilestone(page);
+  await expect(page.locator('#progress')).toHaveText('1 / 10');
+  const state=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),FLASHCARD_STORAGE);
+  expect(state.answerMode).toBe('choice');
+  expect(state.masteredCardIds).toHaveLength(1);
+  expect(state.totalMissedCount).toBe(0);
+  expect(Object.values(state.firstAttemptCorrectByCard)).toEqual([true]);
+});
+
+test('written mode normalizes correct answers and persists wrong-answer feedback in both directions',async({page})=>{
+  await page.goto('/kortit/harjoitus?mode=deck&answer=written&deck=laboratoriokokeet&direction=fi-sv&amount=10&session=written-fi');
+  await expect(page.locator('#written-exercise')).toBeVisible();
+  await expect(page.getByLabel('Vastauksesi')).toBeFocused();
+  const correctSwedish=await currentVocabularyAnswer(page);
+  await page.getByLabel('Vastauksesi').fill(`  ${correctSwedish.toUpperCase()} . `);
+  await page.getByRole('button',{name:'Tarkista'}).click();
+  await continuePastMilestone(page);
+  await expect(page.locator('#progress')).toHaveText('1 / 10');
+  const mastered=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),FLASHCARD_STORAGE);
+  expect(mastered.answerMode).toBe('written');
+  expect(mastered.masteredCardIds).toHaveLength(1);
+  expect(mastered.answerDraft).toBe('');
+
+  await page.goto('/kortit/harjoitus?mode=deck&answer=written&deck=anatomi&direction=sv-fi&amount=10&session=written-sv');
+  const correctFinnish=await currentVocabularyAnswer(page);
+  const firstId=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!).currentCardId,FLASHCARD_STORAGE);
+  await page.getByLabel('Vastauksesi').fill('väärä vastaus');
+  await page.getByRole('button',{name:'Tarkista'}).click();
+  await expect(page.locator('#written-feedback')).toBeVisible();
+  await expect(page.locator('#written-correct-answer')).toHaveText(correctFinnish);
+  await page.reload();
+  await expect(page.locator('#written-feedback')).toBeVisible();
+  await expect(page.locator('#written-correct-answer')).toHaveText(correctFinnish);
+  await page.getByRole('button',{name:'Jatka'}).click();
+  const missed=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!),FLASHCARD_STORAGE);
+  expect(missed.answerMode).toBe('written');
+  expect(missed.totalMissedCount).toBe(1);
+  expect(missed.currentCardId).not.toBe(firstId);
 });
 
 test('the deck count area activates the same single semantic row link',async({page})=>{
@@ -166,6 +266,26 @@ test('mobile grading controls are thumb-sized and the timer is visible',async({p
     expect(box?.height).toBeGreaterThanOrEqual(52);
   }
   expect((await new AxeBuilder({page}).analyze()).violations.filter(v=>['serious','critical'].includes(v.impact??''))).toEqual([]);
+});
+
+test('vocabulary answer modes fit narrow mobile layouts',async({page})=>{
+  await page.setViewportSize({width:320,height:568});
+  await page.goto('/kortit/');
+  await expect(page.getByRole('group',{name:'Harjoitustapa'})).toBeVisible();
+  await page.getByRole('group',{name:'Harjoitustapa'}).locator('label').filter({hasText:'Kirjoita'}).click();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);
+
+  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=avdelningar&direction=fi-sv&amount=10&session=mobile-choice');
+  await expect(page.locator('#choice-options button')).toHaveCount(4);
+  for(const option of await page.locator('#choice-options button').all()){
+    const box=await option.boundingBox();
+    expect(box?.height).toBeGreaterThanOrEqual(54);
+  }
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);
+
+  await page.goto('/kortit/harjoitus?mode=deck&answer=written&deck=avdelningar&direction=fi-sv&amount=10&session=mobile-written');
+  await expect(page.getByLabel('Vastauksesi')).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);
 });
 
 test('corrected anatomy card works deterministically in both directions',async({page})=>{

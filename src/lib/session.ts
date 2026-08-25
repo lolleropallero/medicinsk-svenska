@@ -5,6 +5,7 @@ export const SESSION_SCHEMA_VERSION = 1 as const;
 
 export type RequestedAmount = 10 | 25 | 50 | 'all';
 export type SessionMode = 'deck' | 'lucky';
+export type VocabularyAnswerMode = 'cards' | 'choice' | 'written';
 
 export interface PendingRetry {
   cardId: string;
@@ -15,6 +16,7 @@ export interface FlashcardSession {
   schemaVersion: typeof SESSION_SCHEMA_VERSION;
   sessionId: string;
   mode: SessionMode;
+  answerMode: VocabularyAnswerMode;
   sourceDeckId?: string;
   direction: Direction;
   requestedAmount: RequestedAmount;
@@ -23,6 +25,7 @@ export interface FlashcardSession {
   currentCardId: string | null;
   masteredCardIds: string[];
   pendingRetries: PendingRetry[];
+  answerDraft: string;
   attemptCountByCard: Record<string, number>;
   firstAttemptCorrectByCard: Record<string, boolean>;
   totalMissedCount: number;
@@ -33,6 +36,7 @@ export interface FlashcardSession {
 export interface CreateSessionOptions {
   sessionId: string;
   mode: SessionMode;
+  answerMode: VocabularyAnswerMode;
   sourceDeckId?: string;
   direction: Direction;
   requestedAmount: RequestedAmount;
@@ -108,6 +112,7 @@ export function createSession(
     schemaVersion: SESSION_SCHEMA_VERSION,
     sessionId: options.sessionId,
     mode: options.mode,
+    answerMode: options.answerMode,
     ...(options.mode === 'deck' && options.sourceDeckId ? { sourceDeckId: options.sourceDeckId } : {}),
     direction: options.direction,
     requestedAmount: options.requestedAmount,
@@ -116,6 +121,7 @@ export function createSession(
     currentCardId,
     masteredCardIds: [],
     pendingRetries: [],
+    answerDraft: '',
     attemptCountByCard: {},
     firstAttemptCorrectByCard: {},
     totalMissedCount: 0,
@@ -134,6 +140,7 @@ export function createNewRoundSession(
   let next = createSession(cards, {
     sessionId,
     mode: previous.mode,
+    answerMode: previous.answerMode,
     ...(previous.mode === 'deck' && previous.sourceDeckId ? { sourceDeckId: previous.sourceDeckId } : {}),
     direction: previous.direction,
     requestedAmount: previous.requestedAmount,
@@ -170,6 +177,10 @@ export function revealCurrentCard(session: FlashcardSession): FlashcardSession {
   return { ...session, revealed: true };
 }
 
+export function updateAnswerDraft(session: FlashcardSession, answerDraft: string): FlashcardSession {
+  return session.answerDraft === answerDraft ? session : { ...session, answerDraft };
+}
+
 export function advanceSession(session: FlashcardSession, now = Date.now()): FlashcardSession {
   if (session.currentCardId) return session;
 
@@ -185,13 +196,14 @@ export function advanceSession(session: FlashcardSession, now = Date.now()): Fla
       currentCardId: nextRetry.cardId,
       pendingRetries: session.pendingRetries.filter((retry) => retry.cardId !== nextRetry.cardId),
       revealed: false,
+      answerDraft: '',
     };
   }
 
   if (session.unseenCardQueue.length > 0) {
     const [currentCardId, ...unseenCardQueue] = session.unseenCardQueue;
     if (!currentCardId) return session;
-    return { ...session, currentCardId, unseenCardQueue, revealed: false };
+    return { ...session, currentCardId, unseenCardQueue, revealed: false, answerDraft: '' };
   }
 
   return session;
@@ -220,6 +232,7 @@ export function gradeCurrentCard(
         ...session,
         currentCardId: null,
         revealed: false,
+        answerDraft: '',
         masteredCardIds: session.masteredCardIds.includes(cardId)
           ? session.masteredCardIds
           : [...session.masteredCardIds, cardId],
@@ -230,6 +243,7 @@ export function gradeCurrentCard(
         ...session,
         currentCardId: null,
         revealed: false,
+        answerDraft: '',
         pendingRetries: [
           ...session.pendingRetries.filter((retry) => retry.cardId !== cardId),
           { cardId, dueAt: now + RETRY_DELAY_MS },
@@ -274,6 +288,8 @@ export function isStoredSession(value: unknown, context: SessionValidationContex
   const unseen = session.unseenCardQueue;
   const mastered = session.masteredCardIds;
   const pending = session.pendingRetries;
+  const answerMode = session.answerMode ?? 'cards';
+  const answerDraft = session.answerDraft ?? '';
   const attempts = session.attemptCountByCard;
   const firstAttempts = session.firstAttemptCorrectByCard;
 
@@ -281,6 +297,7 @@ export function isStoredSession(value: unknown, context: SessionValidationContex
     session.schemaVersion === SESSION_SCHEMA_VERSION &&
     isReasonableSessionId(session.sessionId) &&
     (session.mode === 'deck' || session.mode === 'lucky') &&
+    (answerMode === 'cards' || answerMode === 'choice' || answerMode === 'written') &&
     (session.mode === 'deck'
       ? typeof session.sourceDeckId === 'string' && session.sourceDeckId.length > 0 && context.validDeckIds.has(session.sourceDeckId)
       : session.sourceDeckId === undefined) &&
@@ -296,6 +313,8 @@ export function isStoredSession(value: unknown, context: SessionValidationContex
     Array.isArray(unseen) &&
     Array.isArray(mastered) &&
     Array.isArray(pending) &&
+    typeof answerDraft === 'string' &&
+    answerDraft.length <= 1_000 &&
     (session.currentCardId === null || (typeof session.currentCardId === 'string' && context.cardDeckById.has(session.currentCardId))) &&
     pending.every(
       (retry) =>
@@ -313,6 +332,7 @@ export function isStoredSession(value: unknown, context: SessionValidationContex
     (!session.revealed || session.currentCardId !== null) &&
     session.sessionId === context.expected.sessionId &&
     session.mode === context.expected.mode &&
+    answerMode === context.expected.answerMode &&
     session.direction === context.expected.direction &&
     session.requestedAmount === context.expected.requestedAmount &&
     session.sourceDeckId === context.expected.sourceDeckId

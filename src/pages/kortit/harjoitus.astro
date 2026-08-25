@@ -18,6 +18,36 @@ import { deckPayload, flashcardPayload } from '../../lib/content';
         <span id="answer-area" hidden><span class="answer-bridge" aria-hidden="true"><AppIcon name="arrow"/></span><span id="back-term" class="term answer"></span><span id="grammar"></span></span>
       </button>
       <div id="grade-actions" class="action-row" hidden><button class="danger" id="missed" aria-keyshortcuts="2" title="Pikanäppäin: 2">En osannut</button><button class="success" id="correct" aria-keyshortcuts="1" title="Pikanäppäin: 1">Osasin</button></div>
+      <section id="choice-exercise" class="answer-exercise" hidden aria-labelledby="choice-prompt">
+        <div class="answer-card">
+          <span class="exercise-mode-tag">Monivalinta</span>
+          <p id="choice-prompt" class="term"></p>
+        </div>
+        <div id="choice-options" class="choice-options" role="group" aria-label="Vastausvaihtoehdot"></div>
+        <div id="choice-feedback" class="feedback" hidden>
+          <p><strong class="incorrect-text">Ei aivan</strong></p>
+          <p>Oikea vastaus: <strong id="choice-correct-answer"></strong></p>
+          <p id="choice-submitted-answer"></p>
+          <button id="choice-continue" class="primary" type="button">Jatka</button>
+        </div>
+      </section>
+      <section id="written-exercise" class="answer-exercise" hidden aria-labelledby="written-prompt">
+        <div class="answer-card">
+          <span class="exercise-mode-tag">Kirjoita</span>
+          <p id="written-prompt" class="term"></p>
+        </div>
+        <form id="written-form" autocomplete="off">
+          <label for="written-answer">Vastauksesi</label>
+          <input id="written-answer" name="written-answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" />
+          <div class="action-row"><button class="primary" id="written-submit" type="submit">Tarkista</button></div>
+        </form>
+        <div id="written-feedback" class="feedback" hidden>
+          <p><strong class="incorrect-text">Ei aivan</strong></p>
+          <p>Oikea vastaus: <strong id="written-correct-answer"></strong></p>
+          <p id="written-submitted-answer"></p>
+          <button id="written-continue" class="primary" type="button">Jatka</button>
+        </div>
+      </section>
     </div>
     <div id="waiting-view" class="waiting" hidden>
       <span class="waiting-visual" aria-hidden="true"><AppIcon name="retry" size={32}/><i></i></span>

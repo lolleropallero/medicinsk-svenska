@@ -36,6 +36,14 @@ import {
   weeklyQuestProgress,
 } from "../lib/progress/ui-derivations";
 import {
+  buildInsightsSummary,
+  type CategoryStat,
+  type InsightsCard,
+  type InsightsDeck,
+  type InsightsSummary,
+} from "../lib/progress/insights";
+import { loadWordStats } from "../lib/vocabulary-stats";
+import {
   resolveDailyQuestAction,
   type ResumableSession,
 } from "../lib/progress/daily-quest-action";
@@ -355,6 +363,89 @@ function freshFlashcardUrls(): Record<VocabularyAnswerMode, string> {
     ]),
   ) as Record<VocabularyAnswerMode, string>;
 }
+interface InsightsCatalog {
+  cards: InsightsCard[];
+  decks: InsightsDeck[];
+}
+function insightsCatalog(): InsightsCatalog | null {
+  const cardsNode = $<HTMLScriptElement>("insights-cards-data");
+  const decksNode = $<HTMLScriptElement>("insights-decks-data");
+  if (!cardsNode || !decksNode) return null;
+  try {
+    return {
+      cards: JSON.parse(cardsNode.textContent ?? "[]") as InsightsCard[],
+      decks: JSON.parse(decksNode.textContent ?? "[]") as InsightsDeck[],
+    };
+  } catch {
+    return null;
+  }
+}
+function reviewCtaHref(): string {
+  return buildSessionUrl({
+    sessionId: crypto.randomUUID(),
+    mode: "review",
+    answerMode: "cards",
+    direction: "fi-sv",
+    requestedAmount: "all",
+  });
+}
+const MODE_LABEL_FI: Record<ExerciseMode, string> = {
+  flashcards: "Sanakortit",
+  phrases: "Fraasit",
+  descriptions: "Kuvailu",
+};
+function trendBadgeCopy(trend: InsightsSummary["activity"]["trend"]): string {
+  if (trend === "up") return "↑ Ökande";
+  if (trend === "down") return "↓ Minskande";
+  if (trend === "flat") return "→ Jämn";
+  return "–";
+}
+function accuracyBarMarkup(accuracy: InsightsSummary["accuracy"]) {
+  if (accuracy.attempts === 0 || accuracy.accuracyPercent === null) return "";
+  const label = `${accuracy.correct} rätt, ${accuracy.incorrect} fel av ${accuracy.attempts} försök`;
+  return `<div class="accuracy-bar" role="img" aria-label="${esc(label)}"><span class="accuracy-correct" style="width:${accuracy.accuracyPercent}%"></span><span class="accuracy-incorrect" style="width:${100 - accuracy.accuracyPercent}%"></span></div>`;
+}
+function categoryLineMarkup(label: string, item: CategoryStat | undefined) {
+  if (!item) return "";
+  return `<p class="category-line"><strong lang="sv">${esc(label)}:</strong> <span lang="fi">${esc(item.nameFi)}</span> <b>${item.accuracyPercent} %</b></p>`;
+}
+function hardestWordListMarkup(words: InsightsSummary["hardestWords"]) {
+  if (!words.length)
+    return `<p class="muted insight-empty-line" lang="sv">Inga svåra ord just nu — bra jobbat!</p>`;
+  return `<ol class="hardest-word-list">${words
+    .map(
+      (word) =>
+        `<li><span class="hw-term"><span lang="fi">${esc(word.fi)}</span><span class="hw-sep" aria-hidden="true">→</span><span lang="sv">${word.article ? `${esc(word.article)} ` : ""}${esc(word.sv)}</span></span><span class="hw-meta"><span lang="fi">${esc(word.deckNameFi)}</span> · ${word.incorrect}/${word.attempts}</span></li>`,
+    )
+    .join("")}</ol>`;
+}
+function modeVolumeMarkup(volume: InsightsSummary["modeVolume"]) {
+  return `<div class="stat-grid visual-metrics insight-mode-grid">${volume
+    .map(
+      (item) =>
+        `<span>${iconSvg(item.mode)}<strong>${item.items}</strong><span lang="fi">${MODE_LABEL_FI[item.mode]}</span></span>`,
+    )
+    .join("")}</div>`;
+}
+function insightsMarkup(summary: InsightsSummary) {
+  if (!summary.hasHistory)
+    return `<div class="insights-empty"><p><strong lang="sv">Börja öva, så visas dina insikter här.</strong></p><p class="muted" lang="fi">Harjoittele muutama kierros, niin näet tilastosi täällä.</p></div>`;
+  const accuracyBlock =
+    summary.accuracy.attempts > 0
+      ? `<div class="insight-block"><h3>${iconSvg("check")} Sanakortit – träffsäkerhet</h3><div class="insight-accuracy-head"><strong>${summary.accuracy.accuracyPercent} %</strong><span lang="sv">rätt</span></div>${accuracyBarMarkup(summary.accuracy)}<p class="muted" lang="sv">${summary.accuracy.correct} rätt · ${summary.accuracy.incorrect} fel av ${summary.accuracy.attempts} försök</p></div>`
+      : "";
+  const categoryBlock = summary.strongestCategories.length
+    ? `<div class="insight-block"><h3>${iconSvg("collection")} Kategorier</h3>${categoryLineMarkup("Starkast", summary.strongestCategories[0])}${categoryLineMarkup("Öva mer", summary.weakestCategories[0])}</div>`
+    : `<div class="insight-block"><h3>${iconSvg("collection")} Kategorier</h3><p class="muted" lang="sv">Öva några ord till i varje kategori, så ser du var du är starkast.</p></div>`;
+  const cta = summary.hardestWords.length
+    ? `<a class="lucky review-cta insights-cta" href="${esc(reviewCtaHref())}"><span class="row-icon">${iconSvg("spark", 32)}</span><span><strong lang="sv">Öva de svåraste orden</strong><small lang="fi">Kertaa vaikeita</small></span><span>${summary.hardestWords.length} ${summary.hardestWords.length === 1 ? "sana" : "sanaa"}</span>${iconSvg("arrow")}</a>`
+    : "";
+  return `<div class="insight-block"><h3>${iconSvg("calendar")} Senaste dagarna</h3><div class="stat-grid"><span><strong>${summary.activity.last7.itemsStudied}</strong>Uppgifter, 7 dagar</span><span><strong>${summary.activity.last7.activeDays} / 7</strong>Aktiva dagar</span><span><strong>${summary.activity.last30.itemsStudied}</strong>Uppgifter, 30 dagar</span><span><strong>${trendBadgeCopy(summary.activity.trend)}</strong>Trend</span></div></div>
+  ${accuracyBlock}
+  ${categoryBlock}
+  <div class="insight-block"><h3>${iconSvg("progress")} Träningsfördelning, 30 dagar</h3>${modeVolumeMarkup(summary.modeVolume)}</div>
+  <div class="insight-block"><h3>${iconSvg("spark")} Svåraste orden</h3>${hardestWordListMarkup(summary.hardestWords)}${cta}</div>`;
+}
 function persist(next: ProgressStateV1) {
   state = next;
   saveProgress(state);
@@ -518,10 +609,15 @@ function renderProgress() {
     }),
     claimable = claimableSeasonCount(state),
     weekly = weeklyQuestProgress(state),
+    catalog = insightsCatalog(),
+    insights = catalog
+      ? buildInsightsSummary({ progress: state, wordStats: loadWordStats(), cards: catalog.cards, decks: catalog.decks })
+      : null,
     currentTitle = equippedCosmetic("title"),
     currentFrame = equippedCosmetic("progressFrame");
   root.innerHTML = `<section class="passport-card full-width" lang="sv" data-progress-frame-id="${esc(currentFrame.id)}" data-title-id="${esc(currentTitle.id)}">${decorativeImage(nordicAssets.brand.crossFi, 128, 128, "passport-cross fi")}${decorativeImage(nordicAssets.brand.crossSv, 128, 128, "passport-cross sv")}<span class="passport-frame-ornament" aria-hidden="true"></span><div class="passport-brand">${iconSvg("progressFrame", 32)}<span><small>MEDICINSK SVENSKA</small><strong>Nordiskt studiepass</strong></span></div><div class="passport-level"><span class="xp-ring" style="--xp:${Math.max(4, Math.round(((state.lifetime.xp - level.currentThreshold) / (level.nextThreshold - level.currentThreshold)) * 100))}%"><b>${level.level}</b></span><span><small>Nivå</small><strong>${state.lifetime.xp} XP</strong></span></div><div class="passport-status"><span>${iconSvg("streak")}<b>${state.streak.current}</b><small>dagars svit</small></span><span class="passport-title-status">${iconSvg("title")}<b>${esc(currentTitle.name)}</b><small>${currentTitle.seasonExclusive ? "säsongstitel" : "titel"}</small></span><span>${iconSvg("progressFrame")}<b>${esc(currentFrame.name)}</b><small>ram</small></span></div>${progressBar(state.lifetime.xp - level.currentThreshold, level.nextThreshold - level.currentThreshold, "Framsteg till nästa nivå")}</section>
   <section class="dashboard-card today-card" lang="sv"><div class="section-title"><h2>${iconSvg("calendar")} I dag</h2><strong>${day.uniqueItemIds.length} / ${state.settings.dailyGoal}</strong></div>${progressBar(day.uniqueItemIds.length, state.settings.dailyGoal, "Dagens mål")}<div class="stat-grid visual-metrics"><span>${iconSvg("check")}<strong>${day.completedItems}</strong>Uppgifter</span><span>${iconSvg("clock")}<strong>${formatMinutes(day.activeStudyMs)}</strong>Aktiv tid</span><span>${iconSvg("level")}<strong>${day.xp}</strong>XP</span><span>${iconSvg("spark")}<strong>${day.modes.length}</strong>Övningstyper</span></div>${claimable ? `<a class="reward-alert" href="/kausi/#reward-track">${iconSvg("gift")} ${claimable} säsongsbelöning väntar</a>` : ""}</section>
+  ${insights ? `<section class="dashboard-card insights-card full-width" lang="sv" id="insights-dashboard"><div class="section-title"><div><span class="eyebrow">Vad du bör öva på</span><h2>${iconSvg("spark")} Insikter</h2></div></div>${insightsMarkup(insights)}</section>` : ""}
   <section class="dashboard-card daily-missions"><h2 lang="sv">${iconSvg("level")} Dagens uppdrag</h2><div class="quest-list">${questRows(day)}</div><div class="all-quests-bonus">${rewardBoxVisual("golden")}<span><strong lang="sv">Slutför alla tre och få en gyllene belöning</strong><small lang="fi">Suorita kaikki kolme ja saat kultaisen palkinnon.</small></span></div></section>
   <section class="dashboard-card weekly-card" lang="sv"><h2>${iconSvg("streak")} Svit och vecka</h2><div class="stat-grid"><span><strong>${state.streak.current}</strong>Nuvarande svit</span><span><strong>${state.streak.longest}</strong>Längsta svit</span><span><strong>${state.inventory.streakFreezes} / 2</strong>Svitfrysningar</span><span><strong>${Object.values(state.daily).filter((value) => value.uniqueItemIds.length).length}</strong>Studiedagar</span></div><h3>Veckans uppdrag</h3><div class="weekly-quest-list">${weekly
     .map((quest, index) => {

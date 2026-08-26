@@ -488,6 +488,92 @@
   margin: 0;
   font-weight: 800;
 }
+.insight-block {
+  margin-top: 16px;
+}
+.insight-block:first-child {
+  margin-top: 0;
+}
+.insight-block h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+.insights-empty p {
+  margin: 4px 0;
+}
+.insight-accuracy-head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.insight-accuracy-head strong {
+  font-size: 1.3rem;
+}
+.accuracy-bar {
+  display: flex;
+  height: 10px;
+  margin: 8px 0;
+  overflow: hidden;
+  border-radius: var(--pill);
+  background: var(--ice);
+}
+.accuracy-correct {
+  background: var(--success);
+}
+.accuracy-incorrect {
+  background: var(--danger);
+}
+.category-line {
+  margin: 4px 0;
+  font-size: 0.85rem;
+}
+.insight-mode-grid {
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 0;
+}
+.hardest-word-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hardest-word-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 3px 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--ice);
+}
+.hw-term {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 6px;
+  font-weight: 750;
+}
+.hw-sep {
+  color: var(--muted);
+}
+.hw-meta {
+  color: var(--muted);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+.insight-empty-line {
+  margin: 0;
+}
+.insights-cta {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
 .settings-card {
   margin-top: 16px;
 }

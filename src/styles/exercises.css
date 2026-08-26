@@ -610,6 +610,7 @@
   width: min(400px, 100%);
   margin: 18px auto 0;
   padding: 13px;
+  overflow: hidden;
   border: 1px solid #e0b000;
   border-radius: var(--radius);
   background: #fff8d8;

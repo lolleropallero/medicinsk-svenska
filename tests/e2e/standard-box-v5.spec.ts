@@ -1,6 +1,8 @@
 import { expect, test, type Locator } from '@playwright/test';
+import { deckCardIds } from './helpers';
 
 const PROGRESS = 'medicinsk-svenska.progress.v1';
+const FLASHCARD_SESSION = 'medicinsk-svenska.flashcard-session.v1';
 const viewports = [
   { width: 320, height: 568 },
   { width: 390, height: 844 },
@@ -142,6 +144,54 @@ test('progress-page golden bonus keeps its shield inside the media column with c
     expect(shieldBox.x).toBeGreaterThanOrEqual(bonusBox.x);
     expect(shieldBox.x + shieldBox.width).toBeLessThanOrEqual(bonusBox.x + bonusBox.width);
     expect(bonusBox.y - (questsBox.y + questsBox.height)).toBeGreaterThanOrEqual(12);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+  }
+});
+
+test('flashcard summary reward shield stays inside its card and keeps Uusi kierros / Takaisin pakkoihin aligned', async ({ page }) => {
+  const sessionId = 'reward-shield-test';
+  await page.goto(`/kortit/harjoitus?mode=deck&deck=anatomi&direction=fi-sv&amount=10&session=${sessionId}`);
+  const cardIds = await deckCardIds(page, 'anatomi', 10);
+  await page.evaluate(({ key, sessionId, cardIds }) => {
+    localStorage.setItem(key, JSON.stringify({
+      schemaVersion: 1, sessionId, mode: 'deck', answerMode: 'cards', sourceDeckId: 'anatomi',
+      direction: 'fi-sv', requestedAmount: 10, selectedCardIds: cardIds, unseenCardQueue: [], currentCardId: null,
+      masteredCardIds: cardIds, pendingRetries: [], answerDraft: '',
+      attemptCountByCard: Object.fromEntries(cardIds.map((id) => [id, 1])),
+      firstAttemptCorrectByCard: Object.fromEntries(cardIds.map((id) => [id, true])),
+      totalMissedCount: 3, startedAt: Date.now() - 30_000, revealed: false,
+    }));
+  }, { key: FLASHCARD_SESSION, sessionId, cardIds });
+  await page.evaluate(({ key, sessionId }) => {
+    const state = JSON.parse(localStorage.getItem(key)!);
+    state.sessionRewards[sessionId] = [{ kind: 'xp', amount: 50 }, { kind: 'standard-box' }];
+    localStorage.setItem(key, JSON.stringify(state));
+  }, { key: PROGRESS, sessionId });
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    await page.reload();
+    const container = page.locator('.session-rewards');
+    const shield = page.locator('.session-reward-box');
+    await expect(shield).toBeVisible();
+    const [containerBox, shieldBox] = await Promise.all([container.boundingBox(), shield.boundingBox()]);
+    if (!containerBox || !shieldBox) throw new Error('missing reward geometry');
+    // The floated shield must be fully contained by its own card, not poke out past the bottom edge.
+    expect(shieldBox.y + shieldBox.height).toBeLessThanOrEqual(containerBox.y + containerBox.height + 1);
+
+    const newRound = page.getByRole('button', { name: 'Uusi kierros' });
+    const backLink = page.getByRole('link', { name: 'Takaisin pakkoihin' });
+    const [newRoundBox, backBox] = await Promise.all([newRound.boundingBox(), backLink.boundingBox()]);
+    if (!newRoundBox || !backBox) throw new Error('missing summary action geometry');
+    expect(await overlaps(newRound, backLink)).toBe(false);
+    if (viewport.width <= 560) {
+      // Stacked layout: both actions span the same full width, one above the other.
+      expect(Math.abs(newRoundBox.x - backBox.x)).toBeLessThanOrEqual(1);
+      expect(Math.abs(newRoundBox.width - backBox.width)).toBeLessThanOrEqual(1);
+    } else {
+      // Side-by-side layout: both actions sit on the same row.
+      expect(Math.abs(newRoundBox.y - backBox.y)).toBeLessThanOrEqual(1);
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   }
 });

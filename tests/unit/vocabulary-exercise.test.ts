@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 import {
   createMultipleChoiceOptions,
   isWrittenAnswerCorrect,
+  MIXED_EXERCISE_TYPES,
   normalizeWrittenAnswer,
+  resolveMixedExerciseType,
   vocabularyAnswerText,
   vocabularyPromptText,
 } from '../../src/lib/vocabulary-exercise';
@@ -57,5 +59,48 @@ describe('vocabulary exercise helpers', () => {
     expect(isWrittenAnswerCorrect(pool[0]!, 'fi-sv', 'blodprov')).toBe(false);
     expect(isWrittenAnswerCorrect(card('x', 'röda/vita verisolut', 'röda / vita blodkroppar'), 'sv-fi', 'röda / vita verisolut')).toBe(true);
     expect(isWrittenAnswerCorrect(pool[4]!, 'fi-sv', 'en inflamation')).toBe(false);
+  });
+});
+
+describe('Sekoitus mixed-exercise-type resolution', () => {
+  it('always resolves to one of the three concrete vocabulary exercise types', () => {
+    for (const card of pool) {
+      expect(MIXED_EXERCISE_TYPES).toContain(resolveMixedExerciseType('session-1', card.id));
+    }
+  });
+
+  it('is a pure function of session and card identity, stable across repeated calls', () => {
+    const first = resolveMixedExerciseType('session-1', 'a');
+    for (let i = 0; i < 5; i += 1) {
+      expect(resolveMixedExerciseType('session-1', 'a')).toBe(first);
+    }
+  });
+
+  it('does not depend on attempt count or wall-clock time', () => {
+    const before = resolveMixedExerciseType('session-1', 'a');
+    // Simulate the passage of time / retries by simply calling again much later; the function takes no such inputs.
+    const after = resolveMixedExerciseType('session-1', 'a');
+    expect(after).toBe(before);
+  });
+
+  it('varies across cards within the same session rather than picking one type for everything', () => {
+    const types = new Set(pool.map((card) => resolveMixedExerciseType('varied-session', card.id)));
+    expect(types.size).toBeGreaterThan(1);
+  });
+
+  it('varies independently across sessions for the same card', () => {
+    const acrossSessions = new Set(
+      Array.from({ length: 12 }, (_, index) => resolveMixedExerciseType(`session-${index}`, 'anatomi-001')),
+    );
+    expect(acrossSessions.size).toBeGreaterThan(1);
+  });
+
+  it('distributes roughly evenly across a large card pool', () => {
+    const counts = { cards: 0, choice: 0, written: 0 };
+    const largePool = Array.from({ length: 300 }, (_, index) => `card-${index}`);
+    for (const id of largePool) counts[resolveMixedExerciseType('distribution-session', id)] += 1;
+    for (const type of MIXED_EXERCISE_TYPES) {
+      expect(counts[type]).toBeGreaterThan(largePool.length / MIXED_EXERCISE_TYPES.length * 0.5);
+    }
   });
 });

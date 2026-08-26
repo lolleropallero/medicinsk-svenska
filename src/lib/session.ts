@@ -4,8 +4,9 @@ export const RETRY_DELAY_MS = 2 * 60 * 1000;
 export const SESSION_SCHEMA_VERSION = 1 as const;
 
 export type RequestedAmount = 10 | 25 | 50 | 'all';
-export type SessionMode = 'deck' | 'lucky';
-export type VocabularyAnswerMode = 'cards' | 'choice' | 'written';
+export type SessionMode = 'deck' | 'lucky' | 'review';
+export type VocabularyAnswerMode = 'cards' | 'choice' | 'written' | 'mixed';
+export type SingleVocabularyAnswerMode = Exclude<VocabularyAnswerMode, 'mixed'>;
 
 export interface PendingRetry {
   cardId: string;
@@ -296,8 +297,8 @@ export function isStoredSession(value: unknown, context: SessionValidationContex
   if (!(
     session.schemaVersion === SESSION_SCHEMA_VERSION &&
     isReasonableSessionId(session.sessionId) &&
-    (session.mode === 'deck' || session.mode === 'lucky') &&
-    (answerMode === 'cards' || answerMode === 'choice' || answerMode === 'written') &&
+    (session.mode === 'deck' || session.mode === 'lucky' || session.mode === 'review') &&
+    (answerMode === 'cards' || answerMode === 'choice' || answerMode === 'written' || answerMode === 'mixed') &&
     (session.mode === 'deck'
       ? typeof session.sourceDeckId === 'string' && session.sourceDeckId.length > 0 && context.validDeckIds.has(session.sourceDeckId)
       : session.sourceDeckId === undefined) &&

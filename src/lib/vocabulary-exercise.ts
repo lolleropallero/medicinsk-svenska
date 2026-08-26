@@ -1,10 +1,19 @@
 import type { Direction, FlashcardClient } from '../types/content';
-import { cardSides, seededRandom, shuffled } from './session';
+import { cardSides, seededRandom, shuffled, type SingleVocabularyAnswerMode } from './session';
 
 export interface ChoiceOption {
   id: string;
   label: string;
   correct: boolean;
+}
+
+function fnv1aHash(value: string): number {
+  let hash = 2166136261;
+  for (let index = 0; index < value.length; index += 1) {
+    hash ^= value.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
 }
 
 export function vocabularyPromptText(card: FlashcardClient, direction: Direction): string {
@@ -36,13 +45,15 @@ export function isWrittenAnswerCorrect(
 }
 
 export function stableChoiceRandom(sessionId: string, cardId: string, attemptCount: number): () => number {
-  let seed = 2166136261;
-  const source = `${sessionId}:${cardId}:${attemptCount}`;
-  for (let index = 0; index < source.length; index += 1) {
-    seed ^= source.charCodeAt(index);
-    seed = Math.imul(seed, 16777619);
-  }
-  return seededRandom(seed >>> 0);
+  return seededRandom(fnv1aHash(`${sessionId}:${cardId}:${attemptCount}`));
+}
+
+export const MIXED_EXERCISE_TYPES: readonly SingleVocabularyAnswerMode[] = ['cards', 'choice', 'written'];
+
+// Hashed from session+card identity only (no attempt count/time) so a card's exercise type never flips on retry, reload, or resume.
+export function resolveMixedExerciseType(sessionId: string, cardId: string): SingleVocabularyAnswerMode {
+  const index = fnv1aHash(`${sessionId}:${cardId}:exercise-type`) % MIXED_EXERCISE_TYPES.length;
+  return MIXED_EXERCISE_TYPES[index]!;
 }
 
 export function createMultipleChoiceOptions(

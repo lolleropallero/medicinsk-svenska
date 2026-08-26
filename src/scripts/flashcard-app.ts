@@ -12,6 +12,9 @@ import {
   updateAnswerDraft,
   type CreateSessionOptions,
   type FlashcardSession,
+  type RequestedAmount,
+  type SessionMode,
+  type SingleVocabularyAnswerMode,
 } from '../lib/session';
 import { buildSessionUrl, parseSessionRequest } from '../lib/session-url';
 import { formatDuration } from '../lib/time';
@@ -25,10 +28,14 @@ import {
   createMultipleChoiceOptions,
   isWrittenAnswerCorrect,
   normalizeWrittenAnswer,
+  resolveMixedExerciseType,
   stableChoiceRandom,
   vocabularyAnswerText,
   vocabularyPromptText,
 } from '../lib/vocabulary-exercise';
+import { loadWordStats, recordWordAttempt, saveWordStats, selectWeakCards } from '../lib/vocabulary-stats';
+
+const WEAK_REVIEW_POOL_CAP = 60;
 
 function initializeFlashcardApp() {
 if (!document.getElementById('cards-data')) return;
@@ -46,6 +53,7 @@ const waitingView = byId('waiting-view');
 const summaryView = byId('summary-view');
 const errorView = byId('error-view');
 const flashcard = byId<HTMLButtonElement>('flashcard');
+const flashcardModeTag = byId('flashcard-mode-tag');
 const answerArea = byId('answer-area');
 const gradeActions = byId('grade-actions');
 const correctButton = byId<HTMLButtonElement>('correct');
@@ -67,13 +75,22 @@ const elapsedTime = byId<HTMLTimeElement>('elapsed-time');
 const retryCountdown = byId('retry-countdown');
 const sessionStatus = elapsedTime.parentElement as HTMLElement;
 
-function showInvalidRequest() {
+function showInvalidRequest(reason: 'invalid' | 'empty-review' = 'invalid') {
   sessionView.hidden = true;
   waitingView.hidden = true;
   summaryView.hidden = true;
   errorView.hidden = false;
   sessionStatus.hidden = true;
   byId('session-label').textContent = 'Sanakortit';
+  const detail = byId('error-detail');
+  if (reason === 'empty-review') {
+    byId('error-title').textContent = 'Ei vielä vaikeita sanoja';
+    detail.textContent = 'Harjoittele muutama kierros normaalisti tai Sekoitus-tavalla, niin Kertaa vaikeita löytää sinulle sopivat sanat.';
+    detail.hidden = false;
+  } else {
+    byId('error-title').textContent = 'Pakkaa ei löytynyt';
+    detail.hidden = true;
+  }
   byId('error-title').focus();
 }
 
@@ -92,11 +109,20 @@ function startApp() {
     history.replaceState(null, '', buildSessionUrl(configuration, location.pathname));
   }
 
-  const sourceCards = configuration.mode === 'lucky'
-    ? allCards
-    : allCards.filter((card) => card.deckId === configuration.sourceDeckId);
+  let wordStats = loadWordStats();
+
+  function computeSourceCards(mode: SessionMode, sourceDeckId: string | undefined, requestedAmount: RequestedAmount): FlashcardClient[] {
+    if (mode === 'lucky') return allCards;
+    if (mode === 'review') {
+      const limit = requestedAmount === 'all' ? WEAK_REVIEW_POOL_CAP : requestedAmount;
+      return selectWeakCards(wordStats, allCards, limit);
+    }
+    return allCards.filter((card) => card.deckId === sourceDeckId);
+  }
+
+  let sourceCards = computeSourceCards(configuration.mode, configuration.sourceDeckId, configuration.requestedAmount);
   if (sourceCards.length === 0) {
-    showInvalidRequest();
+    showInvalidRequest(configuration.mode === 'review' ? 'empty-review' : 'invalid');
     return;
   }
 
@@ -120,7 +146,7 @@ function startApp() {
   }
 
   let session = readStoredSession() ?? createSession(sourceCards, configuration);
-  const sourceId = session.mode === 'lucky' ? 'lucky' : session.sourceDeckId!;
+  const sourceId = session.mode === 'deck' ? session.sourceDeckId! : session.mode;
   dispatchProgress({ type:'session-started', eventId:`flashcards:${session.sessionId}:started`, sessionId:session.sessionId,
     mode:'flashcards', sourceId, selectedCount:session.selectedCardIds.length, occurredAt:session.startedAt });
   let gradingLocked = false;
@@ -128,7 +154,9 @@ function startApp() {
 
   byId('session-label').textContent = session.mode === 'lucky'
     ? 'Kokeilen onneani'
-    : allDecks.find((deck) => deck.id === session.sourceDeckId)?.nameFi ?? 'Sanakortit';
+    : session.mode === 'review'
+      ? 'Kertaa vaikeita'
+      : allDecks.find((deck) => deck.id === session.sourceDeckId)?.nameFi ?? 'Sanakortit';
 
   function persist() {
     try {
@@ -250,6 +278,10 @@ function startApp() {
     if (focus) (session.revealed ? writtenContinue : writtenInput).focus();
   }
 
+  function effectiveExerciseType(card: FlashcardClient): SingleVocabularyAnswerMode {
+    return session.answerMode === 'mixed' ? resolveMixedExerciseType(session.sessionId, card.id) : session.answerMode;
+  }
+
   function revealIncorrect(answer: string) {
     if (gradingLocked || !session.currentCardId || session.revealed) return;
     session = revealCurrentCard(updateAnswerDraft(session, answer));
@@ -308,20 +340,22 @@ function startApp() {
       return;
     }
     const sides = cardSides(card, session.direction);
+    const exerciseType = effectiveExerciseType(card);
     clearRetryTimer();
     sessionView.hidden = false;
     waitingView.hidden = true;
     summaryView.hidden = true;
-    if (session.answerMode === 'choice') {
+    if (exerciseType === 'choice') {
       renderChoiceExercise(card, options.focus);
       return;
     }
-    if (session.answerMode === 'written') {
+    if (exerciseType === 'written') {
       renderWrittenExercise(card, options.focus);
       return;
     }
     hideExerciseModes();
     flashcard.hidden = false;
+    flashcardModeTag.hidden = session.answerMode !== 'mixed';
     byId('front-term').textContent = sides.front;
     byId('front-term').lang = session.direction === 'fi-sv' ? 'fi' : 'sv';
     byId('back-term').textContent = sides.back;
@@ -351,19 +385,24 @@ function startApp() {
   function grade(correct: boolean, options: { playOutcome?: boolean } = {}) {
     if (gradingLocked || !session.revealed || !session.currentCardId) return;
     const completedId = session.currentCardId;
+    const completedCard = cardById.get(completedId);
+    const completedExerciseType = completedCard ? effectiveExerciseType(completedCard) : session.answerMode;
     const priorAttempts = session.attemptCountByCard[completedId] ?? 0;
+    const now = Date.now();
     gradingLocked = true;
     if (options.playOutcome ?? true) requestFeedback(correct ? 'correct' : 'incorrect', sessionView);
     correctButton.disabled = true;
     missedButton.disabled = true;
     choiceContinue.disabled = true;
     writtenContinue.disabled = true;
-    session = gradeCurrentCard(session, correct, Date.now());
+    session = gradeCurrentCard(session, correct, now);
+    wordStats = recordWordAttempt(wordStats, completedId, correct, now);
+    saveWordStats(wordStats);
     if (correct) dispatchProgress({type:'item-completed',eventId:`flashcards:${session.sessionId}:item:${completedId}`,sessionId:session.sessionId,
-      mode:'flashcards',itemId:completedId,sourceId,occurredAt:Date.now(),firstAttemptCorrect:priorAttempts===0,hadMisses:priorAttempts>0,resolution:'mastered'});
+      mode:'flashcards',itemId:completedId,sourceId,occurredAt:now,firstAttemptCorrect:priorAttempts===0,hadMisses:priorAttempts>0,resolution:'mastered'});
     persist();
     render({ focus: true });
-    requestFeedback('item-change', session.answerMode === 'cards' ? flashcard : sessionView, null);
+    requestFeedback('item-change', completedExerciseType === 'cards' ? flashcard : sessionView, null);
     correctButton.disabled = false;
     missedButton.disabled = false;
     choiceContinue.disabled = false;
@@ -373,6 +412,10 @@ function startApp() {
 
   function startNewRound() {
     const sessionId = crypto.randomUUID();
+    if (session.mode === 'review') {
+      const freshWeakCards = computeSourceCards('review', undefined, session.requestedAmount);
+      if (freshWeakCards.length > 0) sourceCards = freshWeakCards;
+    }
     session = createNewRoundSession(sourceCards, session, sessionId, Date.now(), Math.random);
     configuration = {
       sessionId,
@@ -385,7 +428,7 @@ function startApp() {
     history.replaceState(null, '', buildSessionUrl(configuration, location.pathname));
     persist();
     dispatchProgress({ type:'session-started', eventId:`flashcards:${session.sessionId}:started`, sessionId:session.sessionId,
-      mode:'flashcards', sourceId:session.mode==='lucky'?'lucky':session.sourceDeckId!, selectedCount:session.selectedCardIds.length, occurredAt:session.startedAt });
+      mode:'flashcards', sourceId:session.mode==='deck'?session.sourceDeckId!:session.mode, selectedCount:session.selectedCardIds.length, occurredAt:session.startedAt });
     render({ focus: true });
   }
 
@@ -419,7 +462,8 @@ function startApp() {
     }
   });
   writtenInput.addEventListener('input', () => {
-    if (session.answerMode !== 'written' || session.revealed) return;
+    const currentCard = session.currentCardId ? cardById.get(session.currentCardId) : undefined;
+    if (!currentCard || effectiveExerciseType(currentCard) !== 'written' || session.revealed) return;
     session = updateAnswerDraft(session, writtenInput.value);
     persist();
   });
@@ -427,11 +471,13 @@ function startApp() {
   byId<HTMLButtonElement>('new-round').addEventListener('click', startNewRound);
   document.addEventListener('keydown', (event) => {
     if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
-    if (session.answerMode === 'choice' && !session.revealed && /^[1-4]$/u.test(event.key)) {
+    const currentCard = session.currentCardId ? cardById.get(session.currentCardId) : undefined;
+    const exerciseType = currentCard ? effectiveExerciseType(currentCard) : session.answerMode;
+    if (exerciseType === 'choice' && !session.revealed && /^[1-4]$/u.test(event.key)) {
       choiceOptions.querySelectorAll<HTMLButtonElement>('button')[Number(event.key) - 1]?.click();
     }
-    if (session.answerMode === 'cards' && event.key === '1' && session.revealed) grade(true);
-    if (session.answerMode === 'cards' && event.key === '2' && session.revealed) grade(false);
+    if (exerciseType === 'cards' && event.key === '1' && session.revealed) grade(true);
+    if (exerciseType === 'cards' && event.key === '2' && session.revealed) grade(false);
   }, { signal: controller.signal });
 
   const clockTimer = window.setInterval(() => {

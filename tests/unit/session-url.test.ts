@@ -21,6 +21,26 @@ describe('session URL configuration', () => {
     });
   });
 
+  it('parses a Sekoitus request', () => {
+    expect(parseSessionRequest('?mode=deck&deck=anatomi&answer=mixed&direction=fi-sv&amount=25&session=mixed-1', decks)).toEqual({
+      ok: true,
+      value: { mode: 'deck', answerMode: 'mixed', sourceDeckId: 'anatomi', direction: 'fi-sv', requestedAmount: 25, sessionId: 'mixed-1' },
+    });
+  });
+
+  it('parses a Kertaa vaikeita review request without a deck', () => {
+    expect(parseSessionRequest('?mode=review&answer=mixed&direction=sv-fi&amount=25&session=review-1', decks)).toEqual({
+      ok: true,
+      value: { mode: 'review', answerMode: 'mixed', direction: 'sv-fi', requestedAmount: 25, sessionId: 'review-1' },
+    });
+    expect(buildSessionUrl({ mode: 'review', answerMode: 'mixed', direction: 'sv-fi', requestedAmount: 25, sessionId: 'review-1' }))
+      .toBe('/kortit/harjoitus?mode=review&answer=mixed&direction=sv-fi&amount=25&session=review-1');
+  });
+
+  it('rejects a review request carrying a deck', () => {
+    expect(parseSessionRequest('?mode=review&deck=anatomi&answer=mixed&direction=fi-sv&amount=25&session=review-2', decks)).toEqual({ ok: false });
+  });
+
   it.each([
     '?mode=deck&direction=fi-sv&amount=10&session=x',
     '?mode=deck&deck=unknown&direction=fi-sv&amount=10&session=x',

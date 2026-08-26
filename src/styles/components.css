@@ -249,6 +249,24 @@
   font-size: 0.82rem;
   font-weight: 750;
 }
+.review-cta {
+  border-color: var(--legendary);
+  background: linear-gradient(120deg, #9a6300, var(--legendary));
+}
+.review-empty {
+  min-height: 76px;
+  margin: 0 0 14px;
+  padding: 12px 16px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .deck-list,
 .category-list {
   display: grid;

@@ -14,6 +14,7 @@ import { deckPayload, flashcardPayload } from '../../lib/content';
     <div id="session-view">
       <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
       <button id="flashcard" class="flashcard" type="button" aria-label="Näytä vastaus">
+        <span id="flashcard-mode-tag" class="exercise-mode-tag" hidden>Kortit</span>
         <span id="front-term" class="term"></span>
         <span id="answer-area" hidden><span class="answer-bridge" aria-hidden="true"><AppIcon name="arrow"/></span><span id="back-term" class="term answer"></span><span id="grammar"></span></span>
       </button>
@@ -71,6 +72,7 @@ import { deckPayload, flashcardPayload } from '../../lib/content';
     </div>
     <div id="error-view" class="error-state" hidden>
       <h1 id="error-title" tabindex="-1">Pakkaa ei löytynyt</h1>
+      <p id="error-detail" hidden></p>
       <a class="button secondary" href="/kortit">Takaisin pakkoihin</a>
     </div>
   </section>

@@ -150,6 +150,17 @@ describe('persisted session state', () => {
     expect(isStoredSession(session, contextFor(session, cardDecks))).toBe(false);
   });
 
+  it('accepts Sekoitus and Kertaa vaikeita (mixed answer mode, review session mode)', () => {
+    const mixedOptions = { ...options, answerMode: 'mixed' as const };
+    const mixedSession = createSession([card(1)], mixedOptions, 1_000, seededRandom(1));
+    expect(isStoredSession(mixedSession, contextFor(mixedSession, undefined, mixedOptions))).toBe(true);
+
+    const reviewOptions = { sessionId: options.sessionId, mode: 'review' as const, answerMode: 'mixed' as const, direction: options.direction, requestedAmount: options.requestedAmount };
+    const reviewSession = createSession([card(1)], reviewOptions, 1_000, seededRandom(1));
+    expect(isStoredSession(reviewSession, contextFor(reviewSession, undefined, reviewOptions))).toBe(true);
+    expect(reviewSession).not.toHaveProperty('sourceDeckId');
+  });
+
   it('rejects deck mode without a source deck and lucky mode with one', () => {
     const deckSession = createSession([card(1)], options, 1_000, seededRandom(1));
     expect(isStoredSession({ ...deckSession, sourceDeckId: undefined }, contextFor(deckSession))).toBe(false);
@@ -255,6 +266,14 @@ describe('new round', () => {
     const previous = createSession(Array.from({ length: 30 }, (_, index) => card(index)), luckyOptions, 1_000, seededRandom(1));
     const next = createNewRoundSession(Array.from({ length: 30 }, (_, index) => card(index)), previous, 'lucky-2', 2_000, seededRandom(2));
     expect(next).toMatchObject({ sessionId: 'lucky-2', mode: 'lucky', direction: 'sv-fi', requestedAmount: 25 });
+    expect(next).not.toHaveProperty('sourceDeckId');
+  });
+
+  it('retains review mode and Sekoitus answer mode without a source deck', () => {
+    const reviewOptions = { sessionId: 'review-1', mode: 'review' as const, answerMode: 'mixed' as const, direction: 'fi-sv' as const, requestedAmount: 10 as const };
+    const previous = createSession(Array.from({ length: 5 }, (_, index) => card(index)), reviewOptions, 1_000, seededRandom(1));
+    const next = createNewRoundSession(Array.from({ length: 5 }, (_, index) => card(index)), previous, 'review-2', 2_000, seededRandom(2));
+    expect(next).toMatchObject({ sessionId: 'review-2', mode: 'review', answerMode: 'mixed', direction: 'fi-sv', requestedAmount: 10 });
     expect(next).not.toHaveProperty('sourceDeckId');
   });
 });

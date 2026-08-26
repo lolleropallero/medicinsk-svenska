@@ -18,7 +18,7 @@ function parseAmount(value: string | null): RequestedAmount | null {
 }
 
 function parseAnswerMode(value: string | null): VocabularyAnswerMode | null {
-  if (value === null || value === 'cards' || value === 'choice' || value === 'written') {
+  if (value === null || value === 'cards' || value === 'choice' || value === 'written' || value === 'mixed') {
     return value ?? 'cards';
   }
   return null;
@@ -35,7 +35,7 @@ export function parseSessionRequest(search: string, validDeckIds: ReadonlySet<st
   const sessionId = params.get('session');
 
   if (
-    (mode !== 'deck' && mode !== 'lucky') ||
+    (mode !== 'deck' && mode !== 'lucky' && mode !== 'review') ||
     (direction !== 'fi-sv' && direction !== 'sv-fi') ||
     requestedAmount === null ||
     answerMode === null ||

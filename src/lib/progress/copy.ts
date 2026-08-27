@@ -24,7 +24,7 @@ export function questCopy(quest:Pick<Quest,'kind'|'mode'|'target'|'answerMode'>)
 export const weeklyQuestCopy:BilingualCopy[]=[
   {sv:'Studera under 5 dagar',fi:'Opiskele viitenä päivänä'},
   {sv:'Gör 100 olika uppgifter',fi:'Suorita 100 eri tehtävää'},
-  {sv:'Använd alla tre övningstyperna',fi:'Käytä kaikkia kolmea harjoitustapaa'},
+  {sv:'Använd tre olika övningstyper',fi:'Käytä kolmea eri harjoitustyyppiä'},
 ];
 export function plural(value:number,one:string,many:string){return `${value} ${value===1?one:many}`;}
 export function rewardCopy(reward:Reward):string{

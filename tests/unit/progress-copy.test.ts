@@ -13,7 +13,7 @@ describe('Swedish progress copy',()=>{
   it('maps league results',()=>expect(leagueResultCopy({kind:'promoted',tier:'Kulta'})).toBe('Du steg till Guld'));
   it('maps rewards without custom currency symbols',()=>expect(rewardCopy({type:'credits',amount:10})).toBe('10 krediter'));
   it('uses singular and plural reward actions',()=>{expect(nextActionCopy({kind:'open-box',count:1,href:'/'})).toBe('Öppna en belöning');expect(nextActionCopy({kind:'open-box',count:2,href:'/'})).toBe('Öppna 2 belöningar');});
-  it('contains exact bilingual weekly quests',()=>expect(weeklyQuestCopy).toEqual([{sv:'Studera under 5 dagar',fi:'Opiskele viitenä päivänä'},{sv:'Gör 100 olika uppgifter',fi:'Suorita 100 eri tehtävää'},{sv:'Använd alla tre övningstyperna',fi:'Käytä kaikkia kolmea harjoitustapaa'}]));
+  it('contains exact bilingual weekly quests',()=>expect(weeklyQuestCopy).toEqual([{sv:'Studera under 5 dagar',fi:'Opiskele viitenä päivänä'},{sv:'Gör 100 olika uppgifter',fi:'Suorita 100 eri tehtävää'},{sv:'Använd tre olika övningstyper',fi:'Käytä kolmea eri harjoitustyyppiä'}]));
   it('derives every daily quest from semantics',()=>{const variants:Quest[]=[
     {id:'1',slot:1,kind:'items',target:10,xp:5,credits:10,seasonPoints:10,rerollIndex:0,claimed:false},
     ...(['flashcards','phrases','descriptions'] as const).map((mode,index)=>({id:`m${index}`,slot:2,kind:'mode' as const,mode,target:mode==='flashcards'?10:5,xp:1,credits:1,seasonPoints:1,rerollIndex:0,claimed:false})),

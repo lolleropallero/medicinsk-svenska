@@ -40,7 +40,7 @@ const achievementText:Record<string,[string,string]>={
   'days-3':['Tre studiedagar','Studera under tre dagar.'],'days-10':['Tio studiedagar','Studera under tio dagar.'],
   'streak-3':['Tre dagars svit','Nå en svit på tre dagar.'],'streak-7':['En veckas svit','Nå en svit på sju dagar.'],
   'xp-100':['Hundra XP','Samla 100 erfarenhetspoäng.'],'xp-1000':['Tusen XP','Samla 1 000 erfarenhetspoäng.'],
-  'modes-3':['Tre sätt att öva','Använd alla tre övningstyper samma dag.'],'active-60':['En fokuserad timme','Studera aktivt i en timme.'],
+  'modes-3':['Tre sätt att öva','Använd tre olika övningstyper samma dag.'],'active-60':['En fokuserad timme','Studera aktivt i en timme.'],
 };
 export function achievementCopy(achievement:Pick<Achievement,'id'>){const [name,description]=achievementText[achievement.id]??['Prestation','Fortsätt öva.'];return{name,description};}
 export function leagueResultCopy(result:LeagueResult){return result.kind==='retained'?'Du stannade kvar':result.kind==='promoted'?`Du steg till ${leagueCopy[result.tier]}`:`Du föll till ${leagueCopy[result.tier]}`;}

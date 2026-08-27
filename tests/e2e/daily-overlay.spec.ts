@@ -39,9 +39,9 @@ test('quest activation handles today before navigation, home stays quiet, and to
   await page.evaluate(({key,value})=>localStorage.setItem(key,String(value)),{key:testNow,value:nextDay});await page.reload();await expect(dialog).toBeVisible();
 });
 
-test('persistent homepage is only HUD, launcher, and three actions; daily detail exists only in the modal',async({page})=>{
+test('persistent homepage is only HUD, launcher, and four actions; daily detail exists only in the modal',async({page})=>{
   await page.setViewportSize({width:320,height:568});await page.goto('/');await expect(page.locator('.daily-overlay-quests .daily-quest-row')).toHaveCount(3);await closeIfOpen(page);
-  await expect(page.locator('#home-daily,#home-reward-alerts,#home-next-action,#home-status,.home-status,.home-daily')).toHaveCount(0);await expect(page.locator('.home .daily-quest-row,.home .quest,.home .dashboard-card')).toHaveCount(0);await expect(page.locator('.home-actions a')).toHaveCount(3);await expect(page.locator('.home > :not(.sr-only)')).toHaveCount(2);
+  await expect(page.locator('#home-daily,#home-reward-alerts,#home-next-action,#home-status,.home-status,.home-daily')).toHaveCount(0);await expect(page.locator('.home .daily-quest-row,.home .quest,.home .dashboard-card')).toHaveCount(0);await expect(page.locator('.home-actions a')).toHaveCount(4);await expect(page.locator('.home > :not(.sr-only)')).toHaveCount(2);
   await expect(page.getByText(/Säsong|Veckoliga/)).toHaveCount(0);await expect(page.locator('#metagame-hud')).toContainText('Krediter');await expect(page.locator('#metagame-hud')).toContainText('Belöningar');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);expect((await page.locator('.home-actions').boundingBox())!.y).toBeLessThan(300);await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);
 });

@@ -1,6 +1,6 @@
 import type { VocabularyAnswerMode } from '../session';
 
-export type ExerciseMode = 'flashcards' | 'phrases' | 'descriptions';
+export type ExerciseMode = 'flashcards' | 'phrases' | 'descriptions' | 'clinical';
 export type Rarity = 'common' | 'rare' | 'epic' | 'legendary';
 export type CosmeticType = 'theme' | 'cardStyle' | 'progressFrame' | 'title';
 export type CapsuleKind = 'standard' | 'golden' | 'legendary';

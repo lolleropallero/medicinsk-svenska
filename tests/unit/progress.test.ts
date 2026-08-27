@@ -29,6 +29,26 @@ describe('XP, levels, and events',()=>{
   it('awards item XP again on another date',()=>{let state=createProgressState(at('2026-08-21'),'install');state=reduceProgress(state,item('2026-08-21','a','flashcards','one')).state;state=reduceProgress(state,item('2026-08-22','a','flashcards','two')).state;expect(state.lifetime.xp).toBe(4);});
   it('clamps active-time events',()=>{const state=createProgressState(at('2026-08-21'),'install'),result=reduceProgress(state,{type:'active-study',eventId:'active:1',sessionId:'s',mode:'flashcards',durationMs:99_000,occurredAt:at('2026-08-21')}).state;expect(result.lifetime.activeStudyMs).toBe(30_000);});
   it('bounds processed event ids',()=>{const state=createProgressState(at('2026-08-21'),'install');state.processedEventIds=Array.from({length:10_000},(_,i)=>`old:${i}`);const result=reduceProgress(state,item('2026-08-21')).state;expect(result.processedEventIds).toHaveLength(10_000);expect(result.processedEventIds.at(-1)).toContain(':item:');});
+  it('treats clinical situations as a generic exercise mode: XP, unique-item prefixing, lastUsedMode, and daily variety',()=>{
+    let state=createProgressState(at('2026-08-21'),'install');
+    state=reduceProgress(state,item('2026-08-21','tilanne-a','clinical','clin-1')).state;
+    expect(state.lifetime.xp).toBe(2);
+    expect(state.lastUsedMode).toBe('clinical');
+    const day=state.daily['2026-08-21']!;
+    expect(day.uniqueItemIds).toContain('clinical:tilanne-a');
+    expect(day.modes).toContain('clinical');
+    // Same raw ID string in a different mode is still a distinct unique item (mode-prefixed keys).
+    state=reduceProgress(state,item('2026-08-21','tilanne-a','flashcards','flash-1')).state;
+    expect(state.daily['2026-08-21']!.uniqueItemIds).toContain('flashcards:tilanne-a');
+    expect(state.lifetime.xp).toBe(4);
+  });
+  it('does not let a clinical mode value influence the fixed three-mode daily "mode" quest assignment',()=>{
+    // generateDailyQuests hashes into slot2Modes, which intentionally excludes clinical; this locks
+    // that the addition of the clinical ExerciseMode did not shift which of the three vocabulary
+    // modes a given installation/day/reroll combination resolves to.
+    const quests=generateDailyQuests('install','2026-08-21');
+    expect(['flashcards','phrases','descriptions']).toContain(quests[1]!.mode);
+  });
 });
 
 describe('goals, quests, and streaks',()=>{

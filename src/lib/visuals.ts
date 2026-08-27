@@ -48,6 +48,8 @@ export const ICON_PATHS = {
     '<path d="m12 2 1.5 6.5L20 10l-6.5 1.5L12 18l-1.5-6.5L4 10l6.5-1.5L12 2Z"/>',
   route:
     '<path d="M4 19c3-7 5-10 9-11 2-.5 4 0 7-3"/><circle cx="4" cy="19" r="2"/><circle cx="13" cy="8" r="2"/><circle cx="20" cy="5" r="2"/>',
+  dialogue:
+    '<rect x="3" y="4" width="14" height="10" rx="3"/><rect x="7" y="10" width="14" height="10" rx="3"/>',
 } as const;
 
 export type IconName = keyof typeof ICON_PATHS;

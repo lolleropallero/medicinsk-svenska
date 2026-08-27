@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deckPayload, descriptionCategoryPayload, descriptionPayload, flashcardPayload, phraseCategoryPayload, phrasePayload } from '../../src/lib/content';
+import { clinicalScenarioCategoryPayload, clinicalScenarioPayload, deckPayload, descriptionCategoryPayload, descriptionPayload, flashcardPayload, phraseCategoryPayload, phrasePayload } from '../../src/lib/content';
 
 const keys = (value: object) => Object.keys(value).sort();
 
@@ -31,5 +31,17 @@ describe('explicit client payload projections', () => {
     expect(phrasePayload.every((item) => keys(item).every((key) => ['id', 'categoryId', 'fi', 'sv'].includes(key)))).toBe(true);
     expect(phraseCategoryPayload).toHaveLength(3);
     expect(phraseCategoryPayload.every((item) => keys(item).every((key) => ['id', 'nameFi'].includes(key)))).toBe(true);
+  });
+
+  it('allows only clinical scenario application fields, including nested steps and options', () => {
+    const allowed = new Set(['id', 'categoryId', 'titleFi', 'contextFi', 'steps', 'resolutionSv', 'resolutionFi']);
+    const stepAllowed = new Set(['id', 'patientSv', 'promptFi', 'options', 'explanationFi']);
+    const optionAllowed = new Set(['id', 'sv', 'correct']);
+    expect(clinicalScenarioPayload.length).toBeGreaterThanOrEqual(25);
+    expect(clinicalScenarioPayload.every((item) => keys(item).every((key) => allowed.has(key)))).toBe(true);
+    expect(clinicalScenarioPayload.every((item) => item.steps.every((step) => keys(step).every((key) => stepAllowed.has(key))))).toBe(true);
+    expect(clinicalScenarioPayload.every((item) => item.steps.every((step) => step.options.every((option) => keys(option).every((key) => optionAllowed.has(key)))))).toBe(true);
+    expect(clinicalScenarioCategoryPayload).toHaveLength(11);
+    expect(clinicalScenarioCategoryPayload.every((item) => keys(item).every((key) => ['id', 'nameFi'].includes(key)))).toBe(true);
   });
 });

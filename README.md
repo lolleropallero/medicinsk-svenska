@@ -1,10 +1,10 @@
 # Medicinsk svenska
 
-A calm, static study application for Finnish medical students practising medical Swedish. It offers bidirectional flashcards, Finnish-to-Swedish clinical phrase recall, and a Swedish-only anatomical description exercise. The learner-facing app has no backend, accounts, analytics, advertising, external runtime APIs, or cloud progress.
+A calm, static study application for Finnish medical students practising medical Swedish. It offers bidirectional flashcards, Finnish-to-Swedish clinical phrase recall, a Swedish-only anatomical description exercise, and multi-step clinical conversation scenarios. The learner-facing app has no backend, accounts, analytics, advertising, external runtime APIs, or cloud progress.
 
 ## Scope
 
-V1 is designed only for medical students. It contains eight decks: Anatomia (130 cards), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (26), Tutkimukset ja hoito (49), and Laboratoriokokeet (45). The 498 flashcards are accompanied by 73 clinical phrases in three categories and 51 Swedish descriptions of anatomy and physiology. It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
+V1 is designed only for medical students. It contains eight decks: Anatomia (130 cards), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (26), Tutkimukset ja hoito (49), and Laboratoriokokeet (45). The 498 flashcards are accompanied by 73 clinical phrases in three categories, 51 Swedish descriptions of anatomy and physiology, and 32 clinical conversation scenarios in eleven categories. It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
 
 Exercise sessions and long-term progress are stored only in the current browser. They are not tied to an account or synchronized between devices.
 
@@ -29,7 +29,7 @@ npm run preview
 
 ## Architecture
 
-- `src/pages/` – static Astro routes (`/`, `/kortit`, `/kortit/harjoitus`, `/fraasit`, `/fraasit/harjoitus`, `/kuvailu`, `/kuvailu/harjoitus`)
+- `src/pages/` – static Astro routes (`/`, `/kortit`, `/kortit/harjoitus`, `/fraasit`, `/fraasit/harjoitus`, `/kuvailu`, `/kuvailu/harjoitus`, `/tilanteet`, `/tilanteet/harjoitus`)
 - `src/lib/` – framework-free, independently tested session and answer logic
 - `src/scripts/` – minimal browser TypeScript for active exercises
 - `src/styles/` – repository-owned responsive CSS; no external font or asset request
@@ -88,6 +88,14 @@ Description URLs validate mode, category, amount, round, and session identifier 
 
 The typed phrase session persists its exact shuffled selection, current item, reveal and mastery state, attempts, absolute start time, and absolute five-minute retry times under its own browser-storage key. The waiting countdown resumes automatically when a missed phrase is due. A new round retains category and amount while creating a new identifier, timestamp, selection, and empty learning state. Phrase URLs and restored category membership are validated independently of flashcards and descriptions. The shared duration formatter, shuffle seam, controlled clocks, and single retry-delay constant keep timing deterministic in tests.
 
+### Clinical scenario sessions
+
+`Kliiniset tilanteet` presents short multi-step physician-patient conversations across eleven categories (anamnesis, acute care, pain, respiratory symptoms, infection, abdominal symptoms, medication, examinations, procedure preparation, explaining findings, and discharge/follow-up). Each scenario carries a Finnish context line and two to six steps; every step shows one Swedish patient line, a Finnish instruction, and three or four Swedish response options with exactly one marked correct. Sessions select 5, 10, or all scenarios, scoped to one category or mixed across all of them.
+
+Selecting an option is a single, un-timed attempt: the chosen and (when different) the correct option are shown immediately, with a short Finnish explanation only on steps where one adds genuine language value, before the learner continues to the next step. A scenario's final step also surfaces its Swedish closing line and a Finnish wrap-up. Resolved steps remain visible as compact, speaker-aligned transcript bubbles so the conversation reads as continuous rather than as isolated questions; response options are shuffled per session and step so the correct answer is never in a fixed position.
+
+The typed session persists its selection, scenario/step position, the pending (unanswered) step, and every resolved step's chosen option and correctness under its own browser-storage key, validated on restore against the loaded scenario content (including, where the full content is available, that recorded options and their correctness still match). Each finished scenario counts as one unique item toward XP, the daily goal, and quest variety through the same `session-started` / `item-completed` / `session-completed` / `active-study` events as the other exercises, using the `clinical` exercise mode — it does not use, and is not used by, the flashcard retry/mastery or Smart Review word-stats engine. Completion reports how many scenarios were answered flawlessly and overall step accuracy; `Uusi kierros` retains mode, category, and amount while creating a new identifier, selection, and empty progress state.
+
 ## Content workflow
 
 ### Add a deck
@@ -112,9 +120,15 @@ Add a Swedish object to `content/descriptions.json` and assign exactly one publi
 
 Add one complete natural Finnish cue and one canonical Swedish phrase to `content/phrases.json`, assigned to a published category from `content/phrase-categories.json`. Full phrases are maintained separately from one-word flashcards. Do not add alternatives, placeholders, incomplete fragments, explanations, or duplicate normalized cues. Keep every phrase category non-empty and run content validation before committing.
 
+### Add a clinical scenario
+
+Add an object to `content/clinical-scenarios.json` with a unique `tilanne-<categoryId>-<slug>` ID assigned to one of the eleven fixed categories in `content/clinical-scenario-categories.json` (that category list is locked to exactly eleven; scenarios are not). Give it a Finnish title and one- or two-sentence context, two to six steps, and a Swedish closing line with a Finnish wrap-up. Each step needs a sequential ID (`step-1`, `step-2`, …), one Swedish patient line, one Finnish instruction, and three or four Swedish options with sequential IDs (`a`, `b`, `c`, `d`) and exactly one `correct: true`. Add a short Finnish `explanationFi` only where it genuinely clarifies the language choice.
+
+Distractor options must be wrong for communication reasons a physician would actually make — an unnatural or ungrammatical phrasing, a mismatch with what the patient just said, or a tone that is too blunt or too vague — never because several medically reasonable choices exist and only one was arbitrarily picked. Keep dialogue natural Finland-Swedish clinical register (`ni`, not `du`); a mid-sentence "…" hesitation is fine, but slash-separated alternatives, semicolons, and placeholder text are not. Run content validation and all tests before committing.
+
 ## Tests and accessibility
 
-Vitest covers directions, duration formatting, deterministic unique session and new-round selection, delayed phrase recall, summary statistics, typed transitions, URL matching, strict deck- and category-aware stored-session validation, answer normalisation, articles and inflections, and malformed content. Playwright uses controlled clocks and randomness for elapsed timing and stable selections, and covers full-row activation, focus transitions, refresh-stable sessions and drafts, retries, new rounds, invalid URLs, all session sizes, mobile control sizing, responsive overflow, visual QA, and serious/critical axe violations.
+Vitest covers directions, duration formatting, deterministic unique session and new-round selection, delayed phrase recall, summary statistics, typed transitions, URL matching, strict deck- and category-aware stored-session validation, answer normalisation, articles and inflections, malformed content, and — for clinical scenarios specifically — multi-step progression across scenario boundaries, stable per-step option shuffling, and full/compact stored-session validation including tampered-answer rejection. Playwright uses controlled clocks and randomness for elapsed timing and stable selections, and covers full-row activation, focus transitions, refresh-stable sessions and drafts, retries, new rounds, invalid URLs, all session sizes, mobile control sizing, responsive overflow, visual QA, and serious/critical axe violations, including the clinical scenario conversation flow, its transcript and feedback states, and its shared progress/motion/sound event integration.
 
 ## Local progress model
 

@@ -4,7 +4,7 @@ import type { Achievement, CapsuleKind, ExerciseMode, LeagueResult, LeagueTier, 
 export const rarityCopy:Record<Rarity,string>={common:'Vanlig',rare:'Sällsynt',epic:'Episk',legendary:'Legendarisk'};
 export const boxCopy:Record<CapsuleKind,string>={standard:'Vanlig belöning',golden:'Gyllene belöning',legendary:'Legendarisk belöning'};
 export const leagueCopy:Record<LeagueTier,string>={Pronssi:'Brons',Hopea:'Silver',Kulta:'Guld',Platina:'Platina',Timantti:'Diamant',Konsultti:'Mästare'};
-export const modeRoutes:Record<ExerciseMode,string>={flashcards:'/kortit/',phrases:'/fraasit/',descriptions:'/kuvailu/'};
+export const modeRoutes:Record<ExerciseMode,string>={flashcards:'/kortit/',phrases:'/fraasit/',descriptions:'/kuvailu/',clinical:'/tilanteet/'};
 
 export interface BilingualCopy { sv:string; fi:string }
 export function questCopy(quest:Pick<Quest,'kind'|'mode'|'target'|'answerMode'>):BilingualCopy{
@@ -66,5 +66,5 @@ export function nextActionCopy(action:NextAction):string{
     if(action.quest.kind==='variety')return`${action.remaining===1?'En':action.remaining} övningstyp kvar i veckans uppdrag`;
     return questCopy(action.quest).sv;
   }
-  return action.mode==='flashcards'?'Fortsätt med ordkort':action.mode==='phrases'?'Fortsätt med fraser':'Fortsätt med beskrivningar';
+  return action.mode==='flashcards'?'Fortsätt med ordkort':action.mode==='phrases'?'Fortsätt med fraser':action.mode==='descriptions'?'Fortsätt med beskrivningar':'Fortsätt med kliniska situationer';
 }

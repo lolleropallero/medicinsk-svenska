@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect,test,type Page } from '@playwright/test';
-import { openSpecificCard } from './helpers';
+import { answerCurrentClinicalStep, openSpecificCard, seedClinicalSession } from './helpers';
 
 const UI='medicinsk-svenska.ui.v1';
 async function probe(page:Page){await page.addInitScript(()=>{(window as unknown as {soundEvents:{effect:string;audible:boolean}[]}).soundEvents=[];window.addEventListener('sound-effect-requested',(event)=>{(window as unknown as {soundEvents:{effect:string;audible:boolean}[]}).soundEvents.push((event as CustomEvent).detail);});});}
@@ -39,6 +39,10 @@ test('exercise actions request only their semantic learning sounds',async({page}
   await page.getByLabel('Vastauksesi').fill(answer);
   await page.getByRole('button',{name:'Tarkista'}).click();
   expect((await events(page)).map(item=>item.effect)).toContain('correct');
+
+  await seedClinicalSession(page,['tilanne-infektio-virtsatietulehdus'],{sessionId:'sound-clinical'});
+  await answerCurrentClinicalStep(page,false);
+  expect((await events(page)).map(item=>item.effect)).toContain('incorrect');
 });
 
 test('daily overlay sounds only on actual open and close interactions after unlock',async({page})=>{

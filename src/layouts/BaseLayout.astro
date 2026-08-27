@@ -10,7 +10,7 @@ interface Props { title: string; description?: string }
 const { title, description = 'Harjoittele lääketieteellistä ruotsia.' } = Astro.props;
 const path = Astro.url.pathname;
 const canonicalUrl = new URL(path, Astro.site);
-const hudRoutes=['/','/kortit','/fraasit','/kuvailu','/edistyminen','/palkinnot','/kausi'];
+const hudRoutes=['/','/kortit','/fraasit','/kuvailu','/tilanteet','/edistyminen','/palkinnot','/kausi'];
 const exerciseRoute=path.includes('/harjoitus');
 const showHud=hudRoutes.some(route=>path===route||path===`${route}/`)&&!exerciseRoute;
 const rewardRoute=path.startsWith('/palkinnot')||path.startsWith('/kausi');
@@ -48,6 +48,7 @@ const backgroundKind=exerciseRoute?'studyLight':rewardRoute?'rewardsDark':path==
         <a href="/kortit/" aria-current={path.startsWith('/kortit') ? 'page' : undefined}><AppIcon name="flashcards"/>Sanakortit</a>
         <a href="/fraasit/" aria-current={path.startsWith('/fraasit') ? 'page' : undefined}><AppIcon name="phrases"/>Fraasit</a>
         <a href="/kuvailu/" aria-current={path.startsWith('/kuvailu') ? 'page' : undefined}><AppIcon name="descriptions"/>Kuvailu</a>
+        <a href="/tilanteet/" aria-current={path.startsWith('/tilanteet') ? 'page' : undefined}><AppIcon name="dialogue"/>Tilanteet</a>
         <a href="/edistyminen/" lang="sv" aria-current={path.startsWith('/edistyminen') ? 'page' : undefined}><AppIcon name="progress"/>Framsteg</a>
       </div>
       <div class="desktop-metagame" role="navigation" aria-label="Palkinnot ja kausi">

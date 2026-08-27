@@ -147,7 +147,10 @@ export function modeVolume(
   now = Date.now(),
   windowDays = MODE_VOLUME_WINDOW_DAYS,
 ): ModeVolume[] {
-  const counts: Record<ExerciseMode, number> = { flashcards: 0, phrases: 0, descriptions: 0 };
+  // Clinical situations intentionally stay out of this vocabulary-mode breakdown (and out of
+  // EXERCISE_MODES below): this insight is scoped to the three word/phrase/description modes that
+  // share Smart Review's word-stats accuracy tracking, which clinical situations do not use.
+  const counts: Record<ExerciseMode, number> = { flashcards: 0, phrases: 0, descriptions: 0, clinical: 0 };
   for (const key of recentDayKeys(now, windowDays)) {
     const day = progress.daily[key];
     if (!day) continue;

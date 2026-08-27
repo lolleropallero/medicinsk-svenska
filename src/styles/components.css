@@ -177,6 +177,9 @@
 .description-action .practice-action-icon {
   background: linear-gradient(145deg, #174e88, #09274b);
 }
+.clinical-action .practice-action-icon {
+  background: linear-gradient(145deg, #16845b, #0b4a34);
+}
 .segments {
   display: flex;
   gap: 5px;

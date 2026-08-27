@@ -156,3 +156,67 @@ export async function readWordStats(page: Page): Promise<{ schemaVersion: 1; car
     return raw ? JSON.parse(raw) : null;
   }, WORD_STATS_KEY);
 }
+
+export const CLINICAL_STORAGE_KEY = 'medicinsk-svenska.clinical-session.v1';
+
+export interface ClinicalOptionData { id: string; sv: string; correct: boolean }
+export interface ClinicalStepData { id: string; patientSv: string; promptFi: string; options: ClinicalOptionData[]; explanationFi?: string }
+export interface ClinicalScenarioData {
+  id: string; categoryId: string; titleFi: string; contextFi: string; steps: ClinicalStepData[]; resolutionSv: string; resolutionFi: string;
+}
+
+/** Reads the step the stored session is currently on, resolved against the page's own loaded content. */
+export async function currentClinicalStep(page: Page): Promise<ClinicalStepData> {
+  return page.evaluate((key) => {
+    const session = JSON.parse(localStorage.getItem(key)!);
+    const scenarios = JSON.parse(document.getElementById('clinical-scenarios-data')!.textContent!) as ClinicalScenarioData[];
+    const scenario = scenarios.find((item) => item.id === session.selectedScenarioIds[session.currentScenarioIndex])!;
+    return scenario.steps[session.currentStepIndex]!;
+  }, CLINICAL_STORAGE_KEY);
+}
+
+/** Clicks whichever rendered option button holds the correct (or an incorrect) answer text, independent of shuffle order. */
+export async function answerCurrentClinicalStep(page: Page, correct: boolean) {
+  const step = await currentClinicalStep(page);
+  const target = (correct ? step.options.find((option) => option.correct) : step.options.find((option) => !option.correct))!;
+  const labels = await page.locator('#clinical-options .choice-label').allTextContents();
+  const index = labels.findIndex((label) => label === target.sv);
+  await page.locator('#clinical-options button').nth(index).click();
+}
+
+export interface SeededClinicalSession {
+  sessionId?: string;
+  categoryId?: string;
+  amount?: number | 'all';
+  startedAt?: number;
+  currentScenarioIndex?: number;
+  currentStepIndex?: number;
+  currentStepAnswer?: { optionId: string; correct: boolean } | null;
+  answers?: Record<string, { optionId: string; correct: boolean }>;
+}
+
+/** Seeds a full, schema-valid clinical session directly into storage for a known set of scenario IDs. */
+export async function seedClinicalSession(page: Page, scenarioIds: string[], options: SeededClinicalSession = {}) {
+  const sessionId = options.sessionId ?? 'seeded-clinical';
+  const mode = options.categoryId ? 'category' : 'all';
+  await page.goto('/tilanteet');
+  await page.evaluate((key) => localStorage.removeItem(key), CLINICAL_STORAGE_KEY);
+  const params = new URLSearchParams({ mode, amount: String(options.amount ?? 5), session: sessionId });
+  if (options.categoryId) params.set('category', options.categoryId);
+  await page.goto(`/tilanteet/harjoitus?${params}`);
+  await page.evaluate(({ key, selected, id, sourceMode, categoryId, amount, startedAt, currentScenarioIndex, currentStepIndex, currentStepAnswer, answers }) => {
+    localStorage.setItem(key, JSON.stringify({
+      schemaVersion: 1, sessionId: id, mode: sourceMode,
+      ...(sourceMode === 'category' ? { sourceCategoryId: categoryId } : {}),
+      requestedAmount: amount, selectedScenarioIds: selected,
+      currentScenarioIndex: currentScenarioIndex ?? 0, currentStepIndex: currentStepIndex ?? 0,
+      currentStepAnswer: currentStepAnswer ?? null, answers: answers ?? {},
+      startedAt: startedAt ?? Date.now(),
+    }));
+  }, {
+    key: CLINICAL_STORAGE_KEY, selected: scenarioIds, id: sessionId, sourceMode: mode, categoryId: options.categoryId,
+    amount: options.amount ?? 5, startedAt: options.startedAt, currentScenarioIndex: options.currentScenarioIndex,
+    currentStepIndex: options.currentStepIndex, currentStepAnswer: options.currentStepAnswer, answers: options.answers,
+  });
+  await page.reload();
+}

@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import AppIcon from '../components/AppIcon.astro';
 import FlagRibbon from '../components/FlagRibbon.astro';
 import RewardBoxVisual from '../components/RewardBoxVisual.astro';
-import { publishedCards, publishedDescriptions, publishedPhrases, publishedDecks, publishedDescriptionCategories, publishedPhraseCategories } from '../lib/content';
+import { publishedCards, publishedDescriptions, publishedPhrases, publishedDecks, publishedDescriptionCategories, publishedPhraseCategories, publishedClinicalScenarios, publishedClinicalScenarioCategories } from '../lib/content';
 
 const sessionCatalog = {
   cards: publishedCards.map(({ id, deckId }) => [id, deckId]),
@@ -12,6 +12,8 @@ const sessionCatalog = {
   phraseCategories: publishedPhraseCategories.map(({ id }) => id),
   descriptions: publishedDescriptions.map(({ id, categoryId }) => [id, categoryId]),
   descriptionCategories: publishedDescriptionCategories.map(({ id }) => id),
+  clinicalScenarios: publishedClinicalScenarios.map(({ id, categoryId, steps }) => [id, categoryId, steps.length]),
+  clinicalScenarioCategories: publishedClinicalScenarioCategories.map(({ id }) => id),
 };
 ---
 <BaseLayout title="Etusivu">
@@ -27,6 +29,7 @@ const sessionCatalog = {
       <a class="practice-action flashcard-action" href="/kortit/"><span class="practice-action-icon"><AppIcon name="flashcards" size={32}/><FlagRibbon variant="dual"/></span><span><strong>Sanakortit</strong><small>Lääketieteen sanasto</small></span><AppIcon name="arrow"/></a>
       <a class="practice-action phrase-action" href="/fraasit/"><span class="practice-action-icon"><AppIcon name="phrases" size={32}/><FlagRibbon variant="dual"/></span><span><strong>Fraasit</strong><small>Vastaanoton kieli</small></span><AppIcon name="arrow"/></a>
       <a class="practice-action description-action" href="/kuvailu/"><span class="practice-action-icon"><AppIcon name="descriptions" size={32}/><FlagRibbon variant="sv"/></span><span><strong>Kuvailutehtävät</strong><small>Ruotsinkieliset määritelmät</small></span><AppIcon name="arrow"/></a>
+      <a class="practice-action clinical-action" href="/tilanteet/"><span class="practice-action-icon"><AppIcon name="dialogue" size={32}/><FlagRibbon variant="dual"/></span><span><strong>Kliiniset tilanteet</strong><small>Potilaskeskustelua ruotsiksi</small></span><AppIcon name="arrow"/></a>
     </div>
   </section>
   <dialog id="daily-overlay" class="daily-overlay" aria-labelledby="daily-overlay-title" lang="sv">

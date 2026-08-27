@@ -8,7 +8,7 @@ const quest = (kind:QuestKind, mode?:ExerciseMode, claimed=false, answerMode?:Vo
   ...(answerMode?{answerMode}:{}),xp:5,credits:10,seasonPoints:10,rerollIndex:0,claimed,
 });
 const base:QuestActionContext={
-  modesUsedToday:[],sessions:{},freshUrls:{flashcards:'/fresh/cards',phrases:'/fresh/phrases',descriptions:'/fresh/descriptions'},
+  modesUsedToday:[],sessions:{},freshUrls:{flashcards:'/fresh/cards',phrases:'/fresh/phrases',descriptions:'/fresh/descriptions',clinical:'/fresh/clinical'},
   freshFlashcardUrls:{cards:'/fresh/cards',choice:'/fresh/choice',written:'/fresh/written'},
 };
 
@@ -61,4 +61,22 @@ describe('daily quest direct action resolver',()=>{
   });
 
   it('does not restart a completed quest',()=>expect(resolveDailyQuestAction(quest('items',undefined,true),base)).toBeNull());
+
+  it('routes active-study and session-completion quests to a resumable clinical session when it was last used',()=>{
+    const sessions={clinical:{href:'/resume/clinical',startedAt:5}};
+    expect(resolveDailyQuestAction(quest('active'),{...base,lastUsedMode:'clinical',sessions})).toEqual({mode:'clinical',href:'/resume/clinical',resumesSession:true});
+    expect(resolveDailyQuestAction(quest('sessions'),{...base,lastUsedMode:'clinical',sessions})).toEqual({mode:'clinical',href:'/resume/clinical',resumesSession:true});
+  });
+
+  it('falls back to a fresh clinical session when it was last used but nothing is resumable',()=>{
+    const context={...base,freshUrls:{...base.freshUrls,clinical:'/fresh/clinical'},lastUsedMode:'clinical' as const};
+    expect(resolveDailyQuestAction(quest('active'),context)).toEqual({mode:'clinical',href:'/fresh/clinical',resumesSession:false});
+    expect(resolveDailyQuestAction(quest('sessions'),context)).toEqual({mode:'clinical',href:'/fresh/clinical',resumesSession:false});
+  });
+
+  it('never selects clinical for variety, retries, or generic items quests, which stay scoped to the three vocabulary modes',()=>{
+    expect(resolveDailyQuestAction(quest('variety'),{...base,modesUsedToday:['flashcards','phrases','descriptions'] as const})).toMatchObject({mode:'flashcards'});
+    expect(resolveDailyQuestAction(quest('retries'),{...base,lastUsedMode:'clinical'})).toMatchObject({mode:'flashcards'});
+    expect(resolveDailyQuestAction(quest('items'),{...base,lastUsedMode:'clinical'})).toMatchObject({mode:'flashcards',href:'/fresh/cards'});
+  });
 });

@@ -4,7 +4,7 @@ import { join } from 'node:path';
 const brokenGoal=['10 tehtävää','päivän kapseliin'].join(' ');
 const forbidden=[brokenGoal,'Palkintokapseli','Putkisuoja','Uudelleenarvontatunnus','Kausipolku','Kausipisteet'];
 const files=(directory:string):string[]=>readdirSync(directory).flatMap(name=>{const path=join(directory,name);return statSync(path).isDirectory()?files(path):/\.(?:html|js)$/.test(name)?[path]:[];});
-const activeExerciseHtml=['dist/kortit/harjoitus/index.html','dist/fraasit/harjoitus/index.html','dist/kuvailu/harjoitus/index.html'];
+const activeExerciseHtml=['dist/kortit/harjoitus/index.html','dist/fraasit/harjoitus/index.html','dist/kuvailu/harjoitus/index.html','dist/tilanteet/harjoitus/index.html'];
 const languageLabels=['Suomi','Svenska','Suomeksi','Ruotsiksi'];
 const obsoleteInlineGeometry=[
   ['brand','M4 5.5C4 3.6 5.6 2'],

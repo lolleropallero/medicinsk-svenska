@@ -89,6 +89,14 @@ import {
   type DescriptionSession,
   type DescriptionSessionConfiguration,
 } from "../lib/description-session";
+import { buildClinicalSessionUrl } from "../lib/clinical-url";
+import {
+  buildCompactClinicalValidationContext,
+  isClinicalSessionComplete,
+  isStoredClinicalSession,
+  type ClinicalSession,
+  type ClinicalSessionConfiguration,
+} from "../lib/clinical-session";
 import {
   achievementBadge,
   cosmeticPreviewLabel,
@@ -213,6 +221,7 @@ const SESSION_KEYS: Record<ExerciseMode, string> = {
   flashcards: "medicinsk-svenska.flashcard-session.v1",
   phrases: "medicinsk-svenska.phrase-session.v1",
   descriptions: "medicinsk-svenska.description-session.v1",
+  clinical: "medicinsk-svenska.clinical-session.v1",
 };
 const VOCABULARY_ANSWER_MODES: readonly VocabularyAnswerMode[] = [
   "cards",
@@ -227,6 +236,8 @@ interface DailySessionCatalog {
   phraseCategories: string[];
   descriptions: [string, string][];
   descriptionCategories: string[];
+  clinicalScenarios: [string, string, number][];
+  clinicalScenarioCategories: string[];
 }
 
 function dailySessionCatalog(): DailySessionCatalog | null {
@@ -325,6 +336,33 @@ function resumableSessions(): Partial<Record<ExerciseMode, ResumableSession>> {
         startedAt: candidate.startedAt,
       };
   }
+  const clinical = storedValue(SESSION_KEYS.clinical);
+  if (clinical && typeof clinical === "object") {
+    const candidate = clinical as ClinicalSession,
+      expected: ClinicalSessionConfiguration = {
+        sessionId: candidate.sessionId,
+        mode: candidate.mode,
+        requestedAmount: candidate.requestedAmount,
+        ...(candidate.mode === "category" && candidate.sourceCategoryId
+          ? { sourceCategoryId: candidate.sourceCategoryId }
+          : {}),
+      };
+    if (
+      isStoredClinicalSession(
+        clinical,
+        buildCompactClinicalValidationContext(
+          catalog.clinicalScenarios,
+          catalog.clinicalScenarioCategories,
+          expected,
+        ),
+      ) &&
+      !isClinicalSessionComplete(candidate)
+    )
+      sessions.clinical = {
+        href: buildClinicalSessionUrl(expected),
+        startedAt: candidate.startedAt,
+      };
+  }
   return sessions;
 }
 function freshSessionUrls(): Record<ExerciseMode, string> {
@@ -346,6 +384,11 @@ function freshSessionUrls(): Record<ExerciseMode, string> {
       sourceMode: "all",
       requestedAmount: 10,
       roundType: "initial",
+    }),
+    clinical: buildClinicalSessionUrl({
+      sessionId: crypto.randomUUID(),
+      mode: "all",
+      requestedAmount: 5,
     }),
   };
 }
@@ -393,6 +436,7 @@ const MODE_LABEL_FI: Record<ExerciseMode, string> = {
   flashcards: "Sanakortit",
   phrases: "Fraasit",
   descriptions: "Kuvailu",
+  clinical: "Kliiniset tilanteet",
 };
 function trendBadgeCopy(trend: InsightsSummary["activity"]["trend"]): string {
   if (trend === "up") return "↑ Ökande";

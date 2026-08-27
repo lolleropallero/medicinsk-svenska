@@ -120,10 +120,12 @@ test('all four route backgrounds load visibly as same-origin WebPs with correct 
     ['/kortit/', 'shell-light'],
     ['/fraasit/', 'shell-light'],
     ['/kuvailu/', 'shell-light'],
+    ['/tilanteet/', 'shell-light'],
     ['/edistyminen/', 'shell-light'],
     ['/kortit/harjoitus?mode=deck&deck=anatomi&direction=fi-sv&amount=10&session=v4-bg-card', 'study-light'],
     ['/fraasit/harjoitus?mode=all&amount=10&session=v4-bg-phrase', 'study-light'],
     ['/kuvailu/harjoitus?mode=all&amount=10&session=v4-bg-description', 'study-light'],
+    ['/tilanteet/harjoitus?mode=all&amount=5&session=v4-bg-clinical', 'study-light'],
   ] as const;
   for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
     await page.setViewportSize(viewport);

@@ -20,31 +20,26 @@ const requiredPhraseCategories = new Map([
   ['hoito-laakitys', 'Hoito ja lääkitys'],
 ]);
 const answerAlternativePattern = /[\/;\n]|\s+(?:eller|tai)\s+/iu;
-const clinicalScenarioCategoryKeys = new Set(['id', 'nameFi', 'status']);
-const clinicalScenarioKeys = new Set([
-  'id', 'categoryId', 'titleFi', 'contextFi', 'steps', 'resolutionSv', 'resolutionFi', 'status',
-]);
-const clinicalScenarioStepKeys = new Set(['id', 'patientSv', 'promptFi', 'options', 'explanationFi']);
-const clinicalScenarioOptionKeys = new Set(['id', 'sv', 'correct']);
-const requiredClinicalScenarioCategories = new Map([
-  ['anamneesi', 'Esitiedot'],
-  ['paivystys', 'Päivystys'],
-  ['kipu', 'Kipu'],
-  ['hengitys', 'Hengitysoireet'],
-  ['infektio', 'Infektio'],
-  ['vatsa', 'Vatsaoireet'],
-  ['laakitys', 'Lääkitys'],
-  ['tutkimus', 'Tutkimukset'],
-  ['toimenpide', 'Toimenpiteeseen valmistautuminen'],
-  ['loydokset', 'Löydökset ja jatko'],
-  ['kotiutus', 'Kotiutus ja seuranta'],
-]);
-// Deliberately narrower than the phrase/description alternative-pattern checks: clinical dialogue is
-// natural spoken text, not a canonical answer key, so a mid-sentence "..." hesitation pause (e.g. "Okej...
+const anamnesisCaseKeys = new Set(['id', 'nameFi', 'status', 'sections']);
+const anamnesisSectionKeys = new Set(['id', 'nameFi', 'items']);
+const anamnesisItemKeys = new Set(['id', 'patientSv', 'modelQuestionsSv']);
+// Order matters here, unlike the flat category lists above: the section sequence is itself part of
+// what the learner is meant to internalize, so validation locks both identity and position.
+const requiredAnamnesisSections: [string, string, number][] = [
+  ['nykyinen-vaiva', 'Nykyinen vaiva', 10],
+  ['liitannaisoireet', 'Liitännäisoireet', 8],
+  ['aiemmat-sairaudet-toimenpiteet', 'Aiemmat sairaudet ja toimenpiteet', 6],
+  ['laakitys-allergiat', 'Lääkitys ja allergiat', 3],
+  ['sukuanamneesi', 'Sukuanamneesi', 2],
+  ['tupakka-alkoholi-paihteet', 'Tupakka, alkoholi ja päihteet', 5],
+  ['sosiaalinen-anamneesi-elintavat', 'Sosiaalinen anamneesi ja elintavat', 4],
+  ['perustiedot', 'Perustiedot', 1],
+];
+// Deliberately narrower than the phrase/description alternative-pattern checks: this is natural
+// spoken dialogue, not a canonical answer key, so a mid-sentence "..." hesitation pause (e.g. "Okej...
 // jag är rädd") is authentic, not a lazy placeholder. Slash-separated alternatives, semicolon-joined
 // fragments, and a lone "X" placeholder are still rejected.
-const clinicalTextAlternativePattern = /[\/;]|\bX\b/u;
-const clinicalOptionIdOrder = ['a', 'b', 'c', 'd'];
+const dialogueAlternativePattern = /[\/;]|\bX\b/u;
 const requiredExpansionDecks = new Map([
   ['vastaanotto-anamneesi', 'Vastaanotto ja anamneesi'],
   ['tutkimukset-hoito', 'Tutkimukset ja hoito'],
@@ -332,7 +327,7 @@ export function validatePhraseContent(categoriesInput: unknown[], phrasesInput: 
   return errors;
 }
 
-function checkClinicalText(
+function checkDialogueText(
   check: (condition: unknown, message: string) => void,
   label: string,
   value: string,
@@ -343,124 +338,96 @@ function checkClinicalText(
   check(value === value.trim(), `leading or trailing whitespace in ${label} on ${context}`);
   check(!/\s{2,}/u.test(value), `repeated whitespace in ${label} on ${context}`);
   check(!/[\n\r]/u.test(value), `newline in ${label} on ${context}`);
-  check(!clinicalTextAlternativePattern.test(value), `alternative, placeholder, or fragment in ${label} on ${context}`);
+  check(!dialogueAlternativePattern.test(value), `alternative, placeholder, or fragment in ${label} on ${context}`);
   check(value.length <= maxLength, `${label} is too long on ${context}`);
 }
 
-export function validateClinicalScenarioContent(categoriesInput: unknown[], scenariosInput: unknown[]): string[] {
+export function validateAnamnesisContent(casesInput: unknown[]): string[] {
   const errors: string[] = [];
   const check = (condition: unknown, message: string) => { if (!condition) errors.push(message); };
-  const categoryIds = new Set<string>();
-  const publishedCategoryIds = new Set<string>();
-  const categoryCounts = new Map<string, number>();
+  const caseIds = new Set<string>();
+  let publishedCaseCount = 0;
 
-  for (const raw of categoriesInput) {
-    if (!isRecord(raw)) { errors.push('clinical scenario category must be an object'); continue; }
+  for (const raw of casesInput) {
+    if (!isRecord(raw)) { errors.push('anamnesis case must be an object'); continue; }
     const id = text(raw.id);
     const status = text(raw.status);
-    const extra = unknownKeys(raw, clinicalScenarioCategoryKeys);
-    check(extra.length === 0, `unknown clinical scenario category properties on ${id || '(missing ID)'}: ${extra.join(', ')}`);
-    check(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id), `invalid clinical scenario category ID: ${id || '(missing ID)'}`);
-    check(!categoryIds.has(id), `duplicate clinical scenario category ID: ${id}`);
-    if (id) categoryIds.add(id);
-    check(text(raw.nameFi).trim().length > 0, `clinical scenario category missing name: ${id}`);
-    check(publicationStatuses.has(status), `invalid clinical scenario category publication status: ${id}`);
-    if (status === 'published') publishedCategoryIds.add(id);
-  }
-  check(categoriesInput.length === requiredClinicalScenarioCategories.size, `exactly ${requiredClinicalScenarioCategories.size} clinical scenario categories must exist`);
-  for (const [id, nameFi] of requiredClinicalScenarioCategories) {
-    const matches = categoriesInput.filter((raw) => isRecord(raw) && raw.id === id && raw.nameFi === nameFi && raw.status === 'published');
-    check(matches.length === 1, `required published clinical scenario category missing or duplicated: ${id}`);
-  }
-
-  const scenarioIds = new Set<string>();
-  let publishedCount = 0;
-
-  for (const raw of scenariosInput) {
-    if (!isRecord(raw)) { errors.push('clinical scenario must be an object'); continue; }
-    const id = text(raw.id);
-    const categoryId = text(raw.categoryId);
-    const titleFi = text(raw.titleFi);
-    const contextFi = text(raw.contextFi);
-    const resolutionSv = text(raw.resolutionSv);
-    const resolutionFi = text(raw.resolutionFi);
-    const status = text(raw.status);
-    const extra = unknownKeys(raw, clinicalScenarioKeys);
     const label = id || '(missing ID)';
+    const extra = unknownKeys(raw, anamnesisCaseKeys);
 
-    check(extra.length === 0, `unknown clinical scenario properties on ${label}: ${extra.join(', ')}`);
-    check(id.trim().length > 0, 'clinical scenario missing ID');
-    check(/^tilanne-[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id), `invalid clinical scenario ID: ${label}`);
-    check(!categoryId || id.startsWith(`tilanne-${categoryId}-`), `clinical scenario ID does not match category on ${label}`);
-    check(!scenarioIds.has(id), `duplicate clinical scenario ID: ${id}`);
-    if (id) scenarioIds.add(id);
-    check(categoryIds.has(categoryId), `unknown clinical scenario category on ${label}: ${categoryId}`);
-    check(publicationStatuses.has(status), `invalid clinical scenario publication status: ${label}`);
-    checkClinicalText(check, 'scenario title', titleFi, label, 100);
-    checkClinicalText(check, 'scenario context', contextFi, label, 220);
-    checkClinicalText(check, 'scenario resolution (Swedish)', resolutionSv, label, 220);
-    checkClinicalText(check, 'scenario resolution (Finnish)', resolutionFi, label, 220);
+    check(extra.length === 0, `unknown anamnesis case properties on ${label}: ${extra.join(', ')}`);
+    check(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(id), `invalid anamnesis case ID: ${label}`);
+    check(!caseIds.has(id), `duplicate anamnesis case ID: ${id}`);
+    if (id) caseIds.add(id);
+    check(text(raw.nameFi).trim().length > 0, `anamnesis case missing name: ${label}`);
+    check(publicationStatuses.has(status), `invalid anamnesis case publication status: ${label}`);
+    if (status === 'published') publishedCaseCount += 1;
 
-    if (status === 'published') {
-      publishedCount += 1;
-      if (categoryIds.has(categoryId)) {
-        check(publishedCategoryIds.has(categoryId), `published clinical scenario uses unpublished category on ${label}: ${categoryId}`);
-        categoryCounts.set(categoryId, (categoryCounts.get(categoryId) ?? 0) + 1);
-      }
-    }
+    if (!Array.isArray(raw.sections)) { errors.push(`anamnesis case sections must be an array on ${label}`); continue; }
+    const sections = raw.sections as unknown[];
+    check(sections.length === requiredAnamnesisSections.length, `anamnesis case must have exactly ${requiredAnamnesisSections.length} sections: ${label}`);
 
-    if (!Array.isArray(raw.steps)) { errors.push(`clinical scenario steps must be an array on ${label}`); continue; }
-    const steps = raw.steps as unknown[];
-    check(steps.length >= 2 && steps.length <= 6, `clinical scenario must have between two and six steps: ${label}`);
+    const sectionIds = new Set<string>();
+    const orderedItemIds: string[] = [];
+    sections.forEach((rawSection, sectionIndex) => {
+      if (!isRecord(rawSection)) { errors.push(`anamnesis section must be an object on ${label}`); return; }
+      const sectionId = text(rawSection.id);
+      const sectionExtra = unknownKeys(rawSection, anamnesisSectionKeys);
+      const sectionLabel = `${label}:${sectionId || `(section ${sectionIndex + 1})`}`;
+      const expected = requiredAnamnesisSections[sectionIndex];
 
-    const stepIds = new Set<string>();
-    steps.forEach((rawStep, index) => {
-      if (!isRecord(rawStep)) { errors.push(`clinical scenario step must be an object on ${label}`); return; }
-      const stepId = text(rawStep.id);
-      const patientSv = text(rawStep.patientSv);
-      const promptFi = text(rawStep.promptFi);
-      const stepExtra = unknownKeys(rawStep, clinicalScenarioStepKeys);
-      const stepLabel = `${label}:${stepId || `(step ${index + 1})`}`;
+      check(sectionExtra.length === 0, `unknown anamnesis section properties on ${sectionLabel}: ${sectionExtra.join(', ')}`);
+      check(!sectionIds.has(sectionId), `duplicate anamnesis section ID: ${sectionLabel}`);
+      if (sectionId) sectionIds.add(sectionId);
+      check(
+        expected !== undefined && sectionId === expected[0] && text(rawSection.nameFi) === expected[1],
+        `anamnesis section out of order, unknown, or renamed at position ${sectionIndex + 1} on ${label}`,
+      );
 
-      check(stepExtra.length === 0, `unknown clinical scenario step properties on ${stepLabel}: ${stepExtra.join(', ')}`);
-      check(stepId === `step-${index + 1}`, `clinical scenario step ID must be sequential on ${stepLabel}`);
-      check(!stepIds.has(stepId), `duplicate clinical scenario step ID: ${stepLabel}`);
-      if (stepId) stepIds.add(stepId);
-      checkClinicalText(check, 'patient line', patientSv, stepLabel, 260);
-      checkClinicalText(check, 'prompt', promptFi, stepLabel, 220);
-      if (rawStep.explanationFi !== undefined) {
-        checkClinicalText(check, 'explanation', text(rawStep.explanationFi), stepLabel, 260);
-      }
+      if (!Array.isArray(rawSection.items)) { errors.push(`anamnesis section items must be an array on ${sectionLabel}`); return; }
+      const items = rawSection.items as unknown[];
+      if (expected) check(items.length === expected[2], `anamnesis section must have exactly ${expected[2]} items: ${sectionLabel}`);
 
-      if (!Array.isArray(rawStep.options)) { errors.push(`clinical scenario step options must be an array on ${stepLabel}`); return; }
-      const options = rawStep.options as unknown[];
-      check(options.length >= 3 && options.length <= 4, `clinical scenario step must have three or four options: ${stepLabel}`);
-      let correctCount = 0;
-      const svSeen = new Set<string>();
-      options.forEach((rawOption, optionIndex) => {
-        if (!isRecord(rawOption)) { errors.push(`clinical scenario option must be an object on ${stepLabel}`); return; }
-        const optionId = text(rawOption.id);
-        const optionSv = text(rawOption.sv);
-        const optionExtra = unknownKeys(rawOption, clinicalScenarioOptionKeys);
-        const optionLabel = `${stepLabel}:${optionId || `(option ${optionIndex + 1})`}`;
+      items.forEach((rawItem, itemIndex) => {
+        if (!isRecord(rawItem)) { errors.push(`anamnesis item must be an object on ${sectionLabel}`); return; }
+        const itemId = text(rawItem.id);
+        const patientSv = text(rawItem.patientSv);
+        const itemExtra = unknownKeys(rawItem, anamnesisItemKeys);
+        const itemLabel = `${sectionLabel}:${itemId || `(item ${itemIndex + 1})`}`;
+        orderedItemIds.push(itemId);
 
-        check(optionExtra.length === 0, `unknown clinical scenario option properties on ${optionLabel}: ${optionExtra.join(', ')}`);
-        check(optionId === clinicalOptionIdOrder[optionIndex], `clinical scenario option ID must be sequential (a, b, c, d) on ${optionLabel}`);
-        check(typeof rawOption.correct === 'boolean', `clinical scenario option correctness must be a boolean on ${optionLabel}`);
-        checkClinicalText(check, 'option text', optionSv, optionLabel, 260);
-        const normalized = normalizeCanonical(optionSv, 'sv');
-        check(!svSeen.has(normalized), `duplicate option text within a step: ${optionLabel}`);
-        if (normalized) svSeen.add(normalized);
-        if (rawOption.correct === true) correctCount += 1;
+        check(itemExtra.length === 0, `unknown anamnesis item properties on ${itemLabel}: ${itemExtra.join(', ')}`);
+        check(/^[a-z0-9]+-\d{2}$/u.test(itemId), `invalid anamnesis item ID: ${itemLabel}`);
+        check(!id || itemId.startsWith(`${id}-`), `anamnesis item ID does not match case on ${itemLabel}`);
+        checkDialogueText(check, 'patient line', patientSv, itemLabel, 260);
+
+        if (!Array.isArray(rawItem.modelQuestionsSv)) { errors.push(`anamnesis item model questions must be an array on ${itemLabel}`); return; }
+        const modelQuestions = rawItem.modelQuestionsSv as unknown[];
+        check(modelQuestions.length >= 1 && modelQuestions.length <= 3, `anamnesis item must have between one and three model questions: ${itemLabel}`);
+        const seen = new Set<string>();
+        modelQuestions.forEach((rawQuestion, questionIndex) => {
+          const question = text(rawQuestion);
+          checkDialogueText(check, `model question ${questionIndex + 1}`, question, itemLabel, 220);
+          const normalized = normalizeCanonical(question, 'sv');
+          check(!seen.has(normalized), `duplicate model question within an item: ${itemLabel}`);
+          if (normalized) seen.add(normalized);
+        });
       });
-      check(correctCount === 1, `clinical scenario step must have exactly one correct option: ${stepLabel}`);
     });
+
+    // Global sequential numbering (not just per-section counts) makes the required end-to-end
+    // ordering machine-checkable rather than merely eyeballed.
+    orderedItemIds.forEach((itemId, index) => {
+      check(itemId === `${id}-${String(index + 1).padStart(2, '0')}`, `anamnesis item ID is not sequential at position ${index + 1} on ${label}: ${itemId || '(missing ID)'}`);
+    });
+    check(orderedItemIds.length === 39, `anamnesis case must have exactly 39 items across its sections: ${label}`);
   }
 
-  check(publishedCount >= 25, 'fewer than 25 published clinical scenarios');
-  for (const categoryId of publishedCategoryIds) {
-    check((categoryCounts.get(categoryId) ?? 0) > 0, `published clinical scenario category is empty: ${categoryId}`);
-  }
+  check(casesInput.length === 1, 'exactly one anamnesis case must exist for this release');
+  check(
+    casesInput.some((raw) => isRecord(raw) && raw.id === 'rintakipu' && raw.nameFi === 'Rintakipu' && raw.status === 'published'),
+    'required published anamnesis case missing or renamed: rintakipu',
+  );
   return errors;
 }
 
@@ -470,12 +437,11 @@ const descriptions = read('descriptions.json');
 const descriptionCategories = read('description-categories.json');
 const phraseCategories = read('phrase-categories.json');
 const phrases = read('phrases.json');
-const clinicalScenarioCategories = read('clinical-scenario-categories.json');
-const clinicalScenarios = read('clinical-scenarios.json');
+const anamnesisCases = read('anamnesis-cases.json');
 const errors = [
   ...validateContent(decks, cards, descriptions, descriptionCategories),
   ...validatePhraseContent(phraseCategories, phrases),
-  ...validateClinicalScenarioContent(clinicalScenarioCategories, clinicalScenarios),
+  ...validateAnamnesisContent(anamnesisCases),
 ];
 const publishedDecks = decks.filter((deck) => isRecord(deck) && deck.status === 'published');
 if (publishedDecks.length !== 8) {
@@ -527,4 +493,4 @@ if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));
   process.exit(1);
 }
-console.log(`Content valid: ${decks.length} decks, ${cards.length} cards, ${descriptions.length} descriptions, ${phrases.length} phrases, ${clinicalScenarios.length} clinical scenarios.`);
+console.log(`Content valid: ${decks.length} decks, ${cards.length} cards, ${descriptions.length} descriptions, ${phrases.length} phrases, ${anamnesisCases.length} anamnesis case(s).`);

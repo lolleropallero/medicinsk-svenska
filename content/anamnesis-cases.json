@@ -1,0 +1,96 @@
+[
+  {
+    "id": "rintakipu",
+    "nameFi": "Rintakipu",
+    "status": "published",
+    "sections": [
+      {
+        "id": "nykyinen-vaiva",
+        "nameFi": "Nykyinen vaiva",
+        "items": [
+          { "id": "rintakipu-01", "patientSv": "Sedan en tid tillbaka får jag då och då ont i bröstet.", "modelQuestionsSv": ["Vad har ni för besvär?", "Vad söker ni för idag?"] },
+          { "id": "rintakipu-02", "patientSv": "För ungefär tre månader sedan.", "modelQuestionsSv": ["När började besvären?"] },
+          { "id": "rintakipu-03", "patientSv": "Mitt i bröstet, ungefär här.", "modelQuestionsSv": ["Var i bröstet gör det ont?"] },
+          { "id": "rintakipu-04", "patientSv": "I vänster axel.", "modelQuestionsSv": ["Strålar smärtan någonstans?", "Vart strålar smärtan?"] },
+          { "id": "rintakipu-05", "patientSv": "Det känns som ett tryck över bröstet.", "modelQuestionsSv": ["Hur känns smärtan?", "Hur skulle ni beskriva smärtan?"] },
+          { "id": "rintakipu-06", "patientSv": "När jag promenerar fort gör det ordentligt ont i bröstet.", "modelQuestionsSv": ["När brukar smärtan komma?", "Vad utlöser smärtan?"] },
+          { "id": "rintakipu-07", "patientSv": "När jag lägger mig ner och vilar en stund försvinner smärtan.", "modelQuestionsSv": ["Vad får smärtan att gå över?", "Vad lindrar smärtan?"] },
+          { "id": "rintakipu-08", "patientSv": "Vanligtvis fem till tio minuter.", "modelQuestionsSv": ["Hur länge brukar smärtan hålla i sig?"] },
+          { "id": "rintakipu-09", "patientSv": "Kanske två eller tre gånger i veckan.", "modelQuestionsSv": ["Hur ofta får ni ont?"] },
+          { "id": "rintakipu-10", "patientSv": "Ungefär sju av tio när det är som värst.", "modelQuestionsSv": ["Hur ont gör det på en skala från noll till tio?"] }
+        ]
+      },
+      {
+        "id": "liitannaisoireet",
+        "nameFi": "Liitännäisoireet",
+        "items": [
+          { "id": "rintakipu-11", "patientSv": "Ja, jag blir också andfådd när det händer.", "modelQuestionsSv": ["Blir ni andfådd samtidigt?"] },
+          { "id": "rintakipu-12", "patientSv": "Ibland blir jag lite kallsvettig.", "modelQuestionsSv": ["Blir ni kallsvettig?"] },
+          { "id": "rintakipu-13", "patientSv": "Nej, jag brukar inte må illa.", "modelQuestionsSv": ["Mår ni illa när ni har ont?"] },
+          { "id": "rintakipu-14", "patientSv": "Ibland känns det som om hjärtat slår fort.", "modelQuestionsSv": ["Får ni hjärtklappning?"] },
+          { "id": "rintakipu-15", "patientSv": "Nej, jag har aldrig svimmat någon gång.", "modelQuestionsSv": ["Har ni svimmat eller varit nära att svimma?"] },
+          { "id": "rintakipu-16", "patientSv": "Nej, det är inget fel på mina ben.", "modelQuestionsSv": ["Har ni haft svullnad eller smärta i benen?"] },
+          { "id": "rintakipu-17", "patientSv": "Nej, jag har varken hosta eller feber.", "modelQuestionsSv": ["Har ni haft hosta eller feber?"] },
+          { "id": "rintakipu-18", "patientSv": "Nej, det gör ingen skillnad.", "modelQuestionsSv": ["Blir smärtan värre när ni andas djupt?"] }
+        ]
+      },
+      {
+        "id": "aiemmat-sairaudet-toimenpiteet",
+        "nameFi": "Aiemmat sairaudet ja toimenpiteet",
+        "items": [
+          { "id": "rintakipu-19", "patientSv": "Ja, ibland ligger blodtrycket kring 160–170.", "modelQuestionsSv": ["Har ni högt blodtryck?", "Vet ni vad ert blodtryck brukar ligga på?"] },
+          { "id": "rintakipu-20", "patientSv": "Nej, jag har inte diabetes.", "modelQuestionsSv": ["Har ni diabetes?"] },
+          { "id": "rintakipu-21", "patientSv": "Nej, jag vet inte vad mitt kolesterolvärde är.", "modelQuestionsSv": ["Vet ni vad ert kolesterolvärde är?"] },
+          { "id": "rintakipu-22", "patientSv": "Nej, jag har aldrig haft någon hjärtinfarkt eller annan hjärtsjukdom.", "modelQuestionsSv": ["Har ni haft någon hjärtsjukdom tidigare?"] },
+          { "id": "rintakipu-23", "patientSv": "Nej, jag har aldrig haft någon blodpropp.", "modelQuestionsSv": ["Har ni haft någon blodpropp tidigare?"] },
+          { "id": "rintakipu-24", "patientSv": "Två gånger, först för blindtarmen och sedan för att jag bröt armen.", "modelQuestionsSv": ["Har ni opererats tidigare?"] }
+        ]
+      },
+      {
+        "id": "laakitys-allergiat",
+        "nameFi": "Lääkitys ja allergiat",
+        "items": [
+          { "id": "rintakipu-25", "patientSv": "Ja, jag tar tabletter mot ryggvärk.", "modelQuestionsSv": ["Tar ni några läkemedel regelbundet?", "Använder ni några mediciner?"] },
+          { "id": "rintakipu-26", "patientSv": "Jag kommer inte ihåg namnet, men jag tar en tablett vid behov.", "modelQuestionsSv": ["Vad heter medicinen och hur ofta tar ni den?"] },
+          { "id": "rintakipu-27", "patientSv": "Hösnuva, och jag nyser alltid i närheten av katter.", "modelQuestionsSv": ["Har ni några allergier?"] }
+        ]
+      },
+      {
+        "id": "sukuanamneesi",
+        "nameFi": "Sukuanamneesi",
+        "items": [
+          { "id": "rintakipu-28", "patientSv": "Min pappa fick hjärtinfarkt när han var 54.", "modelQuestionsSv": ["Finns det hjärt- och kärlsjukdomar i släkten?"] },
+          { "id": "rintakipu-29", "patientSv": "Ja, min morfar hade blödarsjuka.", "modelQuestionsSv": ["Finns det några andra ärftliga sjukdomar i släkten?"] }
+        ]
+      },
+      {
+        "id": "tupakka-alkoholi-paihteet",
+        "nameFi": "Tupakka, alkoholi ja päihteet",
+        "items": [
+          { "id": "rintakipu-30", "patientSv": "Nej, jag slutade för ett par år sedan.", "modelQuestionsSv": ["Röker ni?"] },
+          { "id": "rintakipu-31", "patientSv": "Ungefär ett paket om dagen.", "modelQuestionsSv": ["Hur mycket rökte ni?"] },
+          { "id": "rintakipu-32", "patientSv": "I ungefär trettio år.", "modelQuestionsSv": ["Hur länge rökte ni?"] },
+          { "id": "rintakipu-33", "patientSv": "Jag dricker en öl till maten varje dag och ibland lite vin.", "modelQuestionsSv": ["Hur mycket alkohol dricker ni?"] },
+          { "id": "rintakipu-34", "patientSv": "Nej, aldrig! Sånt håller jag inte på med!", "modelQuestionsSv": ["Använder ni narkotika eller andra droger?", "Använder ni några andra rusmedel?"] }
+        ]
+      },
+      {
+        "id": "sosiaalinen-anamneesi-elintavat",
+        "nameFi": "Sosiaalinen anamneesi ja elintavat",
+        "items": [
+          { "id": "rintakipu-35", "patientSv": "Jag jobbar som snickare på en byggfirma.", "modelQuestionsSv": ["Vad arbetar ni med?"] },
+          { "id": "rintakipu-36", "patientSv": "Nej, jag är inte gift.", "modelQuestionsSv": ["Är ni gift eller sambo?"] },
+          { "id": "rintakipu-37", "patientSv": "Jag bor ensam i en lägenhet.", "modelQuestionsSv": ["Bor ni ensam?", "Hur bor ni?"] },
+          { "id": "rintakipu-38", "patientSv": "Jag promenerar ibland, men jag motionerar inte regelbundet.", "modelQuestionsSv": ["Motionerar ni regelbundet?"] }
+        ]
+      },
+      {
+        "id": "perustiedot",
+        "nameFi": "Perustiedot",
+        "items": [
+          { "id": "rintakipu-39", "patientSv": "Jag är 57 år, 1,60 meter lång och väger 96 kilo.", "modelQuestionsSv": ["Hur gammal är ni?", "Hur lång är ni?", "Hur mycket väger ni?"] }
+        ]
+      }
+    ]
+  }
+]

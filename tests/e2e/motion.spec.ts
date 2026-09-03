@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { answerCurrentClinicalStep, openSpecificCard, seedClinicalSession } from './helpers';
+import { continuePastMilestone, openSpecificCard, seedAnamnesisSession } from './helpers';
 
 const currentCardAnswer = (page: import('@playwright/test').Page) => page.evaluate(() => {
   const state = JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!);
@@ -64,19 +64,30 @@ test('phrase and description use the same reveal and resolution language', async
   await expect(page.locator('#description-feedback')).not.toHaveAttribute('data-motion-state', 'incorrect');
 });
 
-test('clinical situations share the same correct, incorrect, and item-change feedback events', async ({ page }) => {
+test('anamnesis items share reveal, correct, incorrect, and item-change feedback events', async ({ page }) => {
   await page.addInitScript(() => {
     (window as unknown as { feedback: string[] }).feedback = [];
     window.addEventListener('app-feedback', (event) => (window as unknown as { feedback: string[] }).feedback.push((event as CustomEvent).detail.effect));
   });
-  await seedClinicalSession(page, ['tilanne-kipu-alaselkakipu', 'tilanne-kipu-paansarky'], { sessionId: 'motion-clinical' });
-  await answerCurrentClinicalStep(page, false);
-  await expect(page.locator('#clinical-feedback')).toHaveAttribute('data-motion-state', 'incorrect');
-  await page.getByRole('button', { name: /Jatka/ }).click();
+  await seedAnamnesisSession(page, 'rintakipu', { sessionId: 'motion-clinical' });
+  await page.locator('#anamnesis-input').fill('Vad har ni för besvär?');
+  await page.getByRole('button', { name: 'Näytä mallikysymys' }).click();
+  await expect(page.locator('#clinical-transcript')).toHaveAttribute('data-motion-state', 'reveal');
+  await page.getByRole('button', { name: 'En osannut' }).click();
+  await expect(page.locator('#anamnesis-actions')).toHaveAttribute('data-motion-state', 'incorrect');
+  await page.getByRole('button', { name: 'Jatka' }).click();
   await expect(page.locator('#clinical-session-view')).toHaveAttribute('data-motion-state', 'item-change');
-  await answerCurrentClinicalStep(page, true);
-  await expect(page.locator('#clinical-feedback')).toHaveAttribute('data-motion-state', 'correct');
-  expect(await page.evaluate(() => (window as unknown as { feedback: string[] }).feedback)).toEqual(['incorrect', 'item-change', 'correct']);
+  // Completing the first-ever item can unlock an achievement, whose overlay would otherwise block the
+  // next reveal/assess interaction; its own open/close feedback fires in the same tick as item-change,
+  // so it is filtered out below rather than raced against with a mid-sequence assertion.
+  await continuePastMilestone(page);
+  await page.locator('#anamnesis-input').fill('Var i bröstet gör det ont?');
+  await page.getByRole('button', { name: 'Näytä mallikysymys' }).click();
+  await page.getByRole('button', { name: 'Osasin' }).click();
+  await expect(page.locator('#anamnesis-actions')).toHaveAttribute('data-motion-state', 'correct');
+  const milestoneNoise = new Set(['achievement', 'level-up', 'quest-complete', 'overlay-close']);
+  const feedback = (await page.evaluate(() => (window as unknown as { feedback: string[] }).feedback)).filter((effect) => !milestoneNoise.has(effect));
+  expect(feedback).toEqual(['reveal', 'incorrect', 'item-change', 'reveal', 'correct']);
 });
 
 test('daily automatic entrance is staged while manual calm and reduced openings are restrained', async ({ page }) => {

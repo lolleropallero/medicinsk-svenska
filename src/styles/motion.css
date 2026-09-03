@@ -15,8 +15,6 @@ button,.button {
 [data-motion-state="correct"] { animation: motion-correct var(--motion-fast) var(--ease-pop); }
 [data-motion-state="incorrect"] { animation: motion-incorrect var(--motion-fast) var(--ease-standard); }
 .feedback[data-result="correct"][data-motion-state]::before { content:"✓"; display:inline-grid; width:24px; height:24px; margin:0 8px 6px 0; place-items:center; border-radius:50%; background:var(--success); color:white; animation:motion-check var(--motion-fast) var(--ease-pop); }
-.clinical-feedback[data-motion-state="correct"],.clinical-feedback[data-motion-state="incorrect"] { animation: motion-answer-in var(--motion-normal) var(--ease-enter); }
-.clinical-feedback[data-result="correct"][data-motion-state]::before { content:"✓"; display:inline-grid; width:24px; height:24px; margin:0 8px 6px 0; place-items:center; border-radius:50%; background:var(--success); color:white; animation:motion-check var(--motion-fast) var(--ease-pop); }
 
 .daily-overlay[data-motion-state="overlay-open"]::backdrop { animation:motion-scrim-in 170ms var(--ease-standard); }
 .daily-overlay[data-motion-state="overlay-open"] .daily-sheet { animation:motion-sheet-in var(--motion-emphasis) var(--ease-enter); }

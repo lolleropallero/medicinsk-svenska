@@ -125,7 +125,7 @@ test('all four route backgrounds load visibly as same-origin WebPs with correct 
     ['/kortit/harjoitus?mode=deck&deck=anatomi&direction=fi-sv&amount=10&session=v4-bg-card', 'study-light'],
     ['/fraasit/harjoitus?mode=all&amount=10&session=v4-bg-phrase', 'study-light'],
     ['/kuvailu/harjoitus?mode=all&amount=10&session=v4-bg-description', 'study-light'],
-    ['/tilanteet/harjoitus?mode=all&amount=5&session=v4-bg-clinical', 'study-light'],
+    ['/tilanteet/harjoitus?case=rintakipu&session=v4-bg-clinical', 'study-light'],
   ] as const;
   for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
     await page.setViewportSize(viewport);

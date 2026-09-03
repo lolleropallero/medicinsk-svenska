@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { clinicalScenarioCategoryPayload, clinicalScenarioPayload, deckPayload, descriptionCategoryPayload, descriptionPayload, flashcardPayload, phraseCategoryPayload, phrasePayload } from '../../src/lib/content';
+import { anamnesisCasePayload, deckPayload, descriptionCategoryPayload, descriptionPayload, flashcardPayload, phraseCategoryPayload, phrasePayload } from '../../src/lib/content';
 
 const keys = (value: object) => Object.keys(value).sort();
 
@@ -33,15 +33,13 @@ describe('explicit client payload projections', () => {
     expect(phraseCategoryPayload.every((item) => keys(item).every((key) => ['id', 'nameFi'].includes(key)))).toBe(true);
   });
 
-  it('allows only clinical scenario application fields, including nested steps and options', () => {
-    const allowed = new Set(['id', 'categoryId', 'titleFi', 'contextFi', 'steps', 'resolutionSv', 'resolutionFi']);
-    const stepAllowed = new Set(['id', 'patientSv', 'promptFi', 'options', 'explanationFi']);
-    const optionAllowed = new Set(['id', 'sv', 'correct']);
-    expect(clinicalScenarioPayload.length).toBeGreaterThanOrEqual(25);
-    expect(clinicalScenarioPayload.every((item) => keys(item).every((key) => allowed.has(key)))).toBe(true);
-    expect(clinicalScenarioPayload.every((item) => item.steps.every((step) => keys(step).every((key) => stepAllowed.has(key))))).toBe(true);
-    expect(clinicalScenarioPayload.every((item) => item.steps.every((step) => step.options.every((option) => keys(option).every((key) => optionAllowed.has(key)))))).toBe(true);
-    expect(clinicalScenarioCategoryPayload).toHaveLength(11);
-    expect(clinicalScenarioCategoryPayload.every((item) => keys(item).every((key) => ['id', 'nameFi'].includes(key)))).toBe(true);
+  it('allows only anamnesis case application fields, including nested sections and items', () => {
+    const allowed = new Set(['id', 'nameFi', 'sections']);
+    const sectionAllowed = new Set(['id', 'nameFi', 'items']);
+    const itemAllowed = new Set(['id', 'patientSv', 'modelQuestionsSv']);
+    expect(anamnesisCasePayload).toHaveLength(1);
+    expect(anamnesisCasePayload.every((item) => keys(item).every((key) => allowed.has(key)))).toBe(true);
+    expect(anamnesisCasePayload.every((item) => item.sections.every((section) => keys(section).every((key) => sectionAllowed.has(key))))).toBe(true);
+    expect(anamnesisCasePayload.every((item) => item.sections.every((section) => section.items.every((entry) => keys(entry).every((key) => itemAllowed.has(key)))))).toBe(true);
   });
 });

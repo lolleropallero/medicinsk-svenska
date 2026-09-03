@@ -89,14 +89,13 @@ import {
   type DescriptionSession,
   type DescriptionSessionConfiguration,
 } from "../lib/description-session";
-import { buildClinicalSessionUrl } from "../lib/clinical-url";
+import { buildAnamnesisSessionUrl } from "../lib/anamnesis-url";
 import {
-  buildCompactClinicalValidationContext,
-  isClinicalSessionComplete,
-  isStoredClinicalSession,
-  type ClinicalSession,
-  type ClinicalSessionConfiguration,
-} from "../lib/clinical-session";
+  isAnamnesisSessionComplete,
+  isStoredAnamnesisSession,
+  type AnamnesisSession,
+  type AnamnesisSessionConfiguration,
+} from "../lib/anamnesis-session";
 import {
   achievementBadge,
   cosmeticPreviewLabel,
@@ -221,7 +220,7 @@ const SESSION_KEYS: Record<ExerciseMode, string> = {
   flashcards: "medicinsk-svenska.flashcard-session.v1",
   phrases: "medicinsk-svenska.phrase-session.v1",
   descriptions: "medicinsk-svenska.description-session.v1",
-  clinical: "medicinsk-svenska.clinical-session.v1",
+  clinical: "medicinsk-svenska.anamnesis-session.v1",
 };
 const VOCABULARY_ANSWER_MODES: readonly VocabularyAnswerMode[] = [
   "cards",
@@ -236,8 +235,7 @@ interface DailySessionCatalog {
   phraseCategories: string[];
   descriptions: [string, string][];
   descriptionCategories: string[];
-  clinicalScenarios: [string, string, number][];
-  clinicalScenarioCategories: string[];
+  anamnesisCases: [string, string[]][];
 }
 
 function dailySessionCatalog(): DailySessionCatalog | null {
@@ -338,28 +336,19 @@ function resumableSessions(): Partial<Record<ExerciseMode, ResumableSession>> {
   }
   const clinical = storedValue(SESSION_KEYS.clinical);
   if (clinical && typeof clinical === "object") {
-    const candidate = clinical as ClinicalSession,
-      expected: ClinicalSessionConfiguration = {
+    const candidate = clinical as AnamnesisSession,
+      expected: AnamnesisSessionConfiguration = {
         sessionId: candidate.sessionId,
-        mode: candidate.mode,
-        requestedAmount: candidate.requestedAmount,
-        ...(candidate.mode === "category" && candidate.sourceCategoryId
-          ? { sourceCategoryId: candidate.sourceCategoryId }
-          : {}),
-      };
+        caseId: candidate.caseId,
+      },
+      itemIdsByCaseId = new Map(catalog.anamnesisCases),
+      totalItems = itemIdsByCaseId.get(candidate.caseId)?.length ?? 0;
     if (
-      isStoredClinicalSession(
-        clinical,
-        buildCompactClinicalValidationContext(
-          catalog.clinicalScenarios,
-          catalog.clinicalScenarioCategories,
-          expected,
-        ),
-      ) &&
-      !isClinicalSessionComplete(candidate)
+      isStoredAnamnesisSession(clinical, { itemIdsByCaseId, expected }) &&
+      !isAnamnesisSessionComplete(candidate, totalItems)
     )
       sessions.clinical = {
-        href: buildClinicalSessionUrl(expected),
+        href: buildAnamnesisSessionUrl(expected),
         startedAt: candidate.startedAt,
       };
   }
@@ -385,10 +374,9 @@ function freshSessionUrls(): Record<ExerciseMode, string> {
       requestedAmount: 10,
       roundType: "initial",
     }),
-    clinical: buildClinicalSessionUrl({
+    clinical: buildAnamnesisSessionUrl({
       sessionId: crypto.randomUUID(),
-      mode: "all",
-      requestedAmount: 5,
+      caseId: dailySessionCatalog()?.anamnesisCases[0]?.[0] ?? "rintakipu",
     }),
   };
 }

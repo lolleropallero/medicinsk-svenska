@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import AppIcon from '../components/AppIcon.astro';
 import FlagRibbon from '../components/FlagRibbon.astro';
 import RewardBoxVisual from '../components/RewardBoxVisual.astro';
-import { publishedCards, publishedDescriptions, publishedPhrases, publishedDecks, publishedDescriptionCategories, publishedPhraseCategories, publishedClinicalScenarios, publishedClinicalScenarioCategories } from '../lib/content';
+import { publishedCards, publishedDescriptions, publishedPhrases, publishedDecks, publishedDescriptionCategories, publishedPhraseCategories, publishedAnamnesisCases } from '../lib/content';
 
 const sessionCatalog = {
   cards: publishedCards.map(({ id, deckId }) => [id, deckId]),
@@ -12,8 +12,7 @@ const sessionCatalog = {
   phraseCategories: publishedPhraseCategories.map(({ id }) => id),
   descriptions: publishedDescriptions.map(({ id, categoryId }) => [id, categoryId]),
   descriptionCategories: publishedDescriptionCategories.map(({ id }) => id),
-  clinicalScenarios: publishedClinicalScenarios.map(({ id, categoryId, steps }) => [id, categoryId, steps.length]),
-  clinicalScenarioCategories: publishedClinicalScenarioCategories.map(({ id }) => id),
+  anamnesisCases: publishedAnamnesisCases.map(({ id, sections }) => [id, sections.flatMap((section) => section.items.map((item) => item.id))]),
 };
 ---
 <BaseLayout title="Etusivu">

@@ -2,33 +2,24 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AppIcon from '../../components/AppIcon.astro';
 import FlagRibbon from '../../components/FlagRibbon.astro';
-import { clinicalScenarioCategoryPayload, publishedClinicalScenarios } from '../../lib/content';
-const counts = Object.fromEntries(clinicalScenarioCategoryPayload.map((category) => [
-  category.id, publishedClinicalScenarios.filter((scenario) => scenario.categoryId === category.id).length,
-]));
+import { anamnesisCasePayload } from '../../lib/content';
+const cases = anamnesisCasePayload.map((item) => ({
+  id: item.id,
+  nameFi: item.nameFi,
+  sectionCount: item.sections.length,
+  itemCount: item.sections.reduce((total, section) => total + section.items.length, 0),
+}));
 ---
 <BaseLayout title="Kliiniset tilanteet">
   <section class="page wrap clinical-setup" aria-labelledby="page-title">
     <header class="setup-heading"><span class="setup-icon"><AppIcon name="dialogue" size={32}/></span><div><span class="eyebrow">Kliininen keskustelu</span><h1 id="page-title">Kliiniset tilanteet</h1></div><FlagRibbon variant="dual"/></header>
-    <fieldset class="amount-selector">
-      <legend>Tilanteiden määrä</legend>
-      <div class="segments segments-three">
-        <label><input type="radio" name="clinical-amount" value="5" checked /><span>5</span></label>
-        <label><input type="radio" name="clinical-amount" value="10" /><span>10</span></label>
-        <label><input type="radio" name="clinical-amount" value="all" /><span>Kaikki</span></label>
-      </div>
-    </fieldset>
-    <a class="all-topics" data-clinical-start data-mode="all" href="/tilanteet/harjoitus?mode=all&amount=5">
-      <span class="row-icon"><AppIcon name="dialogue" size={32}/></span><span><strong>Kaikki tilanteet</strong><small>Sekoitus kaikista aihealueista</small></span><span>{publishedClinicalScenarios.length} tilannetta</span><AppIcon name="arrow"/>
-    </a>
+    <p lang="fi">Rakenna anamneesi vaihe vaiheelta: lue potilaan vastaus, kirjoita oma kysymyksesi ruotsiksi ja vertaa sitä mallikysymykseen.</p>
     <div class="category-list">
-      {clinicalScenarioCategoryPayload.map((category) => (
-        <a class="category-row" data-clinical-start data-mode="category" data-category={category.id}
-          href={`/tilanteet/harjoitus?mode=category&category=${category.id}&amount=5`}>
-          <span class="row-icon"><AppIcon name="dialogue" size={32}/></span><h2>{category.nameFi}</h2><span class="category-count">{counts[category.id]} tilannetta</span><span class="category-start">Aloita <AppIcon name="arrow"/></span>
+      {cases.map((item) => (
+        <a class="category-row" href={`/tilanteet/harjoitus?case=${item.id}`}>
+          <span class="row-icon"><AppIcon name="dialogue" size={32}/></span><h2>{item.nameFi}</h2><span class="category-count">{item.itemCount} kysymystä · {item.sectionCount} osiota</span><span class="category-start">Aloita <AppIcon name="arrow"/></span>
         </a>
       ))}
     </div>
   </section>
-  <script src="../../scripts/clinical-setup.ts"></script>
 </BaseLayout>

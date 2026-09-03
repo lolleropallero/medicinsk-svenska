@@ -157,66 +157,66 @@ export async function readWordStats(page: Page): Promise<{ schemaVersion: 1; car
   }, WORD_STATS_KEY);
 }
 
-export const CLINICAL_STORAGE_KEY = 'medicinsk-svenska.clinical-session.v1';
+export const ANAMNESIS_STORAGE_KEY = 'medicinsk-svenska.anamnesis-session.v1';
 
-export interface ClinicalOptionData { id: string; sv: string; correct: boolean }
-export interface ClinicalStepData { id: string; patientSv: string; promptFi: string; options: ClinicalOptionData[]; explanationFi?: string }
-export interface ClinicalScenarioData {
-  id: string; categoryId: string; titleFi: string; contextFi: string; steps: ClinicalStepData[]; resolutionSv: string; resolutionFi: string;
+export interface AnamnesisItemData { id: string; patientSv: string; modelQuestionsSv: string[] }
+export interface AnamnesisSectionData { id: string; nameFi: string; items: AnamnesisItemData[] }
+export interface AnamnesisCaseData { id: string; nameFi: string; sections: AnamnesisSectionData[] }
+
+/** Flattens a case's sections the same way the app does, for tests that need the item at a given index. */
+export async function anamnesisItems(page: Page, caseId = 'rintakipu'): Promise<AnamnesisItemData[]> {
+  return page.evaluate((id) => {
+    const cases = JSON.parse(document.getElementById('anamnesis-cases-data')!.textContent!) as AnamnesisCaseData[];
+    const found = cases.find((item) => item.id === id)!;
+    return found.sections.flatMap((section) => section.items);
+  }, caseId);
 }
 
-/** Reads the step the stored session is currently on, resolved against the page's own loaded content. */
-export async function currentClinicalStep(page: Page): Promise<ClinicalStepData> {
-  return page.evaluate((key) => {
-    const session = JSON.parse(localStorage.getItem(key)!);
-    const scenarios = JSON.parse(document.getElementById('clinical-scenarios-data')!.textContent!) as ClinicalScenarioData[];
-    const scenario = scenarios.find((item) => item.id === session.selectedScenarioIds[session.currentScenarioIndex])!;
-    return scenario.steps[session.currentStepIndex]!;
-  }, CLINICAL_STORAGE_KEY);
+/** Reads the item the stored session is currently on, resolved against the page's own loaded content. */
+export async function currentAnamnesisItem(page: Page): Promise<AnamnesisItemData> {
+  const items = await anamnesisItems(page);
+  const index = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!).currentItemIndex, ANAMNESIS_STORAGE_KEY);
+  return items[index]!;
 }
 
-/** Clicks whichever rendered option button holds the correct (or an incorrect) answer text, independent of shuffle order. */
-export async function answerCurrentClinicalStep(page: Page, correct: boolean) {
-  const step = await currentClinicalStep(page);
-  const target = (correct ? step.options.find((option) => option.correct) : step.options.find((option) => !option.correct))!;
-  const labels = await page.locator('#clinical-options .choice-label').allTextContents();
-  const index = labels.findIndex((label) => label === target.sv);
-  await page.locator('#clinical-options button').nth(index).click();
+/** Types a question, reveals the model question(s), and self-assesses the current item. */
+export async function answerCurrentAnamnesisItem(page: Page, knew: boolean, question = 'Testfråga?') {
+  await page.locator('#anamnesis-input').fill(question);
+  await page.getByRole('button', { name: 'Näytä mallikysymys' }).click();
+  await page.getByRole('button', { name: knew ? 'Osasin' : 'En osannut' }).click();
 }
 
-export interface SeededClinicalSession {
+export interface SeededAnamnesisSession {
   sessionId?: string;
-  categoryId?: string;
-  amount?: number | 'all';
   startedAt?: number;
-  currentScenarioIndex?: number;
-  currentStepIndex?: number;
-  currentStepAnswer?: { optionId: string; correct: boolean } | null;
-  answers?: Record<string, { optionId: string; correct: boolean }>;
+  currentItemIndex?: number;
+  currentDraftAnswer?: string;
+  currentRevealed?: boolean;
+  currentSelfAssessment?: 'knew' | 'did-not-know' | null;
+  resultsByItem?: Record<string, 'knew' | 'did-not-know'>;
 }
 
-/** Seeds a full, schema-valid clinical session directly into storage for a known set of scenario IDs. */
-export async function seedClinicalSession(page: Page, scenarioIds: string[], options: SeededClinicalSession = {}) {
-  const sessionId = options.sessionId ?? 'seeded-clinical';
-  const mode = options.categoryId ? 'category' : 'all';
+/** Seeds a full, schema-valid anamnesis session directly into storage for a known case. */
+export async function seedAnamnesisSession(page: Page, caseId = 'rintakipu', options: SeededAnamnesisSession = {}) {
+  const sessionId = options.sessionId ?? 'seeded-anamnesis';
   await page.goto('/tilanteet');
-  await page.evaluate((key) => localStorage.removeItem(key), CLINICAL_STORAGE_KEY);
-  const params = new URLSearchParams({ mode, amount: String(options.amount ?? 5), session: sessionId });
-  if (options.categoryId) params.set('category', options.categoryId);
-  await page.goto(`/tilanteet/harjoitus?${params}`);
-  await page.evaluate(({ key, selected, id, sourceMode, categoryId, amount, startedAt, currentScenarioIndex, currentStepIndex, currentStepAnswer, answers }) => {
+  await page.evaluate((key) => localStorage.removeItem(key), ANAMNESIS_STORAGE_KEY);
+  await page.goto(`/tilanteet/harjoitus?case=${caseId}&session=${sessionId}`);
+  await page.evaluate(({ key, id, caseId, startedAt, currentItemIndex, currentDraftAnswer, currentRevealed, currentSelfAssessment, resultsByItem }) => {
     localStorage.setItem(key, JSON.stringify({
-      schemaVersion: 1, sessionId: id, mode: sourceMode,
-      ...(sourceMode === 'category' ? { sourceCategoryId: categoryId } : {}),
-      requestedAmount: amount, selectedScenarioIds: selected,
-      currentScenarioIndex: currentScenarioIndex ?? 0, currentStepIndex: currentStepIndex ?? 0,
-      currentStepAnswer: currentStepAnswer ?? null, answers: answers ?? {},
+      schemaVersion: 1, sessionId: id, caseId,
+      currentItemIndex: currentItemIndex ?? 0,
+      currentDraftAnswer: currentDraftAnswer ?? '',
+      currentRevealed: currentRevealed ?? false,
+      currentSelfAssessment: currentSelfAssessment ?? null,
+      resultsByItem: resultsByItem ?? {},
       startedAt: startedAt ?? Date.now(),
     }));
   }, {
-    key: CLINICAL_STORAGE_KEY, selected: scenarioIds, id: sessionId, sourceMode: mode, categoryId: options.categoryId,
-    amount: options.amount ?? 5, startedAt: options.startedAt, currentScenarioIndex: options.currentScenarioIndex,
-    currentStepIndex: options.currentStepIndex, currentStepAnswer: options.currentStepAnswer, answers: options.answers,
+    key: ANAMNESIS_STORAGE_KEY, id: sessionId, caseId, startedAt: options.startedAt,
+    currentItemIndex: options.currentItemIndex, currentDraftAnswer: options.currentDraftAnswer,
+    currentRevealed: options.currentRevealed, currentSelfAssessment: options.currentSelfAssessment,
+    resultsByItem: options.resultsByItem,
   });
   await page.reload();
 }

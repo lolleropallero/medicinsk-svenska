@@ -4,8 +4,7 @@ import descriptionsData from '../../content/descriptions.json';
 import descriptionCategoriesData from '../../content/description-categories.json';
 import phraseCategoriesData from '../../content/phrase-categories.json';
 import phrasesData from '../../content/phrases.json';
-import clinicalScenarioCategoriesData from '../../content/clinical-scenario-categories.json';
-import clinicalScenariosData from '../../content/clinical-scenarios.json';
+import anamnesisCasesData from '../../content/anamnesis-cases.json';
 import type {
   Deck,
   DeckClient,
@@ -19,10 +18,8 @@ import type {
   PhraseCategoryClient,
   ClinicalPhrase,
   ClinicalPhraseClient,
-  ClinicalScenarioCategory,
-  ClinicalScenarioCategoryClient,
-  ClinicalScenario,
-  ClinicalScenarioClient,
+  AnamnesisCase,
+  AnamnesisCaseClient,
 } from '../types/content';
 
 export const decks = decksData as Deck[];
@@ -31,16 +28,14 @@ export const descriptions = descriptionsData as DescriptionExercise[];
 export const descriptionCategories = descriptionCategoriesData as DescriptionCategory[];
 export const phraseCategories = phraseCategoriesData as PhraseCategory[];
 export const phrases = phrasesData as ClinicalPhrase[];
-export const clinicalScenarioCategories = clinicalScenarioCategoriesData as ClinicalScenarioCategory[];
-export const clinicalScenarios = clinicalScenariosData as ClinicalScenario[];
+export const anamnesisCases = anamnesisCasesData as AnamnesisCase[];
 export const publishedDecks = decks.filter((deck) => deck.status === 'published');
 export const publishedCards = cards.filter((card) => card.status === 'published');
 export const publishedDescriptions = descriptions.filter((item) => item.status === 'published');
 export const publishedDescriptionCategories = descriptionCategories.filter((item) => item.status === 'published');
 export const publishedPhraseCategories = phraseCategories.filter((item) => item.status === 'published');
 export const publishedPhrases = phrases.filter((item) => item.status === 'published');
-export const publishedClinicalScenarioCategories = clinicalScenarioCategories.filter((item) => item.status === 'published');
-export const publishedClinicalScenarios = clinicalScenarios.filter((item) => item.status === 'published');
+export const publishedAnamnesisCases = anamnesisCases.filter((item) => item.status === 'published');
 
 export const phraseCategoryPayload: PhraseCategoryClient[] = publishedPhraseCategories.map((item) => ({
   id: item.id,
@@ -84,17 +79,8 @@ export const descriptionPayload: DescriptionExerciseClient[] = publishedDescript
   ...(item.inflection ? { inflection: item.inflection } : {}),
 }));
 
-export const clinicalScenarioCategoryPayload: ClinicalScenarioCategoryClient[] = publishedClinicalScenarioCategories.map((item) => ({
+export const anamnesisCasePayload: AnamnesisCaseClient[] = publishedAnamnesisCases.map((item) => ({
   id: item.id,
   nameFi: item.nameFi,
-}));
-
-export const clinicalScenarioPayload: ClinicalScenarioClient[] = publishedClinicalScenarios.map((item) => ({
-  id: item.id,
-  categoryId: item.categoryId,
-  titleFi: item.titleFi,
-  contextFi: item.contextFi,
-  steps: item.steps,
-  resolutionSv: item.resolutionSv,
-  resolutionFi: item.resolutionFi,
+  sections: item.sections,
 }));

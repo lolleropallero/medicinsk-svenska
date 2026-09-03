@@ -17,15 +17,9 @@ export interface ClinicalPhrase {
   id: string; categoryId: string; fi: string; sv: string; status: PublicationStatus;
 }
 
-export interface ClinicalScenarioCategory { id: string; nameFi: string; status: PublicationStatus }
-export interface ClinicalScenarioOption { id: string; sv: string; correct: boolean }
-export interface ClinicalScenarioStep {
-  id: string; patientSv: string; promptFi: string; options: ClinicalScenarioOption[]; explanationFi?: string;
-}
-export interface ClinicalScenario {
-  id: string; categoryId: string; titleFi: string; contextFi: string; steps: ClinicalScenarioStep[];
-  resolutionSv: string; resolutionFi: string; status: PublicationStatus;
-}
+export interface AnamnesisItem { id: string; patientSv: string; modelQuestionsSv: string[] }
+export interface AnamnesisSection { id: string; nameFi: string; items: AnamnesisItem[] }
+export interface AnamnesisCase { id: string; nameFi: string; status: PublicationStatus; sections: AnamnesisSection[] }
 
 export type FlashcardClient = Omit<Flashcard, 'status'>;
 export type DescriptionCategoryClient = Omit<DescriptionCategory, 'status'>;
@@ -33,5 +27,4 @@ export type DescriptionExerciseClient = Omit<DescriptionExercise, 'status'>;
 export type DeckClient = Omit<Deck, 'status'>;
 export type PhraseCategoryClient = Omit<PhraseCategory, 'status'>;
 export type ClinicalPhraseClient = Omit<ClinicalPhrase, 'status'>;
-export type ClinicalScenarioCategoryClient = Omit<ClinicalScenarioCategory, 'status'>;
-export type ClinicalScenarioClient = Omit<ClinicalScenario, 'status'>;
+export type AnamnesisCaseClient = Omit<AnamnesisCase, 'status'>;

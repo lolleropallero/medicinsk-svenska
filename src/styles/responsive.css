@@ -23,7 +23,7 @@
     right: 0;
     bottom: 0;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     min-height: 62px;
     padding: 4px 4px max(5px, env(safe-area-inset-bottom));
     border-top: 1px solid rgba(255, 255, 255, 0.15);

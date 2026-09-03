@@ -155,15 +155,16 @@ describe("Nordic Clinical Arcade visual catalog", () => {
     }
   });
 
-  it("defines the five stable mobile navigation routes", () => {
+  it("defines the six stable mobile navigation routes", () => {
     expect(MOBILE_NAV_ITEMS.map((item) => item.href)).toEqual([
       "/",
       "/kortit/",
       "/fraasit/",
       "/kuvailu/",
+      "/tilanteet/",
       "/edistyminen/",
     ]);
-    expect(new Set(MOBILE_NAV_ITEMS.map((item) => item.icon)).size).toBe(5);
+    expect(new Set(MOBILE_NAV_ITEMS.map((item) => item.icon)).size).toBe(6);
   });
 
   it("contains explicit calm-mode and reduced-motion overrides", () => {

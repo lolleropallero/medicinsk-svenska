@@ -77,6 +77,7 @@ export const MOBILE_NAV_ITEMS = [
   { href: "/kortit/", label: "Kortit", icon: "flashcards" },
   { href: "/fraasit/", label: "Fraasit", icon: "phrases" },
   { href: "/kuvailu/", label: "Kuvailu", icon: "descriptions" },
+  { href: "/tilanteet/", label: "Tilanteet", icon: "dialogue" },
   { href: "/edistyminen/", label: "Framsteg", icon: "progress" },
 ] as const satisfies ReadonlyArray<{
   href: string;

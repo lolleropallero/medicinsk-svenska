@@ -13,7 +13,7 @@ test('flashcard feedback shares semantic motion and sound events', async ({ page
     (window as unknown as { feedback: string[] }).feedback = [];
     window.addEventListener('app-feedback', (event) => (window as unknown as { feedback: string[] }).feedback.push((event as CustomEvent).detail.effect));
   });
-  await openSpecificCard(page, { id: 'anatomi-004', deckId: 'anatomi' }, 'fi-sv');
+  await openSpecificCard(page, { id: 'tenttisanasto-anatomi-111', deckId: 'anatomi' }, 'fi-sv');
   const prompt = await page.locator('#front-term').textContent();
   await page.getByRole('button', { name: 'Näytä vastaus' }).click();
   await expect(page.locator('#answer-area')).toBeVisible();
@@ -30,7 +30,7 @@ test('multiple choice and written vocabulary modes share semantic feedback', asy
     (window as unknown as { feedback: string[] }).feedback = [];
     window.addEventListener('app-feedback', (event) => (window as unknown as { feedback: string[] }).feedback.push((event as CustomEvent).detail.effect));
   });
-  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=anatomi&direction=fi-sv&amount=10&session=motion-choice');
+  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=sjukdomar&direction=fi-sv&amount=10&session=motion-choice');
   const correct = await currentCardAnswer(page);
   const labels = await page.locator('#choice-options .choice-label').allTextContents();
   await page.locator('#choice-options button').nth(labels.findIndex((label) => label !== correct)).click();
@@ -41,7 +41,7 @@ test('multiple choice and written vocabulary modes share semantic feedback', asy
     expect.arrayContaining(['incorrect', 'item-change']),
   );
 
-  await page.goto('/kortit/harjoitus?mode=deck&answer=written&deck=anatomi&direction=sv-fi&amount=10&session=motion-written');
+  await page.goto('/kortit/harjoitus?mode=deck&answer=written&deck=sjukdomar&direction=sv-fi&amount=10&session=motion-written');
   await page.getByLabel('Vastauksesi').fill(await currentCardAnswer(page));
   await page.getByRole('button', { name: 'Tarkista' }).click();
   expect(await page.evaluate(() => (window as unknown as { feedback: string[] }).feedback)).toEqual(

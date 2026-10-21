@@ -431,6 +431,40 @@ export function validateAnamnesisContent(casesInput: unknown[]): string[] {
   return errors;
 }
 
+export function validateExamContent(topics: unknown[]): string[] {
+  const errors: string[] = [];
+  const expectedTopics = new Map<string, readonly [string, number]>([
+    ['anatomi', ['term', 137]], ['tentti-sairaudet', ['definition', 138]],
+    ['tentti-sydansairaudet', ['definition', 49]], ['tentti-anamneesi', ['definition', 70]],
+    ['tentti-tutkiminen', ['definition', 50]], ['tentti-epikriisi', ['definition', 78]],
+  ] as const);
+  const seen = new Set<string>();
+  const keys = new Set(['id', 'nameFi', 'sourceFile', 'swedishField', 'iconDeckId', 'entries']);
+  if (topics.length !== expectedTopics.size) errors.push('exam must contain all six source lists');
+  for (const topic of topics) {
+    if (!isRecord(topic)) { errors.push('exam topic must be an object'); continue; }
+    const id = text(topic.id);
+    const expected = expectedTopics.get(id);
+    if (!expected || seen.has(id)) errors.push(`unknown or duplicate exam topic: ${id}`);
+    seen.add(id);
+    if (unknownKeys(topic, keys).length) errors.push(`unknown exam topic properties: ${id}`);
+    if (!text(topic.nameFi).trim() || !text(topic.sourceFile).endsWith('.json')) errors.push(`missing exam source metadata: ${id}`);
+    if (!allowedDeckIds.has(text(topic.iconDeckId))) errors.push(`invalid exam icon: ${id}`);
+    if (topic.swedishField !== expected?.[0]) errors.push(`incorrect exam language direction: ${id}`);
+    if (!Array.isArray(topic.entries) || topic.entries.length !== expected?.[1]) {
+      errors.push(`incorrect exam source count: ${id}`);
+      continue;
+    }
+    for (const [index, entry] of topic.entries.entries()) {
+      if (!isRecord(entry) || unknownKeys(entry, new Set(['term', 'definition'])).length ||
+          !['term', 'definition'].every((key) => typeof entry[key] === 'string' && text(entry[key]).trim().length > 0 && text(entry[key]).length <= 300)) {
+        errors.push(`malformed exam entry: ${id}:${index + 1}`);
+      }
+    }
+  }
+  return errors;
+}
+
 const decks = read('decks.json');
 const cards = read('flashcards.json');
 const descriptions = read('descriptions.json');
@@ -438,10 +472,12 @@ const descriptionCategories = read('description-categories.json');
 const phraseCategories = read('phrase-categories.json');
 const phrases = read('phrases.json');
 const anamnesisCases = read('anamnesis-cases.json');
+const examTopics = read('exam-vocabulary.json');
 const errors = [
   ...validateContent(decks, cards, descriptions, descriptionCategories),
   ...validatePhraseContent(phraseCategories, phrases),
   ...validateAnamnesisContent(anamnesisCases),
+  ...validateExamContent(examTopics),
 ];
 const publishedDecks = decks.filter((deck) => isRecord(deck) && deck.status === 'published');
 if (publishedDecks.length !== 8) {
@@ -470,7 +506,7 @@ if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));
   process.exit(1);
 }
-if (cards.length !== 498) errors.push('flashcards must remain exactly 498');
+if (cards.length !== 368) errors.push('curated flashcards outside the replaced anatomy list must remain exactly 368');
 if (descriptions.length !== 51) errors.push('descriptions must remain exactly 51');
 const expectedDescriptionCounts = [8, 7, 7, 8, 6, 7, 8];
 const actualDescriptionCounts = descriptionCategories
@@ -493,4 +529,4 @@ if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));
   process.exit(1);
 }
-console.log(`Content valid: ${decks.length} decks, ${cards.length} cards, ${descriptions.length} descriptions, ${phrases.length} phrases, ${anamnesisCases.length} anamnesis case(s).`);
+console.log(`Content valid: ${decks.length} general decks, ${cards.length} curated cards, 522 exam cards (137 replace general anatomy), ${descriptions.length} descriptions, ${phrases.length} phrases, ${anamnesisCases.length} anamnesis case(s).`);

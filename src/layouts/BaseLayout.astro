@@ -10,7 +10,7 @@ interface Props { title: string; description?: string }
 const { title, description = 'Harjoittele lääketieteellistä ruotsia.' } = Astro.props;
 const path = Astro.url.pathname;
 const canonicalUrl = new URL(path, Astro.site);
-const hudRoutes=['/','/kortit','/fraasit','/kuvailu','/tilanteet','/edistyminen','/palkinnot','/kausi'];
+const hudRoutes=['/','/kortit','/tentti','/fraasit','/kuvailu','/tilanteet','/edistyminen','/palkinnot','/kausi'];
 const exerciseRoute=path.includes('/harjoitus');
 const showHud=hudRoutes.some(route=>path===route||path===`${route}/`)&&!exerciseRoute;
 const rewardRoute=path.startsWith('/palkinnot')||path.startsWith('/kausi');

@@ -5,6 +5,7 @@ import descriptionCategoriesData from '../../content/description-categories.json
 import phraseCategoriesData from '../../content/phrase-categories.json';
 import phrasesData from '../../content/phrases.json';
 import anamnesisCasesData from '../../content/anamnesis-cases.json';
+import { examCards } from './exam-content';
 import type {
   Deck,
   DeckClient,
@@ -23,7 +24,7 @@ import type {
 } from '../types/content';
 
 export const decks = decksData as Deck[];
-export const cards = cardsData as Flashcard[];
+export const cards: Flashcard[] = [...cardsData as Flashcard[], ...examCards.filter((card) => card.deckId === 'anatomi')];
 export const descriptions = descriptionsData as DescriptionExercise[];
 export const descriptionCategories = descriptionCategoriesData as DescriptionCategory[];
 export const phraseCategories = phraseCategoriesData as PhraseCategory[];
@@ -67,6 +68,7 @@ export const flashcardPayload: FlashcardClient[] = publishedCards.map((card) => 
   ...(card.article ? { article: card.article } : {}),
   partOfSpeech: card.partOfSpeech,
   ...(card.inflection ? { inflection: card.inflection } : {}),
+  ...(card.selfAssessmentOnly ? { selfAssessmentOnly: card.selfAssessmentOnly } : {}),
 }));
 
 export const descriptionPayload: DescriptionExerciseClient[] = publishedDescriptions.map((item) => ({

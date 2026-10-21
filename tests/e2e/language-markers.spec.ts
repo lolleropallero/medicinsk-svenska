@@ -9,7 +9,7 @@ async function expectNoVisibleLanguageLabels(scope: Page | Locator) {
 
 test('flashcards use language metadata without decorative flag ribbons', async ({ page }) => {
   for (const direction of ['fi-sv', 'sv-fi'] as const) {
-    await openSpecificCard(page, { id: 'anatomi-004', deckId: 'anatomi' }, direction);
+    await openSpecificCard(page, { id: 'tenttisanasto-anatomi-111', deckId: 'anatomi' }, direction);
     const sourceLanguage = direction === 'fi-sv' ? 'fi' : 'sv';
     const targetLanguage = direction === 'fi-sv' ? 'sv' : 'fi';
     const front = page.locator('#front-term');

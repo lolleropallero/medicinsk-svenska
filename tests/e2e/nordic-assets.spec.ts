@@ -27,7 +27,7 @@ test('brand, backgrounds, language corners, and all deck icons use supplied SVG 
   expect(new Set(await deckImages.evaluateAll((images: HTMLImageElement[]) => images.map((image) => image.src))).size).toBe(8);
 
   for (const direction of ['fi-sv','sv-fi'] as const) {
-    await openSpecificCard(page, { id:'anatomi-004', deckId:'anatomi' }, direction);
+    await openSpecificCard(page, { id:'tenttisanasto-anatomi-111', deckId:'anatomi' }, direction);
     expect(await page.locator('.nordic-backdrop').evaluate((node) => getComputedStyle(node).backgroundImage)).toContain('study-light');
     await expect(page.locator('#flashcard .language-ribbon, #flashcard img')).toHaveCount(0);
     await expect(page.locator('#front-term')).toHaveAttribute('lang', direction === 'fi-sv' ? 'fi' : 'sv');

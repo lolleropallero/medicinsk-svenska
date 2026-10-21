@@ -17,7 +17,7 @@ test('Sekoitus is offered alongside Kortit, Monivalinta, and Kirjoita and starts
   await expect(group.getByLabel('Sekoitus')).toBeVisible();
   await group.locator('label').filter({ hasText: 'Sekoitus' }).click();
   await expect(group.getByLabel('Sekoitus')).toBeChecked();
-  await page.locator('.deck-row').filter({ hasText: 'Anatomia' }).click();
+  await page.locator('.deck-row').filter({ hasText: 'Sairaudet ja vaivat' }).click();
   await expect(page).toHaveURL(/answer=mixed/);
   await expect(page.locator('#progress')).toHaveText('0 / 25');
   const state = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), FLASHCARD_STORAGE);
@@ -27,14 +27,14 @@ test('Sekoitus is offered alongside Kortit, Monivalinta, and Kirjoita and starts
 
 test('Sekoitus assigns each card a stable exercise type that varies across the session', async ({ page }) => {
   const sessionId = 'mixed-variety-1';
-  await page.goto(`/kortit/harjoitus?mode=deck&answer=mixed&deck=anatomi&direction=fi-sv&amount=25&session=${sessionId}`);
-  const ids = await deckCardIds(page, 'anatomi', 12);
+  await page.goto(`/kortit/harjoitus?mode=deck&answer=mixed&deck=sjukdomar&direction=fi-sv&amount=25&session=${sessionId}`);
+  const ids = await deckCardIds(page, 'sjukdomar', 12);
   expect(ids).toHaveLength(12);
 
   const seenTypes = new Set<string>();
   for (const currentCardId of ids) {
-    await seedFlashcardSession(page, `/kortit/harjoitus?mode=deck&answer=mixed&deck=anatomi&direction=fi-sv&amount=25&session=${sessionId}`, {
-      sessionId, mode: 'deck', answerMode: 'mixed', sourceDeckId: 'anatomi', direction: 'fi-sv',
+    await seedFlashcardSession(page, `/kortit/harjoitus?mode=deck&answer=mixed&deck=sjukdomar&direction=fi-sv&amount=25&session=${sessionId}`, {
+      sessionId, mode: 'deck', answerMode: 'mixed', sourceDeckId: 'sjukdomar', direction: 'fi-sv',
       requestedAmount: 25, selectedCardIds: ids, currentCardId,
     });
     const section = await currentExerciseSection(page);
@@ -46,13 +46,13 @@ test('Sekoitus assigns each card a stable exercise type that varies across the s
 
 test('a card resolved to Kortit inside Sekoitus is labeled, while a plain Kortit session shows no label', async ({ page }) => {
   const sessionId = 'mixed-tag-1';
-  await page.goto(`/kortit/harjoitus?mode=deck&answer=mixed&deck=anatomi&direction=fi-sv&amount=25&session=${sessionId}`);
-  const ids = await deckCardIds(page, 'anatomi', 30);
+  await page.goto(`/kortit/harjoitus?mode=deck&answer=mixed&deck=sjukdomar&direction=fi-sv&amount=25&session=${sessionId}`);
+  const ids = await deckCardIds(page, 'sjukdomar', 30);
 
   let cardsCardId: string | null = null;
   for (const id of ids) {
-    await seedFlashcardSession(page, `/kortit/harjoitus?mode=deck&answer=mixed&deck=anatomi&direction=fi-sv&amount=25&session=${sessionId}`, {
-      sessionId, mode: 'deck', answerMode: 'mixed', sourceDeckId: 'anatomi', direction: 'fi-sv',
+    await seedFlashcardSession(page, `/kortit/harjoitus?mode=deck&answer=mixed&deck=sjukdomar&direction=fi-sv&amount=25&session=${sessionId}`, {
+      sessionId, mode: 'deck', answerMode: 'mixed', sourceDeckId: 'sjukdomar', direction: 'fi-sv',
       requestedAmount: 25, selectedCardIds: ids, currentCardId: id,
     });
     if (await currentExerciseSection(page) === 'cards') { cardsCardId = id; break; }
@@ -61,8 +61,8 @@ test('a card resolved to Kortit inside Sekoitus is labeled, while a plain Kortit
   await expect(page.locator('#flashcard-mode-tag')).toBeVisible();
   await expect(page.locator('#flashcard-mode-tag')).toHaveText('Kortit');
 
-  await seedFlashcardSession(page, `/kortit/harjoitus?mode=deck&answer=cards&deck=anatomi&direction=fi-sv&amount=25&session=plain-cards-1`, {
-    sessionId: 'plain-cards-1', mode: 'deck', answerMode: 'cards', sourceDeckId: 'anatomi', direction: 'fi-sv',
+  await seedFlashcardSession(page, `/kortit/harjoitus?mode=deck&answer=cards&deck=sjukdomar&direction=fi-sv&amount=25&session=plain-cards-1`, {
+    sessionId: 'plain-cards-1', mode: 'deck', answerMode: 'cards', sourceDeckId: 'sjukdomar', direction: 'fi-sv',
     requestedAmount: 25, selectedCardIds: ids, currentCardId: cardsCardId!,
   });
   await expect(page.locator('#flashcard')).toBeVisible();
@@ -107,7 +107,7 @@ test('grading a full Sekoitus session reaches the same summary and retry mechani
 });
 
 test('a Sekoitus session persists its per-card exercise type and progress across reload', async ({ page }) => {
-  await page.goto('/kortit/harjoitus?mode=deck&answer=mixed&deck=anatomi&direction=fi-sv&amount=10&session=mixed-persist-1');
+  await page.goto('/kortit/harjoitus?mode=deck&answer=mixed&deck=sjukdomar&direction=fi-sv&amount=10&session=mixed-persist-1');
   const sectionBefore = await currentExerciseSection(page);
   const before = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), FLASHCARD_STORAGE);
   await page.reload();
@@ -128,7 +128,7 @@ test('Sekoitus setup and practice fit narrow mobile viewports without accessibil
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   expect((await new AxeBuilder({ page }).analyze()).violations.filter((v) => ['serious', 'critical'].includes(v.impact ?? ''))).toEqual([]);
 
-  await page.goto('/kortit/harjoitus?mode=deck&answer=mixed&deck=anatomi&direction=fi-sv&amount=10&session=mixed-mobile-1');
+  await page.goto('/kortit/harjoitus?mode=deck&answer=mixed&deck=sjukdomar&direction=fi-sv&amount=10&session=mixed-mobile-1');
   await currentExerciseSection(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   expect((await new AxeBuilder({ page }).analyze()).violations.filter((v) => ['serious', 'critical'].includes(v.impact ?? ''))).toEqual([]);

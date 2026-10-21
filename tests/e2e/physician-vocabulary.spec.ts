@@ -67,10 +67,10 @@ test('lucky mode includes the expanded global pool and new IDs persist across re
   await expect.poll(() => page.evaluate((key) => {
     const value = localStorage.getItem(key);
     return value ? JSON.parse(value).selectedCardIds.length : 0;
-  }, STORAGE_KEY)).toBe(498);
+  }, STORAGE_KEY)).toBe(505);
   const before = await page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), STORAGE_KEY);
-  expect(before.selectedCardIds).toHaveLength(498);
-  expect(new Set(before.selectedCardIds).size).toBe(498);
+  expect(before.selectedCardIds).toHaveLength(505);
+  expect(new Set(before.selectedCardIds).size).toBe(505);
   expect(before.selectedCardIds).toContain('tutkimukset-hoito-epikris');
   expect(before.selectedCardIds).toContain('laboratoriokokeet-blodprov');
   await page.reload();

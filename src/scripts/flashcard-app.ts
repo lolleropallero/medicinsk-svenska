@@ -40,7 +40,8 @@ const WEAK_REVIEW_POOL_CAP = 60;
 function initializeFlashcardApp() {
 if (!document.getElementById('cards-data')) return;
 const controller = new AbortController();
-const STORAGE_KEY = 'medicinsk-svenska.flashcard-session.v1';
+const app = document.getElementById('flashcard-app')!;
+const STORAGE_KEY = app.dataset.storageKey ?? 'medicinsk-svenska.flashcard-session.v1';
 const byId = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const allCards = JSON.parse(byId<HTMLScriptElement>('cards-data').textContent ?? '[]') as FlashcardClient[];
 const allDecks = JSON.parse(byId<HTMLScriptElement>('decks-data').textContent ?? '[]') as DeckClient[];
@@ -153,7 +154,7 @@ function startApp() {
   let retryTimer: number | undefined;
 
   byId('session-label').textContent = session.mode === 'lucky'
-    ? 'Kokeilen onneani'
+    ? app.dataset.allLabel ?? 'Kokeilen onneani'
     : session.mode === 'review'
       ? 'Kertaa vaikeita'
       : allDecks.find((deck) => deck.id === session.sourceDeckId)?.nameFi ?? 'Sanakortit';
@@ -279,6 +280,7 @@ function startApp() {
   }
 
   function effectiveExerciseType(card: FlashcardClient): SingleVocabularyAnswerMode {
+    if (card.selfAssessmentOnly) return 'cards';
     return session.answerMode === 'mixed' ? resolveMixedExerciseType(session.sessionId, card.id) : session.answerMode;
   }
 
@@ -361,7 +363,8 @@ function startApp() {
     byId('back-term').textContent = sides.back;
     byId('back-term').lang = session.direction === 'fi-sv' ? 'sv' : 'fi';
     flashcard.dataset.direction=session.direction;
-    const grammar = [partOfSpeechLabel(card.partOfSpeech), card.inflection].filter(Boolean).join(' · ');
+    flashcard.classList.toggle('source-flashcard', card.selfAssessmentOnly === true);
+    const grammar = card.selfAssessmentOnly ? '' : [partOfSpeechLabel(card.partOfSpeech), card.inflection].filter(Boolean).join(' · ');
     byId('grammar').textContent = grammar;
     byId('grammar').hidden = !grammar;
     answerArea.hidden = !session.revealed;

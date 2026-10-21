@@ -67,10 +67,10 @@ test('capture required visual QA views', async ({ page }) => {
   await page.screenshot({ path: 'tmp/visual/calm-mode-desktop.png', fullPage: true });
   await page.goto('/kortit');
   await page.screenshot({ path: 'tmp/visual/decks-desktop.png', fullPage: true });
-  await openSpecificCard(page, { id: 'anatomi-024', deckId: 'anatomi' }, 'fi-sv');
+  await openSpecificCard(page, { id: 'tenttisanasto-anatomi-092', deckId: 'anatomi' }, 'fi-sv');
   await page.getByRole('button', { name: /Näytä vastaus/ }).click();
   await page.screenshot({ path: 'tmp/visual/noun-irregular-desktop.png', fullPage: true });
-  await openSpecificCard(page, { id: 'anatomi-004', deckId: 'anatomi' }, 'sv-fi');
+  await openSpecificCard(page, { id: 'tenttisanasto-anatomi-111', deckId: 'anatomi' }, 'sv-fi');
   await page.getByRole('button', { name: /Näytä vastaus/ }).click();
   await page.screenshot({ path: 'tmp/visual/swedish-finnish-desktop.png', fullPage: true });
   await openSpecificCard(page, { id: 'mediciner-096', deckId: 'mediciner' }, 'fi-sv');

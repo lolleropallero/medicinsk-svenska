@@ -48,13 +48,16 @@ const counts = Object.fromEntries(publishedDecks.map((d) => [d.id, publishedCard
           data-start
           data-mode="deck"
           data-deck={deck.id}
+          data-cards-only={deck.id === 'anatomi' ? 'true' : undefined}
           href={`/kortit/harjoitus?mode=deck&answer=cards&deck=${deck.id}&direction=fi-sv&amount=25`}
         >
           <span class="row-icon deck-icon"><img src={nordicAssets.decks[deck.id as keyof typeof nordicAssets.decks]} width="96" height="96" alt="" aria-hidden="true" decoding="async" /></span>
-          <h2>{deck.nameFi}</h2><span class="deck-count">{counts[deck.id]} korttia</span><span class="deck-start">Aloita <AppIcon name="arrow"/></span>
+          <h2>{deck.nameFi}{deck.id === 'anatomi' && <small class="deck-source">Tenttilista · itsearvioitavat kortit</small>}</h2><span class="deck-count">{counts[deck.id]} korttia</span><span class="deck-start">Aloita <AppIcon name="arrow"/></span>
         </a>
       ))}
     </div>
+    <p class="setup-note">Anatomia käyttää tentin uutta sanalistaa. Sen kortit arvioidaan itse, jotta myös synonyymit ja taivutusmerkinnät pysyvät mukana.</p>
+    <a class="exam-link" href="/tentti/"><AppIcon name="flashcards"/><span><strong>Ruotsin tenttisanasto</strong><small>Kuusi tenttilistaa yhdessä kokonaisuudessa</small></span><AppIcon name="arrow"/></a>
   </section>
   <script is:inline id="cards-data-ids" type="application/json" set:html={JSON.stringify(publishedCards.map((card) => card.id))}></script>
   <script src="../../scripts/deck-list.ts"></script>

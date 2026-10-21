@@ -4,7 +4,7 @@ A calm, static study application for Finnish medical students practising medical
 
 ## Scope
 
-V1 is designed only for medical students. It contains eight decks: Anatomia (130 cards), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (26), Tutkimukset ja hoito (49), and Laboratoriokokeet (45). The 498 flashcards are accompanied by 73 clinical phrases in three categories, 51 Swedish descriptions of anatomy and physiology, and one structured anamnesis case (Rintakipu: 39 questions across eight sections). It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
+V1 is designed only for medical students. It contains eight general decks: Anatomia (137 cards from the supplied exam list), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (26), Tutkimukset ja hoito (49), and Laboratoriokokeet (45). The 505 general flashcards are accompanied by a six-topic exam collection, 73 clinical phrases in three categories, 51 Swedish descriptions of anatomy and physiology, and one structured anamnesis case (Rintakipu: 39 questions across eight sections). It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
 
 Exercise sessions and long-term progress are stored only in the current browser. They are not tied to an account or synchronized between devices.
 
@@ -100,6 +100,14 @@ The content model (`AnamnesisCase` → `AnamnesisSection` → `AnamnesisItem`) i
 
 ## Content workflow
 
+### Exam vocabulary
+
+`/tentti` groups the six supplied exam lists into one 522-card collection: Anatomia (137), Sairaudet ja vaivat (138), Sydänsairaudet (49), Anamneesi (70), Tutkiminen (50), and Epikriisi (78). Links on the home and flashcard pages open the collection. Learners can shuffle all topics or one topic, choose either language direction, and select 10, 25, 50, or all cards.
+
+`content/exam-vocabulary.json` preserves the original entries and source filenames. Anatomy has Swedish in `term`; the other sources have Swedish in `definition`. Source notation, synonyms, phrases, and repetitions across topics are retained. These cards use self-assessment. The general Anatomia deck uses the same 137 cards and always starts card practice; other general decks retain their current content. New source IDs prevent old anatomy progress from attaching to different words.
+
+The shared flashcard engine handles reveal, retries, summaries, and reload persistence. Exam sessions use their own browser key, `medicinsk-svenska.exam-session.v1`, so exam and general sessions do not overwrite each other. Source validation checks the six lists, language orientation, counts, and entry structure; import integrity tests compare every source entry against its original digest.
+
 ### Add a deck
 
 1. Add its typed metadata to `content/decks.json` with a unique lowercase ID and `published` status.
@@ -112,7 +120,7 @@ Add an object to `content/flashcards.json` with a unique ID, one Finnish lexical
 
 The canonical-term rule is strict: no slash-separated alternatives, synonym lists, multiple meanings, phrases, definitions, or examples. Hyphenated and closed compounds count as one lexical item. Omit an entry when its canonical mapping cannot be established confidently.
 
-Flashcards are curated for physician-relevant study. Outside `laboratoriokokeet`, every Finnish and Swedish side must be one lexical item. Uniqueness is global and bidirectional: a normalized term maps to exactly one term in the other language across all eight decks.
+Flashcards are curated for physician-relevant study. Outside `laboratoriokokeet`, every curated Finnish and Swedish side must be one lexical item. Uniqueness is global and bidirectional within curated content: a normalized term maps to exactly one term in the other language. The imported exam anatomy list follows the source-preservation rules above.
 
 ### Add a description
 

@@ -7,8 +7,8 @@ import categoriesData from '../../content/description-categories.json';
 import type { Flashcard } from '../../src/types/content';
 
 const cards = cardsData as Flashcard[];
-const originalCards = cards.slice(0, 373);
-const newCards = cards.slice(373);
+const originalCards = cards.slice(0, 243);
+const newCards = cards.slice(243);
 const byId = new Map(cards.map((card) => [card.id, card]));
 const digest = (value: unknown) => createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const allowedTargets = new Set(['vastaanotto-anamneesi', 'tutkimukset-hoito', 'laboratoriokokeet', 'avdelningar']);
@@ -42,9 +42,9 @@ describe('physician vocabulary expansion', () => {
     expect(cards.filter((card) => card.deckId === 'laboratoriokokeet')).toHaveLength(45);
   });
 
-  it('preserves every accepted card and all description semantics byte-for-byte', () => {
-    expect(originalCards).toHaveLength(373);
-    expect(digest(originalCards)).toBe('ddf623c5d6208f94559af414ee187fec3094c72998760ef3ef26c9bbac740432');
+  it('preserves accepted cards outside the replaced anatomy list and all description semantics', () => {
+    expect(originalCards).toHaveLength(243);
+    expect(digest(originalCards)).toBe('2b39b8af03d980f1d09a24c90061e16c735e8b9400b9353e2d732a818ac82877');
     expect(digest(descriptionsData)).toBe('b5f3181fd61e64a22587035313eea58afd3d10432945f09def19fee1446b28e9');
     expect(digest(categoriesData)).toBe('76758a3761dccd174fd40805e5873dd42b2bde6e78616928f731e7609dd43362');
   });

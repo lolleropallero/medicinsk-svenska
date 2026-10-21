@@ -1,0 +1,88 @@
+---
+import AppIcon from './AppIcon.astro';
+import FlagRibbon from './FlagRibbon.astro';
+import type { DeckClient, FlashcardClient } from '../types/content';
+interface Props {
+  cards: FlashcardClient[];
+  decks: DeckClient[];
+  returnHref?: string;
+  returnLabel?: string;
+  storageKey?: string;
+  allLabel?: string;
+}
+const { cards, decks, returnHref = '/kortit', returnLabel = 'Takaisin pakkoihin', storageKey, allLabel } = Astro.props;
+---
+  <section class="practice wrap" id="flashcard-app" data-storage-key={storageKey} data-all-label={allLabel} aria-labelledby="session-label">
+    <div class="practice-top">
+      <a class="practice-back" href={returnHref}><AppIcon name="back"/>Takaisin</a>
+      <strong id="session-label"></strong>
+      <div class="session-status"><span id="progress" aria-live="polite"></span><time id="elapsed-time" aria-label="Kulunut aika 00:00" datetime="PT0S">00:00</time></div>
+    </div>
+    <div id="session-view">
+      <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
+      <button id="flashcard" class="flashcard" type="button" aria-label="Näytä vastaus">
+        <span id="flashcard-mode-tag" class="exercise-mode-tag" hidden>Kortit</span>
+        <span id="front-term" class="term"></span>
+        <span id="answer-area" hidden><span class="answer-bridge" aria-hidden="true"><AppIcon name="arrow"/></span><span id="back-term" class="term answer"></span><span id="grammar"></span></span>
+      </button>
+      <div id="grade-actions" class="action-row" hidden><button class="danger" id="missed" aria-keyshortcuts="2" title="Pikanäppäin: 2">En osannut</button><button class="success" id="correct" aria-keyshortcuts="1" title="Pikanäppäin: 1">Osasin</button></div>
+      <section id="choice-exercise" class="answer-exercise" hidden aria-labelledby="choice-prompt">
+        <div class="answer-card">
+          <span class="exercise-mode-tag">Monivalinta</span>
+          <p id="choice-prompt" class="term"></p>
+        </div>
+        <div id="choice-options" class="choice-options" role="group" aria-label="Vastausvaihtoehdot"></div>
+        <div id="choice-feedback" class="feedback" hidden>
+          <p><strong class="incorrect-text">Ei aivan</strong></p>
+          <p>Oikea vastaus: <strong id="choice-correct-answer"></strong></p>
+          <p id="choice-submitted-answer"></p>
+          <button id="choice-continue" class="primary" type="button">Jatka</button>
+        </div>
+      </section>
+      <section id="written-exercise" class="answer-exercise" hidden aria-labelledby="written-prompt">
+        <div class="answer-card">
+          <span class="exercise-mode-tag">Kirjoita</span>
+          <p id="written-prompt" class="term"></p>
+        </div>
+        <form id="written-form" autocomplete="off">
+          <label for="written-answer">Vastauksesi</label>
+          <input id="written-answer" name="written-answer" type="text" autocomplete="off" autocapitalize="none" spellcheck="false" />
+          <div class="action-row"><button class="primary" id="written-submit" type="submit">Tarkista</button></div>
+        </form>
+        <div id="written-feedback" class="feedback" hidden>
+          <p><strong class="incorrect-text">Ei aivan</strong></p>
+          <p>Oikea vastaus: <strong id="written-correct-answer"></strong></p>
+          <p id="written-submitted-answer"></p>
+          <button id="written-continue" class="primary" type="button">Jatka</button>
+        </div>
+      </section>
+    </div>
+    <div id="waiting-view" class="waiting" hidden>
+      <span class="waiting-visual" aria-hidden="true"><AppIcon name="retry" size={32}/><i></i></span>
+      <h1 id="waiting-copy" tabindex="-1"></h1>
+      <p>Seuraava kertaus <strong id="retry-countdown"></strong></p>
+      <a href={returnHref}>{returnLabel}</a>
+    </div>
+    <div id="summary-view" class="summary" hidden aria-live="polite">
+      <FlagRibbon variant="dual" />
+      <h1 id="summary-title" tabindex="-1">Valmis</h1>
+      <dl class="summary-stats">
+        <div><dt>Ensimmäisellä</dt><dd id="summary-first"></dd></div>
+        <div><dt>Virheitä</dt><dd id="summary-missed"></dd></div>
+        <div><dt>Aika</dt><dd><time id="summary-time"></time></dd></div>
+      </dl>
+      <div id="flashcard-rewards" class="session-rewards" hidden></div>
+      <div class="summary-actions">
+        <button class="primary" id="new-round" type="button">Uusi kierros</button>
+        <a class="button secondary" href={returnHref}>{returnLabel}</a>
+      </div>
+    </div>
+    <div id="error-view" class="error-state" hidden>
+      <h1 id="error-title" tabindex="-1">Pakkaa ei löytynyt</h1>
+      <p id="error-detail" hidden></p>
+      <a class="button secondary" href={returnHref}>{returnLabel}</a>
+    </div>
+  </section>
+  <script is:inline id="cards-data" type="application/json" set:html={JSON.stringify(cards)}></script>
+  <script is:inline id="decks-data" type="application/json" set:html={JSON.stringify(decks)}></script>
+  <script src="../scripts/flashcard-app.ts"></script>

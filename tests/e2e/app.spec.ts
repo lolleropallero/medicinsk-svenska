@@ -81,7 +81,7 @@ test('selects session size and supports tap and keyboard grading in both directi
 
 test('multiple choice mode has four unique options, wrong feedback persistence, and retry integration',async({page})=>{
   await page.addInitScript(()=>{(window as unknown as {feedback:string[]}).feedback=[];window.addEventListener('app-feedback',event=>(window as unknown as {feedback:string[]}).feedback.push((event as CustomEvent).detail.effect));});
-  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=anatomi&direction=fi-sv&amount=10&session=choice-fi');
+  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=sjukdomar&direction=fi-sv&amount=10&session=choice-fi');
   await expect(page.locator('#choice-exercise')).toBeVisible();
   await expect(page.locator('#flashcard')).toBeHidden();
   const prompt=await currentVocabularyPrompt(page),correctAnswer=await currentVocabularyAnswer(page);
@@ -111,7 +111,7 @@ test('multiple choice mode has four unique options, wrong feedback persistence, 
 });
 
 test('multiple choice mode grades a correct Swedish-to-Finnish answer through the existing mastery path',async({page})=>{
-  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=anatomi&direction=sv-fi&amount=10&session=choice-sv');
+  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=sjukdomar&direction=sv-fi&amount=10&session=choice-sv');
   const correctAnswer=await currentVocabularyAnswer(page);
   const labels=await page.locator('#choice-options .choice-label').allTextContents();
   await page.locator('#choice-options button').nth(labels.findIndex(label=>label===correctAnswer)).click();
@@ -138,7 +138,7 @@ test('written mode normalizes correct answers and persists wrong-answer feedback
   expect(mastered.masteredCardIds).toHaveLength(1);
   expect(mastered.answerDraft).toBe('');
 
-  await page.goto('/kortit/harjoitus?mode=deck&answer=written&deck=anatomi&direction=sv-fi&amount=10&session=written-sv');
+  await page.goto('/kortit/harjoitus?mode=deck&answer=written&deck=sjukdomar&direction=sv-fi&amount=10&session=written-sv');
   const correctFinnish=await currentVocabularyAnswer(page);
   const firstId=await page.evaluate(key=>JSON.parse(localStorage.getItem(key)!).currentCardId,FLASHCARD_STORAGE);
   await page.getByLabel('Vastauksesi').fill('väärä vastaus');
@@ -288,25 +288,25 @@ test('vocabulary answer modes fit narrow mobile layouts',async({page})=>{
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);
 });
 
-test('corrected anatomy card works deterministically in both directions',async({page})=>{
-  const card={id:'anatomi-004',deckId:'anatomi'};
+test('source anatomy card works deterministically in both directions',async({page})=>{
+  const card={id:'tenttisanasto-anatomi-111',deckId:'anatomi'};
   await openSpecificCard(page,card,'fi-sv');
-  await expect(page.locator('#front-term')).toHaveText('munanjohdin');
+  await expect(page.locator('#front-term')).toHaveText('munatorvi');
   await page.getByRole('button',{name:'Näytä vastaus'}).click();
-  await expect(page.locator('#back-term')).toHaveText('en äggledare');
+  await expect(page.locator('#back-term')).toHaveText('en äggledare 5');
   await openSpecificCard(page,card,'sv-fi');
-  await expect(page.locator('#front-term')).toHaveText('en äggledare');
+  await expect(page.locator('#front-term')).toHaveText('en äggledare 5');
   await page.getByRole('button',{name:'Näytä vastaus'}).click();
-  await expect(page.locator('#back-term')).toHaveText('munanjohdin');
+  await expect(page.locator('#back-term')).toHaveText('munatorvi');
 });
 
 test('grammar is hidden before reveal and uses Finnish labels after reveal',async({page})=>{
-  await openSpecificCard(page,{id:'anatomi-024',deckId:'anatomi'},'fi-sv');
+  await openSpecificCard(page,{id:'laboratoriokokeet-urinprov',deckId:'laboratoriokokeet'},'fi-sv');
   await expect(page.locator('#grammar')).toBeHidden();
-  await expect(page.getByText('fötter, fötterna',{exact:false})).toBeHidden();
+  await expect(page.getByText('urinprovet, urinprov, urinproven',{exact:false})).toBeHidden();
   await page.getByRole('button',{name:'Näytä vastaus'}).click();
-  await expect(page.locator('#back-term')).toHaveText('en fot');
-  await expect(page.locator('#grammar')).toHaveText('substantiivi · fötter, fötterna');
+  await expect(page.locator('#back-term')).toHaveText('ett urinprov');
+  await expect(page.locator('#grammar')).toHaveText('substantiivi · urinprovet, urinprov, urinproven');
   await expect(page.getByText('noun',{exact:true})).toHaveCount(0);
 
   await page.setViewportSize({width:390,height:844});
@@ -322,7 +322,7 @@ test('rendered payloads contain only explicit client fields',async({page})=>{
   await page.goto('/kortit/harjoitus?mode=deck&deck=anatomi&direction=fi-sv&amount=10&session=payload-test');
   const cards=JSON.parse((await page.locator('#cards-data').textContent())!);
   const decks=JSON.parse((await page.locator('#decks-data').textContent())!);
-  const cardKeys=new Set(['id','deckId','fi','sv','article','partOfSpeech','inflection']);
+  const cardKeys=new Set(['id','deckId','fi','sv','article','partOfSpeech','inflection','selfAssessmentOnly']);
   expect(cards.every((card:Record<string,unknown>)=>Object.keys(card).every(key=>cardKeys.has(key)))).toBe(true);
   expect(decks.every((deck:Record<string,unknown>)=>Object.keys(deck).every(key=>['id','nameFi'].includes(key)))).toBe(true);
   expect(await page.locator('html').innerText()).not.toContain('published');
@@ -376,7 +376,7 @@ test('elapsed timer uses absolute time across controlled advances and reload',as
 });
 
 test('restored revealed state focuses the first grading action',async({page})=>{
-  await openSpecificCard(page,{id:'anatomi-024',deckId:'anatomi'},'fi-sv');
+  await openSpecificCard(page,{id:'tenttisanasto-anatomi-092',deckId:'anatomi'},'fi-sv');
   await page.getByRole('button',{name:'Näytä vastaus'}).click();
   await expect(page.getByRole('button',{name:'En osannut'})).toBeFocused();
   await page.reload();

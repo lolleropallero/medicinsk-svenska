@@ -8,6 +8,7 @@ export interface PhraseCategory { id: string; nameFi: string; status: Publicatio
 export interface Flashcard {
   id: string; deckId: string; fi: string; sv: string; article?: 'en' | 'ett';
   partOfSpeech: PartOfSpeech; inflection?: string; status: PublicationStatus;
+  selfAssessmentOnly?: true;
 }
 export interface DescriptionExercise {
   id: string; categoryId: string; descriptionSv: string; answerSv: string; acceptedInflections?: string[];

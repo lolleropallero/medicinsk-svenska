@@ -1,0 +1,2144 @@
+[
+  {
+    "id": "anatomi",
+    "nameFi": "Anatomia",
+    "sourceFile": "Anatomi - Anatomia.json",
+    "swedishField": "term",
+    "iconDeckId": "anatomi",
+    "entries": [
+      {
+        "definition": "pää",
+        "term": "ett huvud 5"
+      },
+      {
+        "definition": "takaraivo",
+        "term": "ett bakhuvud 5"
+      },
+      {
+        "definition": "päälaki",
+        "term": "en hjässa 1"
+      },
+      {
+        "definition": "kallo",
+        "term": "en skalle 2"
+      },
+      {
+        "definition": "hiukset",
+        "term": "hår, -et"
+      },
+      {
+        "definition": "ohimo",
+        "term": "en tinning 2"
+      },
+      {
+        "definition": "otsa",
+        "term": "en panna 1"
+      },
+      {
+        "definition": "poski",
+        "term": "en kind 3"
+      },
+      {
+        "definition": "poskiontelot",
+        "term": "bihålor, -na"
+      },
+      {
+        "definition": "nenä",
+        "term": "en näsa 1"
+      },
+      {
+        "definition": "sierain",
+        "term": "en näsborr(e) 2"
+      },
+      {
+        "definition": "kitarisat",
+        "term": "gomtonsiller, -na"
+      },
+      {
+        "definition": "leuka",
+        "term": "en haka 1 / en käk(e) 2"
+      },
+      {
+        "definition": "suu",
+        "term": "en mun 2"
+      },
+      {
+        "definition": "kieli",
+        "term": "en tunga 1"
+      },
+      {
+        "definition": "hammas",
+        "term": "en tand 3 (mon. tänder, -na)"
+      },
+      {
+        "definition": "ien",
+        "term": "tandkött, -et"
+      },
+      {
+        "definition": "huuli",
+        "term": "en läpp 2"
+      },
+      {
+        "definition": "kitalaki",
+        "term": "en gom 2"
+      },
+      {
+        "definition": "silmä",
+        "term": "ett öga, -t, ögon, -en"
+      },
+      {
+        "definition": "silmäripset",
+        "term": "en ögonfrans 2"
+      },
+      {
+        "definition": "silmäluomi",
+        "term": "ett ögonlock 5"
+      },
+      {
+        "definition": "kulmakarva",
+        "term": "ett ögonbryn 5"
+      },
+      {
+        "definition": "verkkokalvo",
+        "term": "en näthinna 1"
+      },
+      {
+        "definition": "sidekalvo",
+        "term": "en senhinna 1"
+      },
+      {
+        "definition": "sarveiskalvo",
+        "term": "en hornhinna 1"
+      },
+      {
+        "definition": "korva",
+        "term": "ett öra, -t, öron, -en"
+      },
+      {
+        "definition": "välikorva",
+        "term": "ett mellanöra"
+      },
+      {
+        "definition": "tärykalvo",
+        "term": "en trumhinna 1"
+      },
+      {
+        "definition": "kurkunpää",
+        "term": "ett struphuvud 5"
+      },
+      {
+        "definition": "nielu",
+        "term": "ett svalg 5"
+      },
+      {
+        "definition": "nielurisat",
+        "term": "tonsiller, -na / halsmandlar, -na"
+      },
+      {
+        "definition": "sylkirauhaset",
+        "term": "spottkörtlar, -na"
+      },
+      {
+        "definition": "limakalvo",
+        "term": "en slemhinna 1"
+      },
+      {
+        "definition": "niska",
+        "term": "en nacke 2"
+      },
+      {
+        "definition": "kaula, kurkku",
+        "term": "en hals 2"
+      },
+      {
+        "definition": "imusolmuke",
+        "term": "en lymfknut 2"
+      },
+      {
+        "definition": "hartiat",
+        "term": "en skuldra 1"
+      },
+      {
+        "definition": "olkapää",
+        "term": "en axel 2"
+      },
+      {
+        "definition": "raaja",
+        "term": "en extremitet 3"
+      },
+      {
+        "definition": "käsivarsi",
+        "term": "en arm 2"
+      },
+      {
+        "definition": "käsi",
+        "term": "en hand 3*"
+      },
+      {
+        "definition": "kyynärpää",
+        "term": "en armbåge 2"
+      },
+      {
+        "definition": "kyynärtaive",
+        "term": "ett armveck 5"
+      },
+      {
+        "definition": "kainalo",
+        "term": "en armhåla 1"
+      },
+      {
+        "definition": "ranne",
+        "term": "en handled 3"
+      },
+      {
+        "definition": "kämmen",
+        "term": "en handflata 1"
+      },
+      {
+        "definition": "sormi",
+        "term": "et finger, fingret, fingrar, -na"
+      },
+      {
+        "definition": "peukalo",
+        "term": "en tumme 2"
+      },
+      {
+        "definition": "etusormi",
+        "term": "ett pekfinger"
+      },
+      {
+        "definition": "keskisormi",
+        "term": "ett långfinger"
+      },
+      {
+        "definition": "nimetön",
+        "term": "ett ringfinger"
+      },
+      {
+        "definition": "pikkusormi",
+        "term": "ett lillfinger"
+      },
+      {
+        "definition": "kynsi",
+        "term": "en nagel 2"
+      },
+      {
+        "definition": "selkä",
+        "term": "en rygg 2"
+      },
+      {
+        "definition": "selkäranka",
+        "term": "en ryggrad 3"
+      },
+      {
+        "definition": "selkäydin",
+        "term": "en ryggmärg, -en"
+      },
+      {
+        "definition": "välilevy",
+        "term": "en disk 2"
+      },
+      {
+        "definition": "nikama",
+        "term": "en kota 1"
+      },
+      {
+        "definition": "nivel",
+        "term": "en led 3"
+      },
+      {
+        "definition": "nivelside",
+        "term": "ett ledband 5 / ett ligament 5 / en bindsena 1"
+      },
+      {
+        "definition": "jänne",
+        "term": "en sena 1"
+      },
+      {
+        "definition": "lihas",
+        "term": "en muskel 3"
+      },
+      {
+        "definition": "hermo",
+        "term": "en nerv 3"
+      },
+      {
+        "definition": "rintakehä",
+        "term": "en bröstkorg 2"
+      },
+      {
+        "definition": "rinta, rintakehä",
+        "term": "ett bröst 5"
+      },
+      {
+        "definition": "nänni",
+        "term": "en bröstvårta 1"
+      },
+      {
+        "definition": "pallea",
+        "term": "ett mellangärde 4 / ett / en diafragma, -er / or"
+      },
+      {
+        "definition": "vyötärö",
+        "term": "en midja 1"
+      },
+      {
+        "definition": "kylki",
+        "term": "en sida 1"
+      },
+      {
+        "definition": "napa",
+        "term": "en navel 2"
+      },
+      {
+        "definition": "lonkka",
+        "term": "en höft 3"
+      },
+      {
+        "definition": "lantio",
+        "term": "ett bäcken 5"
+      },
+      {
+        "definition": "takamus",
+        "term": "ett säte 4 /en bak 2"
+      },
+      {
+        "definition": "peppu, pylly",
+        "term": "en stjärt 2"
+      },
+      {
+        "definition": "takamus (ark.)",
+        "term": "en rumpa 1"
+      },
+      {
+        "definition": "luu",
+        "term": "ett ben 5"
+      },
+      {
+        "definition": "luuranko",
+        "term": "ett skelett 5"
+      },
+      {
+        "definition": "lapaluu",
+        "term": "ett skulderblad 5"
+      },
+      {
+        "definition": "solisluu",
+        "term": "ett nyckelben 5"
+      },
+      {
+        "definition": "kylkiluu",
+        "term": "ett revben 5"
+      },
+      {
+        "definition": "koko jalka",
+        "term": "ett ben 5"
+      },
+      {
+        "definition": "reisi",
+        "term": "ett lår 5"
+      },
+      {
+        "definition": "polvi",
+        "term": "ett knä 4"
+      },
+      {
+        "definition": "polvitaive",
+        "term": "ett knäveck 5"
+      },
+      {
+        "definition": "polvilumpio",
+        "term": "en knäskål 2"
+      },
+      {
+        "definition": "nivelkierukka",
+        "term": "en menisk 3"
+      },
+      {
+        "definition": "pohje",
+        "term": "en vad 3"
+      },
+      {
+        "definition": "sääri",
+        "term": "ett underben 5"
+      },
+      {
+        "definition": "sääriluu",
+        "term": "ett skenben 5"
+      },
+      {
+        "definition": "nilkka",
+        "term": "en vrist 3"
+      },
+      {
+        "definition": "jalkaterä",
+        "term": "en fot 3 (mon. fötter, -na)"
+      },
+      {
+        "definition": "kantapää",
+        "term": "en häl 2"
+      },
+      {
+        "definition": "varvas",
+        "term": "en tå 3"
+      },
+      {
+        "definition": "jalkapohja",
+        "term": "en fotsula 1"
+      },
+      {
+        "definition": "iho",
+        "term": "hud, -en"
+      },
+      {
+        "definition": "aivot",
+        "term": "en hjärna 1"
+      },
+      {
+        "definition": "keuhko",
+        "term": "en lunga 1"
+      },
+      {
+        "definition": "henkitorvi",
+        "term": "en luftstrupe 2"
+      },
+      {
+        "definition": "keuhkoputki",
+        "term": "ett luftrör 5"
+      },
+      {
+        "definition": "sydän",
+        "term": "ett hjärta 4"
+      },
+      {
+        "definition": "maksa",
+        "term": "en lever 2"
+      },
+      {
+        "definition": "haima",
+        "term": "en bukspottkörtel 2"
+      },
+      {
+        "definition": "perna",
+        "term": "en mjälte 2"
+      },
+      {
+        "definition": "munuainen",
+        "term": "en njure 2"
+      },
+      {
+        "definition": "sappi",
+        "term": "en galla 1"
+      },
+      {
+        "definition": "virtsarakko",
+        "term": "en urinblåsa 1"
+      },
+      {
+        "definition": "sukupuolielin",
+        "term": "ett könsorgan 5"
+      },
+      {
+        "definition": "kohtu",
+        "term": "en livmoder, -n"
+      },
+      {
+        "definition": "munasarja",
+        "term": "en äggstock 2 / ett ovari/um, -et, -er"
+      },
+      {
+        "definition": "munatorvi",
+        "term": "en äggledare 5"
+      },
+      {
+        "definition": "emätin",
+        "term": "en slida 1"
+      },
+      {
+        "definition": "häpyhuulet",
+        "term": "blygdläppar,-na"
+      },
+      {
+        "definition": "väliliha",
+        "term": "mellangård, -en"
+      },
+      {
+        "definition": "kives",
+        "term": "en testikel 2"
+      },
+      {
+        "definition": "lisäkives",
+        "term": "en bitestikel 2"
+      },
+      {
+        "definition": "kivespussi",
+        "term": "en pung 2"
+      },
+      {
+        "definition": "eturauhanen",
+        "term": "en prostata, -n"
+      },
+      {
+        "definition": "siitin",
+        "term": "en penis, -en"
+      },
+      {
+        "definition": "esinahka",
+        "term": "en förhud, -en"
+      },
+      {
+        "definition": "ohutsuoli",
+        "term": "en tunntarm 2"
+      },
+      {
+        "definition": "paksusuoli",
+        "term": "en tjocktarm 2"
+      },
+      {
+        "definition": "umpisuoli",
+        "term": "en blindtarm 2"
+      },
+      {
+        "definition": "lisäke",
+        "term": "ett bihang 5"
+      },
+      {
+        "definition": "peräsuoli",
+        "term": "en ändtarm 2"
+      },
+      {
+        "definition": "peräaukko",
+        "term": "en analöppning 2"
+      },
+      {
+        "definition": "vatsa",
+        "term": "en mage 2"
+      },
+      {
+        "definition": "maha",
+        "term": "en buk 2"
+      },
+      {
+        "definition": "ruokatorvi",
+        "term": "en matstrupe 2"
+      },
+      {
+        "definition": "mahalaukku",
+        "term": "en magsäck 2"
+      },
+      {
+        "definition": "veri",
+        "term": "blod, -et"
+      },
+      {
+        "definition": "verisuoni",
+        "term": "en blodåd/er, -rar 2"
+      },
+      {
+        "definition": "verisuoni",
+        "term": "ett blodkärl 5"
+      },
+      {
+        "definition": "verisolu",
+        "term": "en blodkropp 2"
+      },
+      {
+        "definition": "sepelvaltimo",
+        "term": "en kransartär 3"
+      },
+      {
+        "definition": "valtimo",
+        "term": "en artär 3"
+      },
+      {
+        "definition": "laskimo",
+        "term": "en ven 3"
+      }
+    ]
+  },
+  {
+    "id": "tentti-sairaudet",
+    "nameFi": "Sairaudet ja vaivat",
+    "sourceFile": "Sjukdomar och besvär -Sairauksia ja vaivoja.json",
+    "swedishField": "definition",
+    "iconDeckId": "sjukdomar",
+    "entries": [
+      {
+        "definition": "förträngning, -en 2",
+        "term": "ahtauma"
+      },
+      {
+        "definition": "hjärnhinneinflammation, -en",
+        "term": "aivokalvontulehdus"
+      },
+      {
+        "definition": "hjärndöd, -en",
+        "term": "aivokuolema"
+      },
+      {
+        "definition": "hjärnskakning, -en",
+        "term": "aivotärähdys"
+      },
+      {
+        "definition": "hjärnblödning, -en",
+        "term": "aivoverenvuoto"
+      },
+      {
+        "definition": "allergi, -n",
+        "term": "allergia"
+      },
+      {
+        "definition": "anemi, -n",
+        "term": "anemia"
+      },
+      {
+        "definition": "angina (Suomessa), halsfluss (Ruotsissa)",
+        "term": "angiina"
+      },
+      {
+        "definition": "astma, -n",
+        "term": "astma"
+      },
+      {
+        "definition": "demens, -en",
+        "term": "dementia"
+      },
+      {
+        "definition": "bli IV dement",
+        "term": "dementoitua"
+      },
+      {
+        "definition": "vara IV dement",
+        "term": "dementoitunut"
+      },
+      {
+        "definition": "dement",
+        "term": "dementiaa sairastava"
+      },
+      {
+        "definition": "diabetes, -en",
+        "term": "diabetes"
+      },
+      {
+        "definition": "diabetiker, -n",
+        "term": "diabeetikko"
+      },
+      {
+        "definition": "epilepsi, -n",
+        "term": "epilepsia"
+      },
+      {
+        "definition": "influensa, -n",
+        "term": "flunssa"
+      },
+      {
+        "definition": "förlamning, -en 2",
+        "term": "halvaus"
+      },
+      {
+        "definition": "förlam/ad, -at, -ade",
+        "term": "halvaantunut"
+      },
+      {
+        "definition": "tandskador, -na",
+        "term": "hammasvammat"
+      },
+      {
+        "definition": "försvagad syn",
+        "term": "heikentynyt näkö"
+      },
+      {
+        "definition": "hösnuva, -n",
+        "term": "heinänuha"
+      },
+      {
+        "definition": "andnöd, -en, andtäppa, -n",
+        "term": "hengenahdistus"
+      },
+      {
+        "definition": "andfåddhet, -en",
+        "term": "hengästyneisyys"
+      },
+      {
+        "definition": "kikhosta, -n",
+        "term": "hinkuyskä"
+      },
+      {
+        "definition": "svindel, -n",
+        "term": "huimaus"
+      },
+      {
+        "definition": "nedsatt hörsel, -n",
+        "term": "huonontunut kuulo"
+      },
+      {
+        "definition": "gasbesvär, -et / luftbesvär, -et",
+        "term": "ilmavaivat"
+      },
+      {
+        "definition": "infektion, -en 3",
+        "term": "infektio"
+      },
+      {
+        "definition": "stelkramp, -en",
+        "term": "jäykkäkouristus"
+      },
+      {
+        "definition": "starr, -en",
+        "term": "kaihi"
+      },
+      {
+        "definition": "gulsot, -en; icterus (en)",
+        "term": "keltatauti"
+      },
+      {
+        "definition": "lunginflammation, -en",
+        "term": "keuhkokuume"
+      },
+      {
+        "definition": "lungutvidgning, -en",
+        "term": "keuhkolaajentuma"
+      },
+      {
+        "definition": "bronkit, -en",
+        "term": "keuhkoputkentulehdus"
+      },
+      {
+        "definition": "gikt, -en",
+        "term": "kihti"
+      },
+      {
+        "definition": "smärta, -n 1",
+        "term": "kipu"
+      },
+      {
+        "definition": "sveda, -n",
+        "term": "kirvely"
+      },
+      {
+        "definition": "livmoderframfall, -et",
+        "term": "kohdun laskeuma"
+      },
+      {
+        "definition": "kolik, -en",
+        "term": "koliikki"
+      },
+      {
+        "definition": "öroninflammation, -en",
+        "term": "korvatulehdus"
+      },
+      {
+        "definition": "öronsusning, -en / tinnitus",
+        "term": "korvien suhina"
+      },
+      {
+        "definition": "kallbrand, -et",
+        "term": "kuolio"
+      },
+      {
+        "definition": "halsont, -en; ont i halsen",
+        "term": "kurkkukipu"
+      },
+      {
+        "definition": "difteri, -n",
+        "term": "kurkkumätä"
+      },
+      {
+        "definition": "feber, -n",
+        "term": "kuume"
+      },
+      {
+        "definition": "gula febern",
+        "term": "keltakuume"
+      },
+      {
+        "definition": "hjärninflammation, -en 3; encefalit,-en 3",
+        "term": "aivokuume"
+      },
+      {
+        "definition": "benskörhet, -en / osteoporos",
+        "term": "luunhaurastuminen"
+      },
+      {
+        "definition": "benbrott, -et / fraktur, -en 3",
+        "term": "luunmurtuma"
+      },
+      {
+        "definition": "klaffel, -et",
+        "term": "läppävika"
+      },
+      {
+        "definition": "migrän, -en",
+        "term": "migreeni"
+      },
+      {
+        "definition": "minnesförlust, -en",
+        "term": "muistinmenetys"
+      },
+      {
+        "definition": "blåmärke, -t 4",
+        "term": "mustelma"
+      },
+      {
+        "definition": "förgiftning, -en",
+        "term": "myrkytys"
+      },
+      {
+        "definition": "blodförgiftning, -en 2",
+        "term": "verenmyrkytys"
+      },
+      {
+        "definition": "kolosförgiftning, -en 2",
+        "term": "häkämyrkytys"
+      },
+      {
+        "definition": "näsblod, -et",
+        "term": "nenäverenvuoto"
+      },
+      {
+        "definition": "sväljningsbesvär, -et",
+        "term": "nielemisvaikeus"
+      },
+      {
+        "definition": "ledförslitning, -en",
+        "term": "nivelkuluma"
+      },
+      {
+        "definition": "ledgångsreumatism, -en",
+        "term": "nivelreuma"
+      },
+      {
+        "definition": "halsbränna, -n / sura uppstötningar",
+        "term": "närästys"
+      },
+      {
+        "definition": "ett symptom 5 på ngt",
+        "term": "oire jstkn"
+      },
+      {
+        "definition": "syndrom, -et 5",
+        "term": "oireyhtymä"
+      },
+      {
+        "definition": "kräkning, -en",
+        "term": "oksentelu"
+      },
+      {
+        "definition": "illamående, -t",
+        "term": "pahoinvointi"
+      },
+      {
+        "definition": "må III illa",
+        "term": "voida pahoin (fyys.)"
+      },
+      {
+        "definition": "trycksår, -et",
+        "term": "painehaava"
+      },
+      {
+        "definition": "köldskador",
+        "term": "paleltumisvammat"
+      },
+      {
+        "definition": "brännskador",
+        "term": "palovammat"
+      },
+      {
+        "definition": "hemorrojder",
+        "term": "peräpukamat"
+      },
+      {
+        "definition": "bihåleinflammation, -en",
+        "term": "poskiontelontulehdus"
+      },
+      {
+        "definition": "insektbett, -et 5",
+        "term": "hyönteisenpurema"
+      },
+      {
+        "definition": "ormbett, -et 5",
+        "term": "käärmeenpurema"
+      },
+      {
+        "definition": "fästingbett, -et",
+        "term": "puutiaisenpurema"
+      },
+      {
+        "definition": "bristsjukdom, -en 2",
+        "term": "puutostauti"
+      },
+      {
+        "definition": "domning, -en",
+        "term": "puutuminen"
+      },
+      {
+        "definition": "belastningsskada, -n 1",
+        "term": "rasitusvamma"
+      },
+      {
+        "definition": "körtelfeber, -n",
+        "term": "rauhaskuume"
+      },
+      {
+        "definition": "lårbenshalsbrott, -et",
+        "term": "reisiluunkaulan murtuminen"
+      },
+      {
+        "definition": "diarré, -n",
+        "term": "ripuli"
+      },
+      {
+        "definition": "aptitlöshet, -en",
+        "term": "ruokahaluttomuus"
+      },
+      {
+        "definition": "matsmältningsrubbning, -en",
+        "term": "ruuansulatushäiriö"
+      },
+      {
+        "definition": "rytmstörning, -en",
+        "term": "rytmihäiriö"
+      },
+      {
+        "definition": "sjukdom, -en 2",
+        "term": "sairaus"
+      },
+      {
+        "definition": "gallstenar",
+        "term": "sappikivet"
+      },
+      {
+        "definition": "förträngning av kransartärerna",
+        "term": "sepelvaltimon tukkeuma"
+      },
+      {
+        "definition": "påssjuka, -n",
+        "term": "sikotauti"
+      },
+      {
+        "definition": "ögoninflammation, -en",
+        "term": "silmätulehdus"
+      },
+      {
+        "definition": "sendrag, -et",
+        "term": "suonenveto"
+      },
+      {
+        "definition": "åderbrock, -et / åderbråck, -et",
+        "term": "suonikohjut"
+      },
+      {
+        "definition": "hjärtsjukdom, -en",
+        "term": "sydänsairaus"
+      },
+      {
+        "definition": "biljud, -et 5",
+        "term": "sivuääni"
+      },
+      {
+        "definition": "ett exrtra slag 5",
+        "term": "lisälyönti"
+      },
+      {
+        "definition": "hjärtattack, -et",
+        "term": "sydänkohtaus"
+      },
+      {
+        "definition": "hjärtförstoring, -en",
+        "term": "sydämenlaajentuma"
+      },
+      {
+        "definition": "hjärtinfarkt, -en",
+        "term": "sydäninfarkti"
+      },
+      {
+        "definition": "hjärtklappning, -en 2",
+        "term": "sydämentykytys"
+      },
+      {
+        "definition": "hjärtstillestånd, -et; asystoli, -n",
+        "term": "sydänpysähdys"
+      },
+      {
+        "definition": "koronarsjukdom, -en 2; kranskärlssjukdom, -en 2",
+        "term": "sepelvaltimotauti"
+      },
+      {
+        "definition": "vårta, -n 1",
+        "term": "syylä"
+      },
+      {
+        "definition": "cancer, -n",
+        "term": "syöpä"
+      },
+      {
+        "definition": "bensår, -et",
+        "term": "säärihaava"
+      },
+      {
+        "definition": "böjveckseksem, -et",
+        "term": "taiveihottuma"
+      },
+      {
+        "definition": "mässling, -en",
+        "term": "tuhkarokko"
+      },
+      {
+        "definition": "inflammation, -en 3",
+        "term": "tulehdus"
+      },
+      {
+        "definition": "scharlakansfeber, -n",
+        "term": "tulirokko"
+      },
+      {
+        "definition": "känselstörning, -en 2",
+        "term": "tuntohäiriö"
+      },
+      {
+        "definition": "svullnad, -en 3",
+        "term": "turvotus"
+      },
+      {
+        "definition": "löss",
+        "term": "täit"
+      },
+      {
+        "definition": "förstoppning, -en",
+        "term": "ummetus"
+      },
+      {
+        "definition": "blindtarmsinflammation, -en",
+        "term": "umpilisäkkeentulehdus"
+      },
+      {
+        "definition": "sömnlöshet, -en",
+        "term": "unettomuus"
+      },
+      {
+        "definition": "sömnproblem, -et",
+        "term": "uniongelmat"
+      },
+      {
+        "definition": "besvär, -et 5",
+        "term": "vaiva"
+      },
+      {
+        "definition": "darrning, -en",
+        "term": "vapina"
+      },
+      {
+        "definition": "magont, buksmärta, -n 1",
+        "term": "vatsakipu"
+      },
+      {
+        "definition": "tredagarsfeber, -n",
+        "term": "vauvarokko"
+      },
+      {
+        "definition": "försträckning, -en 2",
+        "term": "venähdys"
+      },
+      {
+        "definition": "cirkulationsstörning, -en 2",
+        "term": "verenkiertohäiriö"
+      },
+      {
+        "definition": "blodtryckssjukdom, -en",
+        "term": "verenpainetauti"
+      },
+      {
+        "definition": "blodutgjutning, -en 2",
+        "term": "verenpurkauma"
+      },
+      {
+        "definition": "blödning, -en 2",
+        "term": "verenvuoto"
+      },
+      {
+        "definition": "blödarsjuka, -n; hemofili, -n",
+        "term": "verenvuototauti"
+      },
+      {
+        "definition": "åderförkalkning, -en",
+        "term": "verisuonten kalkkeutuminen"
+      },
+      {
+        "definition": "blodpropp, -et",
+        "term": "veritulppa"
+      },
+      {
+        "definition": "vattkoppor",
+        "term": "vesirokko"
+      },
+      {
+        "definition": "röda hund",
+        "term": "vihurirokko"
+      },
+      {
+        "definition": "förkylning, -en",
+        "term": "vilustuminen"
+      },
+      {
+        "definition": "förkyl/d, -t, -da",
+        "term": "vilustunut"
+      },
+      {
+        "definition": "bli IV förkyl/d, -t, -da",
+        "term": "vilustua"
+      },
+      {
+        "definition": "urininkontinens, -en / urinläckage",
+        "term": "virtsanpidätyskyvyttömyys"
+      },
+      {
+        "definition": "urinvägsinfektion,-en / -inflammation -en",
+        "term": "virtsatulehdus"
+      },
+      {
+        "definition": "sängvätning, -en",
+        "term": "vuoteenkastelu"
+      },
+      {
+        "definition": "flytning, -en 2",
+        "term": "vuoto"
+      },
+      {
+        "definition": "vitflytning, -en 2",
+        "term": "valkovuoto"
+      },
+      {
+        "definition": "bältros, -en",
+        "term": "vyöruusu"
+      },
+      {
+        "definition": "hosta, -n",
+        "term": "yskä"
+      }
+    ]
+  },
+  {
+    "id": "tentti-sydansairaudet",
+    "nameFi": "Sydänsairaudet",
+    "sourceFile": "Hjärtsjukdom.json",
+    "swedishField": "definition",
+    "iconDeckId": "sjukdomar",
+    "entries": [
+      {
+        "definition": "höger kammare",
+        "term": "oikea kammio"
+      },
+      {
+        "definition": "vänster kammare",
+        "term": "vasen kammio"
+      },
+      {
+        "definition": "en hjärtklaff 2",
+        "term": "sydämen läppä"
+      },
+      {
+        "definition": "ett kranskärl 5",
+        "term": "sepelvaltimo"
+      },
+      {
+        "definition": "hjärttoner, -na",
+        "term": "sydänäänet"
+      },
+      {
+        "definition": "ett biljud 5",
+        "term": "sivuääni"
+      },
+      {
+        "definition": "avvikande (tpm)",
+        "term": "poikkeava"
+      },
+      {
+        "definition": "en hjärtsvikt",
+        "term": "sydämen vajaatoiminta"
+      },
+      {
+        "definition": "en hjärtattack 3",
+        "term": "sydänkohtaus"
+      },
+      {
+        "definition": "en hjärtinfarkt 3",
+        "term": "sydäninfarkti"
+      },
+      {
+        "definition": "en kransartärsjukdom 2 / en kranskärlssjukdom 2",
+        "term": "sepelvaltimotauti"
+      },
+      {
+        "definition": "förhöjt blodtryck",
+        "term": "kohonnut verenpaine"
+      },
+      {
+        "definition": "högt blodtryck",
+        "term": "verenpainetauti"
+      },
+      {
+        "definition": "ett besvär 5",
+        "term": "vaiva"
+      },
+      {
+        "definition": "stråla I ut",
+        "term": "säteillä"
+      },
+      {
+        "definition": "känna II ett tryck över bröstet",
+        "term": "tuntea puristusta rintakehässä"
+      },
+      {
+        "definition": "en tryckande smärta",
+        "term": "puristava kipu"
+      },
+      {
+        "definition": "i trakten av bröstbenet",
+        "term": "rintalastan tienoilla"
+      },
+      {
+        "definition": "en klump i halsen",
+        "term": "pala kurkussa"
+      },
+      {
+        "definition": "en känsla av ngt",
+        "term": "jnkn tunne"
+      },
+      {
+        "definition": "andas I",
+        "term": "hengittää"
+      },
+      {
+        "definition": "andning, -en",
+        "term": "hengitys"
+      },
+      {
+        "definition": "hämta I andan",
+        "term": "vetää henkeä"
+      },
+      {
+        "definition": "hålla IV andan",
+        "term": "pidättää henkeä"
+      },
+      {
+        "definition": "andfå/dd, -tt, -d",
+        "term": "hengästynyt"
+      },
+      {
+        "definition": "ansträngning, -en",
+        "term": "rasitus"
+      },
+      {
+        "definition": "anstränga II sig",
+        "term": "rasittaa itseään"
+      },
+      {
+        "definition": "vila, -n",
+        "term": "lepo"
+      },
+      {
+        "definition": "vila I sig",
+        "term": "levätä, huilata"
+      },
+      {
+        "definition": "ett symtom 5 på ngt",
+        "term": "jnkn oire"
+      },
+      {
+        "definition": "vid angina pectoris",
+        "term": "angina pectoriksen yhteydessä"
+      },
+      {
+        "definition": "syre, -t",
+        "term": "happi"
+      },
+      {
+        "definition": "brist, -en på ngt",
+        "term": "jnkn puute, pula"
+      },
+      {
+        "definition": "förlust, -en 3",
+        "term": "menetys"
+      },
+      {
+        "definition": "en blodpropp 2",
+        "term": "veritulppa"
+      },
+      {
+        "definition": "täppa II till",
+        "term": "tukkia, esim. verisuoni"
+      },
+      {
+        "definition": "tilltäppt, -, -a",
+        "term": "tukkeutunut"
+      },
+      {
+        "definition": "förtränga II",
+        "term": "ahtauttaa"
+      },
+      {
+        "definition": "ett ärr 5",
+        "term": "arpi"
+      },
+      {
+        "definition": "(ett) vilo-EKG",
+        "term": "lepo-EKG"
+      },
+      {
+        "definition": "(ett) arbets-EKG",
+        "term": "kliininen rasituskoe"
+      },
+      {
+        "definition": "storleken på hjärtat / hjärtats storlek",
+        "term": "sydämen koko"
+      },
+      {
+        "definition": "en prestationsförmåga",
+        "term": "suorituskyky"
+      },
+      {
+        "definition": "ordinera I mediciner åt ngn",
+        "term": "määrätä lääkkeitä jllkn (1)"
+      },
+      {
+        "definition": "skriva IV ut mediciner åt ngn",
+        "term": "määrätä lääkkeitä jllkn (2)"
+      },
+      {
+        "definition": "byta II X till ngt",
+        "term": "vaihtaa X jhkn"
+      },
+      {
+        "definition": "besöka II läkare för ngt",
+        "term": "mennä lääkäriin jstkn syystä"
+      },
+      {
+        "definition": "gå (går, gick, gått) hos någon läkare",
+        "term": "olla jnkn lääkärin hoidossa"
+      },
+      {
+        "definition": "vänster / höger förmak",
+        "term": "vasen / oikea eteinen"
+      }
+    ]
+  },
+  {
+    "id": "tentti-anamneesi",
+    "nameFi": "Anamneesi",
+    "sourceFile": "Dag 2_ Anamnesen.json",
+    "swedishField": "definition",
+    "iconDeckId": "vastaanotto-anamneesi",
+    "entries": [
+      {
+        "definition": "besöka II läkare för ngt",
+        "term": "käydä lääkärissä jnkn takia"
+      },
+      {
+        "definition": "plötslig, -t, -a",
+        "term": "äkillinen, äkkiä, äkillisesti"
+      },
+      {
+        "definition": "smygande, taipum.",
+        "term": "vähitellen, \"hiipien\""
+      },
+      {
+        "definition": "smärtfri, -tt, -a",
+        "term": "kivuton"
+      },
+      {
+        "definition": "bli IV bättre / sämre",
+        "term": "muuttua paremmaksi / huonommaksi"
+      },
+      {
+        "definition": "lindra I",
+        "term": "lievittää"
+      },
+      {
+        "definition": "förvärra I",
+        "term": "huonontaa, pahentaa"
+      },
+      {
+        "definition": "förbättra I",
+        "term": "muuttaa paremmaksi, parantaa"
+      },
+      {
+        "definition": "ta IV mediciner mot smärtan",
+        "term": "ottaa lääkettä kipuun"
+      },
+      {
+        "definition": "beskriva IV smärtan",
+        "term": "kuvailla kipua"
+      },
+      {
+        "definition": "göra (epäs.) ont",
+        "term": "tehdä kipeää, sattua"
+      },
+      {
+        "definition": "smärtan går över",
+        "term": "kipu menee ohi"
+      },
+      {
+        "definition": "molande",
+        "term": "jomottava"
+      },
+      {
+        "definition": "huggande",
+        "term": "vihlova"
+      },
+      {
+        "definition": "brännande",
+        "term": "polttava"
+      },
+      {
+        "definition": "tryckande",
+        "term": "puristava"
+      },
+      {
+        "definition": "stickande",
+        "term": "pistävä"
+      },
+      {
+        "definition": "en domning 2",
+        "term": "puutuminen"
+      },
+      {
+        "definition": "stråla I ut",
+        "term": "säteillä"
+      },
+      {
+        "definition": "i vila",
+        "term": "levossa"
+      },
+      {
+        "definition": "vid ansträngning",
+        "term": "rasituksen yhteydessä"
+      },
+      {
+        "definition": "bli IV andfådd",
+        "term": "hengästyä"
+      },
+      {
+        "definition": "diarré, -n",
+        "term": "ripuli"
+      },
+      {
+        "definition": "vara IV förstoppad",
+        "term": "olla ummetusta"
+      },
+      {
+        "definition": "avföring, -en",
+        "term": "uloste, ulostaminen"
+      },
+      {
+        "definition": "slem, -met",
+        "term": "lima"
+      },
+      {
+        "definition": "kissa I / kasta I vatten",
+        "term": "virtsata, pissata"
+      },
+      {
+        "definition": "svida IV",
+        "term": "kirvellä"
+      },
+      {
+        "definition": "svimma I",
+        "term": "pyörtyä"
+      },
+      {
+        "definition": "förlora I medvetandet",
+        "term": "menettää tajunta"
+      },
+      {
+        "definition": "blodtryck, -et",
+        "term": "verenpaine"
+      },
+      {
+        "definition": "ha (epäs.) feber",
+        "term": "olla kuumetta"
+      },
+      {
+        "definition": "vara IV förkyl/d, -t, -da",
+        "term": "olla vilustunut"
+      },
+      {
+        "definition": "i övrigt",
+        "term": "muuten, muutoin"
+      },
+      {
+        "definition": "vara IV gift, -, -a",
+        "term": "olla naimisissa"
+      },
+      {
+        "definition": "vara pensionär, -en 3",
+        "term": "olla eläkeläinen"
+      },
+      {
+        "definition": "klara I sig själv",
+        "term": "selvitä itse, itsenäisesti"
+      },
+      {
+        "definition": "hemhjälp, -en",
+        "term": "kotipau"
+      },
+      {
+        "definition": "hereditet, -en",
+        "term": "perinnöllisyys"
+      },
+      {
+        "definition": "en sjukdom 2",
+        "term": "sairaus"
+      },
+      {
+        "definition": "en släkt 3",
+        "term": "suku"
+      },
+      {
+        "definition": "ärftlig, -t, -a",
+        "term": "perinnöllinen"
+      },
+      {
+        "definition": "föräldrar, -na",
+        "term": "vanhemmat"
+      },
+      {
+        "definition": "syskon, -et 5",
+        "term": "sisarus"
+      },
+      {
+        "definition": "frisk, -t, -a",
+        "term": "terve"
+      },
+      {
+        "definition": "sjuk, -t, -a",
+        "term": "sairas"
+      },
+      {
+        "definition": "ett hjärtbesvär 5",
+        "term": "sydänvaiva"
+      },
+      {
+        "definition": "cancer, -n",
+        "term": "syöpä"
+      },
+      {
+        "definition": "en allergi 3",
+        "term": "allergia"
+      },
+      {
+        "definition": "allergisk, -t, -a mot ngt",
+        "term": "allerginen jllkn"
+      },
+      {
+        "definition": "en allergiker",
+        "term": "allergikko"
+      },
+      {
+        "definition": "pollenallergi, -n",
+        "term": "siitepölyallergia"
+      },
+      {
+        "definition": "röka II",
+        "term": "tupakoida"
+      },
+      {
+        "definition": "snusa I",
+        "term": "nuuskata"
+      },
+      {
+        "definition": "under veckan",
+        "term": "viikolla, viikon aikana"
+      },
+      {
+        "definition": "på helgen",
+        "term": "viikonloppuna"
+      },
+      {
+        "definition": "använda II droger",
+        "term": "käyttää huumeita"
+      },
+      {
+        "definition": "prova II droger",
+        "term": "kokeilla huumeita"
+      },
+      {
+        "definition": "vara IV inlagd på sjukhus",
+        "term": "olla sairaalassa potilaana"
+      },
+      {
+        "definition": "bli IV opererad för ngt",
+        "term": "leikata jnkn takia"
+      },
+      {
+        "definition": "lida IV av ngt",
+        "term": "kärsiä jstkn"
+      },
+      {
+        "definition": "hjärtat slår hårdare/snabbare",
+        "term": "sydän lyö kovemmin/nopeammin"
+      },
+      {
+        "definition": "hjärtklappning, -en",
+        "term": "sydämentykytys"
+      },
+      {
+        "definition": "bli IV yr",
+        "term": "ruveta huimaamaan"
+      },
+      {
+        "definition": "vätska i benen",
+        "term": "nestettä jaloissa"
+      },
+      {
+        "definition": "bli IV svull/en, -et, -na",
+        "term": "turvota"
+      },
+      {
+        "definition": "bryta IV",
+        "term": "murtaa, katkaista"
+      },
+      {
+        "definition": "bryta IV benet",
+        "term": "murtaa, katkaista jalka"
+      },
+      {
+        "definition": "bryta IV armen",
+        "term": "murtaa, katkaista käsivarsi"
+      },
+      {
+        "definition": "bryta IV nyckelbenet",
+        "term": "murtaa, katkaista solisluu"
+      }
+    ]
+  },
+  {
+    "id": "tentti-tutkiminen",
+    "nameFi": "Tutkiminen",
+    "sourceFile": "Dag 3_ Undersökningen.json",
+    "swedishField": "definition",
+    "iconDeckId": "tutkimukset-hoito",
+    "entries": [
+      {
+        "definition": "undersöka II en patient",
+        "term": "tutkia potilas"
+      },
+      {
+        "definition": "en undersökning 2",
+        "term": "tutkiminen"
+      },
+      {
+        "definition": "ett allmäntillstånd 5",
+        "term": "yleistila"
+      },
+      {
+        "definition": "en svullnad 3",
+        "term": "turvotus"
+      },
+      {
+        "definition": "hudfärg, -en",
+        "term": "ihon väri"
+      },
+      {
+        "definition": "en skada 1",
+        "term": "vamma, vaurio"
+      },
+      {
+        "definition": "en förändring 2",
+        "term": "muutos"
+      },
+      {
+        "definition": "känna II på",
+        "term": "tunnustella jtkn"
+      },
+      {
+        "definition": "känsel, -n",
+        "term": "tunto"
+      },
+      {
+        "definition": "ömhet, -en",
+        "term": "arkuus"
+      },
+      {
+        "definition": "en lymfkört/el, -ar",
+        "term": "imusolmuke"
+      },
+      {
+        "definition": "en hals",
+        "term": "kaula"
+      },
+      {
+        "definition": "en nacke",
+        "term": "niska"
+      },
+      {
+        "definition": "en funktion, -er",
+        "term": "toiminta, toiminto"
+      },
+      {
+        "definition": "rörlighet, -en",
+        "term": "liikkuvuus"
+      },
+      {
+        "definition": "ett sinne 4",
+        "term": "aisti"
+      },
+      {
+        "definition": "ett luktsinne 4",
+        "term": "hajuaisti"
+      },
+      {
+        "definition": "förklara I för patienten",
+        "term": "selittää potilaalle"
+      },
+      {
+        "definition": "lägga IV händerna på ngt",
+        "term": "laittaa kädet jhkn"
+      },
+      {
+        "definition": "göra IV ont",
+        "term": "sattua, tehdä kipeää"
+      },
+      {
+        "definition": "klä III av sig",
+        "term": "riisuutua"
+      },
+      {
+        "definition": "klä III på sig",
+        "term": "pukeutua"
+      },
+      {
+        "definition": "lägga IV sig på undersökningsbordet",
+        "term": "käydä makuulle tutkimuspöydälle"
+      },
+      {
+        "definition": "ett undersökningsbord 5",
+        "term": "tutkimuspöytä"
+      },
+      {
+        "definition": "kännas II",
+        "term": "tuntua"
+      },
+      {
+        "definition": "obehaglig, -t, -a",
+        "term": "epämiellyttävä"
+      },
+      {
+        "definition": "lyssna I på, auskultera I",
+        "term": "kuunnella, auskultoida"
+      },
+      {
+        "definition": "andas I",
+        "term": "hengittää"
+      },
+      {
+        "definition": "andas I in",
+        "term": "hengittää sisään"
+      },
+      {
+        "definition": "andas I ut",
+        "term": "hengittää ulos"
+      },
+      {
+        "definition": "hålla IV andan",
+        "term": "pidättää hengitystä"
+      },
+      {
+        "definition": "andning, -en",
+        "term": "hengittäminen"
+      },
+      {
+        "definition": "en rörelse 3",
+        "term": "liike"
+      },
+      {
+        "definition": "röra II på tårna",
+        "term": "liikuttaa varpaita"
+      },
+      {
+        "definition": "röra II på fingrarna",
+        "term": "liikuttaa sormia"
+      },
+      {
+        "definition": "bli IV yr",
+        "term": "alkaa huimata, pyörryttää"
+      },
+      {
+        "definition": "en störning 2",
+        "term": "häiriö"
+      },
+      {
+        "definition": "en rytmstörning 2",
+        "term": "rytmihäiriö"
+      },
+      {
+        "definition": "domna I",
+        "term": "puutua"
+      },
+      {
+        "definition": "domning, -en 2",
+        "term": "puutuminen"
+      },
+      {
+        "definition": "sticka IV",
+        "term": "pistellä"
+      },
+      {
+        "definition": "stickning, -en 2",
+        "term": "pistely"
+      },
+      {
+        "definition": "ett andningsljud 5",
+        "term": "hengitysääni"
+      },
+      {
+        "definition": "ett biljud 5",
+        "term": "sivuääni"
+      },
+      {
+        "definition": "rassel, -n",
+        "term": "rahina"
+      },
+      {
+        "definition": "mäta II blodtrycket",
+        "term": "mitata verenpaine"
+      },
+      {
+        "definition": "regelbund/en, -et, -na",
+        "term": "säännöllinen"
+      },
+      {
+        "definition": "oregelbund, -en, -et, -na",
+        "term": "epäsäännöllinen"
+      },
+      {
+        "definition": "förhöj/d, -t, -da",
+        "term": "kohonnut"
+      },
+      {
+        "definition": "en förträngning 2",
+        "term": "ahtauma"
+      }
+    ]
+  },
+  {
+    "id": "tentti-epikriisi",
+    "nameFi": "Epikriisi",
+    "sourceFile": "Epikris.json",
+    "swedishField": "definition",
+    "iconDeckId": "tutkimukset-hoito",
+    "entries": [
+      {
+        "definition": "vårdtid, -en",
+        "term": "hoitoaika"
+      },
+      {
+        "definition": "intagningsorsak, -en",
+        "term": "tulosyy"
+      },
+      {
+        "definition": "en remiss 3",
+        "term": "lähete"
+      },
+      {
+        "definition": "remitterande läkare",
+        "term": "lähettävä lääkäri"
+      },
+      {
+        "definition": "en laboratorieundersökning 2",
+        "term": "laboratoriotutkimus"
+      },
+      {
+        "definition": "en röntgenundersökning 2",
+        "term": "röntgentutkimus"
+      },
+      {
+        "definition": "medicinering, -en",
+        "term": "lääkitys"
+      },
+      {
+        "definition": "ett tillstånd 5",
+        "term": "tila"
+      },
+      {
+        "definition": "ett allmäntillstånd 5",
+        "term": "yleistila"
+      },
+      {
+        "definition": "en undersökning 2",
+        "term": "tutkimus"
+      },
+      {
+        "definition": "ett antibiotik/um, -a",
+        "term": "antibiootti"
+      },
+      {
+        "definition": "en åtgärd 3",
+        "term": "toimenpide"
+      },
+      {
+        "definition": "på grund av",
+        "term": "jstkn syystä"
+      },
+      {
+        "definition": "utskriva IV en patient",
+        "term": "kotiuttaa potilas"
+      },
+      {
+        "definition": "utskrivning, -en",
+        "term": "kotiuttaminen"
+      },
+      {
+        "definition": "ett återbesök 5",
+        "term": "uudelleenkäynti"
+      },
+      {
+        "definition": "en avdelning 2",
+        "term": "osasto"
+      },
+      {
+        "definition": "på avdelningen",
+        "term": "osastolla"
+      },
+      {
+        "definition": "ligga IV på sjukhus",
+        "term": "olla sairaalassa"
+      },
+      {
+        "definition": "andnöd, -en",
+        "term": "hengenahdistus"
+      },
+      {
+        "definition": "ansträngning, -en",
+        "term": "rasitus"
+      },
+      {
+        "definition": "vid ansträngning",
+        "term": "rasituksen yhteydessä"
+      },
+      {
+        "definition": "vila, -n",
+        "term": "lepo"
+      },
+      {
+        "definition": "i vila",
+        "term": "levossa"
+      },
+      {
+        "definition": "i samband med",
+        "term": "jonkin yhteydessä"
+      },
+      {
+        "definition": "hjärtsvikt, -en",
+        "term": "sydämen vajaatoiminta"
+      },
+      {
+        "definition": "f.d. (före detta) X",
+        "term": "entinen X"
+      },
+      {
+        "definition": "en operation 3",
+        "term": "leikkaus"
+      },
+      {
+        "definition": "sänkningsreaktion, -en",
+        "term": "lasko, senkka"
+      },
+      {
+        "definition": "ett tecken på ngt",
+        "term": "merkki, viite jstkn"
+      },
+      {
+        "definition": "misstänka II",
+        "term": "epäillä jtkn"
+      },
+      {
+        "definition": "misstanke om ngt",
+        "term": "epäilys jstkn"
+      },
+      {
+        "definition": "lägga IV in ngn på avdelningen",
+        "term": "ottaa osastolle"
+      },
+      {
+        "definition": "insjukna I i ngt",
+        "term": "sairastua jhkn"
+      },
+      {
+        "definition": "dö IV i en sjukdom",
+        "term": "kuolla sairauteen"
+      },
+      {
+        "definition": "behandla I en sjukdom",
+        "term": "hoitaa sairautta"
+      },
+      {
+        "definition": "tilltagande smärtor",
+        "term": "kovenevia kipuja"
+      },
+      {
+        "definition": "smärtan lättar I",
+        "term": "kipu helpottaa"
+      },
+      {
+        "definition": "lindra smärtor",
+        "term": "lievittää kipuja"
+      },
+      {
+        "definition": "smärtlindrande",
+        "term": "kipualievittävä"
+      },
+      {
+        "definition": "febern sjunker IV",
+        "term": "kuume laskee"
+      },
+      {
+        "definition": "blodtrycket stiger IV",
+        "term": "verenpaine nousee"
+      },
+      {
+        "definition": "tillståndet förvärras I",
+        "term": "potilaan tila pahenee"
+      },
+      {
+        "definition": "tillståndet förbättras I",
+        "term": "potilaan tila paranee"
+      },
+      {
+        "definition": "levervärden förhöjda",
+        "term": "maksa-arvot koholla"
+      },
+      {
+        "definition": "övervakning, -en / observation, -en",
+        "term": "tarkkailu"
+      },
+      {
+        "definition": "fortsatt kontroll hos behandlande läkare",
+        "term": "jatkoseuranta hoitavalla lääkärillä"
+      },
+      {
+        "definition": "vid ankomsten",
+        "term": "tulon yhteydessä"
+      },
+      {
+        "definition": "påbörja I behandling",
+        "term": "aloittaa hoito"
+      },
+      {
+        "definition": "vid behov",
+        "term": "tarvittaessa"
+      },
+      {
+        "definition": "nedsatt hörsel",
+        "term": "alentunut, heikentynyt kuulo"
+      },
+      {
+        "definition": "sedan sex år tillbaka",
+        "term": "kuuden vuoden ajan"
+      },
+      {
+        "definition": "som behandlats med X",
+        "term": "jota hoidettu X:llä"
+      },
+      {
+        "definition": "upprepade infektioner",
+        "term": "toistuvia infektioita"
+      },
+      {
+        "definition": "avsluta I medicineringen",
+        "term": "lopettaa lääkitys"
+      },
+      {
+        "definition": "pat klagar över smärta",
+        "term": "pot valittaa kipua"
+      },
+      {
+        "definition": "pat har feber",
+        "term": "potilaalla kuumetta"
+      },
+      {
+        "definition": "allmäntillståndet försämrades kraftigt",
+        "term": "yleistila heikkeni huomattavasti"
+      },
+      {
+        "definition": "vid auskultering",
+        "term": "auskultoinnin yhteydessä"
+      },
+      {
+        "definition": "inga biljud i hjärtat",
+        "term": "sydämessä ei sivuääniä"
+      },
+      {
+        "definition": "ömhet vid palpation",
+        "term": "arkuutta palpaatiossa"
+      },
+      {
+        "definition": "värken tilltar IV",
+        "term": "särky kovenee, yltyy"
+      },
+      {
+        "definition": "allergisk mot X",
+        "term": "allerginen X:lle"
+      },
+      {
+        "definition": "febern går över",
+        "term": "kuume menee ohi"
+      },
+      {
+        "definition": "pat är feberfri",
+        "term": "potilas on kuumeeton"
+      },
+      {
+        "definition": "fortsatta undersökningar rekommenderas",
+        "term": "suositellaan jatkotutkimuksia"
+      },
+      {
+        "definition": "sedan några dagar",
+        "term": "jo muutaman päivän ajan"
+      },
+      {
+        "definition": "för några dagar sedan",
+        "term": "muutama päivä sitten"
+      },
+      {
+        "definition": "i långa tider",
+        "term": "pitkiä aikoja"
+      },
+      {
+        "definition": "några dagar senare",
+        "term": "muutama päivä myöhemmin"
+      },
+      {
+        "definition": "några / ett par gånger",
+        "term": "muutaman kerran"
+      },
+      {
+        "definition": "på några dagar",
+        "term": "muutamassa päivässä"
+      },
+      {
+        "definition": "pat utskrivs IV",
+        "term": "potilas kotiutetaan"
+      },
+      {
+        "definition": "pat utskrevs",
+        "term": "potilas kotiutettiin"
+      },
+      {
+        "definition": "med medicinering X",
+        "term": "lääkityksellä X"
+      },
+      {
+        "definition": "ett symtom på ngt",
+        "term": "oire jstkn"
+      },
+      {
+        "definition": "ett besvär 5",
+        "term": "vaiva"
+      },
+      {
+        "definition": "lida IV av ngt",
+        "term": "kärsiä jstkn"
+      }
+    ]
+  }
+]

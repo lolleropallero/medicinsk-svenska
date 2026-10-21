@@ -39,9 +39,9 @@ test('quest activation handles today before navigation, home stays quiet, and to
   await page.evaluate(({key,value})=>localStorage.setItem(key,String(value)),{key:testNow,value:nextDay});await page.reload();await expect(dialog).toBeVisible();
 });
 
-test('persistent homepage is only HUD, launcher, and four actions; daily detail exists only in the modal',async({page})=>{
+test('homepage has HUD, launcher, four practice actions and an exam shortcut; daily detail stays in the modal',async({page})=>{
   await page.setViewportSize({width:320,height:568});await page.goto('/');await expect(page.locator('.daily-overlay-quests .daily-quest-row')).toHaveCount(3);await closeIfOpen(page);
-  await expect(page.locator('#home-daily,#home-reward-alerts,#home-next-action,#home-status,.home-status,.home-daily')).toHaveCount(0);await expect(page.locator('.home .daily-quest-row,.home .quest,.home .dashboard-card')).toHaveCount(0);await expect(page.locator('.home-actions a')).toHaveCount(4);await expect(page.locator('.home > :not(.sr-only)')).toHaveCount(2);
+  await expect(page.locator('#home-daily,#home-reward-alerts,#home-next-action,#home-status,.home-status,.home-daily')).toHaveCount(0);await expect(page.locator('.home .daily-quest-row,.home .quest,.home .dashboard-card')).toHaveCount(0);await expect(page.locator('.home-actions a')).toHaveCount(4);await expect(page.locator('.home > :not(.sr-only)')).toHaveCount(3);
   await expect(page.getByText(/Säsong|Veckoliga/)).toHaveCount(0);await expect(page.locator('#metagame-hud')).toContainText('Krediter');await expect(page.locator('#metagame-hud')).toContainText('Belöningar');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);expect((await page.locator('.home-actions').boundingBox())!.y).toBeLessThan(300);await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth)).toBe(true);
 });
@@ -84,7 +84,7 @@ test('a valid existing phrase session is resumed',async({page})=>{
 });
 
 test('a daily vocabulary mission chooses its own answer mode instead of the stored selection',async({page})=>{
-  const storeSession=async(answerMode:'cards'|'choice',sessionId:string)=>page.evaluate(({answerMode,sessionId})=>localStorage.setItem('medicinsk-svenska.flashcard-session.v1',JSON.stringify({schemaVersion:1,sessionId,mode:'lucky',answerMode,direction:'fi-sv',requestedAmount:10,selectedCardIds:['anatomi-001'],unseenCardQueue:[],currentCardId:'anatomi-001',masteredCardIds:[],pendingRetries:[],answerDraft:'',attemptCountByCard:{},firstAttemptCorrectByCard:{},totalMissedCount:0,startedAt:Date.now(),revealed:false})),{answerMode,sessionId});
+  const storeSession=async(answerMode:'cards'|'choice',sessionId:string)=>page.evaluate(({answerMode,sessionId})=>localStorage.setItem('medicinsk-svenska.flashcard-session.v1',JSON.stringify({schemaVersion:1,sessionId,mode:'lucky',answerMode,direction:'fi-sv',requestedAmount:10,selectedCardIds:['sjukdomar-001'],unseenCardQueue:[],currentCardId:'sjukdomar-001',masteredCardIds:[],pendingRetries:[],answerDraft:'',attemptCountByCard:{},firstAttemptCorrectByCard:{},totalMissedCount:0,startedAt:Date.now(),revealed:false})),{answerMode,sessionId});
   await page.goto('/');await closeIfOpen(page);await seedDay(page,{quest:{kind:'mode',mode:'flashcards',target:10,answerMode:'choice'}});await storeSession('cards','daily-resume-cards');await page.reload();await openDaily(page);await page.locator('[data-quest-action="1"]').click();await expect(page).toHaveURL(/\/kortit\/harjoitus\?.*answer=choice/);expect(page.url()).not.toContain('daily-resume-cards');
   await page.goto('/');await closeIfOpen(page);await seedDay(page,{quest:{kind:'mode',mode:'flashcards',target:10,answerMode:'choice'}});await storeSession('choice','daily-resume-choice');await page.reload();await openDaily(page);await page.locator('[data-quest-action="1"]').click();await expect(page).toHaveURL(/\/kortit\/harjoitus\?.*answer=choice.*session=daily-resume-choice/);
 });

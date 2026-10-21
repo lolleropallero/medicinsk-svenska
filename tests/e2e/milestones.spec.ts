@@ -21,7 +21,7 @@ async function captureMilestoneFeedback(page: Page) {
 }
 
 async function prepareCard(page: Page, mutate: (state: Record<string, any>, day: string) => void) {
-  await openSpecificCard(page, { id: 'anatomi-004', deckId: 'anatomi' }, 'fi-sv');
+  await openSpecificCard(page, { id: 'tenttisanasto-anatomi-111', deckId: 'anatomi' }, 'fi-sv');
   await page.evaluate(({ key, source }) => {
     const state = JSON.parse(localStorage.getItem(key)!);
     const date = new Date();
@@ -205,7 +205,7 @@ test('En osannut replays the final card immediately and creates no fake mileston
   expect(await page.evaluate(() => (window as unknown as { milestoneSounds: string[] }).milestoneSounds)).toEqual([]);
   const retryState = await page.evaluate(() => JSON.parse(localStorage.getItem('medicinsk-svenska.flashcard-session.v1')!));
   expect(retryState.pendingRetries).toEqual([]);
-  expect(retryState.currentCardId).toBe('anatomi-004');
+  expect(retryState.currentCardId).toBe('tenttisanasto-anatomi-111');
   expect(retryState.totalMissedCount).toBe(1);
   await expect(page.getByRole('button', { name: 'Näytä vastaus' })).toBeFocused();
 });

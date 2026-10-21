@@ -14,17 +14,17 @@ const currentCardAnswer=(page:Page)=>page.evaluate(()=>{
 
 test('exercise actions request only their semantic learning sounds',async({page})=>{
   await probe(page);
-  await openSpecificCard(page,{id:'anatomi-004',deckId:'anatomi'},'fi-sv');
+  await openSpecificCard(page,{id:'tenttisanasto-anatomi-111',deckId:'anatomi'},'fi-sv');
   await page.getByRole('button',{name:'Näytä vastaus'}).click();
   await page.getByRole('button',{name:'Osasin'}).click();
   expect((await events(page)).map(item=>item.effect).slice(0,2)).toEqual(['reveal','correct']);
 
-  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=anatomi&direction=sv-fi&amount=10&session=sound-choice');
+  await page.goto('/kortit/harjoitus?mode=deck&answer=choice&deck=sjukdomar&direction=sv-fi&amount=10&session=sound-choice');
   const choiceAnswer=await currentCardAnswer(page),labels=await page.locator('#choice-options .choice-label').allTextContents();
   await page.locator('#choice-options button').nth(labels.findIndex(label=>label===choiceAnswer)).click();
   expect((await events(page)).map(item=>item.effect)).toContain('correct');
 
-  await page.goto('/kortit/harjoitus?mode=deck&answer=written&deck=anatomi&direction=fi-sv&amount=10&session=sound-written');
+  await page.goto('/kortit/harjoitus?mode=deck&answer=written&deck=sjukdomar&direction=fi-sv&amount=10&session=sound-written');
   await page.getByLabel('Vastauksesi').fill('väärä vastaus');
   await page.getByRole('button',{name:'Tarkista'}).click();
   expect((await events(page)).map(item=>item.effect)).toContain('incorrect');

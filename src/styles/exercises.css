@@ -202,6 +202,12 @@
   color: var(--fi-blue);
   font-size: clamp(1.9rem, 6vw, 3.5rem);
 }
+.flashcard.source-flashcard .term {
+  font-size: clamp(1.35rem, 6vw, 2.5rem);
+  line-height: 1.25;
+  overflow-wrap: break-word;
+  hyphens: none;
+}
 #answer-area {
   display: flex;
   width: 100%;

@@ -8,6 +8,7 @@ const WEAK_WORD_DISPLAY_CAP = 500;
 function initializeDeckList() {
 const starts = document.querySelectorAll<HTMLAnchorElement>('[data-start]');
 const radios = document.querySelectorAll<HTMLInputElement>('input[name="direction"], input[name="answer"], input[name="amount"]');
+const exercisePath = document.querySelector<HTMLElement>('[data-exercise-path]')?.dataset.exercisePath ?? '/kortit/harjoitus';
 
 function selectedValue(name: string): string | undefined {
   return document.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value;
@@ -18,7 +19,7 @@ function configurationFor(link: HTMLAnchorElement) {
   return {
     sessionId: crypto.randomUUID(),
     mode,
-    answerMode: (selectedValue('answer') ?? 'cards') as VocabularyAnswerMode,
+    answerMode: (link.dataset.cardsOnly === 'true' ? 'cards' : selectedValue('answer') ?? 'cards') as VocabularyAnswerMode,
     ...(mode === 'deck' && link.dataset.deck ? { sourceDeckId: link.dataset.deck } : {}),
     direction: (selectedValue('direction') ?? 'fi-sv') as Direction,
     requestedAmount: (selectedValue('amount') === 'all'
@@ -51,7 +52,7 @@ function updateReviewCta() {
 
 function updateLinks() {
   starts.forEach((link) => {
-    link.href = buildSessionUrl(configurationFor(link));
+    link.href = buildSessionUrl(configurationFor(link), exercisePath);
   });
   const amount = selectedValue('amount') ?? '25';
   const luckyCount = document.querySelector<HTMLElement>('[data-selected-count]');
@@ -61,7 +62,7 @@ function updateLinks() {
 
 radios.forEach((radio) => radio.addEventListener('change', updateLinks));
 starts.forEach((link) => link.addEventListener('click', () => {
-  link.href = buildSessionUrl(configurationFor(link));
+  link.href = buildSessionUrl(configurationFor(link), exercisePath);
 }));
 updateLinks();
 }

@@ -1,6 +1,21 @@
 .practice {
   padding-block: 18px 44px;
 }
+.exam-test { max-width: 800px; }
+.exam-test h1, .exam-test .summary h1 { font-size: clamp(1.25rem, 4vw, 1.8rem); }
+.exam-test .exam-test-card { min-height: 160px; padding: 24px; margin-bottom: 16px; }
+.exam-test-card .term { margin: 0; font-size: clamp(1.4rem, 5vw, 2.5rem); line-height: 1.25; hyphens: none; }
+.exam-test .summary { text-align: left; }
+.exam-test .summary-stats dd { font-size: clamp(1.05rem, 3vw, 1.3rem); white-space: nowrap; }
+.exam-test .answer-exercise { gap: 8px; }
+.exam-test-filter { display: flex; gap: 10px; align-items: center; min-height: 44px; }
+.exam-test-filter input { width: 20px; height: 20px; margin: 0; }
+.exam-test-results { display: grid; gap: 12px; padding-left: 28px; }
+.exam-test-results li { padding: 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); overflow-wrap: anywhere; }
+.exam-test-results h3 { margin: 0 0 8px; font-size: 1.1rem; }
+.exam-test-results p { margin: 8px 0 0; }
+.exam-test .action-row { flex-wrap: wrap; }
+@media (max-width: 560px) { .exam-test .action-row button { flex: 1; min-width: 0; } }
 .practice-top {
   display: grid;
   grid-template-columns: 1fr auto 1fr;

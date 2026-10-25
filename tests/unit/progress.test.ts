@@ -21,8 +21,53 @@ describe('local calendar',()=>{
 });
 
 describe('XP, levels, and events',()=>{
-  it.each([[1,0],[2,20],[3,60],[4,120],[5,200],[6,300],[10,900],[20,3800]])('has exact level %i threshold', (level,xp)=>expect(levelThreshold(level)).toBe(xp));
-  it('derives level progress',()=>{expect(levelFromXp(340)).toBe(6);expect(levelProgress(340)).toMatchObject({level:6,currentThreshold:300,nextThreshold:420,within:40,remaining:80});});
+  it.each([[1,0],[2,100],[3,250],[4,450],[5,700],[6,1000],[10,2700],[20,10450]])('has exact level %i threshold', (level,xp)=>expect(levelThreshold(level)).toBe(xp));
+  it('derives level progress',()=>{expect(levelFromXp(340)).toBe(3);expect(levelProgress(340)).toMatchObject({level:3,currentThreshold:250,nextThreshold:450,within:90,remaining:110,percent:45});});
+  it('crosses each threshold exactly and starts the next progress bar at zero',()=>{
+    expect(levelFromXp(0)).toBe(1);
+    for(let level=2;level<=100;level++){
+      const threshold=levelThreshold(level);
+      expect(levelFromXp(threshold-1)).toBe(level-1);
+      expect(levelProgress(threshold)).toMatchObject({level,within:0,percent:0});
+      expect(levelFromXp(threshold+1)).toBe(level);
+    }
+  });
+  it('keeps a first 25-item practice below level two even with daily quest XP',()=>{
+    const state=applyItems(createProgressState(at('2026-08-21'),'install'),'2026-08-21',25);
+    expect(state.lifetime.xp).toBeGreaterThanOrEqual(50);
+    expect(levelFromXp(state.lifetime.xp)).toBe(1);
+    expect(state.notifications.some(notification=>notification.kind==='level')).toBe(false);
+  });
+  it.each([[2,undefined],[5,'standard'],[10,'golden']] as const)('grants level %i rewards once at the new threshold',(level,kind)=>{
+    const state=createProgressState(at('2026-08-21'),'install');
+    state.lifetime.xp=levelThreshold(level)-2;
+    state.highestRewardedLevel=level-1;
+    state.achievements.forEach(achievement=>{achievement.unlockedAt=1;});
+    const event=item('2026-08-21');
+    const result=reduceProgress(state,event).state;
+    expect(result.lifetime.xp).toBe(levelThreshold(level));
+    expect(result.highestRewardedLevel).toBe(level);
+    expect(result.inventory.credits).toBe(10);
+    expect(result.inventory.capsules.map(capsule=>capsule.kind)).toEqual(kind?[kind]:[]);
+    expect(result.notifications).toContainEqual({id:`level:${level}`,kind:'level',level});
+    expect(reduceProgress(result,event).state).toEqual(result);
+  });
+  it('preserves existing XP and rewards without paying an old level reward again',()=>{
+    const state=createProgressState(at('2026-08-21'),'install');
+    state.lifetime.xp=248;
+    state.highestRewardedLevel=5;
+    state.inventory.credits=70;
+    state.inventory.capsules.push({id:'previous-level-five',kind:'standard',earnedAt:at('2026-08-21')});
+    state.achievements.forEach(achievement=>{achievement.unlockedAt=1;});
+    const loaded=reconcileProgress(state,at('2026-08-21'));
+    expect(loaded.lifetime.xp).toBe(248);
+    expect(loaded.inventory).toEqual(state.inventory);
+    const result=reduceProgress(loaded,item('2026-08-21')).state;
+    expect(levelFromXp(result.lifetime.xp)).toBe(3);
+    expect(result.highestRewardedLevel).toBe(5);
+    expect(result.inventory).toEqual(state.inventory);
+    expect(result.notifications.some(notification=>notification.kind==='level')).toBe(false);
+  });
   it('awards 2 XP to the first unique item today',()=>{const state=createProgressState(at('2026-08-21'),'install');expect(reduceProgress(state,item('2026-08-21')).state.lifetime.xp).toBe(2);});
   it('does not duplicate an event',()=>{const state=createProgressState(at('2026-08-21'),'install'),first=reduceProgress(state,item('2026-08-21'));const second=reduceProgress(first.state,item('2026-08-21'));expect(second.applied).toBe(false);expect(second.state.lifetime.completedItems).toBe(1);});
   it('counts repeated item completion but not same-day item XP',()=>{let state=createProgressState(at('2026-08-21'),'install');state=reduceProgress(state,item('2026-08-21','a','flashcards','one')).state;state=reduceProgress(state,item('2026-08-21','a','flashcards','two')).state;expect(state.lifetime.completedItems).toBe(2);expect(state.lifetime.xp).toBe(2);});

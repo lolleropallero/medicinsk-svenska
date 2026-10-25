@@ -68,11 +68,29 @@ test('achievement-only final card explains the achievement once and resumes at c
   await expect(dialog).not.toBeVisible();
 });
 
-test('level-only milestone identifies the final level with one fanfare', async ({ page }) => {
+test('the old 20 XP threshold no longer interrupts practice and the dashboard uses the new target', async ({ page }) => {
   await prepareCard(page, (state) => {
     unlockAll(state);
     state.lifetime.completedItems = 20;
     state.lifetime.xp = 18;
+    state.highestRewardedLevel = 1;
+  });
+  const dialog = await masterCard(page);
+  await expect(page.locator('#summary-view')).toBeVisible();
+  await expect(dialog).not.toBeVisible();
+  expect(await page.evaluate(() => (window as unknown as { milestoneSounds: string[] }).milestoneSounds)).toEqual([]);
+  await page.goto('/edistyminen/');
+  await expect(page.getByRole('link', { name: 'Nivå 1, 20 XP', exact: true })).toBeVisible();
+  const progress = page.locator('.passport-card [role="progressbar"]');
+  await expect(progress).toHaveAttribute('aria-valuenow', '20');
+  await expect(progress).toHaveAttribute('aria-valuemax', '100');
+});
+
+test('level-only milestone identifies the final level with one fanfare', async ({ page }) => {
+  await prepareCard(page, (state) => {
+    unlockAll(state);
+    state.lifetime.completedItems = 20;
+    state.lifetime.xp = 98;
     state.highestRewardedLevel = 1;
   });
   const dialog = await masterCard(page);
@@ -101,7 +119,7 @@ test('weekly quest-only milestone identifies the weekly quest with one fanfare',
   await prepareCard(page, (state, day) => {
     unlockAll(state);
     state.lifetime.completedItems = 200;
-    state.lifetime.xp = 25;
+    state.lifetime.xp = 125;
     state.highestRewardedLevel = 2;
     state.daily[day].uniqueItemIds = Array.from({ length: 99 }, (_, index) => `flashcards:weekly-seed-${index}`);
     state.daily[day].completedItems = 99;
@@ -119,7 +137,7 @@ test('combined level, achievement, and quest share one overlay and one fanfare',
     unlockAll(state);
     delete state.achievements.find((item: Record<string, any>) => item.id === 'items-10').unlockedAt;
     state.lifetime.completedItems = 9;
-    state.lifetime.xp = 18;
+    state.lifetime.xp = 98;
     state.highestRewardedLevel = 1;
     state.daily[day].uniqueItemIds = Array.from({ length: 9 }, (_, index) => `flashcards:seed-${index}`);
     state.daily[day].completedItems = 9;
@@ -168,7 +186,7 @@ test('320 x 568 combined layout has no horizontal overflow or serious axe violat
     unlockAll(state);
     delete state.achievements.find((item: Record<string, any>) => item.id === 'items-10').unlockedAt;
     state.lifetime.completedItems = 9;
-    state.lifetime.xp = 18;
+    state.lifetime.xp = 98;
     state.highestRewardedLevel = 1;
     state.daily[day].uniqueItemIds = Array.from({ length: 9 }, (_, index) => `flashcards:seed-${index}`);
     state.daily[day].completedItems = 9;

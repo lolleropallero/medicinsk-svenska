@@ -58,6 +58,34 @@ describe('word attempt recording', () => {
     expect(state.cards.a!.incorrect).toBe(1);
     expect(state.cards.b!.incorrect).toBe(0);
   });
+
+  it('clears review on a correct first attempt while preserving errors and attempt history', () => {
+    let state = recordWordAttempt(createWordStatsState(), 'c1', false, 1_000, { firstAttempt: true });
+    state = recordWordAttempt(state, 'c1', true, 2_000, { firstAttempt: true });
+    expect(state.cards.c1).toEqual({ attempts: 2, incorrect: 1, correctStreak: 1, lastAttemptAt: 2_000, lastIncorrectAt: 1_000, reviewClearedAt: 2_000 });
+    expect(selectWeakCardIds(state, new Set(['c1']), 10, 2_000)).toEqual([]);
+    const storage = new MemoryStorage();
+    saveWordStats(state, storage);
+    expect(loadWordStats(storage)).toEqual(state);
+    expect(selectWeakCardIds(loadWordStats(storage), new Set(['c1']), 10, 3_000)).toEqual([]);
+  });
+
+  it('keeps a successful retry in review until a later round is correct on its first attempt', () => {
+    let state = recordWordAttempt(createWordStatsState(), 'c1', false, 1_000, { firstAttempt: true });
+    state = recordWordAttempt(state, 'c1', true, 2_000, { firstAttempt: false });
+    expect(selectWeakCardIds(state, new Set(['c1']), 10, 2_000)).toEqual(['c1']);
+    state = recordWordAttempt(state, 'c1', true, 3_000, { firstAttempt: true });
+    expect(selectWeakCardIds(state, new Set(['c1']), 10, 3_000)).toEqual([]);
+  });
+
+  it('puts a cleared card back in review immediately after a later miss', () => {
+    let state = recordWordAttempt(createWordStatsState(), 'c1', false, 1_000);
+    state = recordWordAttempt(state, 'c1', true, 2_000, { firstAttempt: true });
+    state = recordWordAttempt(state, 'c1', false, 3_000, { firstAttempt: true });
+    expect(state.cards.c1!.reviewClearedAt).toBeUndefined();
+    expect(state.cards.c1!.incorrect).toBe(2);
+    expect(selectWeakCardIds(state, new Set(['c1']), 10, 3_000)).toEqual(['c1']);
+  });
 });
 
 describe('weakness scoring', () => {
@@ -155,6 +183,7 @@ describe('word-stats persistence', () => {
     expect(isWordStatsState({ schemaVersion: 1, cards: [] })).toBe(false);
     expect(isWordStatsState({ schemaVersion: 1, cards: { a: { attempts: 1, incorrect: 2, correctStreak: 0, lastAttemptAt: 1 } } })).toBe(false);
     expect(isWordStatsState({ schemaVersion: 1, cards: { a: { attempts: 1, incorrect: 0, correctStreak: 0, lastAttemptAt: -1 } } })).toBe(false);
+    expect(isWordStatsState({ schemaVersion: 1, cards: { a: { attempts: 2, incorrect: 1, correctStreak: 1, lastAttemptAt: 2, reviewClearedAt: -1 } } })).toBe(false);
   });
 
   it('loads a fresh state when storage is empty or corrupt', () => {

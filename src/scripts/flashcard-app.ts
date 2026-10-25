@@ -120,10 +120,6 @@ function startApp() {
   }
 
   let sourceCards = computeSourceCards(configuration.mode, configuration.sourceDeckId, configuration.requestedAmount);
-  if (sourceCards.length === 0) {
-    showInvalidRequest(configuration.mode === 'review' ? 'empty-review' : 'invalid');
-    return;
-  }
 
   function readStoredSession(): FlashcardSession | null {
     try {
@@ -144,7 +140,12 @@ function startApp() {
     }
   }
 
-  let session = readStoredSession() ?? createSession(sourceCards, configuration);
+  const storedSession = readStoredSession();
+  if (!storedSession && sourceCards.length === 0) {
+    showInvalidRequest(configuration.mode === 'review' ? 'empty-review' : 'invalid');
+    return;
+  }
+  let session = storedSession ?? createSession(sourceCards, configuration);
   const sourceId = session.mode === 'deck' ? session.sourceDeckId! : session.mode;
   dispatchProgress({ type:'session-started', eventId:`flashcards:${session.sessionId}:started`, sessionId:session.sessionId,
     mode:'flashcards', sourceId, selectedCount:session.selectedCardIds.length, occurredAt:session.startedAt });
@@ -313,6 +314,9 @@ function startApp() {
       showSessionRewards('flashcard-rewards',session.sessionId);
       byId('summary-first').textContent = `${summary.firstAttemptCorrect} / ${summary.selectedCount}`;
       byId('summary-missed').textContent = String(summary.totalMissedCount);
+      const reviewCleared = session.mode === 'review' && computeSourceCards('review', undefined, session.requestedAmount).length === 0;
+      byId('new-round').hidden = reviewCleared;
+      byId('review-complete').hidden = !reviewCleared;
       const elapsedMilliseconds = now - session.startedAt;
       const summaryDuration = formatDuration(elapsedMilliseconds);
       const summaryTime = byId<HTMLTimeElement>('summary-time');
@@ -397,7 +401,7 @@ function startApp() {
     choiceContinue.disabled = true;
     writtenContinue.disabled = true;
     session = gradeCurrentCard(session, correct, now);
-    wordStats = recordWordAttempt(wordStats, completedId, correct, now);
+    wordStats = recordWordAttempt(wordStats, completedId, correct, now, { firstAttempt: priorAttempts === 0 });
     saveWordStats(wordStats);
     if (correct) dispatchProgress({type:'item-completed',eventId:`flashcards:${session.sessionId}:item:${completedId}`,sessionId:session.sessionId,
       mode:'flashcards',itemId:completedId,sourceId,occurredAt:now,firstAttemptCorrect:priorAttempts===0,hadMisses:priorAttempts>0,resolution:'mastered'});
@@ -414,8 +418,11 @@ function startApp() {
   function startNewRound() {
     const sessionId = crypto.randomUUID();
     if (session.mode === 'review') {
-      const freshWeakCards = computeSourceCards('review', undefined, session.requestedAmount);
-      if (freshWeakCards.length > 0) sourceCards = freshWeakCards;
+      sourceCards = computeSourceCards('review', undefined, session.requestedAmount);
+      if (sourceCards.length === 0) {
+        showInvalidRequest('empty-review');
+        return;
+      }
     }
     session = createNewRoundSession(sourceCards, session, sessionId, Date.now(), Math.random);
     configuration = {

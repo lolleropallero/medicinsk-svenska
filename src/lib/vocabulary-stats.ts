@@ -11,6 +11,7 @@ export interface WordStatEntry {
   correctStreak: number;
   lastAttemptAt: number;
   lastIncorrectAt?: number;
+  reviewClearedAt?: number;
 }
 
 export interface WordStatsStateV1 {
@@ -39,23 +40,26 @@ export function recordWordAttempt(
   cardId: string,
   correct: boolean,
   now: number,
+  options: { firstAttempt?: boolean } = {},
 ): WordStatsStateV1 {
   const previous = state.cards[cardId];
   const lastIncorrectAt = correct ? previous?.lastIncorrectAt : now;
+  const reviewClearedAt = correct ? (options.firstAttempt ? now : previous?.reviewClearedAt) : undefined;
   const entry: WordStatEntry = {
     attempts: (previous?.attempts ?? 0) + 1,
     incorrect: (previous?.incorrect ?? 0) + (correct ? 0 : 1),
     correctStreak: correct ? (previous?.correctStreak ?? 0) + 1 : 0,
     lastAttemptAt: now,
     ...(lastIncorrectAt === undefined ? {} : { lastIncorrectAt }),
+    ...(reviewClearedAt === undefined ? {} : { reviewClearedAt }),
   };
   return { ...state, cards: pruneCards({ ...state.cards, [cardId]: entry }) };
 }
 
-// Weighted toward recent, repeated misses; decays with a 14-day half-life and zeroes out once a
-// word has been answered correctly five times in a row so "mastered again" words stop surfacing.
+// First-attempt recall clears review without erasing attempt history. Any later miss adds it back.
+// Keep the five-answer cutoff for older records that did not track first attempts.
 export function weaknessScore(entry: WordStatEntry, now: number): number {
-  if (entry.incorrect <= 0 || entry.correctStreak >= MASTERY_STREAK_CUTOFF) return 0;
+  if (entry.incorrect <= 0 || entry.reviewClearedAt !== undefined || entry.correctStreak >= MASTERY_STREAK_CUTOFF) return 0;
   const errorRate = entry.incorrect / Math.max(1, entry.attempts);
   const daysSinceIncorrect = entry.lastIncorrectAt === undefined
     ? Number.POSITIVE_INFINITY
@@ -106,6 +110,8 @@ function isWordStatEntry(value: unknown): value is WordStatEntry {
     Number.isInteger(entry.incorrect) && entry.incorrect! >= 0 && entry.incorrect! <= entry.attempts! &&
     Number.isInteger(entry.correctStreak) && entry.correctStreak! >= 0 && entry.correctStreak! <= entry.attempts! &&
     typeof entry.lastAttemptAt === 'number' && Number.isFinite(entry.lastAttemptAt) && entry.lastAttemptAt >= 0 &&
+    (entry.reviewClearedAt === undefined ||
+      (typeof entry.reviewClearedAt === 'number' && Number.isFinite(entry.reviewClearedAt) && entry.reviewClearedAt >= 0)) &&
     (entry.lastIncorrectAt === undefined ||
       (typeof entry.lastIncorrectAt === 'number' && Number.isFinite(entry.lastIncorrectAt) && entry.lastIncorrectAt >= 0))
   );

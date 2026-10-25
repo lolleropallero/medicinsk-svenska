@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { WORD_STATS_KEY } from '../../src/lib/vocabulary-stats';
+import { continuePastMilestone } from './helpers';
 
 const EXAM_KEY = 'medicinsk-svenska.exam-session.v1';
 const GENERAL_KEY = 'medicinsk-svenska.flashcard-session.v1';
@@ -84,9 +85,50 @@ test('En osannut records a missed exam card and reopens it for review in the sel
   const milestone = page.getByRole('button', { name: 'Fortsätt' });
   if (await milestone.isVisible()) await milestone.click();
   await expect(page.locator('#summary-view')).toBeVisible();
+  await expect(page.locator('#review-complete')).toHaveText('Kertauslista on nyt tyhjä.');
+  await expect(page.getByRole('button', { name: 'Uusi kierros' })).toBeHidden();
+  await page.reload();
+  await expect(page.locator('#summary-view')).toBeVisible();
+  await expect(page.locator('#review-complete')).toBeVisible();
+  await page.getByRole('link', { name: 'Takaisin tenttisanastoon', exact: true }).click();
+  await expect(page.locator('[data-review-cta]')).toBeHidden();
+  await expect(page.locator('[data-review-empty]')).toBeVisible();
+  await page.reload();
+  await expect(page.locator('[data-review-cta]')).toBeHidden();
+});
+
+test('exam review immediately drops first-attempt successes but keeps a missed card after a correct retry', async ({ page }) => {
+  await page.goto('/tentti/');
+  await page.evaluate((key) => {
+    const ids = (JSON.parse(document.getElementById('cards-data-ids')!.textContent!) as string[]).slice(0, 2);
+    const now = Date.now();
+    localStorage.setItem(key, JSON.stringify({ schemaVersion: 1, cards: Object.fromEntries(ids.map(id => [id, { attempts: 1, incorrect: 1, correctStreak: 0, lastAttemptAt: now, lastIncorrectAt: now }])) }));
+  }, WORD_STATS_KEY);
+  await page.reload();
+  await page.locator('[data-review-cta]').click();
+  await expect(page.locator('#progress')).toHaveText('0 / 2');
+  await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await page.getByRole('button', { name: 'Osasin', exact: true }).click();
+  await continuePastMilestone(page);
+  await page.getByRole('link', { name: 'Takaisin', exact: true }).click();
+  await expect(page.locator('[data-review-count]')).toHaveText('1 sana');
+  await page.locator('[data-review-cta]').click();
+  await expect(page.locator('#progress')).toHaveText('0 / 1');
+  await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await page.getByRole('button', { name: 'En osannut' }).click();
+  await page.reload();
+  await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await page.getByRole('button', { name: 'Osasin', exact: true }).click();
+  await continuePastMilestone(page);
+  await expect(page.locator('#summary-view')).toBeVisible();
+  await expect(page.locator('#review-complete')).toBeHidden();
   await page.getByRole('button', { name: 'Uusi kierros' }).click();
-  await expect(page.locator('#session-label')).toHaveText('En osannut');
-  await expect(page.locator('#front-term')).toHaveText(missed.sv);
+  await expect(page.locator('#progress')).toHaveText('0 / 1');
+  await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+  await page.getByRole('button', { name: 'Osasin', exact: true }).click();
+  await continuePastMilestone(page);
+  await expect(page.locator('#review-complete')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Uusi kierros' })).toBeHidden();
 });
 
 test('exam review excludes unrelated, removed and mastered cards and honors both limited and all amounts', async ({ page }) => {

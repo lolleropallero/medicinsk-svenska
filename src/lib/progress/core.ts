@@ -8,6 +8,7 @@ import type { VocabularyAnswerMode } from '../session';
 export const PROGRESS_KEY = 'medicinsk-svenska.progress.v1';
 export const MAX_EVENTS = 10_000;
 export const MAX_DAYS = 400;
+const LEVEL_XP_SCALE = 25;
 const rarityRank: Record<Rarity,number> = { common:0,rare:1,epic:2,legendary:3 };
 const VOCABULARY_ANSWER_MODES: readonly VocabularyAnswerMode[] = ['cards','choice','written'];
 
@@ -17,8 +18,15 @@ export function hashSeed(value: string): number {
   return hash >>> 0;
 }
 export function seededUnit(value: string): number { return hashSeed(value) / 0x1_0000_0000; }
-export function levelThreshold(level: number): number { return 10 * (Math.max(1, Math.floor(level)) - 1) * Math.max(1, Math.floor(level)); }
-export function levelFromXp(xp: number): number { return Math.max(1, Math.floor((1 + Math.sqrt(1 + Math.max(0,xp) / 2.5)) / 2)); }
+// Cumulative thresholds: 0, 100, 250, 450, 700, ...
+// The first level-up costs 100 XP; each later step costs 50 XP more.
+export function levelThreshold(level: number): number {
+  const target = Math.max(1, Math.floor(level));
+  return LEVEL_XP_SCALE * (target - 1) * (target + 2);
+}
+export function levelFromXp(xp: number): number {
+  return Math.max(1, Math.floor((Math.sqrt(9 + 4 * Math.max(0, xp) / LEVEL_XP_SCALE) - 1) / 2));
+}
 export function levelProgress(xp: number) {
   const level = levelFromXp(xp); const current = levelThreshold(level); const next = levelThreshold(level + 1);
   return { level, currentThreshold:current, nextThreshold:next, within:xp-current, remaining:next-xp, percent:(xp-current)/(next-current)*100 };

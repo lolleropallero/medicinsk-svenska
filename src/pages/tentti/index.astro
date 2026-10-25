@@ -29,6 +29,10 @@ import { nordicAssets } from '../../lib/nordic-assets';
     <a class="lucky" data-start data-mode="lucky" href="/tentti/harjoitus?mode=lucky&answer=cards&direction=fi-sv&amount=25">
       <span class="row-icon"><AppIcon name="shuffle" size={32}/></span><span><strong>Koko tenttisanasto</strong><small>Kaikki kuusi aihetta sekaisin</small></span><span data-selected-count>25 korttia</span><AppIcon name="arrow"/>
     </a>
+    <a class="lucky review-cta" data-start data-mode="review" data-review-cta href="/tentti/harjoitus?mode=review&answer=cards&direction=fi-sv&amount=25" hidden>
+      <span class="row-icon"><AppIcon name="retry" size={32}/></span><span><strong>En osannut</strong><small>Kertaa väärin menneitä tenttikortteja</small></span><span data-review-count></span><AppIcon name="arrow"/>
+    </a>
+    <p class="review-empty" data-review-empty hidden>En osannut -kertaus on vielä tyhjä. Merkitse harjoittelussa kortti ”En osannut”, niin se tulee tänne kerrattavaksi.</p>
     <div class="deck-list">
       {examTopics.map((topic) => (
         <a class="deck-row" data-start data-mode="deck" data-deck={topic.id} href={`/tentti/harjoitus?mode=deck&answer=cards&deck=${topic.id}&direction=fi-sv&amount=25`}>
@@ -39,5 +43,6 @@ import { nordicAssets } from '../../lib/nordic-assets';
     </div>
     <p class="setup-note">Mukana ovat alkuperäisten tenttilistojen fraasit, synonyymit ja taivutusmerkinnät. Sama sana voi esiintyä useassa aiheessa. Vaikeat kortit palaavat kertaukseen.</p>
   </section>
+  <script is:inline id="cards-data-ids" type="application/json" set:html={JSON.stringify(examCardPayload.map((card) => card.id))}></script>
   <script src="../../scripts/deck-list.ts"></script>
 </BaseLayout>

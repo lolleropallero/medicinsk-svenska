@@ -4,6 +4,7 @@ import AppIcon from '../components/AppIcon.astro';
 import FlagRibbon from '../components/FlagRibbon.astro';
 import RewardBoxVisual from '../components/RewardBoxVisual.astro';
 import { publishedCards, publishedDescriptions, publishedPhrases, publishedDecks, publishedDescriptionCategories, publishedPhraseCategories, publishedAnamnesisCases } from '../lib/content';
+import { examCardPayload } from '../lib/exam-content';
 
 const sessionCatalog = {
   cards: publishedCards.map(({ id, deckId }) => [id, deckId]),
@@ -30,7 +31,7 @@ const sessionCatalog = {
       <a class="practice-action description-action" href="/kuvailu/"><span class="practice-action-icon"><AppIcon name="descriptions" size={32}/><FlagRibbon variant="sv"/></span><span><strong>Kuvailutehtävät</strong><small>Ruotsinkieliset määritelmät</small></span><AppIcon name="arrow"/></a>
       <a class="practice-action clinical-action" href="/tilanteet/"><span class="practice-action-icon"><AppIcon name="dialogue" size={32}/><FlagRibbon variant="dual"/></span><span><strong>Kliiniset tilanteet</strong><small>Potilaskeskustelua ruotsiksi</small></span><AppIcon name="arrow"/></a>
     </div>
-    <a class="exam-link" href="/tentti/"><AppIcon name="flashcards"/><span><strong>Ruotsin tenttisanasto</strong><small>522 korttia · 6 sanalistaa</small></span><AppIcon name="arrow"/></a>
+    <a class="exam-link" href="/tentti/"><AppIcon name="flashcards"/><span><strong>Ruotsin tenttisanasto</strong><small>{examCardPayload.length} korttia · 6 sanalistaa</small></span><AppIcon name="arrow"/></a>
   </section>
   <dialog id="daily-overlay" class="daily-overlay" aria-labelledby="daily-overlay-title" lang="sv">
     <div class="daily-sheet">

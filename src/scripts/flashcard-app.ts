@@ -35,8 +35,6 @@ import {
 } from '../lib/vocabulary-exercise';
 import { loadWordStats, recordWordAttempt, saveWordStats, selectWeakCards } from '../lib/vocabulary-stats';
 
-const WEAK_REVIEW_POOL_CAP = 60;
-
 function initializeFlashcardApp() {
 if (!document.getElementById('cards-data')) return;
 const controller = new AbortController();
@@ -86,7 +84,7 @@ function showInvalidRequest(reason: 'invalid' | 'empty-review' = 'invalid') {
   const detail = byId('error-detail');
   if (reason === 'empty-review') {
     byId('error-title').textContent = 'Ei vielä vaikeita sanoja';
-    detail.textContent = 'Harjoittele muutama kierros normaalisti tai Sekoitus-tavalla, niin Kertaa vaikeita löytää sinulle sopivat sanat.';
+    detail.textContent = `Merkitse harjoittelussa vaikeat kortit ”En osannut”, niin ${app.dataset.reviewLabel ?? 'Kertaa vaikeita'} löytää sinulle sopivat sanat.`;
     detail.hidden = false;
   } else {
     byId('error-title').textContent = 'Pakkaa ei löytynyt';
@@ -115,7 +113,7 @@ function startApp() {
   function computeSourceCards(mode: SessionMode, sourceDeckId: string | undefined, requestedAmount: RequestedAmount): FlashcardClient[] {
     if (mode === 'lucky') return allCards;
     if (mode === 'review') {
-      const limit = requestedAmount === 'all' ? WEAK_REVIEW_POOL_CAP : requestedAmount;
+      const limit = requestedAmount === 'all' ? allCards.length : requestedAmount;
       return selectWeakCards(wordStats, allCards, limit);
     }
     return allCards.filter((card) => card.deckId === sourceDeckId);
@@ -156,7 +154,7 @@ function startApp() {
   byId('session-label').textContent = session.mode === 'lucky'
     ? app.dataset.allLabel ?? 'Kokeilen onneani'
     : session.mode === 'review'
-      ? 'Kertaa vaikeita'
+      ? app.dataset.reviewLabel ?? 'Kertaa vaikeita'
       : allDecks.find((deck) => deck.id === session.sourceDeckId)?.nameFi ?? 'Sanakortit';
 
   function persist() {

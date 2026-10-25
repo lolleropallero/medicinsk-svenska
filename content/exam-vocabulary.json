@@ -532,10 +532,6 @@
       },
       {
         "definition": "verisuoni",
-        "term": "en blodåd/er, -rar 2"
-      },
-      {
-        "definition": "verisuoni",
         "term": "ett blodkärl 5"
       },
       {
@@ -1137,10 +1133,6 @@
         "term": "sydämen läppä"
       },
       {
-        "definition": "ett kranskärl 5",
-        "term": "sepelvaltimo"
-      },
-      {
         "definition": "hjärttoner, -na",
         "term": "sydänäänet"
       },
@@ -1297,12 +1289,8 @@
         "term": "suorituskyky"
       },
       {
-        "definition": "ordinera I mediciner åt ngn",
-        "term": "määrätä lääkkeitä jllkn (1)"
-      },
-      {
         "definition": "skriva IV ut mediciner åt ngn",
-        "term": "määrätä lääkkeitä jllkn (2)"
+        "term": "määrätä lääkkeitä jllkn"
       },
       {
         "definition": "byta II X till ngt",
@@ -1657,10 +1645,6 @@
       {
         "definition": "ömhet, -en",
         "term": "arkuus"
-      },
-      {
-        "definition": "en lymfkört/el, -ar",
-        "term": "imusolmuke"
       },
       {
         "definition": "en hals",

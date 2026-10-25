@@ -4,7 +4,7 @@ A calm, static study application for Finnish medical students practising medical
 
 ## Scope
 
-V1 is designed only for medical students. It contains eight general decks: Anatomia (137 cards from the supplied exam list), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (26), Tutkimukset ja hoito (49), and Laboratoriokokeet (45). The 505 general flashcards are accompanied by a six-topic exam collection, 73 clinical phrases in three categories, 51 Swedish descriptions of anatomy and physiology, and one structured anamnesis case (Rintakipu: 39 questions across eight sections). It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
+V1 is designed only for medical students. It contains eight general decks: Anatomia (136 cards from the supplied exam list), Sairaudet ja vaivat (125), Ensiapu (56), Lääkkeet ja lääkitys (49), Osastot (18), Vastaanotto ja anamneesi (26), Tutkimukset ja hoito (49), and Laboratoriokokeet (45). The 504 general flashcards are accompanied by a six-topic exam collection, 73 clinical phrases in three categories, 51 Swedish descriptions of anatomy and physiology, and one structured anamnesis case (Rintakipu: 39 questions across eight sections). It has no nursing mode, audio, AI, social features, or spaced-repetition algorithm.
 
 Exercise sessions and long-term progress are stored only in the current browser. They are not tied to an account or synchronized between devices.
 
@@ -102,9 +102,11 @@ The content model (`AnamnesisCase` → `AnamnesisSection` → `AnamnesisItem`) i
 
 ### Exam vocabulary
 
-`/tentti` groups the six supplied exam lists into one 522-card collection: Anatomia (137), Sairaudet ja vaivat (138), Sydänsairaudet (49), Anamneesi (70), Tutkiminen (50), and Epikriisi (78). Links on the home and flashcard pages open the collection. Learners can shuffle all topics or one topic, choose either language direction, and select 10, 25, 50, or all cards.
+`/tentti` groups the six supplied exam lists into one 518-card collection: Anatomia (136), Sairaudet ja vaivat (138), Sydänsairaudet (47), Anamneesi (70), Tutkiminen (49), and Epikriisi (78). Links on the home and flashcard pages open the collection. Learners can shuffle all topics or one topic, choose either language direction, and select 10, 25, 50, or all cards.
 
-`content/exam-vocabulary.json` preserves the original entries and source filenames. Anatomy has Swedish in `term`; the other sources have Swedish in `definition`. Source notation, synonyms, phrases, and repetitions across topics are retained. These cards use self-assessment. The general Anatomia deck uses the same 137 cards and always starts card practice; other general decks retain their current content. New source IDs prevent old anatomy progress from attaching to different words.
+The **En osannut** entry revisits missed exam cards using saved word statistics, respecting the selected language direction and card count. Only current exam cards are included; removed cards and unrelated general vocabulary are excluded. The page explains how to populate the review when there are no missed cards. As in general vocabulary review, five consecutive correct answers retire a word from the review pool.
+
+`content/exam-vocabulary.json` contains the curated entries and original source filenames. Anatomy has Swedish in `term`; the other sources have Swedish in `definition`. Source notation, phrases, and repetitions across topics are retained, with selected synonym cards removed. These cards use self-assessment. The general Anatomia deck uses the same 136 cards and always starts card practice; other general decks retain their current content. Removed source positions remain reserved in `src/lib/exam-content.ts`, keeping saved progress attached to the same words.
 
 The shared flashcard engine handles reveal, retries, summaries, and reload persistence. Exam sessions use their own browser key, `medicinsk-svenska.exam-session.v1`, so exam and general sessions do not overwrite each other. Source validation checks the six lists, language orientation, counts, and entry structure; import integrity tests compare every source entry against its original digest.
 

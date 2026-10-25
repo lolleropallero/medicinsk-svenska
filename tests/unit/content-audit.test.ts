@@ -17,10 +17,10 @@ describe('audited learning content', () => {
       ]),
     );
     expect(counts).toEqual({
-      anatomi: 137, sjukdomar: 125, 'forsta-hjalpen': 56, mediciner: 49, avdelningar: 18,
+      anatomi: 136, sjukdomar: 125, 'forsta-hjalpen': 56, mediciner: 49, avdelningar: 18,
       'vastaanotto-anamneesi': 26, 'tutkimukset-hoito': 49, laboratoriokokeet: 45,
     });
-    expect(cards).toHaveLength(505);
+    expect(cards).toHaveLength(504);
   });
 
   it('retains the curated rhythm pair', () => {

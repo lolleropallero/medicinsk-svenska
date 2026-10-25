@@ -434,9 +434,9 @@ export function validateAnamnesisContent(casesInput: unknown[]): string[] {
 export function validateExamContent(topics: unknown[]): string[] {
   const errors: string[] = [];
   const expectedTopics = new Map<string, readonly [string, number]>([
-    ['anatomi', ['term', 137]], ['tentti-sairaudet', ['definition', 138]],
-    ['tentti-sydansairaudet', ['definition', 49]], ['tentti-anamneesi', ['definition', 70]],
-    ['tentti-tutkiminen', ['definition', 50]], ['tentti-epikriisi', ['definition', 78]],
+    ['anatomi', ['term', 136]], ['tentti-sairaudet', ['definition', 138]],
+    ['tentti-sydansairaudet', ['definition', 47]], ['tentti-anamneesi', ['definition', 70]],
+    ['tentti-tutkiminen', ['definition', 49]], ['tentti-epikriisi', ['definition', 78]],
   ] as const);
   const seen = new Set<string>();
   const keys = new Set(['id', 'nameFi', 'sourceFile', 'swedishField', 'iconDeckId', 'entries']);
@@ -529,4 +529,4 @@ if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));
   process.exit(1);
 }
-console.log(`Content valid: ${decks.length} general decks, ${cards.length} curated cards, 522 exam cards (137 replace general anatomy), ${descriptions.length} descriptions, ${phrases.length} phrases, ${anamnesisCases.length} anamnesis case(s).`);
+console.log(`Content valid: ${decks.length} general decks, ${cards.length} curated cards, 518 exam cards (136 replace general anatomy), ${descriptions.length} descriptions, ${phrases.length} phrases, ${anamnesisCases.length} anamnesis case(s).`);

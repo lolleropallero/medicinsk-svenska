@@ -9,10 +9,11 @@ interface Props {
   returnLabel?: string;
   storageKey?: string;
   allLabel?: string;
+  reviewLabel?: string;
 }
-const { cards, decks, returnHref = '/kortit', returnLabel = 'Takaisin pakkoihin', storageKey, allLabel } = Astro.props;
+const { cards, decks, returnHref = '/kortit', returnLabel = 'Takaisin pakkoihin', storageKey, allLabel, reviewLabel } = Astro.props;
 ---
-  <section class="practice wrap" id="flashcard-app" data-storage-key={storageKey} data-all-label={allLabel} aria-labelledby="session-label">
+  <section class="practice wrap" id="flashcard-app" data-storage-key={storageKey} data-all-label={allLabel} data-review-label={reviewLabel} aria-labelledby="session-label">
     <div class="practice-top">
       <a class="practice-back" href={returnHref}><AppIcon name="back"/>Takaisin</a>
       <strong id="session-label"></strong>

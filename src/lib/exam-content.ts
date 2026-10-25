@@ -4,10 +4,24 @@ import type { DeckClient, Flashcard, FlashcardClient } from '../types/content';
 export const examTopics = topicsData;
 export const examDeckPayload: DeckClient[] = examTopics.map(({ id, nameFi }) => ({ id, nameFi }));
 
-// Preserve the teacher's wording, synonyms and grammar notation on both sides.
-// New IDs prevent progress from the retired anatomy list attaching to different words.
+// Keep removed source positions reserved so saved progress stays with the same words.
+// Positions must stay in ascending order when more cards are removed.
+const retiredSourcePositions: Record<string, readonly number[]> = {
+  anatomi: [132],
+  'tentti-sydansairaudet': [4, 44],
+  'tentti-tutkiminen': [11],
+};
+
+function sourcePosition(topicId: string, index: number): number {
+  return (retiredSourcePositions[topicId] ?? []).reduce(
+    (position, retired) => position >= retired ? position + 1 : position,
+    index + 1,
+  );
+}
+
+// Preserve the remaining source wording and grammar notation on both sides.
 export const examCards: Flashcard[] = examTopics.flatMap((topic) => topic.entries.map((entry, index) => ({
-  id: `tenttisanasto-${topic.id}-${String(index + 1).padStart(3, '0')}`,
+  id: `tenttisanasto-${topic.id}-${String(sourcePosition(topic.id, index)).padStart(3, '0')}`,
   deckId: topic.id,
   fi: topic.swedishField === 'term' ? entry.definition : entry.term,
   sv: topic.swedishField === 'term' ? entry.term : entry.definition,

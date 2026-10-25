@@ -5,20 +5,35 @@ import { flashcardPayload } from '../../src/lib/content';
 import { validateExamContent } from '../../scripts/validate-content';
 
 describe('exam vocabulary import', () => {
-  it('preserves every source entry, including notation and repeated words across topics', () => {
-    expect(examTopics.map((topic) => topic.entries.length)).toEqual([137, 138, 49, 70, 50, 78]);
+  it('preserves the curated source entries, including notation and repeated words across topics', () => {
+    expect(examTopics.map((topic) => topic.entries.length)).toEqual([136, 138, 47, 70, 49, 78]);
     expect(examTopics.map((topic) => createHash('sha256').update(JSON.stringify(topic.entries)).digest('hex'))).toEqual([
-      '1114e519c63d558d276b96ca8d70b986b7a3c559ef6d0e9ced4e422e2b53bae3',
+      '42c952c861a191bb7fb81b583f108546e6dbf60fed47d24af143ea3523a01d03',
       '8658c072802d33e0dc65137d1f218076c56dbe3379f539e4c26e51e0e9144f33',
-      'f6f6a5ab52fec6e28676a0fe5d4d09a2aab2bea48c4b2f896a6017aa2b529e45',
+      'dcd1cb0663f57851468c9ed2c65dbba26836451c5f3e7370a96397301afbff69',
       'cbc8e5a2f1d87af33b3335fe8aa8c3dd7cf571e473d6ebbd7e3dde31a657adc5',
-      '0a64654e09ad103e1f41750366eccea2a2b01770bf008c07ebbd67cd84d335ce',
+      '705559fc8e1df7feba2c6dd34507d315ce131634e19a66c1eb67b4fb3e35f46c',
       'a3341c2f41443f0717e3dcf49cb00ff74e5dd73375cdd27ac22733cdb94b1b61',
     ]);
-    expect(examCardPayload).toHaveLength(522);
-    expect(new Set(examCardPayload.map((card) => card.id)).size).toBe(522);
+    expect(examCardPayload).toHaveLength(518);
+    expect(new Set(examCardPayload.map((card) => card.id)).size).toBe(518);
     expect(examCardPayload.every((card) => card.selfAssessmentOnly)).toBe(true);
     expect(examCardPayload.every((card) => !('sourceFile' in card) && !('status' in card))).toBe(true);
+  });
+
+  it('keeps saved card IDs attached to the same words after removing synonyms', () => {
+    const byId = new Map(examCardPayload.map((card) => [card.id, card]));
+    for (const id of ['anatomi-132', 'tentti-sydansairaudet-004', 'tentti-sydansairaudet-044', 'tentti-tutkiminen-011']) {
+      expect(byId.has(`tenttisanasto-${id}`)).toBe(false);
+    }
+    for (const [id, fi, sv] of [
+      ['anatomi-133', 'verisuoni', 'ett blodkärl 5'],
+      ['tentti-sydansairaudet-005', 'sydänäänet', 'hjärttoner, -na'],
+      ['tentti-sydansairaudet-045', 'määrätä lääkkeitä jllkn', 'skriva IV ut mediciner åt ngn'],
+      ['tentti-tutkiminen-012', 'kaula', 'en hals'],
+    ]) {
+      expect(byId.get(`tenttisanasto-${id}`)).toMatchObject({ fi, sv });
+    }
   });
 
   it('uses the opposite source orientation for anatomy and shares its replacement with general practice', () => {

@@ -3,8 +3,6 @@ import type { Direction } from '../types/content';
 import type { RequestedAmount, SessionMode, VocabularyAnswerMode } from '../lib/session';
 import { loadWordStats, selectWeakCardIds } from '../lib/vocabulary-stats';
 
-const WEAK_WORD_DISPLAY_CAP = 500;
-
 function initializeDeckList() {
 const starts = document.querySelectorAll<HTMLAnchorElement>('[data-start]');
 const radios = document.querySelectorAll<HTMLInputElement>('input[name="direction"], input[name="answer"], input[name="amount"]');
@@ -33,7 +31,7 @@ function weakWordCount(): number {
   if (!node) return 0;
   try {
     const knownCardIds = new Set(JSON.parse(node.textContent ?? '[]') as string[]);
-    return selectWeakCardIds(loadWordStats(), knownCardIds, WEAK_WORD_DISPLAY_CAP).length;
+    return selectWeakCardIds(loadWordStats(), knownCardIds, knownCardIds.size).length;
   } catch {
     return 0;
   }

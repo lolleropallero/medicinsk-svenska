@@ -68,6 +68,8 @@ Visual regression work uses the Playwright matrix at 320 × 568, 390 × 844, 768
 
 ### Flashcard session persistence
 
+The card-count selector remembers the last chosen 10, 25, 50, or all cards in browser UI preferences. General and exam flashcards share this preference, which is restored on return visits and reload before their start links are updated. The initial default is 25 only when no valid previous selection is saved.
+
 Each compact deck row is one complete link, so its name, card count, empty space, and `Aloita` affordance all start the configured exercise. Starting an exercise creates a unique session URL and stores one versioned active session in `localStorage`. The stored state includes the originally selected card IDs, queues, mastery and attempt state, the session start time, and absolute retry timestamps. Reloading or backgrounding therefore does not resample cards, reset elapsed time, or reset a five-minute retry countdown. Durations use `MM:SS` below one hour and `H:MM:SS` thereafter.
 
 Stored state is accepted only when its schema version, URL configuration, deck ownership, card references, typed values, counters, timestamps, and mutually exclusive card states are valid against the current static content. Missing stored state is recreated from a valid URL; malformed or incompatible URLs fail closed. This persistence is intentionally limited to the active flashcard exercise; it is not spaced-repetition history.

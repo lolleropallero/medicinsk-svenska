@@ -1,4 +1,5 @@
 import { localDayKey } from './calendar';
+import type { RequestedAmount } from '../session';
 
 export const UI_PREFERENCES_KEY = 'medicinsk-svenska.ui.v1';
 export const UI_PREFERENCES_SCHEMA_VERSION = 1 as const;
@@ -6,6 +7,7 @@ export const UI_PREFERENCES_SCHEMA_VERSION = 1 as const;
 export interface UiPreferencesV1 {
   schemaVersion: typeof UI_PREFERENCES_SCHEMA_VERSION;
   dailyOverlayDismissedDay?: string;
+  cardAmount?: RequestedAmount;
   soundEnabled: boolean;
   soundVolume: number;
   musicEnabled: boolean;
@@ -39,7 +41,10 @@ export function parseUiPreferences(raw: string | null): UiPreferencesV1 {
     const soundVolume=typeof candidate.soundVolume==='number'&&Number.isFinite(candidate.soundVolume)&&candidate.soundVolume>=0&&candidate.soundVolume<=1?candidate.soundVolume:.65;
     const musicEnabled=typeof candidate.musicEnabled==='boolean'?candidate.musicEnabled:true;
     const musicVolume=typeof candidate.musicVolume==='number'&&Number.isFinite(candidate.musicVolume)&&candidate.musicVolume>=0&&candidate.musicVolume<=1?candidate.musicVolume:0;
+    const cardAmount = candidate.cardAmount === 10 || candidate.cardAmount === 25 || candidate.cardAmount === 50 || candidate.cardAmount === 'all'
+      ? candidate.cardAmount : undefined;
     return { schemaVersion:UI_PREFERENCES_SCHEMA_VERSION,soundEnabled,soundVolume,musicEnabled,musicVolume,
+      ...(cardAmount === undefined ? {} : { cardAmount }),
       ...(candidate.dailyOverlayDismissedDay?{dailyOverlayDismissedDay:candidate.dailyOverlayDismissedDay}:{}) };
   } catch {
     return defaultUiPreferences();

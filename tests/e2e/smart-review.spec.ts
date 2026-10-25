@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { WORD_STATS_KEY } from '../../src/lib/vocabulary-stats';
 import {
   answerCurrentVocabularyCard,
   continuePastMilestone,
@@ -10,6 +11,52 @@ import {
 } from './helpers';
 
 const FLASHCARD_STORAGE = 'medicinsk-svenska.flashcard-session.v1';
+
+for (const [route, storageKey] of [
+  ['/kortit/', FLASHCARD_STORAGE],
+  ['/tentti/', 'medicinsk-svenska.exam-session.v1'],
+] as const) {
+  test(`${route} draws limited review from the whole pool and preserves the draw on reload`, async ({ page }) => {
+    // Two controlled shuffle outcomes keep this regression independent of chance.
+    await page.addInitScript(() => {
+      Math.random = () => Number(sessionStorage.getItem('review-test-random') ?? '0');
+    });
+    await page.goto(route);
+    const weakIds = await page.evaluate(key => {
+      const ids = (JSON.parse(document.getElementById('cards-data-ids')!.textContent!) as string[]).slice(0, 20);
+      const now = Date.now();
+      localStorage.setItem(key, JSON.stringify({
+        schemaVersion: 1,
+        cards: Object.fromEntries(ids.map((id, index) => [id, {
+          attempts: 20, incorrect: 20 - index, correctStreak: 0, lastAttemptAt: now, lastIncorrectAt: now,
+        }])),
+      }));
+      return ids;
+    }, WORD_STATS_KEY);
+    await page.reload();
+    await expect(page.locator('[data-review-count]')).toHaveText('20 sanaa');
+    await page.getByLabel('10', { exact: true }).check();
+    await page.locator('[data-review-cta]').click();
+    await expect(page.locator('#progress')).toHaveText('0 / 10');
+    const readSelection = () => page.evaluate(key => JSON.parse(localStorage.getItem(key)!).selectedCardIds as string[], storageKey);
+    const first = await readSelection();
+    expect(new Set(first).size).toBe(10);
+    expect(first.every(id => weakIds.includes(id))).toBe(true);
+    expect(first.some(id => !weakIds.slice(0, 10).includes(id))).toBe(true);
+
+    await page.evaluate(() => sessionStorage.setItem('review-test-random', '0.999999'));
+    await page.reload();
+    await expect(page.locator('#progress')).toHaveText('0 / 10');
+    expect(await readSelection()).toEqual(first);
+    await page.getByRole('link', { name: 'Takaisin', exact: true }).click();
+    await page.locator('[data-review-cta]').click();
+    await expect(page.locator('#progress')).toHaveText('0 / 10');
+    const second = await readSelection();
+    expect(new Set(second).size).toBe(10);
+    expect(second.every(id => weakIds.includes(id))).toBe(true);
+    expect(new Set(second)).not.toEqual(new Set(first));
+  });
+}
 
 test('Kertaa vaikeita stays hidden with a graceful message for a brand-new learner', async ({ page }) => {
   await page.goto('/');

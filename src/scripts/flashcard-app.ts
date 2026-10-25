@@ -12,7 +12,6 @@ import {
   updateAnswerDraft,
   type CreateSessionOptions,
   type FlashcardSession,
-  type RequestedAmount,
   type SessionMode,
   type SingleVocabularyAnswerMode,
 } from '../lib/session';
@@ -110,16 +109,16 @@ function startApp() {
 
   let wordStats = loadWordStats();
 
-  function computeSourceCards(mode: SessionMode, sourceDeckId: string | undefined, requestedAmount: RequestedAmount): FlashcardClient[] {
+  function computeSourceCards(mode: SessionMode, sourceDeckId?: string): FlashcardClient[] {
     if (mode === 'lucky') return allCards;
     if (mode === 'review') {
-      const limit = requestedAmount === 'all' ? allCards.length : requestedAmount;
-      return selectWeakCards(wordStats, allCards, limit);
+      // Session creation shuffles the entire review pool before applying the requested count.
+      return selectWeakCards(wordStats, allCards, allCards.length);
     }
     return allCards.filter((card) => card.deckId === sourceDeckId);
   }
 
-  let sourceCards = computeSourceCards(configuration.mode, configuration.sourceDeckId, configuration.requestedAmount);
+  let sourceCards = computeSourceCards(configuration.mode, configuration.sourceDeckId);
 
   function readStoredSession(): FlashcardSession | null {
     try {
@@ -314,7 +313,7 @@ function startApp() {
       showSessionRewards('flashcard-rewards',session.sessionId);
       byId('summary-first').textContent = `${summary.firstAttemptCorrect} / ${summary.selectedCount}`;
       byId('summary-missed').textContent = String(summary.totalMissedCount);
-      const reviewCleared = session.mode === 'review' && computeSourceCards('review', undefined, session.requestedAmount).length === 0;
+      const reviewCleared = session.mode === 'review' && computeSourceCards('review').length === 0;
       byId('new-round').hidden = reviewCleared;
       byId('review-complete').hidden = !reviewCleared;
       const elapsedMilliseconds = now - session.startedAt;
@@ -418,7 +417,7 @@ function startApp() {
   function startNewRound() {
     const sessionId = crypto.randomUUID();
     if (session.mode === 'review') {
-      sourceCards = computeSourceCards('review', undefined, session.requestedAmount);
+      sourceCards = computeSourceCards('review');
       if (sourceCards.length === 0) {
         showInvalidRequest('empty-review');
         return;

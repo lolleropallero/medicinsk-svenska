@@ -10,10 +10,11 @@ interface Props {
   storageKey?: string;
   allLabel?: string;
   reviewLabel?: string;
+  difficultReviewEnabled?: boolean;
 }
-const { cards, decks, returnHref = '/kortit', returnLabel = 'Takaisin pakkoihin', storageKey, allLabel, reviewLabel } = Astro.props;
+const { cards, decks, returnHref = '/kortit', returnLabel = 'Takaisin pakkoihin', storageKey, allLabel, reviewLabel, difficultReviewEnabled = false } = Astro.props;
 ---
-  <section class="practice wrap" id="flashcard-app" data-storage-key={storageKey} data-all-label={allLabel} data-review-label={reviewLabel} aria-labelledby="session-label">
+  <section class="practice wrap" id="flashcard-app" data-storage-key={storageKey} data-all-label={allLabel} data-review-label={reviewLabel} data-difficult-review-enabled={String(difficultReviewEnabled)} aria-labelledby="session-label">
     <div class="practice-top">
       <a class="practice-back" href={returnHref}><AppIcon name="back"/>Takaisin</a>
       <strong id="session-label"></strong>
@@ -21,6 +22,7 @@ const { cards, decks, returnHref = '/kortit', returnLabel = 'Takaisin pakkoihin'
     </div>
     <div id="session-view">
       <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
+      <p id="difficult-progress" class="setup-note" hidden aria-live="polite"></p>
       <button id="flashcard" class="flashcard" type="button" aria-label="Näytä vastaus">
         <span id="flashcard-mode-tag" class="exercise-mode-tag" hidden>Kortit</span>
         <span id="front-term" class="term"></span>

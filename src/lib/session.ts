@@ -4,7 +4,7 @@ export const RETRY_DELAY_MS = 2 * 60 * 1000;
 export const SESSION_SCHEMA_VERSION = 1 as const;
 
 export type RequestedAmount = 10 | 25 | 50 | 'all';
-export type SessionMode = 'deck' | 'lucky' | 'review';
+export type SessionMode = 'deck' | 'lucky' | 'review' | 'difficult';
 export type VocabularyAnswerMode = 'cards' | 'choice' | 'written' | 'mixed';
 export type SingleVocabularyAnswerMode = Exclude<VocabularyAnswerMode, 'mixed'>;
 
@@ -297,7 +297,7 @@ export function isStoredSession(value: unknown, context: SessionValidationContex
   if (!(
     session.schemaVersion === SESSION_SCHEMA_VERSION &&
     isReasonableSessionId(session.sessionId) &&
-    (session.mode === 'deck' || session.mode === 'lucky' || session.mode === 'review') &&
+    (session.mode === 'deck' || session.mode === 'lucky' || session.mode === 'review' || session.mode === 'difficult') &&
     (answerMode === 'cards' || answerMode === 'choice' || answerMode === 'written' || answerMode === 'mixed') &&
     (session.mode === 'deck'
       ? typeof session.sourceDeckId === 'string' && session.sourceDeckId.length > 0 && context.validDeckIds.has(session.sourceDeckId)

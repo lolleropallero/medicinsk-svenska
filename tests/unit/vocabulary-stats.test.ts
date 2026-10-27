@@ -9,6 +9,7 @@ import {
   saveWordStats,
   selectWeakCardIds,
   selectWeakCards,
+  selectDifficultCardIds,
   weaknessScore,
   type WordStatsStateV1,
 } from '../../src/lib/vocabulary-stats';
@@ -29,11 +30,11 @@ describe('word attempt recording', () => {
   it('tracks attempts, misses, and a correct streak per card', () => {
     let state = createWordStatsState();
     state = recordWordAttempt(state, 'c1', false, 1_000);
-    expect(state.cards.c1).toEqual({ attempts: 1, incorrect: 1, correctStreak: 0, lastAttemptAt: 1_000, lastIncorrectAt: 1_000 });
+    expect(state.cards.c1).toEqual({ attempts: 1, incorrect: 1, correctStreak: 0, firstAttemptCorrectStreak: 0, lastAttemptAt: 1_000, lastIncorrectAt: 1_000 });
     state = recordWordAttempt(state, 'c1', true, 2_000);
-    expect(state.cards.c1).toEqual({ attempts: 2, incorrect: 1, correctStreak: 1, lastAttemptAt: 2_000, lastIncorrectAt: 1_000 });
+    expect(state.cards.c1).toEqual({ attempts: 2, incorrect: 1, correctStreak: 1, firstAttemptCorrectStreak: 0, lastAttemptAt: 2_000, lastIncorrectAt: 1_000 });
     state = recordWordAttempt(state, 'c1', true, 3_000);
-    expect(state.cards.c1).toEqual({ attempts: 3, incorrect: 1, correctStreak: 2, lastAttemptAt: 3_000, lastIncorrectAt: 1_000 });
+    expect(state.cards.c1).toEqual({ attempts: 3, incorrect: 1, correctStreak: 2, firstAttemptCorrectStreak: 0, lastAttemptAt: 3_000, lastIncorrectAt: 1_000 });
   });
 
   it('resets the correct streak and refreshes lastIncorrectAt on a fresh miss', () => {
@@ -41,7 +42,7 @@ describe('word attempt recording', () => {
     state = recordWordAttempt(state, 'c1', true, 1_000);
     state = recordWordAttempt(state, 'c1', true, 2_000);
     state = recordWordAttempt(state, 'c1', false, 3_000);
-    expect(state.cards.c1).toEqual({ attempts: 3, incorrect: 1, correctStreak: 0, lastAttemptAt: 3_000, lastIncorrectAt: 3_000 });
+    expect(state.cards.c1).toEqual({ attempts: 3, incorrect: 1, correctStreak: 0, firstAttemptCorrectStreak: 0, lastAttemptAt: 3_000, lastIncorrectAt: 3_000 });
   });
 
   it('never records an explicit undefined lastIncorrectAt for an always-correct card', () => {
@@ -62,7 +63,7 @@ describe('word attempt recording', () => {
   it('clears review on a correct first attempt while preserving errors and attempt history', () => {
     let state = recordWordAttempt(createWordStatsState(), 'c1', false, 1_000, { firstAttempt: true });
     state = recordWordAttempt(state, 'c1', true, 2_000, { firstAttempt: true });
-    expect(state.cards.c1).toEqual({ attempts: 2, incorrect: 1, correctStreak: 1, lastAttemptAt: 2_000, lastIncorrectAt: 1_000, reviewClearedAt: 2_000 });
+    expect(state.cards.c1).toEqual({ attempts: 2, incorrect: 1, correctStreak: 1, firstAttemptCorrectStreak: 1, lastAttemptAt: 2_000, lastIncorrectAt: 1_000, reviewClearedAt: 2_000 });
     expect(selectWeakCardIds(state, new Set(['c1']), 10, 2_000)).toEqual([]);
     const storage = new MemoryStorage();
     saveWordStats(state, storage);
@@ -85,6 +86,61 @@ describe('word attempt recording', () => {
     expect(state.cards.c1!.reviewClearedAt).toBeUndefined();
     expect(state.cards.c1!.incorrect).toBe(2);
     expect(selectWeakCardIds(state, new Set(['c1']), 10, 3_000)).toEqual(['c1']);
+  });
+});
+
+describe('difficult card review', () => {
+  const known = new Set(['c1']);
+  const missedState = (): WordStatsStateV1 => ({ schemaVersion: 1, cards: {
+    c1: { attempts: 3, incorrect: 3, correctStreak: 0, lastAttemptAt: 1_000, lastIncorrectAt: 1_000 },
+  } });
+
+  it('enters on the third miss and excludes unknown cards and cards with fewer misses', () => {
+    let state = createWordStatsState();
+    for (let i = 1; i <= 2; i++) state = recordWordAttempt(state, 'c1', false, i, { firstAttempt: true });
+    expect(selectDifficultCardIds(state, known)).toEqual([]);
+    state = recordWordAttempt(state, 'c1', false, 3, { firstAttempt: false });
+    expect(selectDifficultCardIds(state, known)).toEqual(['c1']);
+    expect(selectDifficultCardIds(state, new Set(['other']))).toEqual([]);
+  });
+
+  it('uses saved miss history without treating legacy retries as first-attempt successes', () => {
+    const state = missedState();
+    state.cards.c1 = { ...state.cards.c1!, attempts: 8, correctStreak: 5, reviewClearedAt: 2_000 };
+    expect(isWordStatsState(state)).toBe(true);
+    expect(selectDifficultCardIds(state, known)).toEqual(['c1']);
+    expect(selectWeakCardIds(state, known, 10)).toEqual([]);
+  });
+
+  it('stays after two first-attempt successes, clears after three, and returns on a later miss', () => {
+    let state = missedState();
+    const storage = new MemoryStorage();
+    for (let streak = 1; streak <= 3; streak++) {
+      state = recordWordAttempt(state, 'c1', true, 1_000 + streak, { firstAttempt: true });
+      saveWordStats(state, storage);
+      state = loadWordStats(storage);
+      expect(state.cards.c1!.firstAttemptCorrectStreak).toBe(streak);
+      expect(state.cards.c1!.incorrect).toBe(3);
+      expect(selectWeakCardIds(state, known, 10)).toEqual([]);
+      expect(selectDifficultCardIds(state, known)).toEqual(streak < 3 ? ['c1'] : []);
+    }
+    state = recordWordAttempt(state, 'c1', false, 2_000, { firstAttempt: true });
+    expect(selectDifficultCardIds(state, known)).toEqual(['c1']);
+    expect(state.cards.c1!.firstAttemptCorrectStreak).toBe(0);
+    expect(state.cards.c1!.incorrect).toBe(4);
+  });
+
+  it('resets on a miss and never advances mastery for a correct retry', () => {
+    let state = recordWordAttempt(missedState(), 'c1', true, 2_000, { firstAttempt: true });
+    state = recordWordAttempt(state, 'c1', false, 3_000, { firstAttempt: true });
+    for (let i = 1; i <= 5; i++) state = recordWordAttempt(state, 'c1', true, 3_000 + i, { firstAttempt: false });
+    expect(state.cards.c1!.firstAttemptCorrectStreak).toBe(0);
+    expect(selectDifficultCardIds(state, known)).toEqual(['c1']);
+  });
+
+  it.each([-1, 0.5, 4, Number.NaN, '2'])('rejects malformed first-attempt streak %s', streak => {
+    const state = missedState();
+    expect(isWordStatsState({ ...state, cards: { c1: { ...state.cards.c1, firstAttemptCorrectStreak: streak } } })).toBe(false);
   });
 });
 

@@ -161,6 +161,15 @@ describe('persisted session state', () => {
     expect(reviewSession).not.toHaveProperty('sourceDeckId');
   });
 
+  it('restores difficult-card rounds and preserves the mode in a new round', () => {
+    const difficultOptions = { sessionId: options.sessionId, mode: 'difficult' as const, answerMode: options.answerMode, direction: options.direction, requestedAmount: options.requestedAmount };
+    const session = createSession([card(1), card(2)], difficultOptions, 1_000, seededRandom(1));
+    expect(isStoredSession(session, contextFor(session, undefined, difficultOptions))).toBe(true);
+    const next = createNewRoundSession([card(2)], session, 'difficult-next', 2_000, seededRandom(2));
+    expect(next.mode).toBe('difficult');
+    expect(next.selectedCardIds).toEqual([card(2).id]);
+  });
+
   it('rejects deck mode without a source deck and lucky mode with one', () => {
     const deckSession = createSession([card(1)], options, 1_000, seededRandom(1));
     expect(isStoredSession({ ...deckSession, sourceDeckId: undefined }, contextFor(deckSession))).toBe(false);

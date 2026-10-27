@@ -35,7 +35,7 @@ export function parseSessionRequest(search: string, validDeckIds: ReadonlySet<st
   const sessionId = params.get('session');
 
   if (
-    (mode !== 'deck' && mode !== 'lucky' && mode !== 'review') ||
+    (mode !== 'deck' && mode !== 'lucky' && mode !== 'review' && mode !== 'difficult') ||
     (direction !== 'fi-sv' && direction !== 'sv-fi') ||
     requestedAmount === null ||
     answerMode === null ||

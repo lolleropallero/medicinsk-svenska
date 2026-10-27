@@ -1,7 +1,7 @@
 import { buildSessionUrl } from '../lib/session-url';
 import type { Direction } from '../types/content';
 import type { RequestedAmount, SessionMode, VocabularyAnswerMode } from '../lib/session';
-import { loadWordStats, selectWeakCardIds } from '../lib/vocabulary-stats';
+import { loadWordStats, selectWeakCardIds, selectDifficultCardIds } from '../lib/vocabulary-stats';
 import { loadUiPreferences, saveUiPreferences } from '../lib/progress/ui-preferences';
 
 function initializeDeckList() {
@@ -36,25 +36,28 @@ function configurationFor(link: HTMLAnchorElement) {
   };
 }
 
-function weakWordCount(): number {
+function reviewWordCount(mode: 'review' | 'difficult'): number {
   const node = document.getElementById('cards-data-ids');
   if (!node) return 0;
   try {
     const knownCardIds = new Set(JSON.parse(node.textContent ?? '[]') as string[]);
-    return selectWeakCardIds(loadWordStats(), knownCardIds, knownCardIds.size).length;
+    const stats = loadWordStats();
+    return mode === 'difficult'
+      ? selectDifficultCardIds(stats, knownCardIds).length
+      : selectWeakCardIds(stats, knownCardIds, knownCardIds.size).length;
   } catch {
     return 0;
   }
 }
 
-function updateReviewCta() {
-  const cta = document.querySelector<HTMLAnchorElement>('[data-review-cta]');
-  const empty = document.querySelector<HTMLElement>('[data-review-empty]');
+function updateReviewCta(mode: 'review' | 'difficult') {
+  const cta = document.querySelector<HTMLAnchorElement>(`[data-${mode}-cta]`);
+  const empty = document.querySelector<HTMLElement>(`[data-${mode}-empty]`);
   if (!cta || !empty) return;
-  const count = weakWordCount();
+  const count = reviewWordCount(mode);
   cta.hidden = count === 0;
   empty.hidden = count > 0;
-  const countLabel = cta.querySelector<HTMLElement>('[data-review-count]');
+  const countLabel = cta.querySelector<HTMLElement>(`[data-${mode}-count]`);
   if (countLabel) countLabel.textContent = `${count} ${count === 1 ? 'sana' : 'sanaa'}`;
 }
 
@@ -65,7 +68,8 @@ function updateLinks() {
   const amount = selectedValue('amount') ?? '25';
   const luckyCount = document.querySelector<HTMLElement>('[data-selected-count]');
   if (luckyCount) luckyCount.textContent = amount === 'all' ? 'Kaikki kortit' : `${amount} korttia`;
-  updateReviewCta();
+  updateReviewCta('review');
+  updateReviewCta('difficult');
 }
 
 radios.forEach((radio) => radio.addEventListener('change', () => {

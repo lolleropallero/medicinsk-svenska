@@ -32,7 +32,7 @@ import {
   vocabularyAnswerText,
   vocabularyPromptText,
 } from '../lib/vocabulary-exercise';
-import { loadWordStats, recordWordAttempt, saveWordStats, selectWeakCards } from '../lib/vocabulary-stats';
+import { DIFFICULT_CARD_MISS_THRESHOLD, DIFFICULT_CARD_MASTERY_STREAK, loadWordStats, recordWordAttempt, saveWordStats, selectWeakCards, selectDifficultCardIds } from '../lib/vocabulary-stats';
 
 function initializeFlashcardApp() {
 if (!document.getElementById('cards-data')) return;
@@ -73,7 +73,7 @@ const elapsedTime = byId<HTMLTimeElement>('elapsed-time');
 const retryCountdown = byId('retry-countdown');
 const sessionStatus = elapsedTime.parentElement as HTMLElement;
 
-function showInvalidRequest(reason: 'invalid' | 'empty-review' = 'invalid') {
+function showInvalidRequest(reason: 'invalid' | 'empty-review' | 'empty-difficult' = 'invalid') {
   sessionView.hidden = true;
   waitingView.hidden = true;
   summaryView.hidden = true;
@@ -81,7 +81,11 @@ function showInvalidRequest(reason: 'invalid' | 'empty-review' = 'invalid') {
   sessionStatus.hidden = true;
   byId('session-label').textContent = 'Sanakortit';
   const detail = byId('error-detail');
-  if (reason === 'empty-review') {
+  if (reason === 'empty-difficult') {
+    byId('error-title').textContent = 'Vaikeimmat sanat -pakka on tyhjä';
+    detail.textContent = `Kortti tulee pakkaan ${DIFFICULT_CARD_MISS_THRESHOLD} virheen jälkeen ja poistuu ${DIFFICULT_CARD_MASTERY_STREAK} peräkkäisen kierroksen ensimmäisen yrityksen onnistumisella.`;
+    detail.hidden = false;
+  } else if (reason === 'empty-review') {
     byId('error-title').textContent = 'Ei vielä vaikeita sanoja';
     detail.textContent = `Merkitse harjoittelussa vaikeat kortit ”En osannut”, niin ${app.dataset.reviewLabel ?? 'Kertaa vaikeita'} löytää sinulle sopivat sanat.`;
     detail.hidden = false;
@@ -94,7 +98,7 @@ function showInvalidRequest(reason: 'invalid' | 'empty-review' = 'invalid') {
 
 function startApp() {
   const parsedRequest = parseSessionRequest(location.search, validDeckIds);
-  if (!parsedRequest.ok) {
+  if (!parsedRequest.ok || (parsedRequest.value.mode === 'difficult' && app.dataset.difficultReviewEnabled !== 'true')) {
     showInvalidRequest();
     return;
   }
@@ -114,6 +118,10 @@ function startApp() {
     if (mode === 'review') {
       // Session creation shuffles the entire review pool before applying the requested count.
       return selectWeakCards(wordStats, allCards, allCards.length);
+    }
+    if (mode === 'difficult') {
+      const ids = new Set(selectDifficultCardIds(wordStats, new Set(cardById.keys())));
+      return allCards.filter(card => ids.has(card.id));
     }
     return allCards.filter((card) => card.deckId === sourceDeckId);
   }
@@ -141,7 +149,7 @@ function startApp() {
 
   const storedSession = readStoredSession();
   if (!storedSession && sourceCards.length === 0) {
-    showInvalidRequest(configuration.mode === 'review' ? 'empty-review' : 'invalid');
+    showInvalidRequest(configuration.mode === 'difficult' ? 'empty-difficult' : configuration.mode === 'review' ? 'empty-review' : 'invalid');
     return;
   }
   let session = storedSession ?? createSession(sourceCards, configuration);
@@ -153,6 +161,8 @@ function startApp() {
 
   byId('session-label').textContent = session.mode === 'lucky'
     ? app.dataset.allLabel ?? 'Kokeilen onneani'
+    : session.mode === 'difficult'
+      ? 'Vaikeimmat sanat'
     : session.mode === 'review'
       ? app.dataset.reviewLabel ?? 'Kertaa vaikeita'
       : allDecks.find((deck) => deck.id === session.sourceDeckId)?.nameFi ?? 'Sanakortit';
@@ -313,9 +323,10 @@ function startApp() {
       showSessionRewards('flashcard-rewards',session.sessionId);
       byId('summary-first').textContent = `${summary.firstAttemptCorrect} / ${summary.selectedCount}`;
       byId('summary-missed').textContent = String(summary.totalMissedCount);
-      const reviewCleared = session.mode === 'review' && computeSourceCards('review').length === 0;
+      const reviewCleared = (session.mode === 'review' || session.mode === 'difficult') && computeSourceCards(session.mode).length === 0;
       byId('new-round').hidden = reviewCleared;
       byId('review-complete').hidden = !reviewCleared;
+      byId('review-complete').textContent = session.mode === 'difficult' ? 'Vaikeimmat sanat -pakka on nyt tyhjä.' : 'Kertauslista on nyt tyhjä.';
       const elapsedMilliseconds = now - session.startedAt;
       const summaryDuration = formatDuration(elapsedMilliseconds);
       const summaryTime = byId<HTMLTimeElement>('summary-time');
@@ -343,6 +354,12 @@ function startApp() {
       return;
     }
     const sides = cardSides(card, session.direction);
+    const difficultProgress = byId('difficult-progress');
+    difficultProgress.hidden = session.mode !== 'difficult';
+    if (session.mode === 'difficult') {
+      const streak = wordStats.cards[card.id]?.firstAttemptCorrectStreak ?? 0;
+      difficultProgress.textContent = `Ensimmäisellä oikein: ${streak} / ${DIFFICULT_CARD_MASTERY_STREAK} peräkkäistä kierrosta`;
+    }
     const exerciseType = effectiveExerciseType(card);
     clearRetryTimer();
     sessionView.hidden = false;
@@ -416,10 +433,10 @@ function startApp() {
 
   function startNewRound() {
     const sessionId = crypto.randomUUID();
-    if (session.mode === 'review') {
-      sourceCards = computeSourceCards('review');
+    if (session.mode === 'review' || session.mode === 'difficult') {
+      sourceCards = computeSourceCards(session.mode);
       if (sourceCards.length === 0) {
-        showInvalidRequest('empty-review');
+        showInvalidRequest(session.mode === 'difficult' ? 'empty-difficult' : 'empty-review');
         return;
       }
     }

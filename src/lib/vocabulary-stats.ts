@@ -4,6 +4,8 @@ const MAX_TRACKED_CARDS = 3000;
 const RECENCY_HALF_LIFE_MS = 14 * 24 * 60 * 60 * 1000;
 const MASTERY_DAMPING = 0.5;
 const MASTERY_STREAK_CUTOFF = 5;
+export const DIFFICULT_CARD_MISS_THRESHOLD = 3;
+export const DIFFICULT_CARD_MASTERY_STREAK = 3;
 
 export interface WordStatEntry {
   attempts: number;
@@ -12,6 +14,7 @@ export interface WordStatEntry {
   lastAttemptAt: number;
   lastIncorrectAt?: number;
   reviewClearedAt?: number;
+  firstAttemptCorrectStreak?: number;
 }
 
 export interface WordStatsStateV1 {
@@ -49,6 +52,7 @@ export function recordWordAttempt(
     attempts: (previous?.attempts ?? 0) + 1,
     incorrect: (previous?.incorrect ?? 0) + (correct ? 0 : 1),
     correctStreak: correct ? (previous?.correctStreak ?? 0) + 1 : 0,
+    firstAttemptCorrectStreak: correct ? (previous?.firstAttemptCorrectStreak ?? 0) + (options.firstAttempt ? 1 : 0) : 0,
     lastAttemptAt: now,
     ...(lastIncorrectAt === undefined ? {} : { lastIncorrectAt }),
     ...(reviewClearedAt === undefined ? {} : { reviewClearedAt }),
@@ -102,6 +106,14 @@ export function selectWeakCards<T extends { id: string }>(
     .filter((card): card is T => card !== undefined);
 }
 
+export function selectDifficultCardIds(state: WordStatsStateV1, knownCardIds: ReadonlySet<string>): string[] {
+  return [...knownCardIds].filter(id => {
+    const entry = state.cards[id];
+    return entry !== undefined && entry.incorrect >= DIFFICULT_CARD_MISS_THRESHOLD &&
+      (entry.firstAttemptCorrectStreak ?? 0) < DIFFICULT_CARD_MASTERY_STREAK;
+  });
+}
+
 function isWordStatEntry(value: unknown): value is WordStatEntry {
   if (!value || typeof value !== 'object') return false;
   const entry = value as Partial<WordStatEntry>;
@@ -109,6 +121,8 @@ function isWordStatEntry(value: unknown): value is WordStatEntry {
     Number.isInteger(entry.attempts) && entry.attempts! >= 0 &&
     Number.isInteger(entry.incorrect) && entry.incorrect! >= 0 && entry.incorrect! <= entry.attempts! &&
     Number.isInteger(entry.correctStreak) && entry.correctStreak! >= 0 && entry.correctStreak! <= entry.attempts! &&
+    (entry.firstAttemptCorrectStreak === undefined ||
+      (Number.isInteger(entry.firstAttemptCorrectStreak) && entry.firstAttemptCorrectStreak >= 0 && entry.firstAttemptCorrectStreak <= entry.correctStreak!)) &&
     typeof entry.lastAttemptAt === 'number' && Number.isFinite(entry.lastAttemptAt) && entry.lastAttemptAt >= 0 &&
     (entry.reviewClearedAt === undefined ||
       (typeof entry.reviewClearedAt === 'number' && Number.isFinite(entry.reviewClearedAt) && entry.reviewClearedAt >= 0)) &&

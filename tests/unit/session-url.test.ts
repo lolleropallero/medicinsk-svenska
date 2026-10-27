@@ -37,6 +37,13 @@ describe('session URL configuration', () => {
       .toBe('/kortit/harjoitus?mode=review&answer=mixed&direction=sv-fi&amount=25&session=review-1');
   });
 
+  it('round-trips a difficult-card request without a deck', () => {
+    const configuration = { mode: 'difficult' as const, answerMode: 'cards' as const, direction: 'fi-sv' as const, requestedAmount: 10 as const, sessionId: 'difficult-1' };
+    const url = buildSessionUrl(configuration, '/tentti/harjoitus');
+    expect(parseSessionRequest(url.slice(url.indexOf('?')), decks)).toEqual({ ok: true, value: configuration });
+    expect(parseSessionRequest('?mode=difficult&deck=anatomi&direction=fi-sv&amount=10', decks)).toEqual({ ok: false });
+  });
+
   it('rejects a review request carrying a deck', () => {
     expect(parseSessionRequest('?mode=review&deck=anatomi&answer=mixed&direction=fi-sv&amount=25&session=review-2', decks)).toEqual({ ok: false });
   });

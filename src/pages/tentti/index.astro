@@ -4,6 +4,7 @@ import AppIcon from '../../components/AppIcon.astro';
 import FlagRibbon from '../../components/FlagRibbon.astro';
 import { examTopics, examCardPayload } from '../../lib/exam-content';
 import { nordicAssets } from '../../lib/nordic-assets';
+import { DIFFICULT_CARD_MISS_THRESHOLD, DIFFICULT_CARD_MASTERY_STREAK } from '../../lib/vocabulary-stats';
 ---
 <BaseLayout title="Ruotsin tenttisanasto">
   <section class="page wrap study-setup" aria-labelledby="page-title" data-exercise-path="/tentti/harjoitus">
@@ -33,6 +34,11 @@ import { nordicAssets } from '../../lib/nordic-assets';
       <span class="row-icon"><AppIcon name="retry" size={32}/></span><span><strong>En osannut</strong><small>Kertaa väärin menneitä tenttikortteja</small></span><span data-review-count></span><AppIcon name="arrow"/>
     </a>
     <p class="review-empty" data-review-empty hidden>En osannut -kertaus on vielä tyhjä. Merkitse harjoittelussa kortti ”En osannut”, niin se tulee tänne kerrattavaksi.</p>
+    <a class="lucky review-cta" data-start data-mode="difficult" data-difficult-cta href="/tentti/harjoitus?mode=difficult&answer=cards&direction=fi-sv&amount=25" hidden>
+      <span class="row-icon"><AppIcon name="retry" size={32}/></span><span><strong>Vaikeimmat sanat</strong><small>Harjoittele toistuvasti väärin menneitä sanoja</small></span><span data-difficult-count></span><AppIcon name="arrow"/>
+    </a>
+    <p class="review-empty" data-difficult-empty hidden>Vaikeimmat sanat -pakka on vielä tyhjä.</p>
+    <p class="setup-note">Kortti tulee Vaikeimmat sanat -pakkaan {DIFFICULT_CARD_MISS_THRESHOLD} virheen jälkeen. Se poistuu, kun osaat sen {DIFFICULT_CARD_MASTERY_STREAK} peräkkäisellä kierroksella ensimmäisellä yrityksellä. Uusi virhe aloittaa onnistumisten laskennan alusta ja tuo poistetun kortin takaisin pakkaan.</p>
     <div class="deck-list">
       {examTopics.map((topic) => (
         <a class="deck-row" data-start data-mode="deck" data-deck={topic.id} href={`/tentti/harjoitus?mode=deck&answer=cards&deck=${topic.id}&direction=fi-sv&amount=25`}>

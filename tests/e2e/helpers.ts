@@ -11,6 +11,10 @@ export async function openSpecificCard(
   const sessionId = `test-${card.id}-${direction}`;
   await page.goto(`/kortit/harjoitus?mode=deck&deck=${card.deckId}&direction=${direction}&amount=10&session=${sessionId}`);
   await page.evaluate(({ key, id, deckId, selectedDirection, selectedSessionId }) => {
+    const cards = JSON.parse(document.getElementById('cards-data')!.textContent!) as { id: string; deckId: string }[];
+    if (!cards.some(card => card.id === id && card.deckId === deckId)) {
+      throw new Error(`Test card ${id} does not exist in deck ${deckId}`);
+    }
     localStorage.setItem(key, JSON.stringify({
       schemaVersion: 1,
       sessionId: selectedSessionId,
@@ -31,6 +35,7 @@ export async function openSpecificCard(
     }));
   }, { key: STORAGE_KEY, id: card.id, deckId: card.deckId, selectedDirection: direction, selectedSessionId: sessionId });
   await page.reload();
+  await expect(page.locator('#progress')).toHaveText('0 / 1');
   await page.evaluate(() => window.scrollTo(0, 0));
 }
 

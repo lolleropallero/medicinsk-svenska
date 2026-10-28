@@ -196,7 +196,7 @@ test('capture complete cosmetics catalog preview audit', async ({ page }) => {
   }
   await page.goto('/edistyminen/');
   await page.screenshot({ path: 'tmp/visual/cosmetics-equipped-season-passport-desktop.png', fullPage: true });
-  await openSpecificCard(page, { id: 'anatomi-001', deckId: 'anatomi' }, 'fi-sv');
+  await openSpecificCard(page, { id: 'tenttisanasto-anatomi-001', deckId: 'anatomi' }, 'fi-sv');
   await page.screenshot({ path: 'tmp/visual/cosmetics-equipped-season-card-desktop.png', fullPage: true });
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto('/palkinnot/');

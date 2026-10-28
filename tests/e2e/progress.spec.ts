@@ -14,7 +14,7 @@ test('fresh home is a compact launcher with HUD and an automatic daily overlay',
 });
 
 test('one mastered flashcard records idempotent progress and XP',async({page})=>{
-  await openSpecificCard(page,{id:'anatomi-001',deckId:'anatomi'},'fi-sv');await page.getByRole('button',{name:'Näytä vastaus'}).click();await page.getByRole('button',{name:'Osasin'}).click();
+  await openSpecificCard(page,{id:'tenttisanasto-anatomi-001',deckId:'anatomi'},'fi-sv');await page.getByRole('button',{name:'Näytä vastaus'}).click();await page.getByRole('button',{name:'Osasin'}).click();
   let progress=await readProgress(page);expect(progress.lifetime.completedItems).toBe(1);expect(progress.lifetime.xp).toBe(2);expect(progress.lifetime.sessionsStarted).toBe(1);expect(progress.lifetime.sessionsCompleted).toBe(1);
   await page.reload();progress=await readProgress(page);expect(progress.lifetime.completedItems).toBe(1);expect(progress.lifetime.xp).toBe(2);expect(progress.lifetime.sessionsCompleted).toBe(1);
 });
@@ -27,7 +27,7 @@ test('one phrase and one description feed the same progress state',async({page})
 
 test('daily goal is awarded once and appears on progress page',async({page})=>{
   await page.goto('/edistyminen/');await page.locator('#daily-goal').selectOption('5');
-  for(let index=1;index<=5;index++){await openSpecificCard(page,{id:`anatomi-${String(index).padStart(3,'0')}`,deckId:'anatomi'},'fi-sv');await page.getByRole('button',{name:'Näytä vastaus'}).click();await page.getByRole('button',{name:'Osasin'}).click();}
+  for(let index=1;index<=5;index++){await openSpecificCard(page,{id:`tenttisanasto-anatomi-${String(index).padStart(3,'0')}`,deckId:'anatomi'},'fi-sv');await page.getByRole('button',{name:'Näytä vastaus'}).click();await page.getByRole('button',{name:'Osasin'}).click();}
   const progress=await readProgress(page),day=progress.daily[Object.keys(progress.daily).sort().at(-1)!];expect(day.goalClaimed).toBe(true);expect(progress.inventory.capsules.filter((c:{id:string})=>c.id.includes('daily-goal')).length).toBe(1);
   await page.reload();expect((await readProgress(page)).inventory.capsules.filter((c:{id:string})=>c.id.includes('daily-goal')).length).toBe(1);await page.goto('/edistyminen/');await expect(page.locator('.quest')).toHaveCount(3);
 });
@@ -50,7 +50,7 @@ test('rewards information architecture keeps the shop near the top and collectio
 test('equipped cosmetics apply to real study cards, passport frames, and previews',async({page})=>{
   await page.goto('/palkinnot/');await expect(page.locator('.inventory-head')).toBeVisible();await page.evaluate(key=>{const state=JSON.parse(localStorage.getItem(key)!);for(const id of ['theme-3','cardStyle-8','progressFrame-8','title-9'])if(!state.inventory.ownedCosmeticIds.includes(id))state.inventory.ownedCosmeticIds.push(id);state.inventory.equipped={theme:'theme-3',cardStyle:'cardStyle-8',progressFrame:'progressFrame-8',title:'title-9'};localStorage.setItem(key,JSON.stringify(state));},PROGRESS);await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-theme','theme-3');await expect(page.locator('html')).toHaveAttribute('data-card-style','cardStyle-8');await expect(page.locator('html')).toHaveAttribute('data-progress-frame','progressFrame-8');await expect(page.locator('html')).toHaveAttribute('data-title','title-9');await expect(page.locator('#appearance .cosmetic-preview.equipped')).toHaveCount(3);
-  await openSpecificCard(page,{id:'anatomi-001',deckId:'anatomi'},'fi-sv');await expect(page.locator('html')).toHaveAttribute('data-card-style','cardStyle-8');expect(await page.locator('#flashcard').evaluate(node=>getComputedStyle(node).borderTopWidth)).toBe('3px');expect(await page.locator('#flashcard').evaluate(node=>getComputedStyle(node).borderTopColor)).not.toBe('rgb(191, 212, 227)');
+  await openSpecificCard(page,{id:'tenttisanasto-anatomi-001',deckId:'anatomi'},'fi-sv');await expect(page.locator('html')).toHaveAttribute('data-card-style','cardStyle-8');expect(await page.locator('#flashcard').evaluate(node=>getComputedStyle(node).borderTopWidth)).toBe('3px');expect(await page.locator('#flashcard').evaluate(node=>getComputedStyle(node).borderTopColor)).not.toBe('rgb(191, 212, 227)');
   await page.goto('/edistyminen/');await expect(page.locator('.passport-card')).toHaveAttribute('data-progress-frame-id','progressFrame-8');await expect(page.locator('.passport-card')).toHaveAttribute('data-title-id','title-9');expect(await page.locator('.passport-card').evaluate(node=>getComputedStyle(node).boxShadow)).toContain('rgb');
 });
 
@@ -100,7 +100,7 @@ test('reward surfacing links directly and active exercises omit the full HUD',as
 });
 
 test('export and reset leave active exercise session storage separate',async({page})=>{
-  await openSpecificCard(page,{id:'anatomi-001',deckId:'anatomi'},'fi-sv');const session=await page.evaluate(()=>localStorage.getItem('medicinsk-svenska.flashcard-session.v1'));await page.goto('/edistyminen/');
+  await openSpecificCard(page,{id:'tenttisanasto-anatomi-001',deckId:'anatomi'},'fi-sv');const session=await page.evaluate(()=>localStorage.getItem('medicinsk-svenska.flashcard-session.v1'));await page.goto('/edistyminen/');
   const download=page.waitForEvent('download');await page.getByRole('button',{name:'Vie tiedot'}).click();expect((await download).suggestedFilename()).toMatch(/^medicinsk-svenska-progress-\d{4}-\d{2}-\d{2}\.json$/);
   page.on('dialog',dialog=>dialog.accept());await page.getByRole('button',{name:'Nollaa edistyminen'}).click();await expect.poll(()=>page.evaluate(()=>localStorage.getItem('medicinsk-svenska.flashcard-session.v1'))).toBe(session);
 });

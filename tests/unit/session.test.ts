@@ -279,7 +279,8 @@ describe('new round', () => {
     ['lucky', 50, 38, 12],
   ] as const)('mixes %s rounds of %s cards into %s new and %s repeated cards', (mode, requestedAmount, newCount, reviewCount) => {
     const pool = Array.from({ length: 100 }, (_, index) => card(index));
-    const roundOptions = { ...options, mode, requestedAmount, sourceDeckId: mode === 'deck' ? 'd' : undefined };
+    const { sourceDeckId, ...sharedOptions } = options;
+    const roundOptions = { ...sharedOptions, mode, requestedAmount, ...(mode === 'deck' ? { sourceDeckId } : {}) };
     let previous = createSession(pool, roundOptions, 1_000, seededRandom(1));
     for (let round = 2; round <= 4; round += 1) {
       const previousIds = new Set(previous.selectedCardIds);

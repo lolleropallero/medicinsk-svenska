@@ -259,15 +259,75 @@ describe('new round', () => {
     expect(next.revealed).toBe(false);
   });
 
-  it('creates deterministic fresh selection and order with injected randomness', () => {
+  it.each([false, true])('creates deterministic selection and order with mixing set to %s', (mixPreviousRound) => {
     const pool = Array.from({ length: 20 }, (_, index) => card(index));
     const previous = createSession(pool, options, 1_000, seededRandom(1));
-    const first = createNewRoundSession(pool, previous, 'session-2', 2_000, seededRandom(7));
-    const second = createNewRoundSession(pool, previous, 'session-2', 2_000, seededRandom(7));
+    const first = createNewRoundSession(pool, previous, 'session-2', 2_000, seededRandom(7), { mixPreviousRound });
+    const second = createNewRoundSession(pool, previous, 'session-2', 2_000, seededRandom(7), { mixPreviousRound });
     expect(first.selectedCardIds).toEqual(second.selectedCardIds);
     expect(first.selectedCardIds).not.toEqual(previous.selectedCardIds);
     expect(first.currentCardId).toBe(first.selectedCardIds[0]);
     expect(first.unseenCardQueue).toEqual(first.selectedCardIds.slice(1));
+  });
+
+  it.each([
+    ['deck', 10, 8, 2],
+    ['deck', 25, 19, 6],
+    ['deck', 50, 38, 12],
+    ['lucky', 10, 8, 2],
+    ['lucky', 25, 19, 6],
+    ['lucky', 50, 38, 12],
+  ] as const)('mixes %s rounds of %s cards into %s new and %s repeated cards', (mode, requestedAmount, newCount, reviewCount) => {
+    const pool = Array.from({ length: 100 }, (_, index) => card(index));
+    const roundOptions = { ...options, mode, requestedAmount, sourceDeckId: mode === 'deck' ? 'd' : undefined };
+    let previous = createSession(pool, roundOptions, 1_000, seededRandom(1));
+    for (let round = 2; round <= 4; round += 1) {
+      const previousIds = new Set(previous.selectedCardIds);
+      const next = createNewRoundSession(pool, previous, `session-${round}`, round * 1_000, seededRandom(round), { mixPreviousRound: true });
+      expect(next.selectedCardIds.filter((id) => !previousIds.has(id))).toHaveLength(newCount);
+      expect(next.selectedCardIds.filter((id) => previousIds.has(id))).toHaveLength(reviewCount);
+      expect(new Set(next.selectedCardIds).size).toBe(requestedAmount);
+      expect(next.selectedCardIds.every((id) => pool.some((item) => item.id === id))).toBe(true);
+      expect(isStoredSession(next, contextFor(next, undefined, { ...roundOptions, sessionId: next.sessionId }))).toBe(true);
+      previous = next;
+    }
+  });
+
+  it.each([
+    { poolSize: 12, previousSize: 10, amount: 10, expectedNew: 2, expectedReview: 8 },
+    { poolSize: 30, previousSize: 1, amount: 10, expectedNew: 9, expectedReview: 1 },
+    { poolSize: 7, previousSize: 7, amount: 10, expectedNew: 0, expectedReview: 7 },
+    { poolSize: 20, previousSize: 10, amount: 'all', expectedNew: 10, expectedReview: 10 },
+    { poolSize: 20, previousSize: 20, amount: 'all', expectedNew: 0, expectedReview: 20 },
+    { poolSize: 0, previousSize: 10, amount: 10, expectedNew: 0, expectedReview: 0 },
+  ] as const)('fills the available pool when mixing $poolSize cards after $previousSize with amount $amount', ({ poolSize, previousSize, amount, expectedNew, expectedReview }) => {
+    const pool = Array.from({ length: poolSize }, (_, index) => card(index));
+    const previous = createSession(Array.from({ length: previousSize }, (_, index) => card(index)), { ...options, requestedAmount: 'all' }, 1_000, seededRandom(1));
+    previous.requestedAmount = amount;
+    const previousIds = new Set(previous.selectedCardIds);
+    const next = createNewRoundSession(pool, previous, 'session-2', 2_000, seededRandom(2), { mixPreviousRound: true });
+    expect(next.selectedCardIds.filter((id) => !previousIds.has(id))).toHaveLength(expectedNew);
+    expect(next.selectedCardIds.filter((id) => previousIds.has(id))).toHaveLength(expectedReview);
+    expect(new Set(next.selectedCardIds).size).toBe(expectedNew + expectedReview);
+    expect(next.selectedCardIds.every((id) => pool.some((item) => item.id === id))).toBe(true);
+  });
+
+  it('deduplicates mixed pools and excludes previous cards removed from the source', () => {
+    const pool = Array.from({ length: 30 }, (_, index) => card(index));
+    const previous = createSession(pool.slice(0, 10), options, 1_000, seededRandom(1));
+    const remaining = pool.slice(5);
+    const next = createNewRoundSession([...remaining, ...remaining], previous, 'session-2', 2_000, seededRandom(2), { mixPreviousRound: true });
+    expect(new Set(next.selectedCardIds).size).toBe(10);
+    expect(next.selectedCardIds.filter((id) => previous.selectedCardIds.includes(id))).toHaveLength(2);
+    expect(next.selectedCardIds.every((id) => remaining.some((item) => item.id === id))).toBe(true);
+  });
+
+  it.each(['deck', 'review', 'difficult'] as const)('preserves ordinary random selection for %s when mixing is disabled or inapplicable', (mode) => {
+    const pool = Array.from({ length: 30 }, (_, index) => card(index));
+    const previous = createSession(pool, { ...options, mode }, 1_000, seededRandom(1));
+    const next = createNewRoundSession(pool, previous, 'session-2', 2_000, seededRandom(2), { mixPreviousRound: mode !== 'deck' });
+    const expected = createSession(pool, { ...options, mode, sessionId: 'session-2' }, 2_000, seededRandom(2));
+    expect(next).toEqual(expected);
   });
 
   it('retains lucky mode without a source deck', () => {

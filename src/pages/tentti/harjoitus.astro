@@ -4,5 +4,5 @@ import FlashcardExercise from '../../components/FlashcardExercise.astro';
 import { examCardPayload, examDeckPayload } from '../../lib/exam-content';
 ---
 <BaseLayout title="Tenttiharjoitus">
-  <FlashcardExercise cards={examCardPayload} decks={examDeckPayload} returnHref="/tentti" returnLabel="Takaisin tenttisanastoon" storageKey="medicinsk-svenska.exam-session.v1" allLabel="Koko tenttisanasto" reviewLabel="En osannut" difficultReviewEnabled/>
+  <FlashcardExercise cards={examCardPayload} decks={examDeckPayload} returnHref="/tentti" returnLabel="Takaisin tenttisanastoon" storageKey="medicinsk-svenska.exam-session.v1" allLabel="Koko tenttisanasto" reviewLabel="En osannut" difficultReviewEnabled mixPreviousRound/>
 </BaseLayout>

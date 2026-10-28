@@ -137,8 +137,21 @@ export function createNewRoundSession(
   sessionId: string,
   now = Date.now(),
   random: () => number = Math.random,
+  options: { mixPreviousRound?: boolean } = {},
 ): FlashcardSession {
-  let next = createSession(cards, {
+  let roundCards = cards;
+  if (options.mixPreviousRound && (previous.mode === 'deck' || previous.mode === 'lucky')) {
+    const pool = selectSessionCards(cards, 'all', random);
+    const previousIds = new Set(previous.selectedCardIds);
+    const newCards = pool.filter((card) => !previousIds.has(card.id));
+    const reviewCards = pool.filter((card) => previousIds.has(card.id));
+    const count = previous.requestedAmount === 'all' ? pool.length : Math.min(previous.requestedAmount, pool.length);
+    // Round the new-card share to whole cards and fill any shortage from the other group.
+    const newCount = Math.min(newCards.length, Math.max(Math.round(count * 0.75), count - reviewCards.length));
+    roundCards = [...newCards.slice(0, newCount), ...reviewCards.slice(0, count - newCount)];
+  }
+
+  let next = createSession(roundCards, {
     sessionId,
     mode: previous.mode,
     answerMode: previous.answerMode,

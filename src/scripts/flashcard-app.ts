@@ -440,7 +440,9 @@ function startApp() {
         return;
       }
     }
-    session = createNewRoundSession(sourceCards, session, sessionId, Date.now(), Math.random);
+    session = createNewRoundSession(sourceCards, session, sessionId, Date.now(), Math.random, {
+      mixPreviousRound: app.dataset.mixPreviousRound === 'true',
+    });
     configuration = {
       sessionId,
       mode: session.mode,

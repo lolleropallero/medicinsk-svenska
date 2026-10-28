@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { WORD_STATS_KEY } from '../../src/lib/vocabulary-stats';
+import type { FlashcardSession } from '../../src/lib/session';
 import { continuePastMilestone } from './helpers';
 
 const EXAM_KEY = 'medicinsk-svenska.exam-session.v1';
@@ -193,6 +194,43 @@ test('exam retries, completion and new round retain their scope without overwrit
   await page.getByRole('link', { name: 'Takaisin', exact: true }).click();
   await expect(page).toHaveURL(/\/tentti\/?$/);
 });
+
+for (const mode of ['deck', 'lucky'] as const) {
+  test(`exam ${mode} new rounds mix eight new cards with two from the preceding round and survive reload`, async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.goto(`/tentti/harjoitus?mode=${mode}${mode === 'deck' ? '&deck=anatomi' : ''}&answer=cards&direction=sv-fi&amount=10`);
+    await expect(page.locator('#progress')).toHaveText('0 / 10');
+    const readSession = () => page.evaluate(key => JSON.parse(localStorage.getItem(key)!) as FlashcardSession, EXAM_KEY);
+    const allowedIds = await page.locator('#cards-data').evaluate((node, mode) => {
+      const cards = JSON.parse(node.textContent!) as { id: string; deckId: string }[];
+      return cards.filter(card => mode === 'lucky' || card.deckId === 'anatomi').map(card => card.id);
+    }, mode);
+
+    for (let round = 0; round < 2; round += 1) {
+      const previous = await readSession();
+      for (let index = 0; index < 10; index += 1) {
+        await page.getByRole('button', { name: 'Näytä vastaus' }).click();
+        await page.getByRole('button', { name: 'Osasin', exact: true }).click();
+        await continuePastMilestone(page);
+      }
+      await expect(page.locator('#summary-view')).toBeVisible();
+      await page.reload();
+      await expect(page.locator('#summary-view')).toBeVisible();
+      await page.getByRole('button', { name: 'Uusi kierros' }).click();
+      await expect(page.locator('#progress')).toHaveText('0 / 10');
+      const next = await readSession();
+      expect(next.sessionId).not.toBe(previous.sessionId);
+      expect(next).toMatchObject({ mode, direction: 'sv-fi', requestedAmount: 10, masteredCardIds: [], totalMissedCount: 0 });
+      expect(next.selectedCardIds.filter(id => previous.selectedCardIds.includes(id))).toHaveLength(2);
+      expect(next.selectedCardIds.filter(id => !previous.selectedCardIds.includes(id))).toHaveLength(8);
+      expect(new Set(next.selectedCardIds).size).toBe(10);
+      expect(next.selectedCardIds.every(id => allowedIds.includes(id))).toBe(true);
+      await page.reload();
+      await expect(page.locator('#progress')).toHaveText('0 / 10');
+      expect(await readSession()).toEqual(next);
+    }
+  });
+}
 
 test('general anatomy uses the source deck and exam rejects unrelated decks', async ({ page }) => {
   await page.goto('/kortit');

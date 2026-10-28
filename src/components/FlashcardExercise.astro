@@ -11,10 +11,11 @@ interface Props {
   allLabel?: string;
   reviewLabel?: string;
   difficultReviewEnabled?: boolean;
+  mixPreviousRound?: boolean;
 }
-const { cards, decks, returnHref = '/kortit', returnLabel = 'Takaisin pakkoihin', storageKey, allLabel, reviewLabel, difficultReviewEnabled = false } = Astro.props;
+const { cards, decks, returnHref = '/kortit', returnLabel = 'Takaisin pakkoihin', storageKey, allLabel, reviewLabel, difficultReviewEnabled = false, mixPreviousRound = false } = Astro.props;
 ---
-  <section class="practice wrap" id="flashcard-app" data-storage-key={storageKey} data-all-label={allLabel} data-review-label={reviewLabel} data-difficult-review-enabled={String(difficultReviewEnabled)} aria-labelledby="session-label">
+  <section class="practice wrap" id="flashcard-app" data-storage-key={storageKey} data-all-label={allLabel} data-review-label={reviewLabel} data-difficult-review-enabled={String(difficultReviewEnabled)} data-mix-previous-round={String(mixPreviousRound)} aria-labelledby="session-label">
     <div class="practice-top">
       <a class="practice-back" href={returnHref}><AppIcon name="back"/>Takaisin</a>
       <strong id="session-label"></strong>

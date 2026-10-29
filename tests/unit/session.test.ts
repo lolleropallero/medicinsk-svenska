@@ -132,6 +132,62 @@ describe('persisted session state', () => {
     expect(session.unseenCardQueue).toHaveLength(1);
   });
 
+  it.each([10, 25, 50, 'all'] as const)('replays the oldest miss after five missed cards with amount %s before the timer expires', (requestedAmount) => {
+    const initial = createSession(Array.from({ length: 60 }, (_, index) => card(index)), { ...options, requestedAmount }, 1_000, seededRandom(1));
+    let session = initial;
+    for (let index = 0; index < 4; index += 1) {
+      session = gradeCurrentCard(revealCurrentCard(session), false, 2_000 + index);
+      expect(session.currentCardId).toBe(initial.selectedCardIds[index + 1]);
+      expect(session.pendingRetries).toHaveLength(index + 1);
+    }
+    session = gradeCurrentCard(revealCurrentCard(session), false, 2_004);
+    expect(session.currentCardId).toBe(initial.selectedCardIds[0]);
+    expect(session.pendingRetries.map(retry => retry.cardId)).toEqual(initial.selectedCardIds.slice(1, 5));
+    expect(session.pendingRetries.every(retry => retry.dueAt > 2_004)).toBe(true);
+    expect(session.unseenCardQueue).toEqual(initial.selectedCardIds.slice(5));
+    expect(session.totalMissedCount).toBe(5);
+  });
+
+  it('cycles five missed cards without adding new cards until a retry is mastered', () => {
+    const roundOptions = { ...options, requestedAmount: 50 as const };
+    const initial = createSession(Array.from({ length: 50 }, (_, index) => card(index)), roundOptions, 1_000, seededRandom(1));
+    let session = initial;
+    for (let index = 0; index < 20; index += 1) {
+      expect(session.currentCardId).toBe(initial.selectedCardIds[index % 5]);
+      session = gradeCurrentCard(revealCurrentCard(session), false, 2_000 + index);
+      expect(session.pendingRetries.length).toBeLessThan(5);
+    }
+    expect(session.unseenCardQueue).toEqual(initial.selectedCardIds.slice(5));
+    expect(session.masteredCardIds).toEqual([]);
+    expect(session.totalMissedCount).toBe(20);
+    expect(isStoredSession(JSON.parse(JSON.stringify(session)), contextFor(session, undefined, roundOptions))).toBe(true);
+
+    session = gradeCurrentCard(revealCurrentCard(session), true, 3_000);
+    expect(session.currentCardId).toBe(initial.selectedCardIds[5]);
+    expect(session.pendingRetries.map(retry => retry.cardId)).toEqual(initial.selectedCardIds.slice(1, 5));
+    expect(session.masteredCardIds).toEqual([initial.selectedCardIds[0]]);
+    expect(session.firstAttemptCorrectByCard[initial.selectedCardIds[0]!]).toBe(false);
+  });
+
+  it('prioritizes retries from a restored older session whose backlog exceeds five cards', () => {
+    const initial = createSession(Array.from({ length: 10 }, (_, index) => card(index)), options, 1_000, seededRandom(1));
+    const missedIds = initial.selectedCardIds.slice(0, 7);
+    const restored: FlashcardSession = JSON.parse(JSON.stringify({
+      ...initial,
+      currentCardId: initial.selectedCardIds[7],
+      unseenCardQueue: initial.selectedCardIds.slice(8),
+      pendingRetries: missedIds.map((cardId, index) => ({ cardId, dueAt: 2_000 + index + RETRY_DELAY_MS })),
+      attemptCountByCard: Object.fromEntries(missedIds.map(id => [id, 1])),
+      firstAttemptCorrectByCard: Object.fromEntries(missedIds.map(id => [id, false])),
+      totalMissedCount: missedIds.length,
+    }));
+    expect(isStoredSession(restored, contextFor(restored))).toBe(true);
+    const next = gradeCurrentCard(revealCurrentCard(restored), true, 3_000);
+    expect(next.currentCardId).toBe(missedIds[0]);
+    expect(next.pendingRetries).toHaveLength(6);
+    expect(next.unseenCardQueue).toEqual(initial.selectedCardIds.slice(8));
+  });
+
   it('accepts a valid serialized state and rejects unknown card references', () => {
     const session = createSession([card(1)], options, 1_000, seededRandom(1));
     const context = contextFor(session);

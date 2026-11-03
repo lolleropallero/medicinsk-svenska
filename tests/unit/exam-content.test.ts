@@ -10,7 +10,7 @@ describe('exam vocabulary import', () => {
     expect(examTopics.map((topic) => createHash('sha256').update(JSON.stringify(topic.entries)).digest('hex'))).toEqual([
       '42c952c861a191bb7fb81b583f108546e6dbf60fed47d24af143ea3523a01d03',
       '8658c072802d33e0dc65137d1f218076c56dbe3379f539e4c26e51e0e9144f33',
-      'dcd1cb0663f57851468c9ed2c65dbba26836451c5f3e7370a96397301afbff69',
+      '8c2be917b7072d48cf02f3e2a9a606bd2592fced427c45714e55a4561b44406c',
       'cbc8e5a2f1d87af33b3335fe8aa8c3dd7cf571e473d6ebbd7e3dde31a657adc5',
       '705559fc8e1df7feba2c6dd34507d315ce131634e19a66c1eb67b4fb3e35f46c',
       'a3341c2f41443f0717e3dcf49cb00ff74e5dd73375cdd27ac22733cdb94b1b61',

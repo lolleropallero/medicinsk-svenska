@@ -19,7 +19,7 @@ function sourcePosition(topicId: string, index: number): number {
   );
 }
 
-// Preserve the remaining source wording and grammar notation on both sides.
+// Use the curated wording and reviewed grammar notation without changing card positions.
 export const examCards: Flashcard[] = examTopics.flatMap((topic) => topic.entries.map((entry, index) => ({
   id: `tenttisanasto-${topic.id}-${String(sourcePosition(topic.id, index)).padStart(3, '0')}`,
   deckId: topic.id,

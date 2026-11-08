@@ -30,7 +30,7 @@ test('home opens one exam collection with all six source topics', async ({ page 
 test('source languages, original notation and reveal state survive reload in both directions', async ({ page }) => {
   for (const [deck, firstId, fi, sv] of [
     ['anatomi', 'tenttisanasto-anatomi-001', 'pää', 'ett huvud 5'],
-    ['tentti-epikriisi', 'tenttisanasto-tentti-epikriisi-001', 'hoitoaika', 'vårdtid, -en'],
+    ['tentti-epikriisi', 'tenttisanasto-tentti-epikriisi-001', 'hoitoaika', 'vårdtid, -en 3'],
   ]) {
     for (const direction of ['fi-sv', 'sv-fi']) {
       await page.goto(`/tentti/harjoitus?mode=deck&answer=cards&deck=${deck}&direction=${direction}&amount=10&session=exam-${deck}-${direction}`);

@@ -6,10 +6,9 @@ import type { ExamTestTerm } from './exam-test-session';
 const overrides: Record<string, { fi?: string[]; sv?: string[] }> = {
   'ett mellangärde 4 / ett / en diafragma, -er / or': { sv: ['ett mellangärde 4', 'ett diafragma', 'en diafragma'] },
   'bli IV bättre / sämre': { fi: ['muuttua paremmaksi', 'muuttua huonommaksi'], sv: ['bli IV bättre', 'bli IV sämre'] },
-  'vänster / höger förmak': { fi: ['vasen eteinen', 'oikea eteinen'], sv: ['vänster förmak', 'höger förmak'] },
+  'vänster förmak / höger förmak': { fi: ['vasen eteinen', 'oikea eteinen'] },
   'några / ett par gånger': { sv: ['några gånger', 'ett par gånger'] },
-  'hjärtat slår hårdare/snabbare': { fi: ['sydän lyö kovemmin', 'sydän lyö nopeammin'], sv: ['hjärtat slår hårdare', 'hjärtat slår snabbare'] },
-  'urinvägsinfektion,-en / -inflammation -en': { sv: ['en urinvägsinfektion', 'en urinvägsinflammation'] },
+  'hjärtat slår hårdare / hjärtat slår snabbare': { fi: ['sydän lyö kovemmin', 'sydän lyö nopeammin'] },
   'nedsatt hörsel': { fi: ['alentunut kuulo', 'heikentynyt kuulo'] },
   'klara I sig själv': { fi: ['selvitä itse', 'selvitä itsenäisesti'] },
   'täppa II till': { fi: ['tukkia'] },

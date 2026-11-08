@@ -24,7 +24,7 @@
       },
       {
         "definition": "hiukset",
-        "term": "hår, -et"
+        "term": "hår, -et 5"
       },
       {
         "definition": "ohimo",
@@ -116,7 +116,7 @@
       },
       {
         "definition": "välikorva",
-        "term": "ett mellanöra"
+        "term": "ett mellanöra 4"
       },
       {
         "definition": "tärykalvo",
@@ -196,7 +196,7 @@
       },
       {
         "definition": "sormi",
-        "term": "et finger, fingret, fingrar, -na"
+        "term": "ett finger, fingret, fingrar, -na"
       },
       {
         "definition": "peukalo",
@@ -204,19 +204,19 @@
       },
       {
         "definition": "etusormi",
-        "term": "ett pekfinger"
+        "term": "ett pekfinger 2"
       },
       {
         "definition": "keskisormi",
-        "term": "ett långfinger"
+        "term": "ett långfinger 2"
       },
       {
         "definition": "nimetön",
-        "term": "ett ringfinger"
+        "term": "ett ringfinger 2"
       },
       {
         "definition": "pikkusormi",
-        "term": "ett lillfinger"
+        "term": "ett lillfinger 2"
       },
       {
         "definition": "kynsi",
@@ -388,7 +388,7 @@
       },
       {
         "definition": "iho",
-        "term": "hud, -en"
+        "term": "hud, -en 2"
       },
       {
         "definition": "aivot",
@@ -440,11 +440,11 @@
       },
       {
         "definition": "kohtu",
-        "term": "en livmoder, -n"
+        "term": "en livmoder, -n 2"
       },
       {
         "definition": "munasarja",
-        "term": "en äggstock 2 / ett ovari/um, -et, -er"
+        "term": "en äggstock 2 / ett ovari/um, -et, -er, -na"
       },
       {
         "definition": "munatorvi",
@@ -460,7 +460,7 @@
       },
       {
         "definition": "väliliha",
-        "term": "mellangård, -en"
+        "term": "mellangård, -en 2"
       },
       {
         "definition": "kives",
@@ -476,15 +476,15 @@
       },
       {
         "definition": "eturauhanen",
-        "term": "en prostata, -n"
+        "term": "en prostata, -n 1"
       },
       {
         "definition": "siitin",
-        "term": "en penis, -en"
+        "term": "en penis, -en 2"
       },
       {
         "definition": "esinahka",
-        "term": "en förhud, -en"
+        "term": "en förhud, -en 2"
       },
       {
         "definition": "ohutsuoli",
@@ -564,7 +564,7 @@
         "term": "ahtauma"
       },
       {
-        "definition": "hjärnhinneinflammation, -en",
+        "definition": "hjärnhinneinflammation, -en 3",
         "term": "aivokalvontulehdus"
       },
       {
@@ -572,23 +572,23 @@
         "term": "aivokuolema"
       },
       {
-        "definition": "hjärnskakning, -en",
+        "definition": "hjärnskakning, -en 2",
         "term": "aivotärähdys"
       },
       {
-        "definition": "hjärnblödning, -en",
+        "definition": "hjärnblödning, -en 2",
         "term": "aivoverenvuoto"
       },
       {
-        "definition": "allergi, -n",
+        "definition": "allergi, -n 3",
         "term": "allergia"
       },
       {
-        "definition": "anemi, -n",
+        "definition": "anemi, -n 3",
         "term": "anemia"
       },
       {
-        "definition": "angina (Suomessa), halsfluss (Ruotsissa)",
+        "definition": "angina, -n 1 (Suomessa), halsfluss, -en 3 (Ruotsissa)",
         "term": "angiina"
       },
       {
@@ -596,7 +596,7 @@
         "term": "astma"
       },
       {
-        "definition": "demens, -en",
+        "definition": "demens, -en 3",
         "term": "dementia"
       },
       {
@@ -616,7 +616,7 @@
         "term": "diabetes"
       },
       {
-        "definition": "diabetiker, -n",
+        "definition": "diabetiker, -n 5",
         "term": "diabeetikko"
       },
       {
@@ -624,7 +624,7 @@
         "term": "epilepsia"
       },
       {
-        "definition": "influensa, -n",
+        "definition": "influensa, -n 1",
         "term": "flunssa"
       },
       {
@@ -668,7 +668,7 @@
         "term": "huonontunut kuulo"
       },
       {
-        "definition": "gasbesvär, -et / luftbesvär, -et",
+        "definition": "gasbesvär, -et 5 / luftbesvär, -et 5",
         "term": "ilmavaivat"
       },
       {
@@ -688,15 +688,15 @@
         "term": "keltatauti"
       },
       {
-        "definition": "lunginflammation, -en",
+        "definition": "lunginflammation, -en 3",
         "term": "keuhkokuume"
       },
       {
-        "definition": "lungutvidgning, -en",
+        "definition": "lungutvidgning, -en 2",
         "term": "keuhkolaajentuma"
       },
       {
-        "definition": "bronkit, -en",
+        "definition": "bronkit, -en 3",
         "term": "keuhkoputkentulehdus"
       },
       {
@@ -712,7 +712,7 @@
         "term": "kirvely"
       },
       {
-        "definition": "livmoderframfall, -et",
+        "definition": "livmoderframfall, -et 5",
         "term": "kohdun laskeuma"
       },
       {
@@ -720,11 +720,11 @@
         "term": "koliikki"
       },
       {
-        "definition": "öroninflammation, -en",
+        "definition": "öroninflammation, -en 3",
         "term": "korvatulehdus"
       },
       {
-        "definition": "öronsusning, -en / tinnitus",
+        "definition": "öronsusning, -en 2 / tinnitus",
         "term": "korvien suhina"
       },
       {
@@ -740,7 +740,7 @@
         "term": "kurkkumätä"
       },
       {
-        "definition": "feber, -n",
+        "definition": "feber, -n 2",
         "term": "kuume"
       },
       {
@@ -756,11 +756,11 @@
         "term": "luunhaurastuminen"
       },
       {
-        "definition": "benbrott, -et / fraktur, -en 3",
+        "definition": "benbrott, -et 5 / fraktur, -en 3",
         "term": "luunmurtuma"
       },
       {
-        "definition": "klaffel, -et",
+        "definition": "klaffel, -et 5",
         "term": "läppävika"
       },
       {
@@ -768,7 +768,7 @@
         "term": "migreeni"
       },
       {
-        "definition": "minnesförlust, -en",
+        "definition": "minnesförlust, -en 3",
         "term": "muistinmenetys"
       },
       {
@@ -776,7 +776,7 @@
         "term": "mustelma"
       },
       {
-        "definition": "förgiftning, -en",
+        "definition": "förgiftning, -en 2",
         "term": "myrkytys"
       },
       {
@@ -792,11 +792,11 @@
         "term": "nenäverenvuoto"
       },
       {
-        "definition": "sväljningsbesvär, -et",
+        "definition": "sväljningsbesvär, -et 5",
         "term": "nielemisvaikeus"
       },
       {
-        "definition": "ledförslitning, -en",
+        "definition": "ledförslitning, -en 2",
         "term": "nivelkuluma"
       },
       {
@@ -816,11 +816,11 @@
         "term": "oireyhtymä"
       },
       {
-        "definition": "kräkning, -en",
+        "definition": "kräkning, -en 2",
         "term": "oksentelu"
       },
       {
-        "definition": "illamående, -t",
+        "definition": "illamående, -t 4",
         "term": "pahoinvointi"
       },
       {
@@ -828,7 +828,7 @@
         "term": "voida pahoin (fyys.)"
       },
       {
-        "definition": "trycksår, -et",
+        "definition": "trycksår, -et 5",
         "term": "painehaava"
       },
       {
@@ -844,7 +844,7 @@
         "term": "peräpukamat"
       },
       {
-        "definition": "bihåleinflammation, -en",
+        "definition": "bihåleinflammation, -en 3",
         "term": "poskiontelontulehdus"
       },
       {
@@ -856,7 +856,7 @@
         "term": "käärmeenpurema"
       },
       {
-        "definition": "fästingbett, -et",
+        "definition": "fästingbett, -et 5",
         "term": "puutiaisenpurema"
       },
       {
@@ -864,7 +864,7 @@
         "term": "puutostauti"
       },
       {
-        "definition": "domning, -en",
+        "definition": "domning, -en 2",
         "term": "puutuminen"
       },
       {
@@ -876,11 +876,11 @@
         "term": "rauhaskuume"
       },
       {
-        "definition": "lårbenshalsbrott, -et",
+        "definition": "lårbenshalsbrott, -et 5",
         "term": "reisiluunkaulan murtuminen"
       },
       {
-        "definition": "diarré, -n",
+        "definition": "diarré, -n 3",
         "term": "ripuli"
       },
       {
@@ -888,11 +888,11 @@
         "term": "ruokahaluttomuus"
       },
       {
-        "definition": "matsmältningsrubbning, -en",
+        "definition": "matsmältningsrubbning, -en 2",
         "term": "ruuansulatushäiriö"
       },
       {
-        "definition": "rytmstörning, -en",
+        "definition": "rytmstörning, -en 2",
         "term": "rytmihäiriö"
       },
       {
@@ -912,19 +912,19 @@
         "term": "sikotauti"
       },
       {
-        "definition": "ögoninflammation, -en",
+        "definition": "ögoninflammation, -en 3",
         "term": "silmätulehdus"
       },
       {
-        "definition": "sendrag, -et",
+        "definition": "sendrag, -et 5",
         "term": "suonenveto"
       },
       {
-        "definition": "åderbrock, -et / åderbråck, -et",
+        "definition": "åderbrock, -et 5 / åderbråck, -et 5",
         "term": "suonikohjut"
       },
       {
-        "definition": "hjärtsjukdom, -en",
+        "definition": "hjärtsjukdom, -en 2",
         "term": "sydänsairaus"
       },
       {
@@ -932,19 +932,19 @@
         "term": "sivuääni"
       },
       {
-        "definition": "ett exrtra slag 5",
+        "definition": "ett extra slag 5",
         "term": "lisälyönti"
       },
       {
-        "definition": "hjärtattack, -et",
+        "definition": "hjärtattack, -en 3",
         "term": "sydänkohtaus"
       },
       {
-        "definition": "hjärtförstoring, -en",
+        "definition": "hjärtförstoring, -en 2",
         "term": "sydämenlaajentuma"
       },
       {
-        "definition": "hjärtinfarkt, -en",
+        "definition": "hjärtinfarkt, -en 3",
         "term": "sydäninfarkti"
       },
       {
@@ -952,7 +952,7 @@
         "term": "sydämentykytys"
       },
       {
-        "definition": "hjärtstillestånd, -et; asystoli, -n",
+        "definition": "hjärtstillestånd, -et 5; asystoli, -n",
         "term": "sydänpysähdys"
       },
       {
@@ -964,15 +964,15 @@
         "term": "syylä"
       },
       {
-        "definition": "cancer, -n",
+        "definition": "cancer, -n 2",
         "term": "syöpä"
       },
       {
-        "definition": "bensår, -et",
+        "definition": "bensår, -et 5",
         "term": "säärihaava"
       },
       {
-        "definition": "böjveckseksem, -et",
+        "definition": "böjveckseksem, -et 5",
         "term": "taiveihottuma"
       },
       {
@@ -1000,11 +1000,11 @@
         "term": "täit"
       },
       {
-        "definition": "förstoppning, -en",
+        "definition": "förstoppning, -en 2",
         "term": "ummetus"
       },
       {
-        "definition": "blindtarmsinflammation, -en",
+        "definition": "blindtarmsinflammation, -en 3",
         "term": "umpilisäkkeentulehdus"
       },
       {
@@ -1012,7 +1012,7 @@
         "term": "unettomuus"
       },
       {
-        "definition": "sömnproblem, -et",
+        "definition": "sömnproblem, -et 5",
         "term": "uniongelmat"
       },
       {
@@ -1020,7 +1020,7 @@
         "term": "vaiva"
       },
       {
-        "definition": "darrning, -en",
+        "definition": "darrning, -en 2",
         "term": "vapina"
       },
       {
@@ -1040,7 +1040,7 @@
         "term": "verenkiertohäiriö"
       },
       {
-        "definition": "blodtryckssjukdom, -en",
+        "definition": "blodtryckssjukdom, -en 2",
         "term": "verenpainetauti"
       },
       {
@@ -1056,11 +1056,11 @@
         "term": "verenvuototauti"
       },
       {
-        "definition": "åderförkalkning, -en",
+        "definition": "åderförkalkning, -en 2",
         "term": "verisuonten kalkkeutuminen"
       },
       {
-        "definition": "blodpropp, -et",
+        "definition": "blodpropp, -en 2",
         "term": "veritulppa"
       },
       {
@@ -1072,7 +1072,7 @@
         "term": "vihurirokko"
       },
       {
-        "definition": "förkylning, -en",
+        "definition": "förkylning, -en 2",
         "term": "vilustuminen"
       },
       {
@@ -1084,15 +1084,15 @@
         "term": "vilustua"
       },
       {
-        "definition": "urininkontinens, -en / urinläckage",
+        "definition": "urininkontinens, -en / urinläckage, -t 5",
         "term": "virtsanpidätyskyvyttömyys"
       },
       {
-        "definition": "urinvägsinfektion,-en / -inflammation -en",
+        "definition": "urinvägsinfektion, -en 3 / urinvägsinflammation, -en 3",
         "term": "virtsatulehdus"
       },
       {
-        "definition": "sängvätning, -en",
+        "definition": "sängvätning, -en 2",
         "term": "vuoteenkastelu"
       },
       {
@@ -1201,7 +1201,7 @@
         "term": "hengittää"
       },
       {
-        "definition": "andning, -en",
+        "definition": "andning, -en 2",
         "term": "hengitys"
       },
       {
@@ -1217,7 +1217,7 @@
         "term": "hengästynyt"
       },
       {
-        "definition": "ansträngning, -en",
+        "definition": "ansträngning, -en 2",
         "term": "rasitus"
       },
       {
@@ -1245,7 +1245,7 @@
         "term": "happi"
       },
       {
-        "definition": "brist, -en på ngt",
+        "definition": "en brist på ngt",
         "term": "jnkn puute, pula"
       },
       {
@@ -1273,11 +1273,11 @@
         "term": "arpi"
       },
       {
-        "definition": "(ett) vilo-EKG",
+        "definition": "(ett) vilo-EKG 5",
         "term": "lepo-EKG"
       },
       {
-        "definition": "(ett) arbets-EKG",
+        "definition": "(ett) arbets-EKG 5",
         "term": "kliininen rasituskoe"
       },
       {
@@ -1285,7 +1285,7 @@
         "term": "sydämen koko"
       },
       {
-        "definition": "en prestationsförmåga / en kapacitet 3",
+        "definition": "en prestationsförmåga 1 / en kapacitet 3",
         "term": "suorituskyky"
       },
       {
@@ -1305,7 +1305,7 @@
         "term": "olla jnkn lääkärin hoidossa"
       },
       {
-        "definition": "vänster / höger förmak",
+        "definition": "vänster förmak / höger förmak",
         "term": "vasen / oikea eteinen"
       }
     ]
@@ -1406,7 +1406,7 @@
         "term": "hengästyä"
       },
       {
-        "definition": "diarré, -n",
+        "definition": "diarré, -n 3",
         "term": "ripuli"
       },
       {
@@ -1414,7 +1414,7 @@
         "term": "olla ummetusta"
       },
       {
-        "definition": "avföring, -en",
+        "definition": "avföring, -en 2",
         "term": "uloste, ulostaminen"
       },
       {
@@ -1438,7 +1438,7 @@
         "term": "menettää tajunta"
       },
       {
-        "definition": "blodtryck, -et",
+        "definition": "blodtryck, -et 5",
         "term": "verenpaine"
       },
       {
@@ -1458,7 +1458,7 @@
         "term": "olla naimisissa"
       },
       {
-        "definition": "vara pensionär, -en 3",
+        "definition": "vara pensionär (en pensionär 3)",
         "term": "olla eläkeläinen"
       },
       {
@@ -1506,7 +1506,7 @@
         "term": "sydänvaiva"
       },
       {
-        "definition": "cancer, -n",
+        "definition": "cancer, -n 2",
         "term": "syöpä"
       },
       {
@@ -1518,11 +1518,11 @@
         "term": "allerginen jllkn"
       },
       {
-        "definition": "en allergiker",
+        "definition": "en allergiker 5",
         "term": "allergikko"
       },
       {
-        "definition": "pollenallergi, -n",
+        "definition": "pollenallergi, -n 3",
         "term": "siitepölyallergia"
       },
       {
@@ -1562,11 +1562,11 @@
         "term": "kärsiä jstkn"
       },
       {
-        "definition": "hjärtat slår hårdare/snabbare",
+        "definition": "hjärtat slår hårdare / hjärtat slår snabbare",
         "term": "sydän lyö kovemmin/nopeammin"
       },
       {
-        "definition": "hjärtklappning, -en",
+        "definition": "hjärtklappning, -en 2",
         "term": "sydämentykytys"
       },
       {
@@ -1623,7 +1623,7 @@
         "term": "turvotus"
       },
       {
-        "definition": "hudfärg, -en",
+        "definition": "hudfärg, -en 3",
         "term": "ihon väri"
       },
       {
@@ -1647,19 +1647,19 @@
         "term": "arkuus"
       },
       {
-        "definition": "en hals",
+        "definition": "en hals 2",
         "term": "kaula"
       },
       {
-        "definition": "en nacke",
+        "definition": "en nacke 2",
         "term": "niska"
       },
       {
-        "definition": "en funktion, -er",
+        "definition": "en funktion, -er 3",
         "term": "toiminta, toiminto"
       },
       {
-        "definition": "rörlighet, -en",
+        "definition": "rörlighet, -en 3",
         "term": "liikkuvuus"
       },
       {
@@ -1727,7 +1727,7 @@
         "term": "pidättää hengitystä"
       },
       {
-        "definition": "andning, -en",
+        "definition": "andning, -en 2",
         "term": "hengittäminen"
       },
       {
@@ -1779,7 +1779,7 @@
         "term": "sivuääni"
       },
       {
-        "definition": "rassel, -n",
+        "definition": "rassel, -et",
         "term": "rahina"
       },
       {
@@ -1812,11 +1812,11 @@
     "iconDeckId": "tutkimukset-hoito",
     "entries": [
       {
-        "definition": "vårdtid, -en",
+        "definition": "vårdtid, -en 3",
         "term": "hoitoaika"
       },
       {
-        "definition": "intagningsorsak, -en",
+        "definition": "intagningsorsak, -en 3",
         "term": "tulosyy"
       },
       {
@@ -1836,7 +1836,7 @@
         "term": "röntgentutkimus"
       },
       {
-        "definition": "medicinering, -en",
+        "definition": "medicinering, -en 2",
         "term": "lääkitys"
       },
       {
@@ -1868,7 +1868,7 @@
         "term": "kotiuttaa potilas"
       },
       {
-        "definition": "utskrivning, -en",
+        "definition": "utskrivning, -en 2",
         "term": "kotiuttaminen"
       },
       {
@@ -1892,7 +1892,7 @@
         "term": "hengenahdistus"
       },
       {
-        "definition": "ansträngning, -en",
+        "definition": "ansträngning, -en 2",
         "term": "rasitus"
       },
       {
@@ -1924,7 +1924,7 @@
         "term": "leikkaus"
       },
       {
-        "definition": "sänkningsreaktion, -en",
+        "definition": "sänkningsreaktion, -en 3",
         "term": "lasko, senkka"
       },
       {
@@ -1992,7 +1992,7 @@
         "term": "maksa-arvot koholla"
       },
       {
-        "definition": "övervakning, -en / observation, -en",
+        "definition": "övervakning, -en 2 / observation, -en 3",
         "term": "tarkkailu"
       },
       {

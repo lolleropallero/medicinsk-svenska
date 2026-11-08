@@ -3,17 +3,18 @@ import { describe, expect, it } from 'vitest';
 import { examCardPayload, examTopics } from '../../src/lib/exam-content';
 import { flashcardPayload } from '../../src/lib/content';
 import { validateExamContent } from '../../scripts/validate-content';
+import { swedishExamAnswers, swedishLexicalKey } from '../../src/lib/exam-test-answers';
 
 describe('exam vocabulary import', () => {
   it('preserves the curated source entries, including notation and repeated words across topics', () => {
     expect(examTopics.map((topic) => topic.entries.length)).toEqual([136, 138, 47, 70, 49, 78]);
     expect(examTopics.map((topic) => createHash('sha256').update(JSON.stringify(topic.entries)).digest('hex'))).toEqual([
-      '42c952c861a191bb7fb81b583f108546e6dbf60fed47d24af143ea3523a01d03',
-      '8658c072802d33e0dc65137d1f218076c56dbe3379f539e4c26e51e0e9144f33',
-      '8c2be917b7072d48cf02f3e2a9a606bd2592fced427c45714e55a4561b44406c',
-      'cbc8e5a2f1d87af33b3335fe8aa8c3dd7cf571e473d6ebbd7e3dde31a657adc5',
-      '705559fc8e1df7feba2c6dd34507d315ce131634e19a66c1eb67b4fb3e35f46c',
-      'a3341c2f41443f0717e3dcf49cb00ff74e5dd73375cdd27ac22733cdb94b1b61',
+      '43f9c2226573657e8899365f813bb4ea8ba8cb4577858547a38464c06e371af2',
+      '7beebab101412bb4b6cc7be9cc7930435f2cb700cb58c5029ecf763bc215472e',
+      '3453d6f8011af01f9a48f93c3e27926e1efe0b259dfe6e6e53ee72b9a88c1851',
+      '690ffda6217dfee6dd09d4c6cdad05fd0c1b9c810ada8abc03c8c158d47548ec',
+      '2ef4879881fdc42afb46ca3c725f682c0286554a1e6199afd64ead0616c0bc1e',
+      '30c8b05c2cb33011056d5f19e29ff80939bdaf553d00f6d48d774598e4db6ba6',
     ]);
     expect(examCardPayload).toHaveLength(518);
     expect(new Set(examCardPayload.map((card) => card.id)).size).toBe(518);
@@ -30,7 +31,7 @@ describe('exam vocabulary import', () => {
       ['anatomi-133', 'verisuoni', 'ett blodkärl 5'],
       ['tentti-sydansairaudet-005', 'sydänäänet', 'hjärttoner, -na'],
       ['tentti-sydansairaudet-045', 'määrätä lääkkeitä jllkn', 'skriva IV ut mediciner åt ngn'],
-      ['tentti-tutkiminen-012', 'kaula', 'en hals'],
+      ['tentti-tutkiminen-012', 'kaula', 'en hals 2'],
     ]) {
       expect(byId.get(`tenttisanasto-${id}`)).toMatchObject({ fi, sv });
     }
@@ -38,10 +39,25 @@ describe('exam vocabulary import', () => {
 
   it('uses the opposite source orientation for anatomy and shares its replacement with general practice', () => {
     expect(examCardPayload[0]).toMatchObject({ fi: 'pää', sv: 'ett huvud 5' });
-    expect(examCardPayload.find((card) => card.deckId === 'tentti-epikriisi')).toMatchObject({ fi: 'hoitoaika', sv: 'vårdtid, -en' });
+    expect(examCardPayload.find((card) => card.deckId === 'tentti-epikriisi')).toMatchObject({ fi: 'hoitoaika', sv: 'vårdtid, -en 3' });
     const anatomy = examCardPayload.filter((card) => card.deckId === 'anatomi');
     expect(flashcardPayload.filter((card) => card.deckId === 'anatomi')).toEqual(anatomy);
     expect(flashcardPayload.some((card) => /^anatomi-\d/u.test(card.id))).toBe(false);
+  });
+
+  it('uses the same listed class for repeated single-word Swedish terms in every topic', () => {
+    const classesByTerm = new Map<string, Set<string>>();
+    for (const card of examCardPayload) {
+      for (const answer of swedishExamAnswers(card.sv)) {
+        const key = swedishLexicalKey(answer);
+        // Original phrase classes are retained, but no new ones are added to phrases.
+        if (key.includes(' ')) continue;
+        const classes = classesByTerm.get(key) ?? new Set<string>();
+        classes.add(answer.match(/\b(?:[1-5]|I{1,3}|IV)\b/u)?.[0] ?? 'unlisted');
+        classesByTerm.set(key, classes);
+      }
+    }
+    for (const [term, classes] of classesByTerm) expect([...classes], term).toHaveLength(1);
   });
 
   it('rejects missing lists, swapped languages and malformed source entries', () => {

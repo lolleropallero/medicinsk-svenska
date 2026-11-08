@@ -56,6 +56,68 @@ describe('exam answer keys', () => {
     expect(isExamTestAnswerCorrect(findTerm('sivuääni'), 'fi-sv', 'ett biljud')).toBe(false);
   });
 
+  it('grades the completed classes and corrected extra-beat spelling from the curated cards', () => {
+    for (const [fi, answer] of [
+      ['etusormi', 'ett pekfinger 2'], ['allergia', 'en allergi 3'],
+      ['kaula', 'en hals 2'], ['hoitoaika', 'en vårdtid 3'],
+      ['lisälyönti', 'ett extra slag 5'],
+      ['kohtu', 'en livmoder 2'], ['välikorva', 'ett mellanöra 4'],
+    ]) {
+      const term = examTestTerms.find((candidate) => candidate.fiAnswers.includes(fi!))!;
+      expect(term, fi).toBeDefined();
+      expect(isExamTestAnswerCorrect(term, 'fi-sv', answer!), fi).toBe(true);
+      expect(scoreExamTestAnswer(term, 'fi-sv', answer!.replace(/\s+[1-5]\b/u, '')).points, fi).toBe(1);
+    }
+    expect(isExamTestAnswerCorrect(findTerm('lisälyönti'), 'fi-sv', 'ett exrtra slag 5')).toBe(false);
+  });
+
+  it('keeps expanded alternatives and their classes usable in the written exam', () => {
+    const answers = examTestTerms.flatMap((term) => term.svAnswers);
+    expect(answers).toEqual(expect.arrayContaining([
+      'en urinvägsinfektion 3', 'en urinvägsinflammation 3',
+      'hjärtat slår hårdare', 'hjärtat slår snabbare', 'vara pensionär',
+    ]));
+    for (const term of examTestTerms) {
+      for (const answer of term.svAnswers) {
+        expect(scoreExamTestAnswer(term, 'fi-sv', answer).points, answer).toBe(2);
+      }
+    }
+  });
+
+  it('does not require a redundant class when the card supplies the inflected forms', () => {
+    for (const [fi, answer] of [
+      ['silmä', 'ett öga'], ['korva', 'ett öra'],
+      ['sormi', 'ett finger'],
+      ['munasarja', 'ett ovarium'],
+      ['olla jnkn lääkärin hoidossa', 'gå hos någon läkare'],
+    ]) {
+      const term = examTestTerms.find((candidate) => candidate.fiAnswers.includes(fi!))!;
+      expect(term.svAnswers, fi).toContain(answer);
+      expect(scoreExamTestAnswer(term, 'fi-sv', answer!), fi).toMatchObject({ points: 2, classMaximum: 0 });
+    }
+    expect(findTerm('munasarja').svAnswers).toContain('en äggstock 2');
+  });
+
+  it('removes newly added phrase classes while keeping the original class requirements', () => {
+    for (const [fi, answer] of [
+      ['lähettävä lääkäri', 'remitterande läkare'],
+      ['oikea eteinen', 'höger förmak'],
+      ['lievittää kipuja', 'lindra smärtor'],
+    ]) {
+      const term = examTestTerms.find((candidate) => candidate.fiAnswers.includes(fi!))!;
+      expect(term.svAnswers, fi).toContain(answer);
+      expect(scoreExamTestAnswer(term, 'fi-sv', answer!), fi).toMatchObject({ points: 2, classMaximum: 0 });
+    }
+    for (const [fi, answer] of [
+      ['hammas', 'en tand 3'], ['jalkaterä', 'en fot 3'],
+      ['lisälyönti', 'ett extra slag 5'], ['säteillä', 'stråla I ut'],
+    ]) {
+      const term = examTestTerms.find((candidate) => candidate.fiAnswers.includes(fi!))!;
+      expect(term.svAnswers, fi).toContain(answer);
+      expect(scoreExamTestAnswer(term, 'fi-sv', answer!), fi).toMatchObject({ points: 2, classMaximum: 1 });
+    }
+  });
+
   it('awards one point each for the term and listed class, independently, to a maximum of two', () => {
     const head = findTerm('pää');
     expect(scoreExamTestAnswer(head, 'fi-sv', 'ett huvud 5')).toMatchObject({ points: 2, termPoints: 1, classPoints: 1 });

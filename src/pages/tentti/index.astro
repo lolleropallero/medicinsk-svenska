@@ -7,7 +7,7 @@ import { nordicAssets } from '../../lib/nordic-assets';
 import { DIFFICULT_CARD_MISS_THRESHOLD, DIFFICULT_CARD_MASTERY_STREAK } from '../../lib/vocabulary-stats';
 ---
 <BaseLayout title="Ruotsin tenttisanasto">
-  <section class="page wrap study-setup" aria-labelledby="page-title" data-exercise-path="/tentti/harjoitus">
+  <section class="page wrap study-setup" aria-labelledby="page-title" data-exercise-path="/tentti/harjoitus" data-review-session-key="medicinsk-svenska.exam-session.v1">
     <header class="setup-heading"><span class="setup-icon"><AppIcon name="flashcards" size={32}/></span><div><span class="eyebrow">6 sanalistaa · {examCardPayload.length} korttia</span><h1 id="page-title">Ruotsin tenttisanasto</h1></div><FlagRibbon variant="dual"/></header>
     <p>Valitse aihe tai kertaa koko sanasto. Paljasta vastaus ja arvioi osaamisesi.</p>
     <a class="exam-link exam-test-start" href="/tentti/koe/harjoitus/"><AppIcon name="descriptions"/><span><strong>Tee tentti</strong><small>25 ruotsiksi + 25 suomeksi · 100 pistettä</small></span><AppIcon name="arrow"/></a>
@@ -30,14 +30,21 @@ import { DIFFICULT_CARD_MISS_THRESHOLD, DIFFICULT_CARD_MASTERY_STREAK } from '..
     <a class="lucky" data-start data-mode="lucky" href="/tentti/harjoitus?mode=lucky&answer=cards&direction=fi-sv&amount=25">
       <span class="row-icon"><AppIcon name="shuffle" size={32}/></span><span><strong>Koko tenttisanasto</strong><small>Kaikki kuusi aihetta sekaisin</small></span><span data-selected-count>25 korttia</span><AppIcon name="arrow"/>
     </a>
-    <a class="lucky review-cta" data-start data-mode="review" data-review-cta href="/tentti/harjoitus?mode=review&answer=cards&direction=fi-sv&amount=25" hidden>
-      <span class="row-icon"><AppIcon name="retry" size={32}/></span><span><strong>En osannut</strong><small>Kertaa väärin menneitä tenttikortteja</small></span><span data-review-count></span><AppIcon name="arrow"/>
-    </a>
-    <p class="review-empty" data-review-empty hidden>En osannut -kertaus on vielä tyhjä. Merkitse harjoittelussa kortti ”En osannut”, niin se tulee tänne kerrattavaksi.</p>
-    <a class="lucky review-cta" data-start data-mode="difficult" data-difficult-cta href="/tentti/harjoitus?mode=difficult&answer=cards&direction=fi-sv&amount=25" hidden>
-      <span class="row-icon"><AppIcon name="retry" size={32}/></span><span><strong>Vaikeimmat sanat</strong><small>Harjoittele toistuvasti väärin menneitä sanoja</small></span><span data-difficult-count></span><AppIcon name="arrow"/>
-    </a>
-    <p class="review-empty" data-difficult-empty hidden>Vaikeimmat sanat -pakka on vielä tyhjä.</p>
+    <div class="review-deck">
+      <a class="lucky review-cta" data-start data-mode="review" data-review-cta href="/tentti/harjoitus?mode=review&answer=cards&direction=fi-sv&amount=25" hidden>
+        <span class="row-icon"><AppIcon name="retry" size={32}/></span><span><strong>En osannut</strong><small>Kertaa väärin menneitä tenttikortteja</small></span><span data-review-count></span><AppIcon name="arrow"/>
+      </a>
+      <p class="review-empty" data-review-empty hidden>En osannut -kertaus on vielä tyhjä. Merkitse harjoittelussa kortti ”En osannut”, niin se tulee tänne kerrattavaksi.</p>
+      <button type="button" class="tertiary review-reset" data-clear-review="review" aria-label="Tyhjennä En osannut -pakka" disabled>Tyhjennä pakka</button>
+    </div>
+    <div class="review-deck">
+      <a class="lucky review-cta" data-start data-mode="difficult" data-difficult-cta href="/tentti/harjoitus?mode=difficult&answer=cards&direction=fi-sv&amount=25" hidden>
+        <span class="row-icon"><AppIcon name="retry" size={32}/></span><span><strong>Vaikeimmat sanat</strong><small>Harjoittele toistuvasti väärin menneitä sanoja</small></span><span data-difficult-count></span><AppIcon name="arrow"/>
+      </a>
+      <p class="review-empty" data-difficult-empty hidden>Vaikeimmat sanat -pakka on vielä tyhjä.</p>
+      <button type="button" class="tertiary review-reset" data-clear-review="difficult" aria-label="Tyhjennä Vaikeimmat sanat -pakka" disabled>Tyhjennä pakka</button>
+    </div>
+    <p class="setup-note review-reset-status" data-review-reset-status role="status" tabindex="-1"></p>
     <p class="setup-note">Kortti tulee Vaikeimmat sanat -pakkaan {DIFFICULT_CARD_MISS_THRESHOLD} virheen jälkeen. Se poistuu, kun osaat sen {DIFFICULT_CARD_MASTERY_STREAK} peräkkäisellä kierroksella ensimmäisellä yrityksellä. Uusi virhe aloittaa onnistumisten laskennan alusta ja tuo poistetun kortin takaisin pakkaan.</p>
     <div class="deck-list">
       {examTopics.map((topic) => (

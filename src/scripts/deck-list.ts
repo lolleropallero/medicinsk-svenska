@@ -1,12 +1,13 @@
 import { buildSessionUrl } from '../lib/session-url';
 import type { Direction } from '../types/content';
 import type { RequestedAmount, SessionMode, VocabularyAnswerMode } from '../lib/session';
-import { loadWordStats, selectWeakCardIds, selectDifficultCardIds } from '../lib/vocabulary-stats';
+import { WORD_STATS_KEY, clearWordReview, loadWordStats, saveWordStats, selectWeakCardIds, selectDifficultCardIds } from '../lib/vocabulary-stats';
 import { loadUiPreferences, saveUiPreferences } from '../lib/progress/ui-preferences';
 
 function initializeDeckList() {
 const starts = document.querySelectorAll<HTMLAnchorElement>('[data-start]');
 if (!starts.length) return;
+const controller = new AbortController();
 const radios = document.querySelectorAll<HTMLInputElement>('input[name="direction"], input[name="answer"], input[name="amount"]');
 const exercisePath = document.querySelector<HTMLElement>('[data-exercise-path]')?.dataset.exercisePath ?? '/kortit/harjoitus';
 const savedAmount = loadUiPreferences().cardAmount;
@@ -36,18 +37,21 @@ function configurationFor(link: HTMLAnchorElement) {
   };
 }
 
-function reviewWordCount(mode: 'review' | 'difficult'): number {
+function knownCardIds(): Set<string> {
   const node = document.getElementById('cards-data-ids');
-  if (!node) return 0;
   try {
-    const knownCardIds = new Set(JSON.parse(node.textContent ?? '[]') as string[]);
-    const stats = loadWordStats();
-    return mode === 'difficult'
-      ? selectDifficultCardIds(stats, knownCardIds).length
-      : selectWeakCardIds(stats, knownCardIds, knownCardIds.size).length;
+    return new Set(JSON.parse(node?.textContent ?? '[]') as string[]);
   } catch {
-    return 0;
+    return new Set();
   }
+}
+
+function reviewWordCount(mode: 'review' | 'difficult'): number {
+  const ids = knownCardIds();
+  const stats = loadWordStats();
+  return mode === 'difficult'
+    ? selectDifficultCardIds(stats, ids).length
+    : selectWeakCardIds(stats, ids, ids.size).length;
 }
 
 function updateReviewCta(mode: 'review' | 'difficult') {
@@ -59,6 +63,8 @@ function updateReviewCta(mode: 'review' | 'difficult') {
   empty.hidden = count > 0;
   const countLabel = cta.querySelector<HTMLElement>(`[data-${mode}-count]`);
   if (countLabel) countLabel.textContent = `${count} ${count === 1 ? 'sana' : 'sanaa'}`;
+  const reset = document.querySelector<HTMLButtonElement>(`[data-clear-review="${mode}"]`);
+  if (reset) reset.disabled = count === 0;
 }
 
 function updateLinks() {
@@ -81,6 +87,39 @@ radios.forEach((radio) => radio.addEventListener('change', () => {
 starts.forEach((link) => link.addEventListener('click', () => {
   link.href = buildSessionUrl(configurationFor(link), exercisePath);
 }));
+document.querySelectorAll<HTMLButtonElement>('[data-clear-review]').forEach(button => {
+  button.addEventListener('click', () => {
+    const mode = button.dataset.clearReview;
+    if (mode !== 'review' && mode !== 'difficult') return;
+    const label = mode === 'review' ? 'En osannut' : 'Vaikeimmat sanat';
+    const explanation = mode === 'review'
+      ? 'Kortti palaa pakkaan, jos vastaat siihen uudelleen väärin.'
+      : 'Virheiden laskenta alkaa alusta. Kortti palaa pakkaan kolmen uuden virheen jälkeen.';
+    if (!confirm(`Tyhjennetäänkö ${label} -pakka? ${explanation} Harjoitteluhistoria säilyy.`)) return;
+    const status = document.querySelector<HTMLElement>('[data-review-reset-status]')!;
+    const state = clearWordReview(loadWordStats(), knownCardIds(), mode);
+    if (!saveWordStats(state)) {
+      status.textContent = 'Tyhjennystä ei voitu tallentaa. Tarkista selaimen tallennusasetukset ja yritä uudelleen.';
+      return;
+    }
+    const sessionKey = document.querySelector<HTMLElement>('[data-review-session-key]')?.dataset.reviewSessionKey;
+    if (sessionKey) {
+      try {
+        const saved = JSON.parse(localStorage.getItem(sessionKey) ?? 'null');
+        if (saved?.mode === mode) localStorage.removeItem(sessionKey);
+      } catch {
+        // Review membership has already been saved even if session cleanup is unavailable.
+      }
+    }
+    updateLinks();
+    status.textContent = `${label} -pakka tyhjennetty. ${explanation}`;
+    status.focus();
+  });
+});
+window.addEventListener('storage', event => {
+  if (event.key === WORD_STATS_KEY || event.key === null) updateLinks();
+}, { signal: controller.signal });
+document.addEventListener('astro:before-swap', () => controller.abort(), { once: true });
 updateLinks();
 }
 

@@ -114,6 +114,7 @@ function startApp() {
   let wordStats = loadWordStats();
 
   function computeSourceCards(mode: SessionMode, sourceDeckId?: string): FlashcardClient[] {
+    wordStats = loadWordStats(localStorage, wordStats);
     if (mode === 'lucky') return allCards;
     if (mode === 'review') {
       // Session creation shuffles the entire review pool before applying the requested count.
@@ -417,7 +418,7 @@ function startApp() {
     choiceContinue.disabled = true;
     writtenContinue.disabled = true;
     session = gradeCurrentCard(session, correct, now);
-    wordStats = recordWordAttempt(wordStats, completedId, correct, now, { firstAttempt: priorAttempts === 0 });
+    wordStats = recordWordAttempt(loadWordStats(localStorage, wordStats), completedId, correct, now, { firstAttempt: priorAttempts === 0 });
     saveWordStats(wordStats);
     if (correct) dispatchProgress({type:'item-completed',eventId:`flashcards:${session.sessionId}:item:${completedId}`,sessionId:session.sessionId,
       mode:'flashcards',itemId:completedId,sourceId,occurredAt:now,firstAttemptCorrect:priorAttempts===0,hadMisses:priorAttempts>0,resolution:'mastered'});
@@ -520,6 +521,17 @@ function startApp() {
 
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) render();
+  }, { signal: controller.signal });
+
+  // A reset in another tab also ends the saved review round in this tab.
+  window.addEventListener('storage', event => {
+    if (event.key === STORAGE_KEY && event.newValue === null && (session.mode === 'review' || session.mode === 'difficult')) {
+      try {
+        if (JSON.parse(event.oldValue ?? 'null')?.mode === session.mode) location.reload();
+      } catch {
+        // An unrelated or malformed stored session does not end this round.
+      }
+    }
   }, { signal: controller.signal });
 
   const activeTime = startActiveTime({mode:'flashcards',sessionId:()=>session.sessionId,eligible:()=>Boolean(session.currentCardId&&!isSessionComplete(session)&&errorView.hidden)});

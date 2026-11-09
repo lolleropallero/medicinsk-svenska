@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   WORD_STATS_KEY,
   createWordStatsState,
+  clearWordReview,
   isWordStatsState,
   loadWordStats,
   rankWeakCards,
@@ -141,6 +142,74 @@ describe('difficult card review', () => {
   it.each([-1, 0.5, 4, Number.NaN, '2'])('rejects malformed first-attempt streak %s', streak => {
     const state = missedState();
     expect(isWordStatsState({ ...state, cards: { c1: { ...state.cards.c1, firstAttemptCorrectStreak: streak } } })).toBe(false);
+  });
+});
+
+describe('manual review resets', () => {
+  const known = new Set(['exam', 'partial', 'new']);
+  const missedState = (): WordStatsStateV1 => ({ schemaVersion: 1, cards: {
+    exam: { attempts: 6, incorrect: 4, correctStreak: 1, firstAttemptCorrectStreak: 1, lastAttemptAt: 2_000, lastIncorrectAt: 1_000 },
+    partial: { attempts: 2, incorrect: 2, correctStreak: 0, lastAttemptAt: 1_000, lastIncorrectAt: 1_000 },
+    other: { attempts: 3, incorrect: 3, correctStreak: 0, lastAttemptAt: 1_000, lastIncorrectAt: 1_000 },
+  } });
+
+  it('clears missed review independently, preserves history, and returns on a new miss', () => {
+    const before = missedState();
+    const state = clearWordReview(before, known, 'review', 3_000);
+    expect(selectWeakCardIds(state, known, 10, 3_000)).toEqual([]);
+    expect(selectDifficultCardIds(state, known)).toEqual(['exam']);
+    expect(state.cards.exam).toEqual({ ...before.cards.exam, reviewClearedAt: 3_000 });
+    expect(state.cards.other).toEqual(before.cards.other);
+    expect(state.cards.new).toBeUndefined();
+    expect(before.cards.exam!.reviewClearedAt).toBeUndefined();
+    const retry = recordWordAttempt(state, 'exam', true, 4_000);
+    expect(selectWeakCardIds(retry, known, 10, 4_000)).toEqual([]);
+    const missed = recordWordAttempt(retry, 'exam', false, 5_000);
+    expect(selectWeakCardIds(missed, known, 10, 5_000)).toEqual(['exam']);
+  });
+
+  it('restarts difficult misses for all scoped cards without clearing missed review or changing history', () => {
+    const before = missedState();
+    let state = clearWordReview(before, known, 'difficult');
+    expect(selectDifficultCardIds(state, known)).toEqual([]);
+    expect(selectWeakCardIds(state, known, 10, 3_000)).toEqual(selectWeakCardIds(before, known, 10, 3_000));
+    expect(state.cards.exam).toEqual({ ...before.cards.exam, difficultResetIncorrect: 4 });
+    expect(state.cards.partial).toEqual({ ...before.cards.partial, difficultResetIncorrect: 2 });
+    expect(state.cards.other).toEqual(before.cards.other);
+    expect(before.cards.exam!.difficultResetIncorrect).toBeUndefined();
+    const storage = new MemoryStorage();
+    for (let miss = 1; miss <= 3; miss++) {
+      state = recordWordAttempt(state, 'exam', false, 3_000 + miss);
+      state = recordWordAttempt(state, 'exam', true, 4_000 + miss);
+      saveWordStats(state, storage);
+      state = loadWordStats(storage);
+      expect(state.cards.exam!.difficultResetIncorrect).toBe(4);
+      expect(selectDifficultCardIds(state, known)).toEqual(miss < 3 ? [] : ['exam']);
+    }
+    state = clearWordReview(state, known, 'difficult');
+    expect(state.cards.exam!.difficultResetIncorrect).toBe(7);
+    expect(selectDifficultCardIds(state, known)).toEqual([]);
+  });
+
+  it('retains both resets across correct answers and reloads', () => {
+    let state = clearWordReview(clearWordReview(missedState(), known, 'review', 3_000), known, 'difficult');
+    state = recordWordAttempt(state, 'exam', true, 4_000, { firstAttempt: true });
+    const storage = new MemoryStorage();
+    saveWordStats(state, storage);
+    expect(selectWeakCardIds(loadWordStats(storage), known, 10)).toEqual([]);
+    expect(selectDifficultCardIds(loadWordStats(storage), known)).toEqual([]);
+    expect(state.cards.exam!.difficultResetIncorrect).toBe(4);
+  });
+
+  it.each([-1, 0.5, 5, Number.NaN, '2'])('rejects invalid difficult reset counters: %s', value => {
+    const state = missedState();
+    expect(isWordStatsState({ ...state, cards: { exam: { ...state.cards.exam, difficultResetIncorrect: value } } })).toBe(false);
+  });
+
+  it('reports failed saves and can retain in-memory attempts when reads fail', () => {
+    const state = missedState();
+    expect(saveWordStats(state, { setItem() { throw new Error('blocked'); } })).toBe(false);
+    expect(loadWordStats({ getItem() { throw new Error('blocked'); } }, state)).toBe(state);
   });
 });
 

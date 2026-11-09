@@ -15,6 +15,7 @@ export interface WordStatEntry {
   lastIncorrectAt?: number;
   reviewClearedAt?: number;
   firstAttemptCorrectStreak?: number;
+  difficultResetIncorrect?: number;
 }
 
 export interface WordStatsStateV1 {
@@ -56,6 +57,7 @@ export function recordWordAttempt(
     lastAttemptAt: now,
     ...(lastIncorrectAt === undefined ? {} : { lastIncorrectAt }),
     ...(reviewClearedAt === undefined ? {} : { reviewClearedAt }),
+    ...(previous?.difficultResetIncorrect === undefined ? {} : { difficultResetIncorrect: previous.difficultResetIncorrect }),
   };
   return { ...state, cards: pruneCards({ ...state.cards, [cardId]: entry }) };
 }
@@ -109,9 +111,27 @@ export function selectWeakCards<T extends { id: string }>(
 export function selectDifficultCardIds(state: WordStatsStateV1, knownCardIds: ReadonlySet<string>): string[] {
   return [...knownCardIds].filter(id => {
     const entry = state.cards[id];
-    return entry !== undefined && entry.incorrect >= DIFFICULT_CARD_MISS_THRESHOLD &&
+    return entry !== undefined && entry.incorrect - (entry.difficultResetIncorrect ?? 0) >= DIFFICULT_CARD_MISS_THRESHOLD &&
       (entry.firstAttemptCorrectStreak ?? 0) < DIFFICULT_CARD_MASTERY_STREAK;
   });
+}
+
+// Reset only this review pool, retaining the real attempt history and the other pool.
+export function clearWordReview(
+  state: WordStatsStateV1,
+  knownCardIds: ReadonlySet<string>,
+  mode: 'review' | 'difficult',
+  now = Date.now(),
+): WordStatsStateV1 {
+  const cards = { ...state.cards };
+  for (const id of knownCardIds) {
+    const entry = cards[id];
+    if (!entry) continue;
+    cards[id] = mode === 'review'
+      ? { ...entry, reviewClearedAt: now }
+      : { ...entry, difficultResetIncorrect: entry.incorrect };
+  }
+  return { ...state, cards };
 }
 
 function isWordStatEntry(value: unknown): value is WordStatEntry {
@@ -120,6 +140,8 @@ function isWordStatEntry(value: unknown): value is WordStatEntry {
   return (
     Number.isInteger(entry.attempts) && entry.attempts! >= 0 &&
     Number.isInteger(entry.incorrect) && entry.incorrect! >= 0 && entry.incorrect! <= entry.attempts! &&
+    (entry.difficultResetIncorrect === undefined ||
+      (Number.isInteger(entry.difficultResetIncorrect) && entry.difficultResetIncorrect >= 0 && entry.difficultResetIncorrect <= entry.incorrect!)) &&
     Number.isInteger(entry.correctStreak) && entry.correctStreak! >= 0 && entry.correctStreak! <= entry.attempts! &&
     (entry.firstAttemptCorrectStreak === undefined ||
       (Number.isInteger(entry.firstAttemptCorrectStreak) && entry.firstAttemptCorrectStreak >= 0 && entry.firstAttemptCorrectStreak <= entry.correctStreak!)) &&
@@ -139,20 +161,22 @@ export function isWordStatsState(value: unknown): value is WordStatsStateV1 {
   return Object.entries(state.cards).every(([id, entry]) => typeof id === 'string' && id.length > 0 && isWordStatEntry(entry));
 }
 
-export function loadWordStats(storage: Pick<Storage, 'getItem'> = localStorage): WordStatsStateV1 {
+export function loadWordStats(storage: Pick<Storage, 'getItem'> = localStorage, fallback = createWordStatsState()): WordStatsStateV1 {
   try {
     const parsed: unknown = JSON.parse(storage.getItem(WORD_STATS_KEY) ?? 'null');
     if (isWordStatsState(parsed)) return parsed;
   } catch {
-    // Falls through to a fresh state below.
+    // Retain in-memory attempts if storage is unavailable.
   }
-  return createWordStatsState();
+  return fallback;
 }
 
-export function saveWordStats(state: WordStatsStateV1, storage: Pick<Storage, 'setItem'> = localStorage): void {
+export function saveWordStats(state: WordStatsStateV1, storage: Pick<Storage, 'setItem'> = localStorage): boolean {
   try {
     storage.setItem(WORD_STATS_KEY, JSON.stringify(state));
+    return true;
   } catch {
     // The session remains usable in memory when storage is unavailable.
+    return false;
   }
 }

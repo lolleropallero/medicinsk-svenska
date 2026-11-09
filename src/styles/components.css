@@ -270,6 +270,11 @@
   align-items: center;
   justify-content: center;
 }
+.review-deck { margin-bottom: 14px; }
+.study-setup .review-deck > .lucky,
+.review-deck > .review-empty { margin-bottom: 0; }
+.review-reset { display: flex; margin: 2px 0 0 auto; font-size: 0.82rem; }
+.review-reset-status:empty { margin: 0; }
 .deck-list,
 .category-list {
   display: grid;

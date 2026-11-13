@@ -8,6 +8,18 @@ V1 is designed only for medical students. It contains eight general decks: Anato
 
 Exercise sessions and long-term progress are stored only in the current browser. They are not tied to an account or synchronized between devices.
 
+## Arkisanasto
+
+`/arkisanasto/` adds an independent collection of 500 common Swedish words in 20 topic decks of 25 cards. It is an independently curated everyday vocabulary, not a claim about an exact corpus top 500. The header offers **Arkisanasto** on desktop and phones. The medical and exam collections retain their existing IDs, content and routes.
+
+`content/everyday-vocabulary.json` holds stable lexical IDs, Finnish cues, Swedish headwords, articles, noun classes 1–5, verb classes I–IV and supplementary forms. Swedish answers show the article, word and class together (for example `en bok 3`, `läsa II`). Adjectives retain explicit forms; indeclinable and plural-only words and mass nouns do not receive invented classes. Parenthetical Finnish hints distinguish meanings. Content validation checks exactly 500 distinct Swedish entries, topic membership, unique IDs and grammar-field consistency. Keep IDs stable when correcting wording.
+
+The pedagogical class convention follows [HAMK's noun grammar](https://www3.hamk.fi/bud/kielioppi/substantiivit/0-substantiivit.htm) and [Opetushallitus's verb grammar](https://www.oph.fi/sites/default/files/documents/var_salong_grammatik_verbit.pdf). Irregular noun paradigms were cross-checked against [Fokus classroom grammar](https://peda.net/punkalaidun/lukio/oppiaineet/ruotsi/fokus-kurs-6/grammatik/set) and Svenska Akademien, including [huvud](https://svenska.se/?q=huvud). Sources inform grammar verification; no source word-list selection or ordering was imported. The retained `huvud 5` convention agrees with the medical cards; its supplementary note shows the common exceptional plural `huvuden, huvudena`.
+
+Practice reuses the exam flashcard engine: either direction, 10/25/50/all cards, all topics or one deck, **En osannut**, **Vaikeimmat sanat**, scoped review resets, retries and reload persistence. New rounds reuse the exam rule: approximately 75% from outside the preceding round and 25% from that round when available. Choosing all reshuffles the entire eligible pool. Review membership is filtered to everyday IDs. Practice uses `medicinsk-svenska.everyday-session.v1`, so it cannot replace medical or exam practice.
+
+`/arkisanasto/koe/harjoitus/` reuses the 50-question written exam, with 25 questions in each direction and all 20 topics represented in each half. It has independent storage at `medicinsk-svenska.everyday-test.v1`. `ExamTestExercise.astro` is shared with the existing exam; grading, class partial credit, answer editing and results behave identically. In Finnish answers the explanatory parentheses are optional.
+
 ## Requirements and commands
 
 - Node.js 20 or newer

@@ -57,16 +57,17 @@ export interface SessionSummary {
 }
 
 export function cardSides(card: FlashcardClient, direction: Direction) {
+  const swedish = `${card.article ? `${card.article} ` : ''}${card.sv}${card.inflectionClass ? ` ${card.inflectionClass}` : ''}`;
   if (direction === 'sv-fi') {
     return {
-      front: `${card.article ? `${card.article} ` : ''}${card.sv}`,
+      front: swedish,
       back: card.fi,
     };
   }
 
   return {
     front: card.fi,
-    back: `${card.article ? `${card.article} ` : ''}${card.sv}`,
+    back: swedish,
   };
 }
 

@@ -1,6 +1,7 @@
 export type PublicationStatus = 'published' | 'review' | 'skipped';
 export type Direction = 'fi-sv' | 'sv-fi';
 export type PartOfSpeech = 'noun' | 'verb' | 'adjective' | 'adverb' | 'other';
+export type InflectionClass = '1' | '2' | '3' | '4' | '5' | 'I' | 'II' | 'III' | 'IV';
 
 export interface Deck { id: string; nameFi: string; status: PublicationStatus }
 export interface DescriptionCategory { id: string; nameFi: string; status: PublicationStatus }
@@ -8,6 +9,7 @@ export interface PhraseCategory { id: string; nameFi: string; status: Publicatio
 export interface Flashcard {
   id: string; deckId: string; fi: string; sv: string; article?: 'en' | 'ett';
   partOfSpeech: PartOfSpeech; inflection?: string; status: PublicationStatus;
+  inflectionClass?: InflectionClass;
   selfAssessmentOnly?: true;
 }
 export interface DescriptionExercise {

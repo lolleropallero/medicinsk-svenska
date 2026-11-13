@@ -1,0 +1,3945 @@
+[
+  {
+    "id": "arki-ihmiset",
+    "nameFi": "Ihmiset ja perhe",
+    "entries": [
+      {
+        "id": "arki-ihmiset-manniska",
+        "fi": "ihminen",
+        "sv": "människa",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-ihmiset-kvinna",
+        "fi": "nainen",
+        "sv": "kvinna",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-ihmiset-man",
+        "fi": "mies",
+        "sv": "man",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "5",
+        "inflection": "mannen, män, männen"
+      },
+      {
+        "id": "arki-ihmiset-barn",
+        "fi": "lapsi",
+        "sv": "barn",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-ihmiset-flicka",
+        "fi": "tyttö",
+        "sv": "flicka",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-ihmiset-pojke",
+        "fi": "poika",
+        "sv": "pojke",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ihmiset-mamma",
+        "fi": "äiti",
+        "sv": "mamma",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-ihmiset-pappa",
+        "fi": "isä",
+        "sv": "pappa",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-ihmiset-syster",
+        "fi": "sisko",
+        "sv": "syster",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "systern, systrar, systrarna"
+      },
+      {
+        "id": "arki-ihmiset-bror",
+        "fi": "veli",
+        "sv": "bror",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "5",
+        "inflection": "brodern, bröder, bröderna"
+      },
+      {
+        "id": "arki-ihmiset-dotter",
+        "fi": "tytär",
+        "sv": "dotter",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "dottern, döttrar, döttrarna"
+      },
+      {
+        "id": "arki-ihmiset-son",
+        "fi": "poika (jälkeläinen)",
+        "sv": "son",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "sonen, söner, sönerna"
+      },
+      {
+        "id": "arki-ihmiset-familj",
+        "fi": "perhe",
+        "sv": "familj",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ihmiset-foralder",
+        "fi": "vanhempi (perheenjäsen)",
+        "sv": "förälder",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "föräldern, föräldrar, föräldrarna"
+      },
+      {
+        "id": "arki-ihmiset-van",
+        "fi": "ystävä",
+        "sv": "vän",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "vännen, vänner, vännerna"
+      },
+      {
+        "id": "arki-ihmiset-kompis",
+        "fi": "kaveri",
+        "sv": "kompis",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ihmiset-granne",
+        "fi": "naapuri",
+        "sv": "granne",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ihmiset-slakting",
+        "fi": "sukulainen",
+        "sv": "släkting",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ihmiset-kusin",
+        "fi": "serkku",
+        "sv": "kusin",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ihmiset-par",
+        "fi": "pari",
+        "sv": "par",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-ihmiset-bebis",
+        "fi": "vauva",
+        "sv": "bebis",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ihmiset-ungdom",
+        "fi": "nuori (henkilö)",
+        "sv": "ungdom",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ihmiset-person",
+        "fi": "henkilö",
+        "sv": "person",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ihmiset-gast",
+        "fi": "vieras (henkilö)",
+        "sv": "gäst",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ihmiset-namn",
+        "fi": "nimi",
+        "sv": "namn",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      }
+    ]
+  },
+  {
+    "id": "arki-koti",
+    "nameFi": "Koti ja asuminen",
+    "entries": [
+      {
+        "id": "arki-koti-hem",
+        "fi": "koti",
+        "sv": "hem",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5",
+        "inflection": "hemmet, hem, hemmen"
+      },
+      {
+        "id": "arki-koti-hus",
+        "fi": "talo",
+        "sv": "hus",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-koti-lagenhet",
+        "fi": "asunto",
+        "sv": "lägenhet",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-koti-rum",
+        "fi": "huone",
+        "sv": "rum",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5",
+        "inflection": "rummet, rum, rummen"
+      },
+      {
+        "id": "arki-koti-kok",
+        "fi": "keittiö",
+        "sv": "kök",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-koti-badrum",
+        "fi": "kylpyhuone",
+        "sv": "badrum",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-koti-sovrum",
+        "fi": "makuuhuone",
+        "sv": "sovrum",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-koti-vardagsrum",
+        "fi": "olohuone",
+        "sv": "vardagsrum",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-koti-dorr",
+        "fi": "ovi",
+        "sv": "dörr",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-koti-fonster",
+        "fi": "ikkuna",
+        "sv": "fönster",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5",
+        "inflection": "fönstret, fönster, fönstren"
+      },
+      {
+        "id": "arki-koti-vagg",
+        "fi": "seinä",
+        "sv": "vägg",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-koti-golv",
+        "fi": "lattia",
+        "sv": "golv",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-koti-tak",
+        "fi": "katto",
+        "sv": "tak",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-koti-bord",
+        "fi": "pöytä",
+        "sv": "bord",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-koti-stol",
+        "fi": "tuoli",
+        "sv": "stol",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-koti-sang",
+        "fi": "sänky",
+        "sv": "säng",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-koti-soffa",
+        "fi": "sohva",
+        "sv": "soffa",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-koti-lampa",
+        "fi": "lamppu",
+        "sv": "lampa",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-koti-matta",
+        "fi": "matto",
+        "sv": "matta",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-koti-hylla",
+        "fi": "hylly",
+        "sv": "hylla",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-koti-skap",
+        "fi": "kaappi",
+        "sv": "skåp",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-koti-nyckel",
+        "fi": "avain",
+        "sv": "nyckel",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "nyckeln, nycklar, nycklarna"
+      },
+      {
+        "id": "arki-koti-tradgard",
+        "fi": "puutarha",
+        "sv": "trädgård",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-koti-balkong",
+        "fi": "parveke",
+        "sv": "balkong",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-koti-adress",
+        "fi": "osoite",
+        "sv": "adress",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      }
+    ]
+  },
+  {
+    "id": "arki-ruoka",
+    "nameFi": "Ruoka ja juoma",
+    "entries": [
+      {
+        "id": "arki-ruoka-mat",
+        "fi": "ruoka",
+        "sv": "mat",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflection": "maten; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-brod",
+        "fi": "leipä",
+        "sv": "bröd",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-ruoka-smor",
+        "fi": "voi (elintarvike)",
+        "sv": "smör",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflection": "smöret; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-ost",
+        "fi": "juusto",
+        "sv": "ost",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruoka-mjolk",
+        "fi": "maito",
+        "sv": "mjölk",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflection": "mjölken; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-vatten",
+        "fi": "vesi",
+        "sv": "vatten",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflection": "vattnet; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-kaffe",
+        "fi": "kahvi",
+        "sv": "kaffe",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflection": "kaffet; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-te",
+        "fi": "tee",
+        "sv": "te",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflection": "teet; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-juice",
+        "fi": "mehu",
+        "sv": "juice",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflection": "juicen; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-kott",
+        "fi": "liha",
+        "sv": "kött",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflection": "köttet; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-fisk",
+        "fi": "kala",
+        "sv": "fisk",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruoka-kyckling",
+        "fi": "kana",
+        "sv": "kyckling",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruoka-agg",
+        "fi": "kananmuna",
+        "sv": "ägg",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-ruoka-potatis",
+        "fi": "peruna",
+        "sv": "potatis",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruoka-ris",
+        "fi": "riisi",
+        "sv": "ris",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflection": "riset; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-pasta",
+        "fi": "pasta",
+        "sv": "pasta",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflection": "pastan; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-apple",
+        "fi": "omena",
+        "sv": "äpple",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-ruoka-banan",
+        "fi": "banaani",
+        "sv": "banan",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ruoka-apelsin",
+        "fi": "appelsiini",
+        "sv": "apelsin",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ruoka-tomat",
+        "fi": "tomaatti",
+        "sv": "tomat",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ruoka-gurka",
+        "fi": "kurkku (vihannes)",
+        "sv": "gurka",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-ruoka-lok",
+        "fi": "sipuli",
+        "sv": "lök",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruoka-morot",
+        "fi": "porkkana",
+        "sv": "morot",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ruoka-socker",
+        "fi": "sokeri",
+        "sv": "socker",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflection": "sockret; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-ruoka-salt",
+        "fi": "suola",
+        "sv": "salt",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflection": "saltet; tavallisesti yksikössä"
+      }
+    ]
+  },
+  {
+    "id": "arki-ruokapoyta",
+    "nameFi": "Keittiössä ja ruokapöydässä",
+    "entries": [
+      {
+        "id": "arki-ruokapoyta-frukost",
+        "fi": "aamiainen",
+        "sv": "frukost",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruokapoyta-lunch",
+        "fi": "lounas",
+        "sv": "lunch",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ruokapoyta-middag",
+        "fi": "päivällinen",
+        "sv": "middag",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruokapoyta-maltid",
+        "fi": "ateria",
+        "sv": "måltid",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ruokapoyta-tallrik",
+        "fi": "lautanen",
+        "sv": "tallrik",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruokapoyta-glas",
+        "fi": "lasi",
+        "sv": "glas",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-ruokapoyta-kopp",
+        "fi": "kuppi",
+        "sv": "kopp",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruokapoyta-gaffel",
+        "fi": "haarukka",
+        "sv": "gaffel",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "gaffeln, gafflar, gafflarna"
+      },
+      {
+        "id": "arki-ruokapoyta-kniv",
+        "fi": "veitsi",
+        "sv": "kniv",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruokapoyta-sked",
+        "fi": "lusikka",
+        "sv": "sked",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruokapoyta-flaska",
+        "fi": "pullo",
+        "sv": "flaska",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-ruokapoyta-kastrull",
+        "fi": "kattila",
+        "sv": "kastrull",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ruokapoyta-ugn",
+        "fi": "uuni",
+        "sv": "ugn",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruokapoyta-spis",
+        "fi": "liesi",
+        "sv": "spis",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruokapoyta-kylskap",
+        "fi": "jääkaappi",
+        "sv": "kylskåp",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-ruokapoyta-frys",
+        "fi": "pakastin",
+        "sv": "frys",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruokapoyta-recept",
+        "fi": "resepti (ruoka)",
+        "sv": "recept",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-ruokapoyta-sallad",
+        "fi": "salaatti",
+        "sv": "sallad",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ruokapoyta-soppa",
+        "fi": "keitto",
+        "sv": "soppa",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-ruokapoyta-tarta",
+        "fi": "kakku",
+        "sv": "tårta",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-ruokapoyta-efterratt",
+        "fi": "jälkiruoka",
+        "sv": "efterrätt",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-ruokapoyta-glass",
+        "fi": "jäätelö",
+        "sv": "glass",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-ruokapoyta-hungrig",
+        "fi": "nälkäinen",
+        "sv": "hungrig",
+        "partOfSpeech": "adjective",
+        "inflection": "hungrigt, hungriga"
+      },
+      {
+        "id": "arki-ruokapoyta-torstig",
+        "fi": "janoinen",
+        "sv": "törstig",
+        "partOfSpeech": "adjective",
+        "inflection": "törstigt, törstiga"
+      },
+      {
+        "id": "arki-ruokapoyta-matt",
+        "fi": "kylläinen",
+        "sv": "mätt",
+        "partOfSpeech": "adjective",
+        "inflection": "mätt, mätta"
+      }
+    ]
+  },
+  {
+    "id": "arki-vaatteet",
+    "nameFi": "Vaatteet ja tavarat",
+    "entries": [
+      {
+        "id": "arki-vaatteet-skjorta",
+        "fi": "paita",
+        "sv": "skjorta",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-vaatteet-troja",
+        "fi": "pusero",
+        "sv": "tröja",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-vaatteet-jacka",
+        "fi": "takki",
+        "sv": "jacka",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-vaatteet-byxor",
+        "fi": "housut",
+        "sv": "byxor",
+        "partOfSpeech": "other",
+        "inflection": "byxorna; monikollinen substantiivi"
+      },
+      {
+        "id": "arki-vaatteet-kjol",
+        "fi": "hame",
+        "sv": "kjol",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vaatteet-klanning",
+        "fi": "mekko",
+        "sv": "klänning",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vaatteet-sko",
+        "fi": "kenkä",
+        "sv": "sko",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "skon, skor, skorna"
+      },
+      {
+        "id": "arki-vaatteet-strumpa",
+        "fi": "sukka",
+        "sv": "strumpa",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-vaatteet-mossa",
+        "fi": "pipo",
+        "sv": "mössa",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-vaatteet-hatt",
+        "fi": "hattu",
+        "sv": "hatt",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vaatteet-handske",
+        "fi": "käsine",
+        "sv": "handske",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vaatteet-halsduk",
+        "fi": "kaulahuivi",
+        "sv": "halsduk",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vaatteet-balte",
+        "fi": "vyö",
+        "sv": "bälte",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-vaatteet-vaska",
+        "fi": "laukku",
+        "sv": "väska",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-vaatteet-ryggsack",
+        "fi": "reppu",
+        "sv": "ryggsäck",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vaatteet-planbok",
+        "fi": "lompakko",
+        "sv": "plånbok",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "plånboken, plånböcker, plånböckerna"
+      },
+      {
+        "id": "arki-vaatteet-paraply",
+        "fi": "sateenvarjo",
+        "sv": "paraply",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-vaatteet-glasogon",
+        "fi": "silmälasit",
+        "sv": "glasögon",
+        "partOfSpeech": "other",
+        "inflection": "glasögonen; monikollinen substantiivi"
+      },
+      {
+        "id": "arki-vaatteet-ring",
+        "fi": "sormus",
+        "sv": "ring",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vaatteet-klocka",
+        "fi": "kello",
+        "sv": "klocka",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-vaatteet-ficka",
+        "fi": "tasku",
+        "sv": "ficka",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-vaatteet-knapp",
+        "fi": "nappi",
+        "sv": "knapp",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vaatteet-storlek",
+        "fi": "koko (vaatteen)",
+        "sv": "storlek",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vaatteet-farg",
+        "fi": "väri",
+        "sv": "färg",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vaatteet-plagg",
+        "fi": "vaate",
+        "sv": "plagg",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      }
+    ]
+  },
+  {
+    "id": "arki-kaupunki",
+    "nameFi": "Kaupunki ja asiointi",
+    "entries": [
+      {
+        "id": "arki-kaupunki-stad",
+        "fi": "kaupunki",
+        "sv": "stad",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "staden, städer, städerna"
+      },
+      {
+        "id": "arki-kaupunki-by",
+        "fi": "kylä",
+        "sv": "by",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-kaupunki-gata",
+        "fi": "katu",
+        "sv": "gata",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-kaupunki-vag",
+        "fi": "tie",
+        "sv": "väg",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-kaupunki-torg",
+        "fi": "tori",
+        "sv": "torg",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-kaupunki-park",
+        "fi": "puisto",
+        "sv": "park",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-kaupunki-butik",
+        "fi": "kauppa",
+        "sv": "butik",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-kaupunki-bank",
+        "fi": "pankki",
+        "sv": "bank",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-kaupunki-post",
+        "fi": "posti",
+        "sv": "post",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflection": "posten; tässä postipalvelu tai postilähetykset"
+      },
+      {
+        "id": "arki-kaupunki-bibliotek",
+        "fi": "kirjasto",
+        "sv": "bibliotek",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-kaupunki-restaurang",
+        "fi": "ravintola",
+        "sv": "restaurang",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-kaupunki-kafe",
+        "fi": "kahvila",
+        "sv": "kafé",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "3",
+        "inflection": "kaféet, kaféer, kaféerna"
+      },
+      {
+        "id": "arki-kaupunki-hotell",
+        "fi": "hotelli",
+        "sv": "hotell",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-kaupunki-apotek",
+        "fi": "apteekki",
+        "sv": "apotek",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-kaupunki-sjukhus",
+        "fi": "sairaala",
+        "sv": "sjukhus",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-kaupunki-skola",
+        "fi": "koulu",
+        "sv": "skola",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-kaupunki-station",
+        "fi": "asema",
+        "sv": "station",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-kaupunki-hallplats",
+        "fi": "pysäkki",
+        "sv": "hållplats",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-kaupunki-bro",
+        "fi": "silta",
+        "sv": "bro",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-kaupunki-byggnad",
+        "fi": "rakennus",
+        "sv": "byggnad",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-kaupunki-ingang",
+        "fi": "sisäänkäynti",
+        "sv": "ingång",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-kaupunki-utgang",
+        "fi": "uloskäynti",
+        "sv": "utgång",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-kaupunki-toalett",
+        "fi": "vessa",
+        "sv": "toalett",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-kaupunki-hiss",
+        "fi": "hissi",
+        "sv": "hiss",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-kaupunki-trappa",
+        "fi": "portaat",
+        "sv": "trappa",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      }
+    ]
+  },
+  {
+    "id": "arki-matkustaminen",
+    "nameFi": "Liikkuminen ja matkustaminen",
+    "entries": [
+      {
+        "id": "arki-matkustaminen-resa",
+        "fi": "matka",
+        "sv": "resa",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-matkustaminen-bil",
+        "fi": "auto",
+        "sv": "bil",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-matkustaminen-buss",
+        "fi": "bussi",
+        "sv": "buss",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-matkustaminen-tag",
+        "fi": "juna",
+        "sv": "tåg",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-matkustaminen-cykel",
+        "fi": "polkupyörä",
+        "sv": "cykel",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "cykeln, cyklar, cyklarna"
+      },
+      {
+        "id": "arki-matkustaminen-bat",
+        "fi": "vene",
+        "sv": "båt",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-matkustaminen-fartyg",
+        "fi": "laiva",
+        "sv": "fartyg",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-matkustaminen-flygplan",
+        "fi": "lentokone",
+        "sv": "flygplan",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-matkustaminen-flygplats",
+        "fi": "lentoasema",
+        "sv": "flygplats",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-matkustaminen-pass",
+        "fi": "passi",
+        "sv": "pass",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-matkustaminen-biljett",
+        "fi": "lippu (matka)",
+        "sv": "biljett",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-matkustaminen-karta",
+        "fi": "kartta",
+        "sv": "karta",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-matkustaminen-resvaska",
+        "fi": "matkalaukku",
+        "sv": "resväska",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-matkustaminen-land",
+        "fi": "maa (valtio)",
+        "sv": "land",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "3",
+        "inflection": "landet, länder, länderna"
+      },
+      {
+        "id": "arki-matkustaminen-varld",
+        "fi": "maailma",
+        "sv": "värld",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-matkustaminen-plats",
+        "fi": "paikka",
+        "sv": "plats",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-matkustaminen-riktning",
+        "fi": "suunta",
+        "sv": "riktning",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-matkustaminen-vanster",
+        "fi": "vasen",
+        "sv": "vänster",
+        "partOfSpeech": "other",
+        "inflection": "till vänster = vasemmalle tai vasemmalla"
+      },
+      {
+        "id": "arki-matkustaminen-hoger",
+        "fi": "oikea (suunta)",
+        "sv": "höger",
+        "partOfSpeech": "other",
+        "inflection": "till höger = oikealle tai oikealla"
+      },
+      {
+        "id": "arki-matkustaminen-rakt",
+        "fi": "suoraan",
+        "sv": "rakt",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-matkustaminen-nara",
+        "fi": "lähellä",
+        "sv": "nära",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-matkustaminen-langt",
+        "fi": "kaukana",
+        "sv": "långt",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-matkustaminen-har",
+        "fi": "täällä",
+        "sv": "här",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-matkustaminen-dar",
+        "fi": "siellä",
+        "sv": "där",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-matkustaminen-hemma",
+        "fi": "kotona",
+        "sv": "hemma",
+        "partOfSpeech": "adverb"
+      }
+    ]
+  },
+  {
+    "id": "arki-tyo-opiskelu",
+    "nameFi": "Työ ja opiskelu",
+    "entries": [
+      {
+        "id": "arki-tyo-opiskelu-arbete",
+        "fi": "työ",
+        "sv": "arbete",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-tyo-opiskelu-arbetsplats",
+        "fi": "työpaikka",
+        "sv": "arbetsplats",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-kontor",
+        "fi": "toimisto",
+        "sv": "kontor",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-tyo-opiskelu-foretag",
+        "fi": "yritys",
+        "sv": "företag",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-tyo-opiskelu-chef",
+        "fi": "pomo",
+        "sv": "chef",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-kollega",
+        "fi": "kollega",
+        "sv": "kollega",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-tyo-opiskelu-larare",
+        "fi": "opettaja",
+        "sv": "lärare",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-tyo-opiskelu-elev",
+        "fi": "oppilas",
+        "sv": "elev",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-student",
+        "fi": "opiskelija",
+        "sv": "student",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-universitet",
+        "fi": "yliopisto",
+        "sv": "universitet",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-tyo-opiskelu-kurs",
+        "fi": "kurssi",
+        "sv": "kurs",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-lektion",
+        "fi": "oppitunti",
+        "sv": "lektion",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-prov",
+        "fi": "koe",
+        "sv": "prov",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-tyo-opiskelu-uppgift",
+        "fi": "tehtävä",
+        "sv": "uppgift",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-bok",
+        "fi": "kirja",
+        "sv": "bok",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "boken, böcker, böckerna"
+      },
+      {
+        "id": "arki-tyo-opiskelu-hafte",
+        "fi": "vihko",
+        "sv": "häfte",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-tyo-opiskelu-penna",
+        "fi": "kynä",
+        "sv": "penna",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-tyo-opiskelu-papper",
+        "fi": "paperi",
+        "sv": "papper",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5",
+        "inflection": "papperet, papper, papperen"
+      },
+      {
+        "id": "arki-tyo-opiskelu-dator",
+        "fi": "tietokone",
+        "sv": "dator",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-telefon",
+        "fi": "puhelin",
+        "sv": "telefon",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-mote",
+        "fi": "kokous",
+        "sv": "möte",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-tyo-opiskelu-paus",
+        "fi": "tauko",
+        "sv": "paus",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-lon",
+        "fi": "palkka",
+        "sv": "lön",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-tyo-opiskelu-yrke",
+        "fi": "ammatti",
+        "sv": "yrke",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-tyo-opiskelu-plan",
+        "fi": "suunnitelma",
+        "sv": "plan",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      }
+    ]
+  },
+  {
+    "id": "arki-aika",
+    "nameFi": "Aika ja kalenteri",
+    "entries": [
+      {
+        "id": "arki-aika-tid",
+        "fi": "aika",
+        "sv": "tid",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-aika-dag",
+        "fi": "päivä",
+        "sv": "dag",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-aika-vecka",
+        "fi": "viikko",
+        "sv": "vecka",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-aika-manad",
+        "fi": "kuukausi",
+        "sv": "månad",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-aika-ar",
+        "fi": "vuosi",
+        "sv": "år",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-aika-timme",
+        "fi": "tunti",
+        "sv": "timme",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-aika-minut",
+        "fi": "minuutti",
+        "sv": "minut",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-aika-sekund",
+        "fi": "sekunti",
+        "sv": "sekund",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-aika-morgon",
+        "fi": "aamu",
+        "sv": "morgon",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "morgonen, morgnar, morgnarna"
+      },
+      {
+        "id": "arki-aika-kvall",
+        "fi": "ilta",
+        "sv": "kväll",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-aika-natt",
+        "fi": "yö",
+        "sv": "natt",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "natten, nätter, nätterna"
+      },
+      {
+        "id": "arki-aika-helg",
+        "fi": "viikonloppu",
+        "sv": "helg",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-aika-mandag",
+        "fi": "maanantai",
+        "sv": "måndag",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-aika-tisdag",
+        "fi": "tiistai",
+        "sv": "tisdag",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-aika-onsdag",
+        "fi": "keskiviikko",
+        "sv": "onsdag",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-aika-torsdag",
+        "fi": "torstai",
+        "sv": "torsdag",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-aika-fredag",
+        "fi": "perjantai",
+        "sv": "fredag",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-aika-lordag",
+        "fi": "lauantai",
+        "sv": "lördag",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-aika-sondag",
+        "fi": "sunnuntai",
+        "sv": "söndag",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-aika-idag",
+        "fi": "tänään",
+        "sv": "idag",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-aika-igar",
+        "fi": "eilen",
+        "sv": "igår",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-aika-imorgon",
+        "fi": "huomenna",
+        "sv": "imorgon",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-aika-nu",
+        "fi": "nyt",
+        "sv": "nu",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-aika-snart",
+        "fi": "pian",
+        "sv": "snart",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-aika-senare",
+        "fi": "myöhemmin",
+        "sv": "senare",
+        "partOfSpeech": "adverb"
+      }
+    ]
+  },
+  {
+    "id": "arki-luonto",
+    "nameFi": "Luonto ja sää",
+    "entries": [
+      {
+        "id": "arki-luonto-natur",
+        "fi": "luonto",
+        "sv": "natur",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflection": "naturen; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-luonto-skog",
+        "fi": "metsä",
+        "sv": "skog",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-luonto-trad",
+        "fi": "puu",
+        "sv": "träd",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-luonto-blomma",
+        "fi": "kukka",
+        "sv": "blomma",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-luonto-hav",
+        "fi": "meri",
+        "sv": "hav",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-luonto-sjo",
+        "fi": "järvi",
+        "sv": "sjö",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-luonto-a",
+        "fi": "joki",
+        "sv": "å",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-luonto-o",
+        "fi": "saari",
+        "sv": "ö",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-luonto-strand",
+        "fi": "ranta",
+        "sv": "strand",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "stranden, stränder, stränderna"
+      },
+      {
+        "id": "arki-luonto-berg",
+        "fi": "vuori",
+        "sv": "berg",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-luonto-sol",
+        "fi": "aurinko",
+        "sv": "sol",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-luonto-mane",
+        "fi": "kuu",
+        "sv": "måne",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-luonto-stjarna",
+        "fi": "tähti",
+        "sv": "stjärna",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-luonto-himmel",
+        "fi": "taivas",
+        "sv": "himmel",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "himlen, himlar, himlarna"
+      },
+      {
+        "id": "arki-luonto-vader",
+        "fi": "sää",
+        "sv": "väder",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflection": "vädret; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-luonto-regn",
+        "fi": "sade",
+        "sv": "regn",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-luonto-sno",
+        "fi": "lumi",
+        "sv": "snö",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflection": "snön; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-luonto-vind",
+        "fi": "tuuli",
+        "sv": "vind",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-luonto-moln",
+        "fi": "pilvi",
+        "sv": "moln",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-luonto-var",
+        "fi": "kevät",
+        "sv": "vår",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-luonto-sommar",
+        "fi": "kesä",
+        "sv": "sommar",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "sommaren, somrar, somrarna"
+      },
+      {
+        "id": "arki-luonto-host",
+        "fi": "syksy",
+        "sv": "höst",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-luonto-vinter",
+        "fi": "talvi",
+        "sv": "vinter",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "vintern, vintrar, vintrarna"
+      },
+      {
+        "id": "arki-luonto-hund",
+        "fi": "koira",
+        "sv": "hund",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-luonto-katt",
+        "fi": "kissa",
+        "sv": "katt",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      }
+    ]
+  },
+  {
+    "id": "arki-keho",
+    "nameFi": "Keho ja vointi",
+    "entries": [
+      {
+        "id": "arki-keho-kropp",
+        "fi": "keho",
+        "sv": "kropp",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-keho-huvud",
+        "fi": "pää",
+        "sv": "huvud",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5",
+        "inflection": "huvudet, huvuden, huvudena; poikkeava monikko"
+      },
+      {
+        "id": "arki-keho-ansikte",
+        "fi": "kasvot",
+        "sv": "ansikte",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-keho-oga",
+        "fi": "silmä",
+        "sv": "öga",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4",
+        "inflection": "ögat, ögon, ögonen"
+      },
+      {
+        "id": "arki-keho-ora",
+        "fi": "korva",
+        "sv": "öra",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4",
+        "inflection": "örat, öron, öronen"
+      },
+      {
+        "id": "arki-keho-nasa",
+        "fi": "nenä",
+        "sv": "näsa",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-keho-mun",
+        "fi": "suu",
+        "sv": "mun",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "munnen, munnar, munnarna"
+      },
+      {
+        "id": "arki-keho-tand",
+        "fi": "hammas",
+        "sv": "tand",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "tanden, tänder, tänderna"
+      },
+      {
+        "id": "arki-keho-tunga",
+        "fi": "kieli (ruumiinosa)",
+        "sv": "tunga",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-keho-hals",
+        "fi": "kaula",
+        "sv": "hals",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-keho-axel",
+        "fi": "olkapää",
+        "sv": "axel",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "axeln, axlar, axlarna"
+      },
+      {
+        "id": "arki-keho-arm",
+        "fi": "käsivarsi",
+        "sv": "arm",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-keho-hand",
+        "fi": "käsi",
+        "sv": "hand",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "handen, händer, händerna"
+      },
+      {
+        "id": "arki-keho-finger",
+        "fi": "sormi",
+        "sv": "finger",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "2",
+        "inflection": "fingret, fingrar, fingrarna"
+      },
+      {
+        "id": "arki-keho-ben",
+        "fi": "jalka",
+        "sv": "ben",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-keho-fot",
+        "fi": "jalkaterä",
+        "sv": "fot",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "foten, fötter, fötterna"
+      },
+      {
+        "id": "arki-keho-kna",
+        "fi": "polvi",
+        "sv": "knä",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4",
+        "inflection": "knät, knän, knäna"
+      },
+      {
+        "id": "arki-keho-rygg",
+        "fi": "selkä",
+        "sv": "rygg",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-keho-mage",
+        "fi": "vatsa",
+        "sv": "mage",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-keho-hjarta",
+        "fi": "sydän",
+        "sv": "hjärta",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-keho-hud",
+        "fi": "iho",
+        "sv": "hud",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflection": "huden; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-keho-har",
+        "fi": "hius",
+        "sv": "hår",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-keho-blod",
+        "fi": "veri",
+        "sv": "blod",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflection": "blodet; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-keho-frisk",
+        "fi": "terve",
+        "sv": "frisk",
+        "partOfSpeech": "adjective",
+        "inflection": "friskt, friska"
+      },
+      {
+        "id": "arki-keho-sjuk",
+        "fi": "sairas",
+        "sv": "sjuk",
+        "partOfSpeech": "adjective",
+        "inflection": "sjukt, sjuka"
+      }
+    ]
+  },
+  {
+    "id": "arki-vapaa-aika",
+    "nameFi": "Vapaa-aika ja ostokset",
+    "entries": [
+      {
+        "id": "arki-vapaa-aika-hobby",
+        "fi": "harrastus",
+        "sv": "hobby",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "hobbyn, hobbyer, hobbyerna"
+      },
+      {
+        "id": "arki-vapaa-aika-musik",
+        "fi": "musiikki",
+        "sv": "musik",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflection": "musiken; tavallisesti yksikössä"
+      },
+      {
+        "id": "arki-vapaa-aika-sang",
+        "fi": "laulu",
+        "sv": "sång",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vapaa-aika-film",
+        "fi": "elokuva",
+        "sv": "film",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vapaa-aika-bild",
+        "fi": "kuva",
+        "sv": "bild",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vapaa-aika-spel",
+        "fi": "peli",
+        "sv": "spel",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-vapaa-aika-boll",
+        "fi": "pallo",
+        "sv": "boll",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vapaa-aika-idrott",
+        "fi": "urheilu",
+        "sv": "idrott",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vapaa-aika-lag",
+        "fi": "joukkue",
+        "sv": "lag",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-vapaa-aika-fest",
+        "fi": "juhla",
+        "sv": "fest",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vapaa-aika-fodelsedag",
+        "fi": "syntymäpäivä",
+        "sv": "födelsedag",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vapaa-aika-present",
+        "fi": "lahja",
+        "sv": "present",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vapaa-aika-semester",
+        "fi": "loma",
+        "sv": "semester",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "semestern, semestrar, semestrarna"
+      },
+      {
+        "id": "arki-vapaa-aika-nyhet",
+        "fi": "uutinen",
+        "sv": "nyhet",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vapaa-aika-tidning",
+        "fi": "sanomalehti",
+        "sv": "tidning",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vapaa-aika-pengar",
+        "fi": "raha",
+        "sv": "pengar",
+        "partOfSpeech": "other",
+        "inflection": "pengarna; monikollinen substantiivi"
+      },
+      {
+        "id": "arki-vapaa-aika-pris",
+        "fi": "hinta",
+        "sv": "pris",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "3",
+        "inflection": "priset, priser, priserna; hinta, ei palkinto"
+      },
+      {
+        "id": "arki-vapaa-aika-kvitto",
+        "fi": "kuitti",
+        "sv": "kvitto",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-vapaa-aika-sedel",
+        "fi": "seteli",
+        "sv": "sedel",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2",
+        "inflection": "sedeln, sedlar, sedlarna"
+      },
+      {
+        "id": "arki-vapaa-aika-kund",
+        "fi": "asiakas",
+        "sv": "kund",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vapaa-aika-rabatt",
+        "fi": "alennus",
+        "sv": "rabatt",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vapaa-aika-rakning",
+        "fi": "lasku",
+        "sv": "räkning",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vapaa-aika-produkt",
+        "fi": "tuote",
+        "sv": "produkt",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3"
+      },
+      {
+        "id": "arki-vapaa-aika-kasse",
+        "fi": "kauppakassi",
+        "sv": "kasse",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "2"
+      },
+      {
+        "id": "arki-vapaa-aika-ko",
+        "fi": "jono",
+        "sv": "kö",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "3",
+        "inflection": "kön, köer, köerna"
+      }
+    ]
+  },
+  {
+    "id": "arki-perusverbit",
+    "nameFi": "Tärkeät perusverbit",
+    "entries": [
+      {
+        "id": "arki-perusverbit-vara",
+        "fi": "olla",
+        "sv": "vara",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "är, var, varit"
+      },
+      {
+        "id": "arki-perusverbit-ha",
+        "fi": "olla (jollakulla)",
+        "sv": "ha",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "har, hade, haft"
+      },
+      {
+        "id": "arki-perusverbit-bli",
+        "fi": "tulla joksikin",
+        "sv": "bli",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "blir, blev, blivit"
+      },
+      {
+        "id": "arki-perusverbit-gora",
+        "fi": "tehdä",
+        "sv": "göra",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "gör, gjorde, gjort"
+      },
+      {
+        "id": "arki-perusverbit-kunna",
+        "fi": "voida",
+        "sv": "kunna",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "kan, kunde, kunnat"
+      },
+      {
+        "id": "arki-perusverbit-vilja",
+        "fi": "haluta",
+        "sv": "vilja",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "vill, ville, velat"
+      },
+      {
+        "id": "arki-perusverbit-fa",
+        "fi": "saada",
+        "sv": "få",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "får, fick, fått"
+      },
+      {
+        "id": "arki-perusverbit-ta",
+        "fi": "ottaa",
+        "sv": "ta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "tar, tog, tagit"
+      },
+      {
+        "id": "arki-perusverbit-ge",
+        "fi": "antaa",
+        "sv": "ge",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "ger, gav, gett"
+      },
+      {
+        "id": "arki-perusverbit-ga",
+        "fi": "mennä",
+        "sv": "gå",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "går, gick, gått"
+      },
+      {
+        "id": "arki-perusverbit-komma",
+        "fi": "tulla",
+        "sv": "komma",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "kommer, kom, kommit"
+      },
+      {
+        "id": "arki-perusverbit-se",
+        "fi": "nähdä",
+        "sv": "se",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "ser, såg, sett"
+      },
+      {
+        "id": "arki-perusverbit-hora",
+        "fi": "kuulla",
+        "sv": "höra",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "hör, hörde, hört"
+      },
+      {
+        "id": "arki-perusverbit-veta",
+        "fi": "tietää",
+        "sv": "veta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "vet, visste, vetat"
+      },
+      {
+        "id": "arki-perusverbit-forsta",
+        "fi": "ymmärtää",
+        "sv": "förstå",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "förstår, förstod, förstått"
+      },
+      {
+        "id": "arki-perusverbit-hitta",
+        "fi": "löytää",
+        "sv": "hitta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "hittar, hittade, hittat"
+      },
+      {
+        "id": "arki-perusverbit-behova",
+        "fi": "tarvita",
+        "sv": "behöva",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "behöver, behövde, behövt"
+      },
+      {
+        "id": "arki-perusverbit-anvanda",
+        "fi": "käyttää",
+        "sv": "använda",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "använder, använde, använt"
+      },
+      {
+        "id": "arki-perusverbit-tanka",
+        "fi": "ajatella",
+        "sv": "tänka",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "tänker, tänkte, tänkt"
+      },
+      {
+        "id": "arki-perusverbit-tro",
+        "fi": "uskoa",
+        "sv": "tro",
+        "partOfSpeech": "verb",
+        "inflectionClass": "III",
+        "inflection": "tror, trodde, trott"
+      },
+      {
+        "id": "arki-perusverbit-beharska",
+        "fi": "osata (taito)",
+        "sv": "behärska",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "behärskar, behärskade, behärskat"
+      },
+      {
+        "id": "arki-perusverbit-valja",
+        "fi": "valita",
+        "sv": "välja",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "väljer, valde, valt"
+      },
+      {
+        "id": "arki-perusverbit-borja",
+        "fi": "aloittaa",
+        "sv": "börja",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "börjar, började, börjat"
+      },
+      {
+        "id": "arki-perusverbit-sluta",
+        "fi": "lopettaa",
+        "sv": "sluta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "slutar, slutade, slutat"
+      },
+      {
+        "id": "arki-perusverbit-fortsatta",
+        "fi": "jatkaa",
+        "sv": "fortsätta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "fortsätter, fortsatte, fortsatt"
+      }
+    ]
+  },
+  {
+    "id": "arki-arjenverbit",
+    "nameFi": "Arjen tekeminen",
+    "entries": [
+      {
+        "id": "arki-arjenverbit-bo",
+        "fi": "asua",
+        "sv": "bo",
+        "partOfSpeech": "verb",
+        "inflectionClass": "III",
+        "inflection": "bor, bodde, bott"
+      },
+      {
+        "id": "arki-arjenverbit-leva",
+        "fi": "elää",
+        "sv": "leva",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "lever, levde, levt"
+      },
+      {
+        "id": "arki-arjenverbit-ata",
+        "fi": "syödä",
+        "sv": "äta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "äter, åt, ätit"
+      },
+      {
+        "id": "arki-arjenverbit-dricka",
+        "fi": "juoda",
+        "sv": "dricka",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "dricker, drack, druckit"
+      },
+      {
+        "id": "arki-arjenverbit-sova",
+        "fi": "nukkua",
+        "sv": "sova",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "sover, sov, sovit"
+      },
+      {
+        "id": "arki-arjenverbit-vakna",
+        "fi": "herätä",
+        "sv": "vakna",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "vaknar, vaknade, vaknat"
+      },
+      {
+        "id": "arki-arjenverbit-sitta",
+        "fi": "istua",
+        "sv": "sitta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "sitter, satt, suttit"
+      },
+      {
+        "id": "arki-arjenverbit-sta",
+        "fi": "seistä",
+        "sv": "stå",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "står, stod, stått"
+      },
+      {
+        "id": "arki-arjenverbit-ligga",
+        "fi": "maata (asennossa)",
+        "sv": "ligga",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "ligger, låg, legat"
+      },
+      {
+        "id": "arki-arjenverbit-springa",
+        "fi": "juosta",
+        "sv": "springa",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "springer, sprang, sprungit"
+      },
+      {
+        "id": "arki-arjenverbit-promenera",
+        "fi": "kävellä",
+        "sv": "promenera",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "promenerar, promenerade, promenerat"
+      },
+      {
+        "id": "arki-arjenverbit-kora",
+        "fi": "ajaa",
+        "sv": "köra",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "kör, körde, kört"
+      },
+      {
+        "id": "arki-arjenverbit-aka",
+        "fi": "matkustaa (kulkuneuvolla)",
+        "sv": "åka",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "åker, åkte, åkt"
+      },
+      {
+        "id": "arki-arjenverbit-kopa",
+        "fi": "ostaa",
+        "sv": "köpa",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "köper, köpte, köpt"
+      },
+      {
+        "id": "arki-arjenverbit-salja",
+        "fi": "myydä",
+        "sv": "sälja",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "säljer, sålde, sålt"
+      },
+      {
+        "id": "arki-arjenverbit-betala",
+        "fi": "maksaa",
+        "sv": "betala",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "betalar, betalade, betalat"
+      },
+      {
+        "id": "arki-arjenverbit-oppna",
+        "fi": "avata",
+        "sv": "öppna",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "öppnar, öppnade, öppnat"
+      },
+      {
+        "id": "arki-arjenverbit-stanga",
+        "fi": "sulkea",
+        "sv": "stänga",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "stänger, stängde, stängt"
+      },
+      {
+        "id": "arki-arjenverbit-tvatta",
+        "fi": "pestä",
+        "sv": "tvätta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "tvättar, tvättade, tvättat"
+      },
+      {
+        "id": "arki-arjenverbit-stada",
+        "fi": "siivota",
+        "sv": "städa",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "städar, städade, städat"
+      },
+      {
+        "id": "arki-arjenverbit-vanta",
+        "fi": "odottaa",
+        "sv": "vänta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "väntar, väntade, väntat"
+      },
+      {
+        "id": "arki-arjenverbit-hjalpa",
+        "fi": "auttaa",
+        "sv": "hjälpa",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "hjälper, hjälpte, hjälpt"
+      },
+      {
+        "id": "arki-arjenverbit-hamta",
+        "fi": "hakea",
+        "sv": "hämta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "hämtar, hämtade, hämtat"
+      },
+      {
+        "id": "arki-arjenverbit-skicka",
+        "fi": "lähettää",
+        "sv": "skicka",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "skickar, skickade, skickat"
+      },
+      {
+        "id": "arki-arjenverbit-lamna",
+        "fi": "jättää",
+        "sv": "lämna",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "lämnar, lämnade, lämnat"
+      }
+    ]
+  },
+  {
+    "id": "arki-viestinta",
+    "nameFi": "Viestintä ja oppiminen",
+    "entries": [
+      {
+        "id": "arki-viestinta-tala",
+        "fi": "puhua",
+        "sv": "tala",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "talar, talade, talat"
+      },
+      {
+        "id": "arki-viestinta-saga",
+        "fi": "sanoa",
+        "sv": "säga",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "säger, sade, sagt"
+      },
+      {
+        "id": "arki-viestinta-undra",
+        "fi": "pohtia",
+        "sv": "undra",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "undrar, undrade, undrat"
+      },
+      {
+        "id": "arki-viestinta-svara",
+        "fi": "vastata",
+        "sv": "svara",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "svarar, svarade, svarat"
+      },
+      {
+        "id": "arki-viestinta-beratta",
+        "fi": "kertoa",
+        "sv": "berätta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "berättar, berättade, berättat"
+      },
+      {
+        "id": "arki-viestinta-forklara",
+        "fi": "selittää",
+        "sv": "förklara",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "förklarar, förklarade, förklarat"
+      },
+      {
+        "id": "arki-viestinta-lyssna",
+        "fi": "kuunnella",
+        "sv": "lyssna",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "lyssnar, lyssnade, lyssnat"
+      },
+      {
+        "id": "arki-viestinta-lasa",
+        "fi": "lukea",
+        "sv": "läsa",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "läser, läste, läst"
+      },
+      {
+        "id": "arki-viestinta-skriva",
+        "fi": "kirjoittaa",
+        "sv": "skriva",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "skriver, skrev, skrivit"
+      },
+      {
+        "id": "arki-viestinta-lara-sig",
+        "fi": "oppia",
+        "sv": "lära sig",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "lär sig, lärde sig, lärt sig"
+      },
+      {
+        "id": "arki-viestinta-studera",
+        "fi": "opiskella",
+        "sv": "studera",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "studerar, studerade, studerat"
+      },
+      {
+        "id": "arki-viestinta-arbeta",
+        "fi": "työskennellä",
+        "sv": "arbeta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "arbetar, arbetade, arbetat"
+      },
+      {
+        "id": "arki-viestinta-ova",
+        "fi": "harjoitella",
+        "sv": "öva",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "övar, övade, övat"
+      },
+      {
+        "id": "arki-viestinta-minnas",
+        "fi": "muistaa",
+        "sv": "minnas",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "minns, mindes, mints"
+      },
+      {
+        "id": "arki-viestinta-glomma",
+        "fi": "unohtaa",
+        "sv": "glömma",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "glömmer, glömde, glömt"
+      },
+      {
+        "id": "arki-viestinta-ringa",
+        "fi": "soittaa (puhelimella)",
+        "sv": "ringa",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "ringer, ringde, ringt"
+      },
+      {
+        "id": "arki-viestinta-traffa",
+        "fi": "tavata",
+        "sv": "träffa",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "träffar, träffade, träffat"
+      },
+      {
+        "id": "arki-viestinta-visa",
+        "fi": "näyttää",
+        "sv": "visa",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "visar, visade, visat"
+      },
+      {
+        "id": "arki-viestinta-ord",
+        "fi": "sana",
+        "sv": "ord",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-viestinta-sprak",
+        "fi": "kieli (puhuttu)",
+        "sv": "språk",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-viestinta-fraga",
+        "fi": "kysymys",
+        "sv": "fråga",
+        "partOfSpeech": "noun",
+        "article": "en",
+        "inflectionClass": "1"
+      },
+      {
+        "id": "arki-viestinta-svar",
+        "fi": "vastaus",
+        "sv": "svar",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-viestinta-meddelande",
+        "fi": "viesti",
+        "sv": "meddelande",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "4"
+      },
+      {
+        "id": "arki-viestinta-brev",
+        "fi": "kirje",
+        "sv": "brev",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      },
+      {
+        "id": "arki-viestinta-samtal",
+        "fi": "keskustelu",
+        "sv": "samtal",
+        "partOfSpeech": "noun",
+        "article": "ett",
+        "inflectionClass": "5"
+      }
+    ]
+  },
+  {
+    "id": "arki-ominaisuudet",
+    "nameFi": "Ominaisuudet ja vastakohdat",
+    "entries": [
+      {
+        "id": "arki-ominaisuudet-bra",
+        "fi": "hyvä",
+        "sv": "bra",
+        "partOfSpeech": "adjective",
+        "inflection": "bra, bra; bättre, bäst"
+      },
+      {
+        "id": "arki-ominaisuudet-dalig",
+        "fi": "huono",
+        "sv": "dålig",
+        "partOfSpeech": "adjective",
+        "inflection": "dåligt, dåliga; sämre, sämst"
+      },
+      {
+        "id": "arki-ominaisuudet-stor",
+        "fi": "suuri",
+        "sv": "stor",
+        "partOfSpeech": "adjective",
+        "inflection": "stort, stora; större, störst"
+      },
+      {
+        "id": "arki-ominaisuudet-liten",
+        "fi": "pieni",
+        "sv": "liten",
+        "partOfSpeech": "adjective",
+        "inflection": "litet, små; määräinen yksikkö lilla"
+      },
+      {
+        "id": "arki-ominaisuudet-lang",
+        "fi": "pitkä",
+        "sv": "lång",
+        "partOfSpeech": "adjective",
+        "inflection": "långt, långa"
+      },
+      {
+        "id": "arki-ominaisuudet-kort",
+        "fi": "lyhyt",
+        "sv": "kort",
+        "partOfSpeech": "adjective",
+        "inflection": "kort, korta"
+      },
+      {
+        "id": "arki-ominaisuudet-ny",
+        "fi": "uusi",
+        "sv": "ny",
+        "partOfSpeech": "adjective",
+        "inflection": "nytt, nya"
+      },
+      {
+        "id": "arki-ominaisuudet-gammal",
+        "fi": "vanha",
+        "sv": "gammal",
+        "partOfSpeech": "adjective",
+        "inflection": "gammalt, gamla; äldre, äldst"
+      },
+      {
+        "id": "arki-ominaisuudet-ung",
+        "fi": "nuori",
+        "sv": "ung",
+        "partOfSpeech": "adjective",
+        "inflection": "ungt, unga; yngre, yngst"
+      },
+      {
+        "id": "arki-ominaisuudet-vacker",
+        "fi": "kaunis",
+        "sv": "vacker",
+        "partOfSpeech": "adjective",
+        "inflection": "vackert, vackra"
+      },
+      {
+        "id": "arki-ominaisuudet-ful",
+        "fi": "ruma",
+        "sv": "ful",
+        "partOfSpeech": "adjective",
+        "inflection": "fult, fula"
+      },
+      {
+        "id": "arki-ominaisuudet-latt",
+        "fi": "helppo",
+        "sv": "lätt",
+        "partOfSpeech": "adjective",
+        "inflection": "lätt, lätta"
+      },
+      {
+        "id": "arki-ominaisuudet-svar",
+        "fi": "vaikea",
+        "sv": "svår",
+        "partOfSpeech": "adjective",
+        "inflection": "svårt, svåra"
+      },
+      {
+        "id": "arki-ominaisuudet-snabb",
+        "fi": "nopea",
+        "sv": "snabb",
+        "partOfSpeech": "adjective",
+        "inflection": "snabbt, snabba"
+      },
+      {
+        "id": "arki-ominaisuudet-langsam",
+        "fi": "hidas",
+        "sv": "långsam",
+        "partOfSpeech": "adjective",
+        "inflection": "långsamt, långsamma"
+      },
+      {
+        "id": "arki-ominaisuudet-varm",
+        "fi": "lämmin",
+        "sv": "varm",
+        "partOfSpeech": "adjective",
+        "inflection": "varmt, varma"
+      },
+      {
+        "id": "arki-ominaisuudet-kall",
+        "fi": "kylmä",
+        "sv": "kall",
+        "partOfSpeech": "adjective",
+        "inflection": "kallt, kalla"
+      },
+      {
+        "id": "arki-ominaisuudet-dyr",
+        "fi": "kallis",
+        "sv": "dyr",
+        "partOfSpeech": "adjective",
+        "inflection": "dyrt, dyra"
+      },
+      {
+        "id": "arki-ominaisuudet-billig",
+        "fi": "halpa",
+        "sv": "billig",
+        "partOfSpeech": "adjective",
+        "inflection": "billigt, billiga"
+      },
+      {
+        "id": "arki-ominaisuudet-ratt",
+        "fi": "oikea (virheetön)",
+        "sv": "rätt",
+        "partOfSpeech": "adjective",
+        "inflection": "rätt; taipumaton tässä merkityksessä"
+      },
+      {
+        "id": "arki-ominaisuudet-fel",
+        "fi": "väärä",
+        "sv": "fel",
+        "partOfSpeech": "adjective",
+        "inflection": "fel; taipumaton tässä merkityksessä"
+      },
+      {
+        "id": "arki-ominaisuudet-ren",
+        "fi": "puhdas",
+        "sv": "ren",
+        "partOfSpeech": "adjective",
+        "inflection": "rent, rena"
+      },
+      {
+        "id": "arki-ominaisuudet-smutsig",
+        "fi": "likainen",
+        "sv": "smutsig",
+        "partOfSpeech": "adjective",
+        "inflection": "smutsigt, smutsiga"
+      },
+      {
+        "id": "arki-ominaisuudet-stark",
+        "fi": "vahva",
+        "sv": "stark",
+        "partOfSpeech": "adjective",
+        "inflection": "starkt, starka"
+      },
+      {
+        "id": "arki-ominaisuudet-svag",
+        "fi": "heikko",
+        "sv": "svag",
+        "partOfSpeech": "adjective",
+        "inflection": "svagt, svaga"
+      }
+    ]
+  },
+  {
+    "id": "arki-tunteet",
+    "nameFi": "Tunteet ja kokemukset",
+    "entries": [
+      {
+        "id": "arki-tunteet-glad",
+        "fi": "iloinen",
+        "sv": "glad",
+        "partOfSpeech": "adjective",
+        "inflection": "glatt, glada"
+      },
+      {
+        "id": "arki-tunteet-ledsen",
+        "fi": "surullinen",
+        "sv": "ledsen",
+        "partOfSpeech": "adjective",
+        "inflection": "ledset, ledsna"
+      },
+      {
+        "id": "arki-tunteet-arg",
+        "fi": "vihainen",
+        "sv": "arg",
+        "partOfSpeech": "adjective",
+        "inflection": "argt, arga"
+      },
+      {
+        "id": "arki-tunteet-radd",
+        "fi": "peloissaan",
+        "sv": "rädd",
+        "partOfSpeech": "adjective",
+        "inflection": "rädda (monikko); ett-muotoa vältetään"
+      },
+      {
+        "id": "arki-tunteet-trott",
+        "fi": "väsynyt",
+        "sv": "trött",
+        "partOfSpeech": "adjective",
+        "inflection": "trött, trötta"
+      },
+      {
+        "id": "arki-tunteet-lugn",
+        "fi": "rauhallinen",
+        "sv": "lugn",
+        "partOfSpeech": "adjective",
+        "inflection": "lugnt, lugna"
+      },
+      {
+        "id": "arki-tunteet-orolig",
+        "fi": "huolestunut",
+        "sv": "orolig",
+        "partOfSpeech": "adjective",
+        "inflection": "oroligt, oroliga"
+      },
+      {
+        "id": "arki-tunteet-nojd",
+        "fi": "tyytyväinen",
+        "sv": "nöjd",
+        "partOfSpeech": "adjective",
+        "inflection": "nöjt, nöjda"
+      },
+      {
+        "id": "arki-tunteet-lycklig",
+        "fi": "onnellinen",
+        "sv": "lycklig",
+        "partOfSpeech": "adjective",
+        "inflection": "lyckligt, lyckliga"
+      },
+      {
+        "id": "arki-tunteet-ensam",
+        "fi": "yksinäinen",
+        "sv": "ensam",
+        "partOfSpeech": "adjective",
+        "inflection": "ensamt, ensamma"
+      },
+      {
+        "id": "arki-tunteet-vanlig",
+        "fi": "ystävällinen",
+        "sv": "vänlig",
+        "partOfSpeech": "adjective",
+        "inflection": "vänligt, vänliga"
+      },
+      {
+        "id": "arki-tunteet-trevlig",
+        "fi": "mukava",
+        "sv": "trevlig",
+        "partOfSpeech": "adjective",
+        "inflection": "trevligt, trevliga"
+      },
+      {
+        "id": "arki-tunteet-rolig",
+        "fi": "hauska",
+        "sv": "rolig",
+        "partOfSpeech": "adjective",
+        "inflection": "roligt, roliga"
+      },
+      {
+        "id": "arki-tunteet-trakig",
+        "fi": "tylsä",
+        "sv": "tråkig",
+        "partOfSpeech": "adjective",
+        "inflection": "tråkigt, tråkiga"
+      },
+      {
+        "id": "arki-tunteet-viktig",
+        "fi": "tärkeä",
+        "sv": "viktig",
+        "partOfSpeech": "adjective",
+        "inflection": "viktigt, viktiga"
+      },
+      {
+        "id": "arki-tunteet-intressant",
+        "fi": "kiinnostava",
+        "sv": "intressant",
+        "partOfSpeech": "adjective",
+        "inflection": "intressant, intressanta"
+      },
+      {
+        "id": "arki-tunteet-fardig",
+        "fi": "valmis",
+        "sv": "färdig",
+        "partOfSpeech": "adjective",
+        "inflection": "färdigt, färdiga"
+      },
+      {
+        "id": "arki-tunteet-saker",
+        "fi": "varma",
+        "sv": "säker",
+        "partOfSpeech": "adjective",
+        "inflection": "säkert, säkra"
+      },
+      {
+        "id": "arki-tunteet-alska",
+        "fi": "rakastaa",
+        "sv": "älska",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "älskar, älskade, älskat"
+      },
+      {
+        "id": "arki-tunteet-hata",
+        "fi": "vihata",
+        "sv": "hata",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "hatar, hatade, hatat"
+      },
+      {
+        "id": "arki-tunteet-sakna",
+        "fi": "kaivata",
+        "sv": "sakna",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "saknar, saknade, saknat"
+      },
+      {
+        "id": "arki-tunteet-hoppas",
+        "fi": "toivoa",
+        "sv": "hoppas",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "hoppas, hoppades, hoppats"
+      },
+      {
+        "id": "arki-tunteet-skratta",
+        "fi": "nauraa",
+        "sv": "skratta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "I",
+        "inflection": "skrattar, skrattade, skrattat"
+      },
+      {
+        "id": "arki-tunteet-grata",
+        "fi": "itkeä",
+        "sv": "gråta",
+        "partOfSpeech": "verb",
+        "inflectionClass": "IV",
+        "inflection": "gråter, grät, gråtit"
+      },
+      {
+        "id": "arki-tunteet-kanna",
+        "fi": "tuntea",
+        "sv": "känna",
+        "partOfSpeech": "verb",
+        "inflectionClass": "II",
+        "inflection": "känner, kände, känt"
+      }
+    ]
+  },
+  {
+    "id": "arki-lukusanat",
+    "nameFi": "Luvut ja määrät",
+    "entries": [
+      {
+        "id": "arki-lukusanat-noll",
+        "fi": "nolla",
+        "sv": "noll",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-en",
+        "fi": "yksi",
+        "sv": "en",
+        "partOfSpeech": "other",
+        "inflection": "ett ett-sukuisten sanojen kanssa"
+      },
+      {
+        "id": "arki-lukusanat-tva",
+        "fi": "kaksi",
+        "sv": "två",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-tre",
+        "fi": "kolme",
+        "sv": "tre",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-fyra",
+        "fi": "neljä",
+        "sv": "fyra",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-fem",
+        "fi": "viisi",
+        "sv": "fem",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-sex",
+        "fi": "kuusi (luku)",
+        "sv": "sex",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-sju",
+        "fi": "seitsemän",
+        "sv": "sju",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-atta",
+        "fi": "kahdeksan",
+        "sv": "åtta",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-nio",
+        "fi": "yhdeksän",
+        "sv": "nio",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-tio",
+        "fi": "kymmenen",
+        "sv": "tio",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-elva",
+        "fi": "yksitoista",
+        "sv": "elva",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-tolv",
+        "fi": "kaksitoista",
+        "sv": "tolv",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-tretton",
+        "fi": "kolmetoista",
+        "sv": "tretton",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-fjorton",
+        "fi": "neljätoista",
+        "sv": "fjorton",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-femton",
+        "fi": "viisitoista",
+        "sv": "femton",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-sexton",
+        "fi": "kuusitoista",
+        "sv": "sexton",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-sjutton",
+        "fi": "seitsemäntoista",
+        "sv": "sjutton",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-arton",
+        "fi": "kahdeksantoista",
+        "sv": "arton",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-nitton",
+        "fi": "yhdeksäntoista",
+        "sv": "nitton",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-tjugo",
+        "fi": "kaksikymmentä",
+        "sv": "tjugo",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-trettio",
+        "fi": "kolmekymmentä",
+        "sv": "trettio",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-hundra",
+        "fi": "sata",
+        "sv": "hundra",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-tusen",
+        "fi": "tuhat",
+        "sv": "tusen",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-lukusanat-manga",
+        "fi": "monta",
+        "sv": "många",
+        "partOfSpeech": "other"
+      }
+    ]
+  },
+  {
+    "id": "arki-pronominit",
+    "nameFi": "Pronominit ja kysymyssanat",
+    "entries": [
+      {
+        "id": "arki-pronominit-jag",
+        "fi": "minä",
+        "sv": "jag",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-du",
+        "fi": "sinä",
+        "sv": "du",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-han",
+        "fi": "hän (mies)",
+        "sv": "han",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-hon",
+        "fi": "hän (nainen)",
+        "sv": "hon",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-vi",
+        "fi": "me",
+        "sv": "vi",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-ni",
+        "fi": "te",
+        "sv": "ni",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-de",
+        "fi": "he",
+        "sv": "de",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-den",
+        "fi": "se (en-sana)",
+        "sv": "den",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-det",
+        "fi": "se (ett-sana)",
+        "sv": "det",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-mig",
+        "fi": "minua",
+        "sv": "mig",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-dig",
+        "fi": "sinua",
+        "sv": "dig",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-honom",
+        "fi": "häntä (miestä)",
+        "sv": "honom",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-henne",
+        "fi": "häntä (naista)",
+        "sv": "henne",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-oss",
+        "fi": "meitä",
+        "sv": "oss",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-er",
+        "fi": "teitä",
+        "sv": "er",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-dem",
+        "fi": "heitä",
+        "sv": "dem",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-min",
+        "fi": "minun",
+        "sv": "min",
+        "partOfSpeech": "other",
+        "inflection": "mitt, mina"
+      },
+      {
+        "id": "arki-pronominit-din",
+        "fi": "sinun",
+        "sv": "din",
+        "partOfSpeech": "other",
+        "inflection": "ditt, dina"
+      },
+      {
+        "id": "arki-pronominit-deras",
+        "fi": "heidän",
+        "sv": "deras",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-vem",
+        "fi": "kuka",
+        "sv": "vem",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-vad",
+        "fi": "mikä",
+        "sv": "vad",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pronominit-var",
+        "fi": "missä",
+        "sv": "var",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pronominit-nar",
+        "fi": "milloin",
+        "sv": "när",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pronominit-varfor",
+        "fi": "miksi",
+        "sv": "varför",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pronominit-hur",
+        "fi": "miten",
+        "sv": "hur",
+        "partOfSpeech": "adverb"
+      }
+    ]
+  },
+  {
+    "id": "arki-pikkusanat",
+    "nameFi": "Arjen pikkusanat",
+    "entries": [
+      {
+        "id": "arki-pikkusanat-och",
+        "fi": "ja",
+        "sv": "och",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pikkusanat-men",
+        "fi": "mutta",
+        "sv": "men",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pikkusanat-eller",
+        "fi": "tai",
+        "sv": "eller",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pikkusanat-att",
+        "fi": "että",
+        "sv": "att",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pikkusanat-om",
+        "fi": "jos",
+        "sv": "om",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pikkusanat-eftersom",
+        "fi": "koska (syy)",
+        "sv": "eftersom",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pikkusanat-ja",
+        "fi": "kyllä",
+        "sv": "ja",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pikkusanat-nej",
+        "fi": "ei (vastaus)",
+        "sv": "nej",
+        "partOfSpeech": "other"
+      },
+      {
+        "id": "arki-pikkusanat-inte",
+        "fi": "ei (kieltosana)",
+        "sv": "inte",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-ocksa",
+        "fi": "myös",
+        "sv": "också",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-alltid",
+        "fi": "aina",
+        "sv": "alltid",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-ofta",
+        "fi": "usein",
+        "sv": "ofta",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-ibland",
+        "fi": "joskus",
+        "sv": "ibland",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-aldrig",
+        "fi": "ei koskaan",
+        "sv": "aldrig",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-redan",
+        "fi": "jo",
+        "sv": "redan",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-annu",
+        "fi": "vielä",
+        "sv": "ännu",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-kanske",
+        "fi": "ehkä",
+        "sv": "kanske",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-mycket",
+        "fi": "paljon",
+        "sv": "mycket",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-lite",
+        "fi": "vähän",
+        "sv": "lite",
+        "partOfSpeech": "adverb"
+      },
+      {
+        "id": "arki-pikkusanat-i",
+        "fi": "sisällä (jossakin)",
+        "sv": "i",
+        "partOfSpeech": "other",
+        "inflection": "prepositio, esim. i huset"
+      },
+      {
+        "id": "arki-pikkusanat-pa",
+        "fi": "päällä (jossakin)",
+        "sv": "på",
+        "partOfSpeech": "other",
+        "inflection": "prepositio, esim. på bordet"
+      },
+      {
+        "id": "arki-pikkusanat-under",
+        "fi": "alla",
+        "sv": "under",
+        "partOfSpeech": "other",
+        "inflection": "prepositio, esim. under bordet"
+      },
+      {
+        "id": "arki-pikkusanat-med",
+        "fi": "kanssa",
+        "sv": "med",
+        "partOfSpeech": "other",
+        "inflection": "prepositio, esim. med en vän"
+      },
+      {
+        "id": "arki-pikkusanat-utan",
+        "fi": "ilman",
+        "sv": "utan",
+        "partOfSpeech": "other",
+        "inflection": "prepositio, esim. utan socker"
+      },
+      {
+        "id": "arki-pikkusanat-till",
+        "fi": "johonkin (suunta)",
+        "sv": "till",
+        "partOfSpeech": "other",
+        "inflection": "prepositio, esim. till skolan"
+      }
+    ]
+  }
+]

@@ -2,7 +2,8 @@
   .site-header {
     display: flex;
     min-height: 58px;
-    justify-content: center;
+    justify-content: space-between;
+    gap: 8px;
     padding: 7px 14px;
   }
   .brand-mark {
@@ -16,6 +17,20 @@
   .desktop-metagame {
     display: none;
   }
+  .mobile-everyday-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    min-height: 44px;
+    padding: 6px 9px;
+    border-radius: var(--radius-sm);
+    color: var(--text-on-dark);
+    font-size: .8rem;
+    font-weight: 700;
+    text-decoration: none;
+    background: rgba(255, 255, 255, .1);
+  }
+  .mobile-everyday-link[aria-current="page"] { box-shadow: inset 0 -3px var(--sv-yellow); }
   .mobile-navigation {
     position: fixed;
     z-index: 25;

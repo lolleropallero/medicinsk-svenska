@@ -1,0 +1,8 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FlashcardExercise from '../../components/FlashcardExercise.astro';
+import { everydayCardPayload, everydayDeckPayload } from '../../lib/everyday-content';
+---
+<BaseLayout title="Arkisanaston harjoitus" description="Harjoittele yleistä ruotsin sanastoa aiheittain tai kaikista pakoista.">
+  <FlashcardExercise cards={everydayCardPayload} decks={everydayDeckPayload} returnHref="/arkisanasto/" returnLabel="Takaisin arkisanastoon" storageKey="medicinsk-svenska.everyday-session.v1" allLabel="Koko arkisanasto" reviewLabel="En osannut" difficultReviewEnabled mixPreviousRound/>
+</BaseLayout>

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { validateEverydayContent } from './validate-everyday-content.ts';
 
 type RecordValue = Record<string, unknown>;
 
@@ -474,6 +475,7 @@ const phrases = read('phrases.json');
 const anamnesisCases = read('anamnesis-cases.json');
 const examTopics = read('exam-vocabulary.json');
 const errors = [
+  ...validateEverydayContent(read('everyday-vocabulary.json')),
   ...validateContent(decks, cards, descriptions, descriptionCategories),
   ...validatePhraseContent(phraseCategories, phrases),
   ...validateAnamnesisContent(anamnesisCases),
@@ -529,4 +531,4 @@ if (errors.length) {
   console.error(errors.map((error) => `- ${error}`).join('\n'));
   process.exit(1);
 }
-console.log(`Content valid: ${decks.length} general decks, ${cards.length} curated cards, 518 exam cards (136 replace general anatomy), ${descriptions.length} descriptions, ${phrases.length} phrases, ${anamnesisCases.length} anamnesis case(s).`);
+console.log(`Content valid: ${decks.length} general decks, ${cards.length} curated cards, 518 exam cards (136 replace general anatomy), 500 everyday cards in 20 decks, ${descriptions.length} descriptions, ${phrases.length} phrases, ${anamnesisCases.length} anamnesis case(s).`);

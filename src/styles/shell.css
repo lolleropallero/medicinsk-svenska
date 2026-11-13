@@ -77,6 +77,9 @@ body { position: relative; }
 .mobile-navigation {
   display: none;
 }
+.mobile-everyday-link { display: none; }
+/* The extra collection link can wrap at compact desktop widths. */
+.desktop-navigation { flex-wrap: wrap; }
 .metagame-hud {
   position: relative;
   z-index: 5;

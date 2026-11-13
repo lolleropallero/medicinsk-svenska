@@ -9,6 +9,7 @@ import {
 function initializeExamTest() {
   if (!document.getElementById('exam-test-app')) return;
   const node = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
+  const storageKey = node('exam-test-app').dataset.storageKey ?? EXAM_TEST_STORAGE_KEY;
   const terms = JSON.parse(node('exam-test-data').textContent ?? '[]') as ExamTestTerm[];
   const termById = new Map(terms.map((term) => [term.id, term]));
   const params = new URLSearchParams(location.search);
@@ -25,7 +26,7 @@ function initializeExamTest() {
     history.replaceState(null, '', urlFor(sessionId));
   }
   let stored: unknown = null;
-  try { stored = JSON.parse(localStorage.getItem(EXAM_TEST_STORAGE_KEY) ?? 'null'); } catch { /* Recreate invalid optional browser state. */ }
+  try { stored = JSON.parse(localStorage.getItem(storageKey) ?? 'null'); } catch { /* Recreate invalid optional browser state. */ }
   let session: ExamTestSession = isStoredExamTest(stored, termById, sessionId) ? stored : createExamTest(terms, sessionId);
   const input = node<HTMLInputElement>('exam-test-answer');
   const questionView = node('exam-test-question-view');
@@ -37,7 +38,7 @@ function initializeExamTest() {
   const options = { signal: controller.signal };
 
   function persist() {
-    try { localStorage.setItem(EXAM_TEST_STORAGE_KEY, JSON.stringify(session)); } catch { /* The exam remains usable without browser storage. */ }
+    try { localStorage.setItem(storageKey, JSON.stringify(session)); } catch { /* The exam remains usable without browser storage. */ }
   }
   function updateTime() {
     const duration = Math.max(0, (session.completedAt ?? Date.now()) - session.startedAt);
